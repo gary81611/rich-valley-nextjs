@@ -5,6 +5,41 @@ import ScrollReveal from '@/components/shared/ScrollReveal'
 import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
 import { alpenglowData, photoNotes } from '@/lib/site-data'
 
+const alpenglowFaqs = [
+  {
+    q: 'How much does a limo from Aspen to Denver airport cost?',
+    a: 'A private luxury transfer from Aspen, Colorado to Denver International Airport (DEN) is approximately 3.5–4 hours each way. Pricing varies based on vehicle, time of day, and group size. Call us at 970-456-3666 for a custom quote. We serve Denver (DEN), Eagle (EGE), and Aspen (ASE) airports.',
+  },
+  {
+    q: 'Do you offer airport pickup at Aspen/Pitkin County Airport (ASE)?',
+    a: 'Yes. We provide meet-and-greet pickup service at Aspen/Pitkin County Airport (ASE). We track your flight in real time and adjust for early arrivals or delays. Our chauffeurs assist with luggage and provide seamless door-to-door service to any destination in Aspen or the Roaring Fork Valley.',
+  },
+  {
+    q: "What's the best way to get from Eagle/Vail airport to Aspen?",
+    a: 'The most comfortable option is a private car service. Eagle County Regional Airport (EGE) is approximately 70 miles from Aspen via I-70 and Highway 82 — about 1.5 to 2 hours depending on conditions. Aspen Alpenglow Limousine offers direct, door-to-door luxury transfers from Eagle airport to any Aspen destination.',
+  },
+  {
+    q: 'How far in advance should I book a limousine in Aspen?',
+    a: 'We recommend booking 48–72 hours in advance for standard transfers. For weddings, corporate events, or peak seasons (ski season December–March and summer July–August), book 2–4 weeks ahead. Last-minute bookings are occasionally available — call 970-456-3666 to check.',
+  },
+  {
+    q: 'Do you offer wedding transportation in Aspen?',
+    a: 'Yes. We specialize in wedding transportation throughout Aspen and Snowmass, Colorado. We provide bridal party transfers, venue logistics, and guest shuttle coordination. Both our Escalade and Sprinter van are available. We work closely with wedding planners to ensure a flawless, elegant experience.',
+  },
+  {
+    q: 'Is Aspen Alpenglow Limousine available 24 hours a day?',
+    a: 'Yes. We operate 24/7/365 — including early-morning departures, late-night arrivals, and overnight transfers to Denver. Call 970-456-3666 at any hour for assistance.',
+  },
+  {
+    q: 'Can you transport groups to ski resorts from Aspen?',
+    a: 'Absolutely. We provide private group transportation to Aspen Mountain, Aspen Highlands, Buttermilk, Snowmass ski resort, and other destinations throughout the Roaring Fork Valley. Our Luxury Sprinter van seats up to 14 passengers — ideal for ski groups.',
+  },
+  {
+    q: 'What vehicles does Aspen Alpenglow Limousine use?',
+    a: 'Our fleet includes a black Executive Cadillac Escalade (up to 6 passengers) and a black Luxury Mercedes Sprinter van (up to 14 passengers). Both feature premium leather interiors, climate control, and complimentary amenities. All vehicles are late-model, meticulously maintained, and professionally chauffeured.',
+  },
+]
+
 const ServiceIcon = ({ icon }: { icon: string }) => {
   const icons: Record<string, React.ReactNode> = {
     Plane: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>,
@@ -28,10 +63,10 @@ export default function AlpenglowPage() {
   return (
     <div className="min-h-screen bg-alp-pearl font-inter">
       {/* NAV */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-alp-navy/95 backdrop-blur-md shadow-lg' : 'bg-transparent'}`}>
+      <nav aria-label="Main navigation" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-alp-navy/95 backdrop-blur-md shadow-lg' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="#" className="flex items-center gap-3">
-            <Image src={alpenglowData.logo} alt="Aspen Alpenglow Limousine" width={160} height={50} className="h-10 w-auto object-contain" unoptimized />
+          <a href="#" className="flex items-center gap-3" aria-label="Aspen Alpenglow Limousine — home">
+            <Image src={alpenglowData.logo} alt="Aspen Alpenglow Limousine logo" width={160} height={50} className="h-10 w-auto object-contain" unoptimized loading="eager" />
           </a>
           <div className="hidden md:flex items-center gap-8">
             {['Services', 'Fleet', 'Service Areas', 'Contact'].map((item) => (
@@ -39,11 +74,11 @@ export default function AlpenglowPage() {
                 {item}
               </a>
             ))}
-            <a href={alpenglowData.phoneHref} className="bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:shadow-lg">
+            <a href={alpenglowData.phoneHref} aria-label={`Call Aspen Alpenglow Limousine at ${alpenglowData.phone}`} className="bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:shadow-lg">
               {alpenglowData.phone}
             </a>
           </div>
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden text-white p-2">
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle mobile navigation menu" aria-expanded={mobileMenuOpen} className="md:hidden text-white p-2">
             <div className="w-6 h-0.5 bg-white mb-1.5"></div>
             <div className="w-6 h-0.5 bg-white mb-1.5"></div>
             <div className="w-6 h-0.5 bg-white"></div>
@@ -68,11 +103,12 @@ export default function AlpenglowPage() {
         <div className="absolute inset-0">
           <Image
             src={photoNotes.alpenglowHero.current}
-            alt="Luxury transportation Aspen Colorado"
+            alt="Luxury black Escalade limousine on a mountain road in Aspen, Colorado — Aspen Alpenglow Limousine private car service"
             fill
             className="object-cover"
             priority
             unoptimized
+            fetchPriority="high"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-alp-navy-deep/80 via-alp-navy-deep/50 to-alp-navy-deep/85" />
         </div>
@@ -117,6 +153,10 @@ export default function AlpenglowPage() {
             <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-6">Our Services</h2>
             <p className="text-alp-slate text-xl max-w-2xl mx-auto">
               Every detail handled. Every journey seamless.
+            </p>
+            {/* GEO content block — factual, entity-rich for AI search engines */}
+            <p className="text-alp-slate text-base max-w-3xl mx-auto mt-6 leading-relaxed border-t border-alp-pearl-dark pt-6">
+              Aspen Alpenglow Limousine has provided distinguished private car and limousine service in Aspen, Colorado since 2012. The company operates a professional fleet of two vehicles — an Executive Cadillac Escalade (6 passengers) and a Luxury Mercedes Sprinter van (14 passengers) — serving Aspen/Pitkin County Airport (ASE), Eagle County Regional Airport (EGE), and Denver International Airport (DEN), as well as all destinations throughout the Roaring Fork Valley.
             </p>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 gap-8">
@@ -167,7 +207,7 @@ export default function AlpenglowPage() {
                   <div className="relative aspect-[16/9] bg-alp-navy-deep/50 flex items-center justify-center p-6">
                     <Image
                       src={vehicle.image}
-                      alt={vehicle.name}
+                      alt={`${vehicle.name} — luxury vehicle in the Aspen Alpenglow Limousine fleet, serving Aspen and the Roaring Fork Valley`}
                       fill
                       className="object-contain p-8"
                       unoptimized
@@ -282,7 +322,7 @@ export default function AlpenglowPage() {
                 <div className="relative aspect-[3/4] rounded-xl overflow-hidden">
                   <Image
                     src={dest.image}
-                    alt={dest.name}
+                    alt={`${dest.name}, Colorado — a popular destination served by Aspen Alpenglow Limousine private car service`}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                     unoptimized
@@ -293,6 +333,32 @@ export default function AlpenglowPage() {
                   </div>
                 </div>
               </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="py-24 bg-alp-pearl" aria-label="Frequently asked questions about Aspen Alpenglow Limousine">
+        <div className="max-w-3xl mx-auto px-6">
+          <ScrollReveal className="text-center mb-12">
+            <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Common Questions</p>
+            <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold">Frequently Asked Questions</h2>
+            <p className="text-alp-slate mt-4 text-lg">Everything you need to know before booking your luxury transfer.</p>
+          </ScrollReveal>
+          <div className="space-y-3">
+            {alpenglowFaqs.map((faq, i) => (
+              <details key={i} className="group bg-white rounded-xl border border-alp-pearl-dark overflow-hidden shadow-sm">
+                <summary className="flex items-center justify-between p-6 cursor-pointer list-none font-playfair text-lg text-alp-navy font-semibold hover:text-alp-gold transition-colors gap-4">
+                  <span>{faq.q}</span>
+                  <svg className="w-5 h-5 text-alp-gold flex-shrink-0 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="px-6 pb-6 pt-0 text-alp-slate leading-relaxed">
+                  {faq.a}
+                </div>
+              </details>
             ))}
           </div>
         </div>

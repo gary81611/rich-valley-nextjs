@@ -5,6 +5,41 @@ import ScrollReveal from '@/components/shared/ScrollReveal'
 import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
 import { rvaData, photoNotes } from '@/lib/site-data'
 
+const rvaFaqs = [
+  {
+    q: 'How much does a guided fly fishing trip in Aspen cost?',
+    a: 'Guided fly fishing trips with Rich Valley Adventures typically range from $150–$350 per person depending on trip length (half-day or full-day) and group size. All gear, licenses, and instruction are included. Call us at 970-456-3666 for current pricing and availability.',
+  },
+  {
+    q: 'What is included in a Rich Valley Adventures guided trip?',
+    a: 'Every trip includes expert local guides, all necessary gear and equipment, safety briefings, and transportation to the activity location. For fly fishing: rods, reels, waders, boots, and flies. For mountain biking: bikes and helmets. Groups are kept to 2–6 guests per guide for a truly personalized experience.',
+  },
+  {
+    q: 'What is the best time of year for fly fishing in the Roaring Fork Valley?',
+    a: 'Peak fly fishing season in the Roaring Fork Valley near Aspen runs July through September, when the river is lower and clearer. The full season runs May–October. Spring runoff (April–June) can make the river high and murky. Certain Gold Medal stretches are fishable year-round.',
+  },
+  {
+    q: 'Do I need prior experience for paddle boarding or mountain biking?',
+    a: 'No experience is required for any of our adventures. Our certified guides provide complete instruction, and we select terrain appropriate for each group\'s ability level. All ages and fitness levels are welcome. Private instruction is available for complete beginners.',
+  },
+  {
+    q: 'How small are Rich Valley Adventures guided groups?',
+    a: 'We keep groups intentionally small — typically 2 to 6 guests per guide. We do not run large group tours. Private and semi-private bookings are available for families, couples, and corporate groups. Small groups are central to the quality and safety of every experience.',
+  },
+  {
+    q: 'What outdoor adventures are available near Aspen in summer?',
+    a: 'Rich Valley Adventures offers 7 guided outdoor experiences near Aspen from May through October: fly fishing on the Roaring Fork River, stand-up paddle boarding on mountain lakes, mountain biking on singletrack trails, guided hiking in the Elk Mountains, scenic private Escalade tours, horseback riding, and elevated camping.',
+  },
+  {
+    q: 'Is fly fishing legal on the Roaring Fork River near Aspen?',
+    a: 'Yes. The Roaring Fork River and many tributaries near Aspen are designated Gold Medal trout waters open to fly fishing with a valid Colorado license. Rich Valley Adventures handles all licensing as part of guided trips — guests do not need to obtain a license separately.',
+  },
+  {
+    q: 'Where is Rich Valley Adventures based and what areas do you serve?',
+    a: 'We are based in Aspen, Colorado (81611) and guide adventures throughout the Roaring Fork Valley, including Aspen, Snowmass Village, Basalt, and Carbondale. Rich Valley Adventures was founded in 2012 by local outdoor professionals who grew up in the valley.',
+  },
+]
+
 export default function RVAPage() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -18,10 +53,10 @@ export default function RVAPage() {
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
       {/* NAV */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-rva-forest/95 backdrop-blur-md shadow-lg' : 'bg-transparent'}`}>
+      <nav aria-label="Main navigation" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-rva-forest/95 backdrop-blur-md shadow-lg' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="#" className="flex items-center gap-3">
-            <Image src={rvaData.logo} alt="Rich Valley Adventures" width={160} height={50} className="h-10 w-auto object-contain" unoptimized />
+          <a href="#" className="flex items-center gap-3" aria-label="Rich Valley Adventures — home">
+            <Image src={rvaData.logo} alt="Rich Valley Adventures logo" width={160} height={50} className="h-10 w-auto object-contain" unoptimized loading="eager" />
           </a>
           <div className="hidden md:flex items-center gap-8">
             {['Adventures', 'About', 'Gallery', 'Contact'].map((item) => (
@@ -29,11 +64,11 @@ export default function RVAPage() {
                 {item}
               </a>
             ))}
-            <a href={rvaData.phoneHref} className="bg-rva-copper hover:bg-rva-copper-light text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:shadow-lg">
+            <a href={rvaData.phoneHref} aria-label={`Call Rich Valley Adventures at ${rvaData.phone}`} className="bg-rva-copper hover:bg-rva-copper-light text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:shadow-lg">
               {rvaData.phone}
             </a>
           </div>
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden text-white p-2">
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle mobile navigation menu" aria-expanded={mobileMenuOpen} className="md:hidden text-white p-2">
             <div className="w-6 h-0.5 bg-white mb-1.5"></div>
             <div className="w-6 h-0.5 bg-white mb-1.5"></div>
             <div className="w-6 h-0.5 bg-white"></div>
@@ -58,11 +93,12 @@ export default function RVAPage() {
         <div className="absolute inset-0">
           <Image
             src={photoNotes.rvaHero.current}
-            alt="Aspen Colorado Rocky Mountains"
+            alt="Panoramic view of the Rocky Mountains and Roaring Fork Valley near Aspen, Colorado — home of Rich Valley Adventures guided outdoor experiences"
             fill
             className="object-cover"
             priority
             unoptimized
+            fetchPriority="high"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-rva-forest-dark/70 via-rva-forest-dark/40 to-rva-forest-dark/80" />
         </div>
@@ -111,8 +147,12 @@ export default function RVAPage() {
               <p className="text-gray-700 text-lg leading-relaxed mb-6">
                 {rvaData.description}
               </p>
-              <p className="text-gray-700 text-lg leading-relaxed mb-8">
+              <p className="text-gray-700 text-lg leading-relaxed mb-6">
                 Every adventure is led by guides who grew up here — people who know the secret fishing holes, the trails the crowds never find, and how to make first-timers feel like lifelong outdoorspeople. We keep our groups small on purpose. This isn&apos;t a cattle operation.
+              </p>
+              {/* GEO content block — factual, entity-rich for AI search engines */}
+              <p className="text-gray-600 text-base leading-relaxed mb-8 border-l-4 border-rva-copper/30 pl-4">
+                Rich Valley Adventures has operated guided outdoor excursions in Aspen, Colorado since 2012. Based at the heart of the Roaring Fork Valley, the company is certified and insured for all 7 guided activity types it offers. The Roaring Fork River — which flows through Aspen — is designated a Gold Medal trout fishery by Colorado Parks and Wildlife, making it one of the premier fly fishing destinations in the Rocky Mountain West.
               </p>
               <div className="grid grid-cols-3 gap-6">
                 {rvaData.stats.map((stat) => (
@@ -128,7 +168,7 @@ export default function RVAPage() {
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/5]">
                   <Image
                     src={photoNotes.teamPhoto.current}
-                    alt="Rich Valley Adventures team"
+                    alt="Rich Valley Adventures guide team — local outdoor experts based in Aspen, Colorado since 2012"
                     fill
                     className="object-cover"
                     unoptimized
@@ -166,7 +206,7 @@ export default function RVAPage() {
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
                       src={adventure.image}
-                      alt={adventure.title}
+                      alt={`${adventure.title} — expert-guided outdoor adventure in Aspen and the Roaring Fork Valley, Colorado`}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
                       unoptimized
@@ -254,7 +294,7 @@ export default function RVAPage() {
                 <div className="relative aspect-square rounded-xl overflow-hidden">
                   <Image
                     src={img}
-                    alt={`Rich Valley Adventures gallery ${i + 1}`}
+                    alt={`Rich Valley Adventures guided outdoor experiences in Aspen, Colorado — gallery photo ${i + 1}`}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                     unoptimized
@@ -262,6 +302,32 @@ export default function RVAPage() {
                   <div className="absolute inset-0 bg-rva-forest-dark/0 group-hover:bg-rva-forest-dark/30 transition-colors duration-300" />
                 </div>
               </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="py-24 bg-white" aria-label="Frequently asked questions about Rich Valley Adventures">
+        <div className="max-w-3xl mx-auto px-6">
+          <ScrollReveal className="text-center mb-12">
+            <p className="font-cormorant text-rva-copper text-lg tracking-widest uppercase mb-4">Common Questions</p>
+            <h2 className="font-playfair text-4xl md:text-5xl text-rva-forest font-bold">Frequently Asked Questions</h2>
+            <p className="text-gray-600 mt-4 text-lg">Everything you need to know before booking your Aspen adventure.</p>
+          </ScrollReveal>
+          <div className="space-y-3">
+            {rvaFaqs.map((faq, i) => (
+              <details key={i} className="group bg-rva-cream rounded-xl border border-rva-cream-dark overflow-hidden">
+                <summary className="flex items-center justify-between p-6 cursor-pointer list-none font-playfair text-lg text-rva-forest font-semibold hover:text-rva-copper transition-colors gap-4">
+                  <span>{faq.q}</span>
+                  <svg className="w-5 h-5 text-rva-copper flex-shrink-0 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="px-6 pb-6 pt-0 text-gray-700 leading-relaxed">
+                  {faq.a}
+                </div>
+              </details>
             ))}
           </div>
         </div>
