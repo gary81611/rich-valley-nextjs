@@ -4,6 +4,8 @@ import Image from 'next/image'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
 import { alpenglowData, photoNotes } from '@/lib/site-data'
+import { createClient } from '@/lib/supabase'
+import type { Service as ServiceType, FleetVehicle, Testimonial, GalleryImage } from '@/lib/types'
 
 const alpenglowFaqs = [
   {
@@ -53,11 +55,46 @@ const ServiceIcon = ({ icon }: { icon: string }) => {
 export default function AlpenglowPage() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [services, setServices] = useState(alpenglowData.services)
+  const [fleet, setFleet] = useState(alpenglowData.fleet)
+  const [testimonials, setTestimonials] = useState(alpenglowData.testimonials)
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    async function fetchSupabaseData() {
+      try {
+        const supabase = createClient()
+        const [svcRes, fleetRes, testRes] = await Promise.all([
+          supabase.from('services').select('*').eq('is_active', true).order('display_order'),
+          supabase.from('fleet_vehicles').select('*').eq('is_active', true),
+          supabase.from('testimonials').select('*').eq('is_active', true).eq('site_key', 'alpenglow'),
+        ])
+        if (svcRes.data && svcRes.data.length > 0) {
+          setServices(svcRes.data.map((s: ServiceType) => ({
+            title: s.name, description: s.description, features: [], icon: 'Briefcase',
+          })))
+        }
+        if (fleetRes.data && fleetRes.data.length > 0) {
+          setFleet(fleetRes.data.map((v: FleetVehicle) => ({
+            name: v.name, image: v.image_url || '/images/alpenglow/escalade.png',
+            passengers: `Up to ${v.capacity} Passengers`, features: v.description ? [v.description] : [],
+          })))
+        }
+        if (testRes.data && testRes.data.length > 0) {
+          setTestimonials(testRes.data.map((t: Testimonial) => ({
+            quote: t.quote, name: t.author, location: '',
+          })))
+        }
+      } catch {
+        // Use static fallback
+      }
+    }
+    fetchSupabaseData()
   }, [])
 
   return (
@@ -160,7 +197,7 @@ export default function AlpenglowPage() {
             </p>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 gap-8">
-            {alpenglowData.services.map((service, i) => (
+            {services.map((service, i) => (
               <ScrollReveal key={service.title} delay={i * 100}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 border border-alp-pearl-dark h-full">
                   <div className="flex items-start gap-5 mb-6">
@@ -201,7 +238,7 @@ export default function AlpenglowPage() {
             <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold">Our Fleet</h2>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 gap-10">
-            {alpenglowData.fleet.map((vehicle, i) => (
+            {fleet.map((vehicle, i) => (
               <ScrollReveal key={vehicle.name} delay={i * 150}>
                 <div className="bg-alp-navy rounded-2xl overflow-hidden shadow-xl border border-white/5">
                   <div className="relative aspect-[16/9] bg-alp-navy-deep/50 flex items-center justify-center p-6">
@@ -291,7 +328,7 @@ export default function AlpenglowPage() {
             <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold">What Our Clients Say</h2>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 gap-8">
-            {alpenglowData.testimonials.map((t, i) => (
+            {testimonials.map((t, i) => (
               <ScrollReveal key={t.name} delay={i * 150}>
                 <div className="bg-alp-navy-deep rounded-2xl p-8 border border-white/5 relative">
                   <div className="font-playfair text-7xl text-alp-gold/20 absolute top-4 left-6 leading-none select-none">&ldquo;</div>

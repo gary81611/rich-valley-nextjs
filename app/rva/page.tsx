@@ -4,6 +4,8 @@ import Image from 'next/image'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
 import { rvaData, photoNotes } from '@/lib/site-data'
+import { createClient } from '@/lib/supabase'
+import type { Adventure, Testimonial, GalleryImage, FAQ as FAQType } from '@/lib/types'
 
 const rvaFaqs = [
   {
@@ -43,11 +45,49 @@ const rvaFaqs = [
 export default function RVAPage() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [adventures, setAdventures] = useState(rvaData.adventures)
+  const [testimonials, setTestimonials] = useState(rvaData.testimonials)
+  const [gallery, setGallery] = useState(rvaData.gallery)
+  const [faqs, setFaqs] = useState(rvaFaqs)
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    async function fetchSupabaseData() {
+      try {
+        const supabase = createClient()
+        const [advRes, testRes, galRes, faqRes] = await Promise.all([
+          supabase.from('adventures').select('*').eq('is_active', true).order('display_order'),
+          supabase.from('testimonials').select('*').eq('is_active', true).eq('site_key', 'rva'),
+          supabase.from('gallery_images').select('*').eq('is_active', true).eq('site_key', 'rva').order('display_order'),
+          supabase.from('faqs').select('*').eq('is_active', true).eq('site_key', 'rva').order('display_order'),
+        ])
+        if (advRes.data && advRes.data.length > 0) {
+          setAdventures(advRes.data.map((a: Adventure) => ({
+            title: a.name, description: a.description, image: a.image_url || '/images/rva/flyfishing.png',
+            duration: a.duration, difficulty: a.difficulty,
+          })))
+        }
+        if (testRes.data && testRes.data.length > 0) {
+          setTestimonials(testRes.data.map((t: Testimonial) => ({
+            quote: t.quote, name: t.author, location: '',
+          })))
+        }
+        if (galRes.data && galRes.data.length > 0) {
+          setGallery(galRes.data.map((g: GalleryImage) => g.url))
+        }
+        if (faqRes.data && faqRes.data.length > 0) {
+          setFaqs(faqRes.data.map((f: FAQType) => ({ q: f.question, a: f.answer })))
+        }
+      } catch {
+        // Use static fallback — Supabase may not be configured
+      }
+    }
+    fetchSupabaseData()
   }, [])
 
   return (
@@ -201,7 +241,7 @@ export default function RVAPage() {
             </p>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {rvaData.adventures.map((adventure, i) => (
+            {adventures.map((adventure, i) => (
               <ScrollReveal key={adventure.title} delay={i * 80} className="group">
                 <div className="bg-rva-forest rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
                   <div className="relative aspect-[4/3] overflow-hidden">
@@ -267,7 +307,7 @@ export default function RVAPage() {
             <h2 className="font-playfair text-4xl md:text-5xl text-rva-forest font-bold">Stories from the Valley</h2>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 gap-8">
-            {rvaData.testimonials.map((t, i) => (
+            {testimonials.map((t, i) => (
               <ScrollReveal key={t.name} delay={i * 150}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm relative">
                   <div className="font-playfair text-7xl text-rva-copper/20 absolute top-4 left-6 leading-none select-none">&ldquo;</div>
@@ -291,7 +331,7 @@ export default function RVAPage() {
             <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold">Gallery</h2>
           </ScrollReveal>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {rvaData.gallery.map((img, i) => (
+            {gallery.map((img, i) => (
               <ScrollReveal key={i} delay={i * 60} className="group">
                 <div className="relative aspect-square rounded-xl overflow-hidden">
                   <Image
@@ -319,7 +359,7 @@ export default function RVAPage() {
             <p className="text-gray-600 mt-4 text-lg">Everything you need to know before booking your Aspen adventure.</p>
           </ScrollReveal>
           <div className="space-y-3">
-            {rvaFaqs.map((faq, i) => (
+            {faqs.map((faq, i) => (
               <details key={i} className="group bg-rva-cream rounded-xl border border-rva-cream-dark overflow-hidden">
                 <summary className="flex items-center justify-between p-6 cursor-pointer list-none font-playfair text-lg text-rva-forest font-semibold hover:text-rva-copper transition-colors gap-4">
                   <span>{faq.q}</span>

@@ -1,15 +1,55 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
 
-export function middleware(request: NextRequest) {
-  const hostname = request.headers.get('host') || ''
+export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone()
   const pathname = url.pathname
 
-  if (pathname.startsWith('/api') || pathname.startsWith('/_next') || pathname.startsWith('/images') || pathname.includes('.')) {
-    return NextResponse.next()
+  // Refresh Supabase session on every request (only if configured)
+  let response = NextResponse.next({
+    request: { headers: request.headers },
+  })
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (supabaseUrl && supabaseKey && supabaseUrl.startsWith('http')) {
+    try {
+      const supabase = createServerClient(supabaseUrl, supabaseKey, {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll()
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value }) =>
+              request.cookies.set(name, value)
+            )
+            response = NextResponse.next({
+              request: { headers: request.headers },
+            })
+            cookiesToSet.forEach(({ name, value, options }) =>
+              response.cookies.set(name, value, options)
+            )
+          },
+        },
+      })
+      await supabase.auth.getUser()
+    } catch {
+      // Supabase not configured — continue without auth refresh
+    }
   }
 
+  if (pathname.startsWith('/api') || pathname.startsWith('/_next') || pathname.startsWith('/images') || pathname.includes('.')) {
+    return response
+  }
+
+  // Skip admin routes — let them pass through
+  if (pathname.startsWith('/admin')) {
+    return response
+  }
+
+  const hostname = request.headers.get('host') || ''
   let site: 'rva' | 'alpenglow' = 'rva'
 
   if (hostname.includes('aspenalpenglow') || hostname.includes('alpenglow')) {
@@ -24,7 +64,7 @@ export function middleware(request: NextRequest) {
   }
 
   if (pathname.startsWith(`/${site}`)) {
-    return NextResponse.next()
+    return response
   }
 
   url.pathname = `/${site}${pathname === '/' ? '' : pathname}`
