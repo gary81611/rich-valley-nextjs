@@ -210,6 +210,7 @@ export default function AlpenglowPage() {
                       alt={`${vehicle.name} — luxury vehicle in the Aspen Alpenglow Limousine fleet, serving Aspen and the Roaring Fork Valley`}
                       fill
                       className="object-contain p-8"
+                      loading="eager"
                       unoptimized
                     />
                   </div>
@@ -325,6 +326,7 @@ export default function AlpenglowPage() {
                     alt={`${dest.name}, Colorado — a popular destination served by Aspen Alpenglow Limousine private car service`}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    loading="eager"
                     unoptimized
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-alp-navy-deep/85 via-transparent to-transparent" />

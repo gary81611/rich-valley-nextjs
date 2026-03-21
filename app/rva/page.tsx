@@ -171,6 +171,7 @@ export default function RVAPage() {
                     alt="Rich Valley Adventures guide team — local outdoor experts based in Aspen, Colorado since 2012"
                     fill
                     className="object-cover"
+                    loading="eager"
                     unoptimized
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-rva-forest-dark/60 via-transparent to-transparent" />
@@ -209,6 +210,7 @@ export default function RVAPage() {
                       alt={`${adventure.title} — expert-guided outdoor adventure in Aspen and the Roaring Fork Valley, Colorado`}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      loading="eager"
                       unoptimized
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-rva-forest-dark/70 via-transparent to-transparent" />
@@ -297,6 +299,7 @@ export default function RVAPage() {
                     alt={`Rich Valley Adventures guided outdoor experiences in Aspen, Colorado — gallery photo ${i + 1}`}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    loading="eager"
                     unoptimized
                   />
                   <div className="absolute inset-0 bg-rva-forest-dark/0 group-hover:bg-rva-forest-dark/30 transition-colors duration-300" />
