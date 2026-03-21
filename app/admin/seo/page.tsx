@@ -89,6 +89,15 @@ export default function SeoAdminPage() {
 
   useEffect(() => { fetchGeo(); fetchSeo() }, [fetchGeo, fetchSeo])
 
+  // Strip markdown fences from AI responses before JSON.parse
+  const cleanJsonResponse = (raw: string): string => {
+    let s = raw.trim()
+    if (s.startsWith('```')) {
+      s = s.replace(/^```(?:json)?\s*\n?/, '').replace(/\n?```\s*$/, '')
+    }
+    return s.trim()
+  }
+
   // ─── AI Generate from single query ───
   const handleGenerate = async () => {
     if (!queryInput.trim()) return
@@ -102,7 +111,7 @@ export default function SeoAdminPage() {
       })
       const data = await res.json()
       if (data.error) throw new Error(data.error)
-      const parsed = JSON.parse(data.result)
+      const parsed = JSON.parse(cleanJsonResponse(data.result))
       setGeneratedPreview(parsed)
     } catch (err) {
       setToast({ message: err instanceof Error ? err.message : 'AI generation failed', type: 'error' })
@@ -155,7 +164,7 @@ export default function SeoAdminPage() {
       })
       const data = await res.json()
       if (data.error) throw new Error(data.error)
-      const parsed = JSON.parse(data.result)
+      const parsed = JSON.parse(cleanJsonResponse(data.result))
       setBatchResults(Array.isArray(parsed) ? parsed : [parsed])
     } catch (err) {
       setToast({ message: err instanceof Error ? err.message : 'Batch generation failed', type: 'error' })
@@ -227,7 +236,7 @@ export default function SeoAdminPage() {
       })
       const data = await res.json()
       if (data.error) throw new Error(data.error)
-      const parsed = JSON.parse(data.result)
+      const parsed = JSON.parse(cleanJsonResponse(data.result))
       const { error } = await supabase.from('seo_pages').update({
         meta_title: parsed.meta_title || page.meta_title,
         meta_description: parsed.meta_description || page.meta_description,
