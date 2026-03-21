@@ -1,5 +1,3 @@
-const CDN = 'https://lirp.cdn-website.com/312dda6a/dms3rep/multi'
-
 export const PHONE = '970-456-3666'
 export const PHONE_HREF = 'tel:+19704563666'
 export const LOCATION = 'Aspen, Colorado'
@@ -9,20 +7,20 @@ export const rvaData = {
   tagline: 'Discover the Heart of Aspen',
   description: 'Since 2012, Rich Valley Adventures has been dedicated to protecting and sharing the beauty of Aspen and the Roaring Fork Valley through guided outdoor experiences that create lasting memories.',
   phone: PHONE, phoneHref: PHONE_HREF, location: LOCATION,
-  logo: `${CDN}/richvalleylogo-227w.png`,
+  logo: '/images/rva/logo.png',
   stats: [
     { value: '14+', label: 'Years of Experience' },
     { value: '3,000+', label: 'Adventures Led' },
     { value: '4.9', label: 'Average Rating' },
   ],
   adventures: [
-    { title: 'Fly Fishing', description: 'Wade into pristine mountain streams with expert guides who know every pool and riffle in the Roaring Fork Valley. All equipment provided.', image: `${CDN}/flyfishing-1920w.png`, duration: 'Half Day / Full Day', difficulty: 'All Levels' },
-    { title: 'Paddle Boarding', description: 'Glide across crystal-clear alpine lakes with stunning mountain backdrops. Perfect for families and first-timers.', image: `${CDN}/IMG_0110-1920w.jpg`, duration: '2–3 Hours', difficulty: 'Beginner Friendly' },
-    { title: 'Mountain Biking', description: 'Explore world-class singletrack and scenic trails through aspen groves and alpine meadows.', image: `${CDN}/mountainbbiking-1920w.jpg`, duration: 'Half Day / Full Day', difficulty: 'All Levels' },
-    { title: 'Trail Hiking', description: 'Discover hidden waterfalls, wildflower meadows, and panoramic summit views with guides who bring the ecology and history of the Rockies to life.', image: `${CDN}/hiking-1920w.png`, duration: '3–6 Hours', difficulty: 'Moderate' },
-    { title: 'Scenic Escalade Tours', description: "See Colorado's most iconic landmarks from the comfort of a luxury Escalade. Perfect for those who want the views without the vertical.", image: `${CDN}/scenicdrive-1920w.png`, duration: 'Half Day / Full Day', difficulty: 'Easy — Ride Along' },
-    { title: 'Horseback Riding', description: 'Experience the Rockies the way the first settlers did — on horseback. Gentle trail rides through meadows and aspen forests.', image: `${CDN}/horsebackriding-1920w.png`, duration: '2–4 Hours', difficulty: 'All Levels' },
-    { title: 'Elevated Camping', description: 'Glamping meets wilderness. Premium basecamp with gourmet meals, comfortable sleeping, and guided night-sky viewing.', image: `${CDN}/Rich-Valley-Ranch-October-2022-8725-1920w.jpeg`, duration: 'Overnight / Multi-Day', difficulty: 'All Levels' },
+    { title: 'Fly Fishing', description: 'Wade into pristine mountain streams with expert guides who know every pool and riffle in the Roaring Fork Valley. All equipment provided.', image: '/images/rva/flyfishing.png', duration: 'Half Day / Full Day', difficulty: 'All Levels' },
+    { title: 'Paddle Boarding', description: 'Glide across crystal-clear alpine lakes with stunning mountain backdrops. Perfect for families and first-timers.', image: '/images/rva/paddleboarding.jpg', duration: '2–3 Hours', difficulty: 'Beginner Friendly' },
+    { title: 'Mountain Biking', description: 'Explore world-class singletrack and scenic trails through aspen groves and alpine meadows.', image: '/images/rva/mountainbiking.jpg', duration: 'Half Day / Full Day', difficulty: 'All Levels' },
+    { title: 'Trail Hiking', description: 'Discover hidden waterfalls, wildflower meadows, and panoramic summit views with guides who bring the ecology and history of the Rockies to life.', image: '/images/rva/hiking.png', duration: '3–6 Hours', difficulty: 'Moderate' },
+    { title: 'Scenic Escalade Tours', description: "See Colorado's most iconic landmarks from the comfort of a luxury Escalade. Perfect for those who want the views without the vertical.", image: '/images/rva/scenicdrive.png', duration: 'Half Day / Full Day', difficulty: 'Easy — Ride Along' },
+    { title: 'Horseback Riding', description: 'Experience the Rockies the way the first settlers did — on horseback. Gentle trail rides through meadows and aspen forests.', image: '/images/rva/horseback.png', duration: '2–4 Hours', difficulty: 'All Levels' },
+    { title: 'Elevated Camping', description: 'Glamping meets wilderness. Premium basecamp with gourmet meals, comfortable sleeping, and guided night-sky viewing.', image: '/images/rva/camping.jpeg', duration: 'Overnight / Multi-Day', difficulty: 'All Levels' },
   ],
   whyChooseUs: [
     { title: 'Local Expertise', description: 'Born and raised in the valley. Our guides know every trail, stream, and hidden gem.' },
@@ -35,8 +33,8 @@ export const rvaData = {
     { quote: "We've brought our family to Rich Valley three years running. The kids talk about it all year long. It's become our favorite tradition.", name: 'Zola Richards', location: 'Omaha, NE' },
   ],
   gallery: [
-    `${CDN}/flyfishing-1920w.png`, `${CDN}/IMG_0110-1920w.jpg`, `${CDN}/mountainbbiking-1920w.jpg`,
-    `${CDN}/hiking-1920w.png`, `${CDN}/Rich-Valley-Ranch-October-2022-8725-1920w.jpeg`, `${CDN}/horsebackriding-1920w.png`,
+    '/images/rva/flyfishing.png', '/images/rva/paddleboarding.jpg', '/images/rva/mountainbiking.jpg',
+    '/images/rva/hiking.png', '/images/rva/camping.jpeg', '/images/rva/horseback.png',
   ],
   partnerSite: {
     name: 'Aspen Alpenglow Limousine',
@@ -50,7 +48,7 @@ export const alpenglowData = {
   tagline: 'Luxury Transportation in the Roaring Fork Valley',
   description: 'Since 2012, Aspen Alpenglow Limousine has provided distinguished private car and limousine service throughout Aspen, Snowmass, and the Roaring Fork Valley. Available 24/7.',
   phone: PHONE, phoneHref: PHONE_HREF, location: LOCATION,
-  logo: `${CDN}/logo4-214w.png`,
+  logo: '/images/alpenglow/logo.png',
   stats: [
     { value: '24/7', label: 'Dispatch Available' },
     { value: '14+', label: 'Years of Service' },
@@ -63,8 +61,8 @@ export const alpenglowData = {
     { title: 'Wedding Transportation', description: 'Your day deserves perfect logistics. Bridal party shuttles to grand getaway cars.', features: ['Custom itinerary planning', 'Bridal party coordination', 'Decorated vehicles available', 'Package discounts'], icon: 'Heart' },
   ],
   fleet: [
-    { name: 'Executive Escalade', image: `${CDN}/pngimg.com---cadillac_PNG74-748w.png`, passengers: 'Up to 6 Passengers', features: ['Premium leather interior', 'Climate control', 'USB & WiFi', 'Privacy partition available'] },
-    { name: 'Luxury Sprinter', image: `${CDN}/2025-Mercedes-Benz-Sprinter-3500-Cargo-front_53095_032_2400x1800_040-790w.png`, passengers: 'Up to 14 Passengers', features: ['Executive seating', 'Entertainment system', 'Overhead storage', 'Standing headroom'] },
+    { name: 'Executive Escalade', image: '/images/alpenglow/escalade.png', passengers: 'Up to 6 Passengers', features: ['Premium leather interior', 'Climate control', 'USB & WiFi', 'Privacy partition available'] },
+    { name: 'Luxury Sprinter', image: '/images/alpenglow/sprinter.png', passengers: 'Up to 14 Passengers', features: ['Executive seating', 'Entertainment system', 'Overhead storage', 'Standing headroom'] },
   ],
   serviceAreas: [
     { name: 'Aspen', description: 'Downtown, Aspen Mountain, Aspen Highlands' },
@@ -75,11 +73,11 @@ export const alpenglowData = {
     { name: 'Eagle / Vail', description: 'EGE airport, Vail Valley connections' },
   ],
   destinations: [
-    { name: 'Garden of the Gods', image: `${CDN}/garden-of-the-gods-1920w.jpg` },
-    { name: 'Denver Botanic Gardens', image: `${CDN}/denver-botanic-gardens-1920w.jpg` },
-    { name: 'Red Rocks Amphitheatre', image: `${CDN}/spectacular-1920w.jpg` },
-    { name: 'Coors Field', image: `${CDN}/imag1087-largejpg-1920w.jpg` },
-    { name: 'Pikes Peak', image: `${CDN}/top-of-the-world-just-1920w.jpg` },
+    { name: 'Garden of the Gods', image: '/images/alpenglow/garden-of-the-gods.jpg' },
+    { name: 'Denver Botanic Gardens', image: '/images/alpenglow/botanic-gardens.jpg' },
+    { name: 'Red Rocks Amphitheatre', image: '/images/alpenglow/red-rocks.jpg' },
+    { name: 'Coors Field', image: '/images/alpenglow/coors-field.jpg' },
+    { name: 'Pikes Peak', image: '/images/alpenglow/pikes-peak.jpg' },
   ],
   testimonials: [
     { quote: 'Absolutely first-class service. The Escalade was immaculate, and they tracked our delayed flight without us even asking.', name: 'James & Patricia Holden', location: 'Dallas, TX' },
