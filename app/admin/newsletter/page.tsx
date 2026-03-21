@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase'
 import Toast from '@/components/admin/Toast'
+import EmptyState from '@/components/admin/EmptyState'
 
 interface Subscriber {
   id: string
@@ -62,7 +63,7 @@ export default function NewsletterPage() {
         {loading ? (
           <div className="flex justify-center py-12"><div className="w-8 h-8 border-4 border-slate-300 border-t-slate-800 rounded-full animate-spin" /></div>
         ) : data.length === 0 ? (
-          <div className="text-center py-12 text-slate-400 text-sm">No subscribers yet.</div>
+          <EmptyState entity="subscribers" />
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

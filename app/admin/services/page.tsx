@@ -85,7 +85,7 @@ export default function ServicesPage() {
         <h1 className="text-2xl font-bold text-slate-900">Services</h1>
         <button onClick={openAdd} className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800">Add Service</button>
       </div>
-      {!loading && data.length === 0 && <EmptyState entity="services" />}
+      {!loading && data.length === 0 && <EmptyState entity="services" onAdd={openAdd} addLabel="Add Service" />}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200">
         {loading ? (
           <div className="flex justify-center py-12"><div className="w-8 h-8 border-4 border-slate-300 border-t-slate-800 rounded-full animate-spin" /></div>
@@ -94,12 +94,12 @@ export default function ServicesPage() {
         )}
       </div>
       <AdminFormModal isOpen={modalOpen} title={editing ? 'Edit Service' : 'Add Service'} onSubmit={handleSubmit} onClose={() => setModalOpen(false)} loading={saving}>
-        <FormField label="Name" name="name" value={form.name} onChange={updateForm} required />
-        <FormField label="Description" name="description" type="textarea" value={form.description} onChange={updateForm} />
-        <FormField label="Price From" name="price_from" type="number" value={form.price_from} onChange={updateForm} />
-        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} />
-        <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} />
-        <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} />
+        <FormField label="Name" name="name" value={form.name} onChange={updateForm} required help="Service package name (e.g., 'Airport Transfers')." preview="Service cards on Alpenglow site" />
+        <FormField label="Description" name="description" type="textarea" value={form.description} onChange={updateForm} help="What's included — vehicle type, route, amenities, capacity." preview="Service detail section" />
+        <FormField label="Price From" name="price_from" type="number" value={form.price_from} onChange={updateForm} help="Starting price. Displayed as 'From $X' on the public site." preview="Service cards" />
+        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} help="Main photo for this service package." preview="Service card image" />
+        <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} help="Sort position. Lower numbers appear first." preview="Order of service cards" />
+        <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} help="Toggle visibility on the Alpenglow site." />
       </AdminFormModal>
       <DeleteConfirmDialog isOpen={!!deleteItem} onConfirm={handleDelete} onCancel={() => setDeleteItem(null)} itemName={deleteItem?.name || 'this service'} />
     </div>

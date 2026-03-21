@@ -85,7 +85,7 @@ export default function ServiceAreasPage() {
         <h1 className="text-2xl font-bold text-slate-900">Service Areas</h1>
         <button onClick={openAdd} className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800">Add Service Area</button>
       </div>
-      {!loading && data.length === 0 && <EmptyState entity="service areas" />}
+      {!loading && data.length === 0 && <EmptyState entity="service areas" onAdd={openAdd} addLabel="Add Service Area" />}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200">
         {loading ? (
           <div className="flex justify-center py-12"><div className="w-8 h-8 border-4 border-slate-300 border-t-slate-800 rounded-full animate-spin" /></div>
@@ -94,10 +94,10 @@ export default function ServiceAreasPage() {
         )}
       </div>
       <AdminFormModal isOpen={modalOpen} title={editing ? 'Edit Service Area' : 'Add Service Area'} onSubmit={handleSubmit} onClose={() => setModalOpen(false)} loading={saving}>
-        <FormField label="Name" name="name" value={form.name} onChange={updateForm} required />
-        <FormField label="Description" name="description" type="textarea" value={form.description} onChange={updateForm} />
-        <FormField label="Site" name="site_key" type="select" value={form.site_key} onChange={updateForm} options={[{ value: 'rva', label: 'RVA' }, { value: 'alpenglow', label: 'Alpenglow' }]} />
-        <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} />
+        <FormField label="Name" name="name" value={form.name} onChange={updateForm} required help="Town or area name (e.g., 'Snowmass Village')." preview="Service areas page" />
+        <FormField label="Description" name="description" type="textarea" value={form.description} onChange={updateForm} help="Brief note — distance from Aspen, service availability." preview="Service areas detail" />
+        <FormField label="Site" name="site_key" type="select" value={form.site_key} onChange={updateForm} options={[{ value: 'rva', label: 'RVA' }, { value: 'alpenglow', label: 'Alpenglow' }]} help="Which brand serves this area." preview="Controls which site shows it" />
+        <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} help="Toggle visibility." />
       </AdminFormModal>
       <DeleteConfirmDialog isOpen={!!deleteItem} onConfirm={handleDelete} onCancel={() => setDeleteItem(null)} itemName={deleteItem?.name || 'this service area'} />
     </div>

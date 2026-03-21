@@ -89,7 +89,7 @@ export default function GalleryPage() {
         </div>
       </div>
 
-      {!loading && data.length === 0 && <EmptyState entity="gallery images" />}
+      {!loading && data.length === 0 && <EmptyState entity="gallery images" onAdd={openAdd} addLabel="Add Photo" />}
       {loading ? (
         <div className="flex justify-center py-12"><div className="w-8 h-8 border-4 border-slate-300 border-t-slate-800 rounded-full animate-spin" /></div>
       ) : data.length === 0 ? (
@@ -123,14 +123,14 @@ export default function GalleryPage() {
       )}
 
       <AdminFormModal isOpen={modalOpen} title={editing ? 'Edit Image' : 'Add Image'} onSubmit={handleSubmit} onClose={() => setModalOpen(false)} loading={saving}>
-        <FormField label="Image URL" name="url" value={form.url} onChange={updateForm} required />
-        <FormField label="Alt Text" name="alt_text" value={form.alt_text} onChange={updateForm} />
-        <FormField label="Caption" name="caption" value={form.caption} onChange={updateForm} />
+        <FormField label="Image URL" name="url" value={form.url} onChange={updateForm} required help="Path to the image file (e.g., /images/gallery/fishing-01.jpg)." preview="/gallery page masonry grid" />
+        <FormField label="Alt Text" name="alt_text" value={form.alt_text} onChange={updateForm} help="Describe the image for accessibility and SEO. Google reads this." preview="Screen readers + Google Image search" />
+        <FormField label="Caption" name="caption" value={form.caption} onChange={updateForm} help="Optional text shown when a visitor clicks to enlarge the photo." preview="Lightbox overlay" />
         <FormField label="Site" name="site_key" type="select" value={form.site_key} onChange={updateForm} options={[
           { value: 'rva', label: 'Rich Valley Adventures' }, { value: 'alpenglow', label: 'Aspen Alpenglow Limousine' },
-        ]} />
-        <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} />
-        <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} />
+        ]} help="Which site's gallery should display this photo?" preview="Controls which site shows it" />
+        <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} help="Sort position in the gallery grid." preview="Photo order" />
+        <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} help="Toggle visibility." />
       </AdminFormModal>
       <DeleteConfirmDialog isOpen={!!deleteItem} onConfirm={handleDelete} onCancel={() => setDeleteItem(null)} itemName="this image" />
     </div>

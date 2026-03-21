@@ -95,7 +95,7 @@ export default function TestimonialsPage() {
           <button onClick={openAdd} className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800">Add Testimonial</button>
         </div>
       </div>
-      {!loading && data.length === 0 && <EmptyState entity="testimonials" />}
+      {!loading && data.length === 0 && <EmptyState entity="testimonials" onAdd={openAdd} addLabel="Add Testimonial" />}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200">
         {loading ? (
           <div className="flex justify-center py-12"><div className="w-8 h-8 border-4 border-slate-300 border-t-slate-800 rounded-full animate-spin" /></div>
@@ -104,16 +104,16 @@ export default function TestimonialsPage() {
         )}
       </div>
       <AdminFormModal isOpen={modalOpen} title={editing ? 'Edit Testimonial' : 'Add Testimonial'} onSubmit={handleSubmit} onClose={() => setModalOpen(false)} loading={saving}>
-        <FormField label="Author" name="author" value={form.author} onChange={updateForm} required />
-        <FormField label="Quote" name="quote" type="textarea" value={form.quote} onChange={updateForm} required />
+        <FormField label="Author" name="author" value={form.author} onChange={updateForm} required help="Customer's first and last name." preview="Testimonial cards" />
+        <FormField label="Quote" name="quote" type="textarea" value={form.quote} onChange={updateForm} required help="The customer's review in their own words. Keep it authentic." preview="Testimonial cards" />
         <FormField label="Rating" name="rating" type="select" value={String(form.rating)} onChange={(n, v) => updateForm(n, Number(v))} options={[
           { value: '5', label: '5 Stars' }, { value: '4', label: '4 Stars' }, { value: '3', label: '3 Stars' },
           { value: '2', label: '2 Stars' }, { value: '1', label: '1 Star' },
-        ]} />
+        ]} help="Star rating 1-5. Higher ratings can show star snippets in Google search." preview="Stars + Google results" />
         <FormField label="Site" name="site_key" type="select" value={form.site_key} onChange={updateForm} options={[
           { value: 'rva', label: 'Rich Valley Adventures' }, { value: 'alpenglow', label: 'Aspen Alpenglow Limousine' },
-        ]} />
-        <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} />
+        ]} help="Which site should display this review?" preview="Controls which site shows it" />
+        <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} help="Toggle visibility." />
       </AdminFormModal>
       <DeleteConfirmDialog isOpen={!!deleteItem} onConfirm={handleDelete} onCancel={() => setDeleteItem(null)} itemName={deleteItem?.author || 'this testimonial'} />
     </div>

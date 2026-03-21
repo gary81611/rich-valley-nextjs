@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 
 interface FormFieldProps {
   label: string
@@ -9,30 +10,44 @@ interface FormFieldProps {
   required?: boolean
   options?: { value: string; label: string }[]
   placeholder?: string
+  help?: string
+  preview?: string
+  maxLength?: number
 }
 
-export default function FormField({ label, name, type = 'text', value, onChange, required, options, placeholder }: FormFieldProps) {
+export default function FormField({ label, name, type = 'text', value, onChange, required, options, placeholder, help, preview, maxLength }: FormFieldProps) {
   const baseClass = 'w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent'
+  const strValue = typeof value === 'string' ? value : ''
+  const showCharCount = maxLength && typeof value === 'string'
+  const overLimit = showCharCount && strValue.length > maxLength
 
   if (type === 'checkbox') {
     return (
-      <label className="flex items-center gap-3 cursor-pointer">
-        <input
-          type="checkbox"
-          checked={value as boolean}
-          onChange={(e) => onChange(name, e.target.checked)}
-          className="w-4 h-4 rounded border-slate-300 text-slate-600 focus:ring-slate-500"
-        />
-        <span className="text-sm font-medium text-slate-700">{label}</span>
-      </label>
+      <div>
+        <label className="flex items-center gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={value as boolean}
+            onChange={(e) => onChange(name, e.target.checked)}
+            className="w-4 h-4 rounded border-slate-300 text-slate-600 focus:ring-slate-500"
+          />
+          <span className="text-sm font-medium text-slate-700">{label}</span>
+        </label>
+        {help && <p className="text-xs text-slate-400 mt-1 ml-7">{help}</p>}
+      </div>
     )
   }
 
+  // Show image preview for URL fields that look like image paths
+  const isImageField = name.includes('image') || name === 'url' || name === 'logo_url'
+  const showImagePreview = isImageField && typeof value === 'string' && value.length > 0
+
   return (
-    <div>
-      <label className="block text-sm font-medium text-slate-700 mb-1">
+    <div className="space-y-1">
+      <label className="block text-sm font-medium text-slate-700">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
+      {help && <p className="text-xs text-slate-400">{help}</p>}
       {type === 'textarea' ? (
         <textarea
           value={value as string}
@@ -63,6 +78,21 @@ export default function FormField({ label, name, type = 'text', value, onChange,
           step={type === 'number' ? 'any' : undefined}
           className={baseClass}
         />
+      )}
+      <div className="flex items-center justify-between gap-2">
+        {preview && (
+          <p className="text-xs text-blue-500 mt-0.5">Shows on: {preview}</p>
+        )}
+        {showCharCount && (
+          <p className={`text-xs mt-0.5 ml-auto ${overLimit ? 'text-red-500 font-medium' : 'text-slate-400'}`}>
+            {strValue.length}/{maxLength}
+          </p>
+        )}
+      </div>
+      {showImagePreview && (
+        <div className="mt-1.5 relative w-20 h-20 rounded-lg overflow-hidden border border-slate-200 bg-slate-50">
+          <Image src={value as string} alt="Preview" fill className="object-contain" unoptimized />
+        </div>
       )}
     </div>
   )

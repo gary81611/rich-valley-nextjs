@@ -95,7 +95,7 @@ export default function FAQsPage() {
           <button onClick={openAdd} className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800">Add FAQ</button>
         </div>
       </div>
-      {!loading && data.length === 0 && <EmptyState entity="FAQs" />}
+      {!loading && data.length === 0 && <EmptyState entity="FAQs" onAdd={openAdd} addLabel="Add FAQ" />}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200">
         {loading ? (
           <div className="flex justify-center py-12"><div className="w-8 h-8 border-4 border-slate-300 border-t-slate-800 rounded-full animate-spin" /></div>
@@ -104,13 +104,13 @@ export default function FAQsPage() {
         )}
       </div>
       <AdminFormModal isOpen={modalOpen} title={editing ? 'Edit FAQ' : 'Add FAQ'} onSubmit={handleSubmit} onClose={() => setModalOpen(false)} loading={saving}>
-        <FormField label="Question" name="question" value={form.question} onChange={updateForm} required />
-        <FormField label="Answer" name="answer" type="textarea" value={form.answer} onChange={updateForm} required />
+        <FormField label="Question" name="question" value={form.question} onChange={updateForm} required help="A question your customers commonly ask. Write it exactly as they would ask it." preview="FAQ accordion + Google 'People Also Ask'" />
+        <FormField label="Answer" name="answer" type="textarea" value={form.answer} onChange={updateForm} required help="Your response. Be thorough but concise — Google can pull this into featured snippets." preview="FAQ accordion + Google snippets" />
         <FormField label="Site" name="site_key" type="select" value={form.site_key} onChange={updateForm} options={[
           { value: 'rva', label: 'Rich Valley Adventures' }, { value: 'alpenglow', label: 'Aspen Alpenglow Limousine' },
-        ]} />
-        <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} />
-        <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} />
+        ]} help="Which site this FAQ appears on." preview="Controls which site shows it" />
+        <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} help="Order in the FAQ accordion. Most common questions first." preview="FAQ section order" />
+        <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} help="Toggle visibility." />
       </AdminFormModal>
       <DeleteConfirmDialog isOpen={!!deleteItem} onConfirm={handleDelete} onCancel={() => setDeleteItem(null)} itemName="this FAQ" />
     </div>

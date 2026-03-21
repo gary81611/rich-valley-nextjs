@@ -92,7 +92,7 @@ export default function AdventuresPage() {
         </button>
       </div>
 
-      {!loading && data.length === 0 && <EmptyState entity="adventures" />}
+      {!loading && data.length === 0 && <EmptyState entity="adventures" onAdd={openAdd} addLabel="Add Adventure" />}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200">
         {loading ? (
           <div className="flex justify-center py-12"><div className="w-8 h-8 border-4 border-slate-300 border-t-slate-800 rounded-full animate-spin" /></div>
@@ -102,20 +102,20 @@ export default function AdventuresPage() {
       </div>
 
       <AdminFormModal isOpen={modalOpen} title={editing ? 'Edit Adventure' : 'Add Adventure'} onSubmit={handleSubmit} onClose={() => setModalOpen(false)} loading={saving}>
-        <FormField label="Name" name="name" value={form.name} onChange={updateForm} required />
-        <FormField label="Description" name="description" type="textarea" value={form.description} onChange={updateForm} />
-        <FormField label="Duration" name="duration" value={form.duration} onChange={updateForm} placeholder="e.g. Half Day" />
-        <FormField label="Price" name="price" type="number" value={form.price} onChange={updateForm} />
+        <FormField label="Name" name="name" value={form.name} onChange={updateForm} required help="The adventure title your customers will see (e.g., 'Fly Fishing')." preview="Adventure cards, detail page title" />
+        <FormField label="Description" name="description" type="textarea" value={form.description} onChange={updateForm} help="Describe what this experience includes — gear, guide, duration, what to expect." preview="Adventure detail page" />
+        <FormField label="Duration" name="duration" value={form.duration} onChange={updateForm} placeholder="e.g. Half Day" help="How long does this adventure take? Examples: 'Half Day', 'Full Day', '2-3 Hours'." preview="Duration badge on cards" />
+        <FormField label="Price" name="price" type="number" value={form.price} onChange={updateForm} help="Starting price in dollars. Use 0 if pricing varies." preview="Adventure cards" />
         <FormField label="Difficulty" name="difficulty" type="select" value={form.difficulty} onChange={updateForm} options={[
           { value: 'easy', label: 'Easy' }, { value: 'moderate', label: 'Moderate' },
           { value: 'challenging', label: 'Challenging' }, { value: 'expert', label: 'Expert' },
-        ]} />
-        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} />
-        <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} />
+        ]} help="Skill level required. Helps customers decide if this adventure is right for them." preview="Adventure cards" />
+        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} help="The main photo for this adventure. Used on the card and detail page hero." preview="Card thumbnail + detail page hero" />
+        <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} help="Controls sort order. Lower numbers appear first." preview="Order of cards" />
         <FormField label="Season" name="season" type="select" value={form.season} onChange={updateForm} options={[
           { value: 'summer', label: 'Summer' }, { value: 'winter', label: 'Winter' }, { value: 'year-round', label: 'Year-Round' },
-        ]} />
-        <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} />
+        ]} help="When is this adventure available? Controls which filter tab it appears under." preview="Filter tabs on /adventures" />
+        <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} help="Turn off to hide from the public site without deleting it." />
       </AdminFormModal>
 
       <DeleteConfirmDialog isOpen={!!deleteItem} onConfirm={handleDelete} onCancel={() => setDeleteItem(null)} itemName={deleteItem?.name || 'this adventure'} />

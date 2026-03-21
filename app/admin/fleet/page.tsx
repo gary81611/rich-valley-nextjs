@@ -85,7 +85,7 @@ export default function FleetPage() {
         <h1 className="text-2xl font-bold text-slate-900">Fleet Vehicles</h1>
         <button onClick={openAdd} className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800">Add Vehicle</button>
       </div>
-      {!loading && data.length === 0 && <EmptyState entity="fleet vehicles" />}
+      {!loading && data.length === 0 && <EmptyState entity="fleet vehicles" onAdd={openAdd} addLabel="Add Vehicle" />}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200">
         {loading ? (
           <div className="flex justify-center py-12"><div className="w-8 h-8 border-4 border-slate-300 border-t-slate-800 rounded-full animate-spin" /></div>
@@ -94,12 +94,12 @@ export default function FleetPage() {
         )}
       </div>
       <AdminFormModal isOpen={modalOpen} title={editing ? 'Edit Vehicle' : 'Add Vehicle'} onSubmit={handleSubmit} onClose={() => setModalOpen(false)} loading={saving}>
-        <FormField label="Name" name="name" value={form.name} onChange={updateForm} required />
-        <FormField label="Type" name="type" value={form.type} onChange={updateForm} placeholder="e.g. SUV, Van" />
-        <FormField label="Capacity" name="capacity" type="number" value={form.capacity} onChange={updateForm} />
-        <FormField label="Description" name="description" type="textarea" value={form.description} onChange={updateForm} />
-        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} />
-        <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} />
+        <FormField label="Name" name="name" value={form.name} onChange={updateForm} required help="Vehicle name as you'd describe it to customers (e.g., 'Executive Escalade')." preview="Fleet showcase on Alpenglow site" />
+        <FormField label="Type" name="type" value={form.type} onChange={updateForm} placeholder="e.g. SUV, Van" help="Vehicle category: SUV, Van, Sedan, Limousine, etc." preview="Fleet cards + Google schema" />
+        <FormField label="Capacity" name="capacity" type="number" value={form.capacity} onChange={updateForm} help="Maximum number of passengers." preview="Fleet cards" />
+        <FormField label="Description" name="description" type="textarea" value={form.description} onChange={updateForm} help="Key features and amenities — leather seats, WiFi, climate control, etc." preview="Fleet detail view" />
+        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} help="Photo of this vehicle." preview="Fleet showcase" />
+        <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} help="Toggle visibility on the Alpenglow site." />
       </AdminFormModal>
       <DeleteConfirmDialog isOpen={!!deleteItem} onConfirm={handleDelete} onCancel={() => setDeleteItem(null)} itemName={deleteItem?.name || 'this vehicle'} />
     </div>
