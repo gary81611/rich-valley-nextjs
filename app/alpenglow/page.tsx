@@ -3,9 +3,17 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
+import NewsletterSignup from '@/components/shared/NewsletterSignup'
 import { alpenglowData, photoNotes } from '@/lib/site-data'
 import { createClient } from '@/lib/supabase'
 import type { Service as ServiceType, FleetVehicle, Testimonial, GalleryImage } from '@/lib/types'
+
+interface GeoBlock {
+  id: string
+  question: string
+  answer: string
+  block_type: string
+}
 
 const alpenglowFaqs = [
   {
@@ -42,6 +50,56 @@ const alpenglowFaqs = [
   },
 ]
 
+const transportationServices = [
+  {
+    title: 'Hourly Limo Service',
+    description: 'Flexible hourly limousine service for any occasion in Aspen and the Roaring Fork Valley.',
+    icon: 'Clock',
+    features: [
+      'Real-time flight tracking',
+      'Meet & greet at pickup',
+      '24/7 dispatch availability',
+      'Easy account setup',
+      'Email confirmations for every booking',
+    ],
+  },
+  {
+    title: 'Corporate Travel & Executive Car Service',
+    description: 'Professional, discreet transportation for business travelers and corporate events.',
+    icon: 'Briefcase',
+    features: [
+      'Affordable business travel rates',
+      'Competitive corporate pricing',
+      'Licensed & fully insured',
+      'Efficient scheduling & routing',
+      'Hourly services for tours & conferences',
+    ],
+  },
+  {
+    title: 'Airport Transfer',
+    description: 'Seamless door-to-door transfers to ASE, EGE, and Denver International airports.',
+    icon: 'Plane',
+    features: [
+      'Real-time flight tracking',
+      'Meet & greet at arrivals',
+      '24/7 dispatch availability',
+      'Easy account setup',
+      'Email confirmations for every trip',
+    ],
+  },
+  {
+    title: 'Wedding Transportation',
+    description: 'Elegant, reliable transportation for your special day in Aspen and Snowmass.',
+    icon: 'Heart',
+    features: [
+      'Personalized itineraries',
+      'Pristine SUVs & Sprinters',
+      'Dedicated coordinators for seamless guest transport',
+      'Wedding packages & group discounts',
+    ],
+  },
+]
+
 const ServiceIcon = ({ icon }: { icon: string }) => {
   const icons: Record<string, React.ReactNode> = {
     Plane: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>,
@@ -58,6 +116,7 @@ export default function AlpenglowPage() {
   const [services, setServices] = useState(alpenglowData.services)
   const [fleet, setFleet] = useState(alpenglowData.fleet)
   const [testimonials, setTestimonials] = useState(alpenglowData.testimonials)
+  const [geoBlocks, setGeoBlocks] = useState<GeoBlock[]>([])
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60)
@@ -69,10 +128,11 @@ export default function AlpenglowPage() {
     async function fetchSupabaseData() {
       try {
         const supabase = createClient()
-        const [svcRes, fleetRes, testRes] = await Promise.all([
+        const [svcRes, fleetRes, testRes, geoRes] = await Promise.all([
           supabase.from('services').select('*').eq('is_active', true).order('display_order'),
           supabase.from('fleet_vehicles').select('*').eq('is_active', true),
           supabase.from('testimonials').select('*').eq('is_active', true).eq('site_key', 'alpenglow'),
+          supabase.from('geo_content_blocks').select('*').eq('is_active', true).eq('site_key', 'alpenglow').eq('display_on_page', '/').order('display_order'),
         ])
         if (svcRes.data && svcRes.data.length > 0) {
           setServices(svcRes.data.map((s: ServiceType) => ({
@@ -90,6 +150,9 @@ export default function AlpenglowPage() {
             quote: t.quote, name: t.author, location: '',
           })))
         }
+        if (geoRes.data && geoRes.data.length > 0) {
+          setGeoBlocks(geoRes.data)
+        }
       } catch {
         // Use static fallback
       }
@@ -106,7 +169,7 @@ export default function AlpenglowPage() {
             <Image src={alpenglowData.logo} alt="Aspen Alpenglow Limousine logo" width={160} height={50} className="h-10 w-auto object-contain" unoptimized loading="eager" />
           </a>
           <div className="hidden md:flex items-center gap-8">
-            {['Services', 'Fleet', 'Service Areas', 'Contact'].map((item) => (
+            {['Services', 'Fleet', 'Destinations', 'Service Areas', 'Contact'].map((item) => (
               <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
                 {item}
               </a>
@@ -123,7 +186,7 @@ export default function AlpenglowPage() {
         </div>
         {mobileMenuOpen && (
           <div className="md:hidden bg-alp-navy border-t border-white/10 px-6 py-4 space-y-3">
-            {['Services', 'Fleet', 'Service Areas', 'Contact'].map((item) => (
+            {['Services', 'Fleet', 'Destinations', 'Service Areas', 'Contact'].map((item) => (
               <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
                 {item}
               </a>
@@ -182,55 +245,7 @@ export default function AlpenglowPage() {
         </div>
       </section>
 
-      {/* SERVICES */}
-      <section id="services" className="py-24 bg-alp-pearl">
-        <div className="max-w-7xl mx-auto px-6">
-          <ScrollReveal className="text-center mb-16">
-            <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">What We Offer</p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-6">Our Services</h2>
-            <p className="text-alp-slate text-xl max-w-2xl mx-auto">
-              Every detail handled. Every journey seamless.
-            </p>
-            {/* GEO content block — factual, entity-rich for AI search engines */}
-            <p className="text-alp-slate text-base max-w-3xl mx-auto mt-6 leading-relaxed border-t border-alp-pearl-dark pt-6">
-              Aspen Alpenglow Limousine has provided distinguished private car and limousine service in Aspen, Colorado since 2012. The company operates a professional fleet of two vehicles — an Executive Cadillac Escalade (6 passengers) and a Luxury Mercedes Sprinter van (14 passengers) — serving Aspen/Pitkin County Airport (ASE), Eagle County Regional Airport (EGE), and Denver International Airport (DEN), as well as all destinations throughout the Roaring Fork Valley.
-            </p>
-          </ScrollReveal>
-          <div className="grid md:grid-cols-2 gap-8">
-            {services.map((service, i) => (
-              <ScrollReveal key={service.title} delay={i * 100}>
-                <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 border border-alp-pearl-dark h-full">
-                  <div className="flex items-start gap-5 mb-6">
-                    <div className="w-16 h-16 bg-alp-navy rounded-2xl flex items-center justify-center flex-shrink-0">
-                      <ServiceIcon icon={service.icon} />
-                    </div>
-                    <div>
-                      <h3 className="font-playfair text-2xl text-alp-navy font-semibold mb-2">{service.title}</h3>
-                      <p className="text-alp-slate text-sm leading-relaxed">{service.description}</p>
-                    </div>
-                  </div>
-                  <ul className="space-y-2">
-                    {service.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-3 text-sm text-gray-700">
-                        <div className="w-5 h-5 bg-alp-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
-                          <svg className="w-3 h-3 text-alp-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
-                        </div>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <a href="#contact" className="mt-6 inline-flex items-center gap-2 text-alp-gold font-semibold text-sm hover:text-alp-gold-light transition-colors">
-                    Book This Service
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                  </a>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FLEET */}
+      {/* FLEET SHOWCASE */}
       <section id="fleet" className="py-24 bg-alp-navy-deep">
         <div className="max-w-7xl mx-auto px-6">
           <ScrollReveal className="text-center mb-16">
@@ -256,12 +271,62 @@ export default function AlpenglowPage() {
                       <h3 className="font-playfair text-2xl text-white font-semibold">{vehicle.name}</h3>
                       <span className="bg-alp-gold/20 text-alp-gold text-xs px-3 py-1 rounded-full border border-alp-gold/30">{vehicle.passengers}</span>
                     </div>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 mb-6">
                       {vehicle.features.map((f) => (
                         <span key={f} className="bg-white/5 text-white/70 text-xs px-3 py-1.5 rounded-full border border-white/10">{f}</span>
                       ))}
                     </div>
+                    <a href="#contact" className="inline-block bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-8 py-3 rounded-full font-semibold text-sm transition-all hover:shadow-lg">
+                      Reserve Now
+                    </a>
                   </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TRANSPORTATION SERVICES */}
+      <section id="services" className="py-24 bg-alp-pearl">
+        <div className="max-w-7xl mx-auto px-6">
+          <ScrollReveal className="text-center mb-16">
+            <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">What We Offer</p>
+            <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-6">Our Services</h2>
+            <p className="text-alp-slate text-xl max-w-2xl mx-auto">
+              Every detail handled. Every journey seamless.
+            </p>
+            <p className="text-alp-slate text-base max-w-3xl mx-auto mt-6 leading-relaxed border-t border-alp-pearl-dark pt-6">
+              Aspen Alpenglow Limousine has provided distinguished private car and limousine service in Aspen, Colorado since 2012. The company operates a professional fleet of two vehicles — an Executive Cadillac Escalade (6 passengers) and a Luxury Mercedes Sprinter van (14 passengers) — serving Aspen/Pitkin County Airport (ASE), Eagle County Regional Airport (EGE), and Denver International Airport (DEN), as well as all destinations throughout the Roaring Fork Valley.
+            </p>
+          </ScrollReveal>
+          <div className="grid md:grid-cols-2 gap-8">
+            {transportationServices.map((service, i) => (
+              <ScrollReveal key={service.title} delay={i * 100}>
+                <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 border border-alp-pearl-dark h-full">
+                  <div className="flex items-start gap-5 mb-6">
+                    <div className="w-16 h-16 bg-alp-navy rounded-2xl flex items-center justify-center flex-shrink-0">
+                      <ServiceIcon icon={service.icon} />
+                    </div>
+                    <div>
+                      <h3 className="font-playfair text-2xl text-alp-navy font-semibold mb-2">{service.title}</h3>
+                      <p className="text-alp-slate text-sm leading-relaxed">{service.description}</p>
+                    </div>
+                  </div>
+                  <ul className="space-y-2">
+                    {service.features.map((feature) => (
+                      <li key={feature} className="flex items-center gap-3 text-sm text-gray-700">
+                        <div className="w-5 h-5 bg-alp-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
+                          <svg className="w-3 h-3 text-alp-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+                        </div>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <a href="#contact" className="mt-6 inline-flex items-center gap-2 text-alp-gold font-semibold text-sm hover:text-alp-gold-light transition-colors">
+                    Book This Service
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                  </a>
                 </div>
               </ScrollReveal>
             ))}
@@ -344,14 +409,14 @@ export default function AlpenglowPage() {
         </div>
       </section>
 
-      {/* COLORADO DESTINATIONS */}
-      <section className="py-24 bg-alp-navy-deep">
+      {/* POPULAR DESTINATIONS */}
+      <section id="destinations" className="py-24 bg-alp-navy-deep">
         <div className="max-w-7xl mx-auto px-6">
           <ScrollReveal className="text-center mb-16">
             <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Beyond the Valley</p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold mb-4">Colorado Destinations</h2>
+            <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold mb-4">Popular Destinations</h2>
             <p className="text-white/60 text-xl max-w-2xl mx-auto">
-              We&apos;ll take you anywhere in Colorado — in comfort and style.
+              VIP transportation and limousine service to Colorado&apos;s most iconic landmarks.
             </p>
           </ScrollReveal>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -403,6 +468,29 @@ export default function AlpenglowPage() {
         </div>
       </section>
 
+      {/* GEO CONTENT BLOCKS */}
+      {geoBlocks.length > 0 && (
+        <section className="py-16 bg-alp-pearl-dark">
+          <div className="max-w-3xl mx-auto px-6">
+            <ScrollReveal className="text-center mb-10">
+              <h2 className="font-playfair text-3xl text-alp-navy font-bold">About Aspen Limo Service</h2>
+            </ScrollReveal>
+            <div className="space-y-4">
+              {geoBlocks.map((block) => (
+                <div key={block.id} className="bg-white rounded-xl p-6 border border-alp-pearl-dark" itemScope itemType="https://schema.org/Question">
+                  {block.question && (
+                    <h3 className="font-playfair text-lg text-alp-navy font-semibold mb-2" itemProp="name">{block.question}</h3>
+                  )}
+                  <div itemScope itemType="https://schema.org/Answer" itemProp="acceptedAnswer">
+                    <p className="text-alp-slate text-sm leading-relaxed" itemProp="text">{block.answer}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* PARTNER CALLOUT */}
       <section className="py-20 bg-gradient-to-r from-alp-navy to-alp-navy-deep">
         <div className="max-w-4xl mx-auto px-6 text-center">
@@ -421,6 +509,9 @@ export default function AlpenglowPage() {
           </ScrollReveal>
         </div>
       </section>
+
+      {/* NEWSLETTER */}
+      <NewsletterSignup siteKey="alpenglow" variant="alpenglow" />
 
       {/* BOOKING / CONTACT */}
       <section id="contact" className="py-24 bg-alp-pearl">
@@ -447,7 +538,7 @@ export default function AlpenglowPage() {
       {/* FOOTER */}
       <footer className="bg-alp-navy-deep text-white py-16">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-12 mb-12">
+          <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div>
               <Image src={alpenglowData.logo} alt="Aspen Alpenglow Limousine" width={160} height={50} className="h-10 w-auto object-contain mb-4" unoptimized />
               <p className="text-white/65 text-sm leading-relaxed">{alpenglowData.description}</p>
@@ -460,6 +551,15 @@ export default function AlpenglowPage() {
                     <a href="#services" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">{s.title}</a>
                   </li>
                 ))}
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-playfair text-lg font-semibold mb-5 text-alp-gold">Quick Links</h4>
+              <ul className="space-y-2">
+                <li><a href="#contact" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Book Transportation</a></li>
+                <li><a href="#" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Review Us</a></li>
+                <li><a href="/terms" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Terms & Conditions</a></li>
+                <li><a href="/privacy" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Privacy Policy</a></li>
               </ul>
             </div>
             <div>

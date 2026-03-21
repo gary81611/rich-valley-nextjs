@@ -1,6 +1,3 @@
--- Enable UUID extension
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 -- Auto-update updated_at trigger function
 CREATE OR REPLACE FUNCTION update_updated_at()
 RETURNS TRIGGER AS $$
@@ -14,7 +11,7 @@ $$ LANGUAGE plpgsql;
 -- site_settings
 -- ==========================================
 CREATE TABLE site_settings (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   site_key TEXT NOT NULL CHECK (site_key IN ('rva', 'alpenglow')),
   brand_name TEXT NOT NULL,
   tagline TEXT DEFAULT '',
@@ -34,7 +31,7 @@ CREATE TRIGGER site_settings_updated_at BEFORE UPDATE ON site_settings FOR EACH 
 -- adventures (RVA)
 -- ==========================================
 CREATE TABLE adventures (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name TEXT NOT NULL,
   description TEXT DEFAULT '',
   duration TEXT DEFAULT '',
@@ -52,7 +49,7 @@ CREATE TRIGGER adventures_updated_at BEFORE UPDATE ON adventures FOR EACH ROW EX
 -- services (Alpenglow)
 -- ==========================================
 CREATE TABLE services (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name TEXT NOT NULL,
   description TEXT DEFAULT '',
   price_from NUMERIC(10,2) DEFAULT 0,
@@ -68,7 +65,7 @@ CREATE TRIGGER services_updated_at BEFORE UPDATE ON services FOR EACH ROW EXECUT
 -- fleet_vehicles (Alpenglow)
 -- ==========================================
 CREATE TABLE fleet_vehicles (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name TEXT NOT NULL,
   type TEXT DEFAULT '',
   capacity INTEGER DEFAULT 0,
@@ -84,7 +81,7 @@ CREATE TRIGGER fleet_vehicles_updated_at BEFORE UPDATE ON fleet_vehicles FOR EAC
 -- testimonials (both sites)
 -- ==========================================
 CREATE TABLE testimonials (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   author TEXT NOT NULL,
   quote TEXT NOT NULL,
   rating INTEGER DEFAULT 5 CHECK (rating >= 1 AND rating <= 5),
@@ -99,7 +96,7 @@ CREATE TRIGGER testimonials_updated_at BEFORE UPDATE ON testimonials FOR EACH RO
 -- gallery_images (both sites)
 -- ==========================================
 CREATE TABLE gallery_images (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   url TEXT NOT NULL,
   alt_text TEXT DEFAULT '',
   caption TEXT DEFAULT '',
@@ -115,7 +112,7 @@ CREATE TRIGGER gallery_images_updated_at BEFORE UPDATE ON gallery_images FOR EAC
 -- faqs (both sites)
 -- ==========================================
 CREATE TABLE faqs (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   question TEXT NOT NULL,
   answer TEXT NOT NULL,
   site_key TEXT NOT NULL CHECK (site_key IN ('rva', 'alpenglow')),
@@ -130,7 +127,7 @@ CREATE TRIGGER faqs_updated_at BEFORE UPDATE ON faqs FOR EACH ROW EXECUTE FUNCTI
 -- service_areas (both sites)
 -- ==========================================
 CREATE TABLE service_areas (
-  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name TEXT NOT NULL,
   description TEXT DEFAULT '',
   site_key TEXT NOT NULL CHECK (site_key IN ('rva', 'alpenglow')),

@@ -10,7 +10,7 @@ import Toast from '@/components/admin/Toast'
 
 const emptyAdventure: Omit<Adventure, 'id' | 'created_at' | 'updated_at'> = {
   name: '', description: '', duration: '', price: 0, difficulty: 'moderate',
-  image_url: '', display_order: 0, is_active: true,
+  image_url: '', display_order: 0, is_active: true, season: 'summer',
 }
 
 export default function AdventuresPage() {
@@ -35,7 +35,7 @@ export default function AdventuresPage() {
   const openAdd = () => { setEditing(null); setForm(emptyAdventure); setModalOpen(true) }
   const openEdit = (item: Adventure) => {
     setEditing(item)
-    setForm({ name: item.name, description: item.description, duration: item.duration, price: item.price, difficulty: item.difficulty, image_url: item.image_url, display_order: item.display_order, is_active: item.is_active })
+    setForm({ name: item.name, description: item.description, duration: item.duration, price: item.price, difficulty: item.difficulty, image_url: item.image_url, display_order: item.display_order, is_active: item.is_active, season: item.season })
     setModalOpen(true)
   }
 
@@ -110,6 +110,9 @@ export default function AdventuresPage() {
         ]} />
         <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} />
         <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} />
+        <FormField label="Season" name="season" type="select" value={form.season} onChange={updateForm} options={[
+          { value: 'summer', label: 'Summer' }, { value: 'winter', label: 'Winter' }, { value: 'year-round', label: 'Year-Round' },
+        ]} />
         <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} />
       </AdminFormModal>
 

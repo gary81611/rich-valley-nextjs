@@ -44,8 +44,8 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
-  // Skip admin routes — let them pass through
-  if (pathname.startsWith('/admin')) {
+  // Skip admin, terms, privacy routes — let them pass through
+  if (pathname.startsWith('/admin') || pathname === '/terms' || pathname === '/privacy') {
     return response
   }
 

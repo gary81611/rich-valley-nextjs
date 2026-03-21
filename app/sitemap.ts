@@ -81,5 +81,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    // Shared pages
+    {
+      url: `${RVA_URL}/terms`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.3,
+    },
+    {
+      url: `${RVA_URL}/privacy`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.3,
+    },
   ]
 }
