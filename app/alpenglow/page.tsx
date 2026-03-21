@@ -199,7 +199,7 @@ export default function AlpenglowPage() {
       </nav>
 
       {/* HERO */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0">
           <Image
             src={photoNotes.alpenglowHero.current}
