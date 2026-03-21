@@ -357,6 +357,7 @@ export default function RVAPage() {
       </section>
 
       {/* TESTIMONIALS */}
+      {testimonials.length > 0 && (
       <section className="py-24 bg-rva-cream-dark">
         <div className="max-w-5xl mx-auto px-6">
           <ScrollReveal className="text-center mb-16">
@@ -379,8 +380,10 @@ export default function RVAPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* GALLERY */}
+      {gallery.length > 0 && (
       <section id="gallery" className="py-24 bg-rva-forest-dark">
         <div className="max-w-7xl mx-auto px-6">
           <ScrollReveal className="text-center mb-16">
@@ -406,6 +409,7 @@ export default function RVAPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* FAQ */}
       <section id="faq" className="py-24 bg-white" aria-label="Frequently asked questions about Rich Valley Adventures">

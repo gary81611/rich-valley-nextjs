@@ -218,7 +218,7 @@ export default function AlpenglowPage() {
           </p>
           <h1 className="font-playfair text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
             Luxury Transportation<br />
-            <span className="text-alp-gold-light italic">in the Roaring Fork Valley</span>
+            <span className="text-alp-gold-light italic">in the Roaring <span className="whitespace-nowrap">Fork Valley</span></span>
           </h1>
           <p className="text-xl md:text-2xl text-white/85 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
             Distinguished private car and limousine service — available 24/7 since 2012.
