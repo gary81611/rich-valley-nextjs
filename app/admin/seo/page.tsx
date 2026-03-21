@@ -40,6 +40,323 @@ const emptySeo: Omit<SeoPage, 'id'> = {
 
 type Tab = 'answers' | 'meta' | 'schema' | 'sitemap' | 'nextsteps'
 
+// ─── SCHEMA TAB COMPONENT ───────────────────────────────
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function SchemaTab({ supabase }: { supabase: any }) {
+  const [generating, setGenerating] = useState(false)
+  const [schemaBrand, setSchemaBrand] = useState<'rva' | 'alpenglow'>('rva')
+  const [generatedSchema, setGeneratedSchema] = useState<string | null>(null)
+  const [schemaError, setSchemaError] = useState('')
+  const [copied, setCopied] = useState(false)
+
+  const handleGenerateSchema = async () => {
+    setGenerating(true)
+    setSchemaError('')
+    setGeneratedSchema(null)
+
+    try {
+      // Fetch data from Supabase
+      const [adventures, services, fleet, testimonials, faqs] = await Promise.all([
+        supabase.from('adventures').select('title,description,price_from,duration').eq('site_key', 'rva'),
+        supabase.from('services').select('title,description,base_price').eq('site_key', 'alpenglow'),
+        supabase.from('fleet').select('name,description,capacity,vehicle_type').eq('site_key', 'alpenglow'),
+        supabase.from('testimonials').select('author_name,rating,content,site_key').limit(20),
+        supabase.from('faqs').select('question,answer,site_key'),
+      ])
+
+      const adventureData = adventures.data || []
+      const serviceData = services.data || []
+      const fleetData = fleet.data || []
+      const testimonialData = (testimonials.data || []).filter((t: { site_key: string }) => t.site_key === schemaBrand)
+      const faqData = (faqs.data || []).filter((f: { site_key: string }) => f.site_key === schemaBrand)
+
+      const avgRating = testimonialData.length
+        ? (testimonialData.reduce((sum: number, t: { rating: number }) => sum + (t.rating || 5), 0) / testimonialData.length).toFixed(1)
+        : '5.0'
+
+      let schema: object
+
+      if (schemaBrand === 'rva') {
+        const faqItems = faqData.slice(0, 10).map((f: { question: string; answer: string }) => ({
+          '@type': 'Question',
+          name: f.question,
+          acceptedAnswer: { '@type': 'Answer', text: f.answer },
+        }))
+
+        const tripItems = adventureData.map((a: { title: string; description: string; price_from?: number; duration?: string }) => ({
+          '@type': 'TouristTrip',
+          name: a.title,
+          description: a.description,
+          ...(a.price_from && { offers: { '@type': 'Offer', price: a.price_from, priceCurrency: 'USD' } }),
+          ...(a.duration && { duration: a.duration }),
+          touristType: 'Adventure travelers, outdoor enthusiasts',
+          itinerary: { '@type': 'ItemList', name: `${a.title} itinerary` },
+        }))
+
+        schema = [
+          {
+            '@context': 'https://schema.org',
+            '@type': ['LocalBusiness', 'TouristAttraction'],
+            name: 'Rich Valley Adventures',
+            url: 'https://richvalleyadventures.com',
+            telephone: '+1-970-456-3666',
+            description: 'Guided outdoor adventures in Aspen, Colorado — fly fishing, hiking, mountain biking, horseback riding, and more.',
+            foundingDate: '2012',
+            address: {
+              '@type': 'PostalAddress',
+              addressLocality: 'Aspen',
+              addressRegion: 'CO',
+              postalCode: '81611',
+              addressCountry: 'US',
+            },
+            geo: { '@type': 'GeoCoordinates', latitude: 39.1911, longitude: -106.8175 },
+            ...(testimonialData.length > 0 && {
+              aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: avgRating,
+                reviewCount: testimonialData.length,
+                bestRating: '5',
+                worstRating: '1',
+              },
+            }),
+            ...(testimonialData.length > 0 && {
+              review: testimonialData.slice(0, 5).map((t: { author_name: string; rating: number; content: string }) => ({
+                '@type': 'Review',
+                author: { '@type': 'Person', name: t.author_name },
+                reviewRating: { '@type': 'Rating', ratingValue: t.rating || 5, bestRating: 5 },
+                reviewBody: t.content,
+              })),
+            }),
+            hasMap: 'https://maps.google.com/?q=Aspen,CO',
+            touristType: 'Outdoor adventurers, families, corporate groups',
+          },
+          ...(tripItems.length > 0 ? tripItems : []),
+          ...(faqItems.length > 0 ? [{
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: faqItems,
+          }] : []),
+        ]
+      } else {
+        // AAL schema
+        const vehicleItems = fleetData.map((v: { name: string; description: string; capacity?: number; vehicle_type?: string }) => ({
+          '@type': 'Product',
+          name: v.name,
+          description: v.description,
+          ...(v.capacity && { additionalProperty: { '@type': 'PropertyValue', name: 'Passenger Capacity', value: v.capacity } }),
+          ...(v.vehicle_type && { category: v.vehicle_type }),
+          brand: { '@type': 'Brand', name: 'Aspen Alpenglow Limousine' },
+          offers: { '@type': 'Offer', availability: 'https://schema.org/InStock', priceCurrency: 'USD' },
+        }))
+
+        const serviceItems = serviceData.map((s: { title: string; description: string; base_price?: number }) => ({
+          '@type': 'Service',
+          name: s.title,
+          description: s.description,
+          ...(s.base_price && { offers: { '@type': 'Offer', price: s.base_price, priceCurrency: 'USD' } }),
+          provider: { '@type': 'LocalBusiness', name: 'Aspen Alpenglow Limousine' },
+        }))
+
+        const faqItems = faqData.slice(0, 10).map((f: { question: string; answer: string }) => ({
+          '@type': 'Question',
+          name: f.question,
+          acceptedAnswer: { '@type': 'Answer', text: f.answer },
+        }))
+
+        schema = [
+          {
+            '@context': 'https://schema.org',
+            '@type': ['LocalBusiness', 'LimousineBus'],
+            name: 'Aspen Alpenglow Limousine',
+            url: 'https://aspenalpenglow.com',
+            telephone: '+1-970-456-3666',
+            description: 'Luxury private car and limousine service in Aspen, Colorado. Airport transfers, weddings, ski resort shuttles, corporate travel.',
+            foundingDate: '2012',
+            openingHours: 'Mo-Su 00:00-24:00',
+            address: {
+              '@type': 'PostalAddress',
+              addressLocality: 'Aspen',
+              addressRegion: 'CO',
+              postalCode: '81611',
+              addressCountry: 'US',
+            },
+            geo: { '@type': 'GeoCoordinates', latitude: 39.1911, longitude: -106.8175 },
+            areaServed: [
+              'Aspen, CO', 'Snowmass Village, CO', 'Basalt, CO',
+              'Carbondale, CO', 'Glenwood Springs, CO', 'Vail, CO', 'Denver, CO',
+            ],
+            ...(testimonialData.length > 0 && {
+              aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: avgRating,
+                reviewCount: testimonialData.length,
+                bestRating: '5',
+                worstRating: '1',
+              },
+            }),
+            ...(testimonialData.length > 0 && {
+              review: testimonialData.slice(0, 5).map((t: { author_name: string; rating: number; content: string }) => ({
+                '@type': 'Review',
+                author: { '@type': 'Person', name: t.author_name },
+                reviewRating: { '@type': 'Rating', ratingValue: t.rating || 5, bestRating: 5 },
+                reviewBody: t.content,
+              })),
+            }),
+          },
+          ...(vehicleItems.length > 0 ? vehicleItems : []),
+          ...(serviceItems.length > 0 ? serviceItems : []),
+          ...(faqItems.length > 0 ? [{
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: faqItems,
+          }] : []),
+        ]
+      }
+
+      setGeneratedSchema(JSON.stringify(schema, null, 2))
+    } catch (err) {
+      setSchemaError(err instanceof Error ? err.message : 'Failed to generate schema')
+    } finally {
+      setGenerating(false)
+    }
+  }
+
+  const handleCopy = () => {
+    if (!generatedSchema) return
+    navigator.clipboard.writeText(`<script type="application/ld+json">\n${generatedSchema}\n</script>`)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  return (
+    <div>
+      <div className="bg-green-50 border border-green-200 rounded-xl p-5 mb-6">
+        <h3 className="text-sm font-semibold text-green-900 mb-1">What is schema markup?</h3>
+        <p className="text-xs text-green-700 leading-relaxed">
+          Schema is invisible code on your site that tells Google exactly what your business is — your name, location, services, vehicles, ratings, and FAQs.
+          It&apos;s why some Google results show star ratings, FAQ dropdowns, or business info boxes.
+          <strong> Yours is fully automated</strong> — it updates automatically when you change anything in the admin panel.
+        </p>
+      </div>
+
+      <div className="grid sm:grid-cols-2 gap-4 mb-6">
+        {[
+          { type: 'LocalBusiness', desc: 'Business name, phone, address, hours', sites: 'Both sites' },
+          { type: 'FAQPage', desc: 'All your FAQs, eligible for Google dropdowns', sites: 'Both sites' },
+          { type: 'TouristTrip / Product', desc: 'Adventures (RVA) + fleet vehicles (AAL)', sites: 'Both sites' },
+          { type: 'TouristAttraction / LimousineBus', desc: 'Business type classification', sites: 'Both sites' },
+          { type: 'AggregateRating + Review', desc: 'Star ratings from testimonials', sites: 'Both sites' },
+          { type: 'GeoCoordinates', desc: 'Aspen, CO location for map results', sites: 'Both sites' },
+        ].map((s) => (
+          <div key={s.type} className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
+            <div className="flex items-center gap-2 mb-2">
+              <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+              <span className="text-sm font-semibold text-slate-900">{s.type}</span>
+            </div>
+            <p className="text-xs text-slate-500 mb-1">{s.desc}</p>
+            <p className="text-[10px] text-green-600">Auto-generated from your admin data</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Generate from Database */}
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-5">
+        <h3 className="text-sm font-semibold text-slate-900 mb-1">Generate Schema from Database</h3>
+        <p className="text-xs text-slate-500 mb-4">
+          Pulls live data from your admin database (adventures, fleet, FAQs, testimonials) and generates ready-to-paste JSON-LD schema.
+        </p>
+
+        <div className="flex items-center gap-3 mb-4">
+          <label className="text-xs font-medium text-slate-700">Brand:</label>
+          <div className="flex gap-2">
+            {(['rva', 'alpenglow'] as const).map((b) => (
+              <button
+                key={b}
+                onClick={() => { setSchemaBrand(b); setGeneratedSchema(null) }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                  schemaBrand === b
+                    ? b === 'rva' ? 'bg-green-600 text-white border-green-600' : 'bg-amber-500 text-white border-amber-500'
+                    : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                }`}
+              >
+                {b === 'rva' ? 'Rich Valley Adventures (RVA)' : 'Aspen Alpenglow Limousine (AAL)'}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <button
+          onClick={handleGenerateSchema}
+          disabled={generating}
+          className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        >
+          {generating ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+              Fetching database…
+            </>
+          ) : (
+            <>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7M4 7c0-2 1-3 3-3h10c2 0 3 1 3 3M4 7h16M10 11h4" />
+              </svg>
+              Generate from Database
+            </>
+          )}
+        </button>
+
+        {schemaError && (
+          <div className="mt-3 bg-red-50 border border-red-200 text-red-700 text-xs p-3 rounded-lg">{schemaError}</div>
+        )}
+
+        {generatedSchema && (
+          <div className="mt-5">
+            <div className="flex items-center justify-between mb-2">
+              <div>
+                <span className="text-xs font-semibold text-slate-900">Generated JSON-LD Schema</span>
+                <span className={`ml-2 text-[10px] font-semibold px-2 py-0.5 rounded-full ${schemaBrand === 'rva' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
+                  {schemaBrand === 'rva' ? 'RVA' : 'AAL'}
+                </span>
+              </div>
+              <button
+                onClick={handleCopy}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors"
+              >
+                {copied ? (
+                  <>
+                    <svg className="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                    <span className="text-green-600">Copied with &lt;script&gt; tags!</span>
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                    Copy with &lt;script&gt; tags
+                  </>
+                )}
+              </button>
+            </div>
+            <pre className="text-xs text-slate-600 bg-slate-50 p-4 rounded-lg overflow-x-auto whitespace-pre-wrap max-h-96 overflow-y-auto border border-slate-200">{generatedSchema}</pre>
+            <div className="mt-3 bg-blue-50 border border-blue-200 rounded-lg p-3">
+              <p className="text-xs font-semibold text-blue-900 mb-1">Where to paste this</p>
+              <p className="text-xs text-blue-700 leading-relaxed">
+                Wrap in <code className="bg-blue-100 px-1 rounded">&lt;script type=&quot;application/ld+json&quot;&gt;...&lt;/script&gt;</code> and paste inside the <code className="bg-blue-100 px-1 rounded">&lt;head&gt;</code> section of your layout file
+                (<code className="bg-blue-100 px-1 rounded">app/layout.tsx</code> for site-wide, or the specific page&apos;s layout for page-specific schema).
+                The copy button above includes the script tags automatically.
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener noreferrer"
+        className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-200 transition-colors">
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+        Test Your Schema in Google
+      </a>
+    </div>
+  )
+}
+
 // ─── MAIN COMPONENT ───────────────────────────────
 export default function SeoAdminPage() {
   const [tab, setTab] = useState<Tab>('answers')
@@ -593,42 +910,7 @@ export default function SeoAdminPage() {
           TAB 3: SCHEMA MARKUP
           ════════════════════════════════════════════ */}
       {tab === 'schema' && (
-        <div>
-          <div className="bg-green-50 border border-green-200 rounded-xl p-5 mb-6">
-            <h3 className="text-sm font-semibold text-green-900 mb-1">What is schema markup?</h3>
-            <p className="text-xs text-green-700 leading-relaxed">
-              Schema is invisible code on your site that tells Google exactly what your business is — your name, location, services, vehicles, ratings, and FAQs.
-              It&apos;s why some Google results show star ratings, FAQ dropdowns, or business info boxes.
-              <strong> Yours is fully automated</strong> — it updates automatically when you change anything in the admin panel.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-4 mb-6">
-            {[
-              { type: 'LocalBusiness', desc: 'Business name, phone, address, hours', sites: 'Both sites', auto: true },
-              { type: 'FAQPage', desc: 'All your FAQs, eligible for Google dropdowns', sites: 'Both sites', auto: true },
-              { type: 'Vehicle', desc: 'Escalade + Sprinter specs and capacity', sites: 'Alpenglow', auto: true },
-              { type: 'OfferCatalog', desc: 'Adventures + transportation packages', sites: 'Both sites', auto: true },
-              { type: 'AggregateRating', desc: 'Star ratings from testimonials', sites: 'Both sites', auto: true },
-              { type: 'GeoCoordinates', desc: 'Aspen, CO location for map results', sites: 'Both sites', auto: true },
-            ].map((s) => (
-              <div key={s.type} className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                  <span className="text-sm font-semibold text-slate-900">{s.type}</span>
-                </div>
-                <p className="text-xs text-slate-500 mb-1">{s.desc}</p>
-                <p className="text-[10px] text-green-600">Auto-generated from your admin data</p>
-              </div>
-            ))}
-          </div>
-
-          <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-200 transition-colors">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-            Test Your Schema in Google
-          </a>
-        </div>
+        <SchemaTab supabase={supabase} />
       )}
 
       {/* ════════════════════════════════════════════
