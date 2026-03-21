@@ -38,7 +38,7 @@ const emptySeo: Omit<SeoPage, 'id'> = {
   og_title: '', og_description: '', og_image_url: '', canonical_url: '', no_index: false, no_follow: false,
 }
 
-type Tab = 'answers' | 'meta' | 'schema' | 'sitemap'
+type Tab = 'answers' | 'meta' | 'schema' | 'sitemap' | 'nextsteps'
 
 // ─── MAIN COMPONENT ───────────────────────────────
 export default function SeoAdminPage() {
@@ -256,11 +256,26 @@ export default function SeoAdminPage() {
 
   const wordCount = (s: string) => s.trim().split(/\s+/).filter(Boolean).length
 
+  // ─── Next Steps Tab State ───
+  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>(() => {
+    if (typeof window === 'undefined') return {}
+    try { return JSON.parse(localStorage.getItem('seo_nextsteps_checked') || '{}') } catch { return {} }
+  })
+
+  const toggleChecked = (id: string) => {
+    setCheckedItems(prev => {
+      const next = { ...prev, [id]: !prev[id] }
+      localStorage.setItem('seo_nextsteps_checked', JSON.stringify(next))
+      return next
+    })
+  }
+
   const tabs: { key: Tab; label: string; desc: string }[] = [
     { key: 'answers', label: 'AI Answers', desc: 'Get your business cited by AI search' },
     { key: 'meta', label: 'Google SEO', desc: 'Traditional search results' },
     { key: 'schema', label: 'Schema', desc: 'Structured data' },
     { key: 'sitemap', label: 'Sitemap', desc: 'Crawl settings' },
+    { key: 'nextsteps', label: 'Next Steps', desc: 'Action checklist' },
   ]
 
   return (
@@ -666,6 +681,203 @@ Sitemap: aspenalpenglow.com/sitemap.xml`}</pre>
           </div>
         </div>
       )}
+
+      {/* ════════════════════════════════════════════
+          TAB 5: NEXT STEPS CHECKLIST
+          ════════════════════════════════════════════ */}
+      {tab === 'nextsteps' && (() => {
+        const checklistItems = [
+          // HIGH PRIORITY
+          {
+            id: 'google-business', priority: 'HIGH' as const,
+            title: 'Claim Google Business Profile',
+            desc: 'Create listings for both Rich Valley Adventures and Aspen Alpenglow Limousine.',
+            why: "Google's AI Overview and ChatGPT both pull from Google Business listings as a primary source for local recommendations.",
+            links: [{ label: 'Open Google Business', href: 'https://business.google.com' }],
+            time: '~30 min',
+          },
+          {
+            id: 'bing-webmaster', priority: 'HIGH' as const,
+            title: 'Submit to Bing Webmaster Tools',
+            desc: 'Add both sitemaps (richvalleyadventures.com/sitemap.xml, aspenalpenglow.com/sitemap.xml).',
+            why: "ChatGPT uses Bing for real-time search. If Bing can't find you, ChatGPT can't recommend you.",
+            links: [{ label: 'Open Bing Webmaster', href: 'https://www.bing.com/webmasters' }],
+            time: '~15 min',
+          },
+          {
+            id: 'tripadvisor', priority: 'HIGH' as const,
+            title: 'Create TripAdvisor Listings',
+            desc: 'List both businesses with photos, services, and pricing.',
+            why: 'AI models cite TripAdvisor heavily for travel and activity recommendations. A complete profile with reviews is gold.',
+            links: [{ label: 'Open TripAdvisor for Owners', href: 'https://www.tripadvisor.com/Owners' }],
+            time: '~45 min',
+          },
+          {
+            id: 'yelp', priority: 'HIGH' as const,
+            title: 'Claim Yelp Business Pages',
+            desc: 'Create/claim listings for both brands.',
+            why: 'Another authoritative source AI models trust for local business information and reviews.',
+            links: [{ label: 'Open Yelp for Business', href: 'https://biz.yelp.com' }],
+            time: '~20 min',
+          },
+          {
+            id: 'viator', priority: 'HIGH' as const,
+            title: "List Adventures on Viator / GetYourGuide",
+            desc: "List RVA's fly fishing, hiking, biking, and camping experiences on both booking platforms.",
+            why: 'AI models recommend activities from booking platforms. Being listed here dramatically increases chances of being suggested.',
+            links: [
+              { label: 'Viator Supplier', href: 'https://supplier.viator.com' },
+              { label: 'GetYourGuide Supplier', href: 'https://supplier.getyourguide.com' },
+            ],
+            time: '~1 hour',
+          },
+          // MEDIUM PRIORITY
+          {
+            id: 'chamber', priority: 'MEDIUM' as const,
+            title: 'Join Aspen Chamber of Commerce',
+            desc: 'Get listed in the local business directory.',
+            why: 'Local authority signals matter for both traditional and AI search. Chamber membership adds credibility.',
+            links: [{ label: 'Aspen Chamber', href: 'https://www.aspenchamber.org' }],
+            time: '~30 min',
+          },
+          {
+            id: 'reviews', priority: 'MEDIUM' as const,
+            title: 'Launch Review Collection Campaign',
+            desc: 'Ask 10–20 satisfied customers to leave Google and TripAdvisor reviews. That 4.9 rating is incredible — but it needs to be documented on third-party platforms, not just your own site.',
+            why: 'AI models surface businesses with verified third-party reviews far more often than those without.',
+            links: [],
+            time: '~2 hours over a few weeks',
+          },
+          {
+            id: 'blog', priority: 'MEDIUM' as const,
+            title: 'Publish 5–10 Blog Posts',
+            desc: 'Write posts answering the exact questions people ask AI: "Best fly fishing guides in Aspen", "Aspen airport limo service", "Summer activities in Aspen for families", "Private car service Aspen to Denver", "Guided hiking tours near Snowmass".',
+            why: 'AI models surface pages that directly answer conversational queries.',
+            links: [],
+            time: '~3–4 hours total',
+          },
+          {
+            id: 'schema-check', priority: 'MEDIUM' as const,
+            title: 'Verify Schema Markup is Complete',
+            desc: 'Check the Schema tab in this admin panel. Make sure FAQ, LocalBusiness, TouristAttraction, AggregateRating, and Offer schema types are all configured for both sites.',
+            why: 'Structured data gives AI models concrete, citable facts.',
+            links: [],
+            time: '~30 min',
+          },
+          // ALREADY DONE
+          {
+            id: 'llms-txt', priority: 'DONE' as const,
+            title: 'llms.txt Created',
+            desc: '✅ Your llms.txt file is live at /llms.txt on both domains. This tells AI crawlers about your business, services, and differentiators.',
+            why: 'AI crawlers read llms.txt to understand your business without needing to parse your full site.',
+            links: [],
+            time: 'No action needed',
+          },
+        ]
+
+        const totalActionable = checklistItems.filter(i => i.priority !== 'DONE').length
+        const completedCount = checklistItems.filter(i => checkedItems[i.id]).length
+        const pct = Math.round((completedCount / (totalActionable + 1)) * 100) // +1 for the already-done item
+
+        const groups: { label: string; priority: 'HIGH' | 'MEDIUM' | 'DONE'; color: string; bg: string }[] = [
+          { label: 'HIGH PRIORITY', priority: 'HIGH', color: 'text-red-700', bg: 'bg-red-50 border-red-200' },
+          { label: 'MEDIUM PRIORITY', priority: 'MEDIUM', color: 'text-amber-700', bg: 'bg-amber-50 border-amber-200' },
+          { label: 'ALREADY DONE', priority: 'DONE', color: 'text-green-700', bg: 'bg-green-50 border-green-200' },
+        ]
+
+        return (
+          <div>
+            {/* Intro */}
+            <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-6 mb-6">
+              <h2 className="text-lg font-semibold text-slate-900 mb-1">Your AI Visibility Action Plan</h2>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Your site&apos;s technical SEO and schema are solid. These are the <strong>off-site actions</strong> that will get you
+                cited by ChatGPT, Perplexity, Google AI Overview, and Siri. Work through these in order.
+              </p>
+            </div>
+
+            {/* Progress Bar */}
+            <div className="bg-white border border-slate-200 rounded-xl p-5 mb-8 shadow-sm">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm font-semibold text-slate-900">{completedCount} of 10 completed</span>
+                <span className="text-sm text-slate-500">{pct}%</span>
+              </div>
+              <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-500"
+                  style={{ width: `${pct}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Checklist Groups */}
+            {groups.map(group => (
+              <div key={group.priority} className="mb-8">
+                <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-wider mb-4 border ${group.bg} ${group.color}`}>
+                  {group.label}
+                </div>
+                <div className="space-y-3">
+                  {checklistItems.filter(item => item.priority === group.priority).map(item => {
+                    const done = !!checkedItems[item.id] || item.priority === 'DONE'
+                    return (
+                      <div key={item.id} className={`bg-white border rounded-xl p-5 shadow-sm transition-opacity ${done ? 'opacity-60' : 'opacity-100'} border-slate-200`}>
+                        <div className="flex gap-4">
+                          {item.priority !== 'DONE' && (
+                            <button
+                              onClick={() => toggleChecked(item.id)}
+                              className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${checkedItems[item.id] ? 'bg-indigo-600 border-indigo-600' : 'border-slate-300 hover:border-indigo-400'}`}
+                              aria-label={checkedItems[item.id] ? 'Mark incomplete' : 'Mark complete'}
+                            >
+                              {checkedItems[item.id] && (
+                                <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                </svg>
+                              )}
+                            </button>
+                          )}
+                          {item.priority === 'DONE' && (
+                            <div className="mt-0.5 flex-shrink-0 w-5 h-5 rounded border-2 bg-green-500 border-green-500 flex items-center justify-center">
+                              <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                              </svg>
+                            </div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-wrap items-center gap-3 mb-1">
+                              <h3 className={`text-sm font-semibold ${done ? 'line-through text-slate-400' : 'text-slate-900'}`}>{item.title}</h3>
+                              <span className="text-[10px] text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{item.time}</span>
+                            </div>
+                            <p className="text-xs text-slate-600 mb-2 leading-relaxed">{item.desc}</p>
+                            <div className="flex items-start gap-1.5 mb-3">
+                              <svg className="w-3.5 h-3.5 text-amber-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                              </svg>
+                              <p className="text-[11px] text-amber-800 leading-relaxed"><strong>Why it matters:</strong> {item.why}</p>
+                            </div>
+                            {item.links.length > 0 && (
+                              <div className="flex flex-wrap gap-2">
+                                {item.links.map(link => (
+                                  <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 text-indigo-700 text-xs font-medium rounded-lg hover:bg-indigo-100 transition-colors border border-indigo-200">
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                    </svg>
+                                    {link.label}
+                                  </a>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        )
+      })()}
     </div>
   )
 }
