@@ -44,7 +44,7 @@ export default function AboutPage() {
       <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/rva/about/hero.jpg"
+            src="/images/about/hero.jpg"
             alt="Rich Valley Adventures — guided outdoor experiences in the Roaring Fork Valley since 2012"
             fill
             className="object-cover"

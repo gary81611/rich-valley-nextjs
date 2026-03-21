@@ -76,7 +76,7 @@ export default function AdventuresPage() {
   const columns: Column<Adventure>[] = [
     { key: 'name', label: 'Name' },
     { key: 'duration', label: 'Duration' },
-    { key: 'price', label: 'Price', render: (item) => `$${item.price}` },
+    { key: 'price', label: 'Price', render: (item) => item.price > 0 ? `$${item.price}` : 'Contact for pricing' },
     { key: 'difficulty', label: 'Difficulty' },
     { key: 'display_order', label: 'Order' },
     { key: 'actions', label: 'Actions' },

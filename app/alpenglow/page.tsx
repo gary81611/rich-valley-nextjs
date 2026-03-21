@@ -212,7 +212,7 @@ export default function AlpenglowPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-alp-navy-deep/80 via-alp-navy-deep/50 to-alp-navy-deep/85" />
         </div>
-        <div className="relative z-10 text-center text-white px-6 max-w-5xl mx-auto">
+        <div className="relative z-10 text-center text-white px-6 max-w-5xl mx-auto pb-28">
           <p className="font-cormorant text-xl md:text-2xl text-alp-gold tracking-[0.3em] uppercase mb-6">
             Aspen · Snowmass · Roaring Fork Valley
           </p>

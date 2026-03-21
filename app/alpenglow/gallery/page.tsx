@@ -1,0 +1,114 @@
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import Image from 'next/image'
+import { alpenglowData } from '@/lib/site-data'
+
+export const metadata: Metadata = {
+  title: 'Gallery | Aspen Alpenglow Limousine',
+  description: 'Browse photos of our luxury fleet, vehicles, and the stunning Colorado destinations we serve. Executive Escalade, Luxury Sprinter, and scenic Roaring Fork Valley views.',
+}
+
+const galleryImages = [
+  { src: '/images/fleet/escalade.png', alt: 'Executive Cadillac Escalade — luxury SUV for private transportation in Aspen' },
+  { src: '/images/fleet/sprinter.png', alt: 'Luxury Mercedes Sprinter — group transportation in the Roaring Fork Valley' },
+  ...alpenglowData.destinations.map((dest) => ({
+    src: dest.image,
+    alt: `${dest.name} — popular Colorado destination served by Aspen Alpenglow Limousine`,
+  })),
+]
+
+export default function GalleryPage() {
+  return (
+    <div className="min-h-screen bg-alp-pearl font-inter">
+      {/* Breadcrumb */}
+      <div className="bg-alp-navy-deep">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <nav className="flex text-sm text-alp-pearl/70">
+            <Link href="/" className="hover:text-alp-gold transition-colors">Home</Link>
+            <span className="mx-2">/</span>
+            <span className="text-alp-gold">Gallery</span>
+          </nav>
+        </div>
+      </div>
+
+      {/* Hero */}
+      <section className="bg-alp-navy-deep text-white py-16 sm:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
+            Photo <span className="text-alp-gold">Gallery</span>
+          </h1>
+          <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl mx-auto">
+            Our fleet, our destinations, and the stunning Colorado landscapes we call home.
+          </p>
+        </div>
+      </section>
+
+      {/* Masonry Grid */}
+      <section className="py-16 sm:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+            {galleryImages.map((img, i) => {
+              const aspectClass =
+                i % 5 === 0
+                  ? 'aspect-[3/4]'
+                  : i % 5 === 1
+                    ? 'aspect-square'
+                    : i % 5 === 2
+                      ? 'aspect-[4/3]'
+                      : i % 5 === 3
+                        ? 'aspect-[3/2]'
+                        : 'aspect-[4/5]'
+
+              return (
+                <div
+                  key={i}
+                  className="group relative break-inside-avoid rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300"
+                >
+                  <div className={`relative ${aspectClass}`}>
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      unoptimized
+                    />
+                    <div className="absolute inset-0 bg-alp-navy-deep/0 group-hover:bg-alp-navy-deep/30 transition-colors duration-300" />
+                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-alp-navy-deep/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <p className="text-white text-sm">{img.alt}</p>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="bg-alp-navy-deep text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="font-playfair text-3xl sm:text-4xl font-bold mb-4">
+            Ready to <span className="text-alp-gold">Ride in Style</span>?
+          </h2>
+          <p className="text-alp-pearl/80 mb-8 max-w-2xl mx-auto">
+            Book your luxury transportation and experience the Roaring Fork Valley in comfort.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/contact"
+              className="inline-block bg-alp-gold text-alp-navy font-bold px-8 py-3 rounded-full hover:bg-alp-gold-light transition-colors"
+            >
+              Book a Ride
+            </Link>
+            <a
+              href="tel:+19704563666"
+              className="inline-block border-2 border-alp-gold text-alp-gold font-bold px-8 py-3 rounded-full hover:bg-alp-gold hover:text-alp-navy transition-colors"
+            >
+              Call 970-456-3666
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}

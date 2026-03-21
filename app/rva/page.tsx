@@ -155,7 +155,7 @@ export default function RVAPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-rva-forest-dark/70 via-rva-forest-dark/40 to-rva-forest-dark/80" />
         </div>
-        <div className="relative z-10 text-center text-white px-6 max-w-5xl mx-auto">
+        <div className="relative z-10 text-center text-white px-6 max-w-5xl mx-auto pb-28">
           <p className="font-cormorant text-xl md:text-2xl text-rva-sage tracking-[0.3em] uppercase mb-6">
             Aspen · Roaring Fork Valley
           </p>
