@@ -7,6 +7,7 @@ import AdminFormModal from '@/components/admin/AdminFormModal'
 import FormField from '@/components/admin/FormField'
 import DeleteConfirmDialog from '@/components/admin/DeleteConfirmDialog'
 import Toast from '@/components/admin/Toast'
+import EmptyState from '@/components/admin/EmptyState'
 
 const emptyFAQ: Omit<FAQ, 'id' | 'created_at' | 'updated_at'> = {
   question: '', answer: '', site_key: 'rva', display_order: 0, is_active: true,
@@ -94,6 +95,7 @@ export default function FAQsPage() {
           <button onClick={openAdd} className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800">Add FAQ</button>
         </div>
       </div>
+      {!loading && data.length === 0 && <EmptyState entity="FAQs" />}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200">
         {loading ? (
           <div className="flex justify-center py-12"><div className="w-8 h-8 border-4 border-slate-300 border-t-slate-800 rounded-full animate-spin" /></div>

@@ -3,17 +3,31 @@ import { useEffect, useState, useCallback, FormEvent } from 'react'
 import { createClient } from '@/lib/supabase'
 import type { SiteSettings } from '@/lib/types'
 import Toast from '@/components/admin/Toast'
+import { rvaData, alpenglowData } from '@/lib/site-data'
 
-const emptySiteSettings: Omit<SiteSettings, 'id' | 'created_at' | 'updated_at'> = {
-  site_key: 'rva',
-  brand_name: '',
-  tagline: '',
-  phone: '',
-  email: '',
-  address: '',
-  social_links: {},
-  colors: {},
-  logo_url: '',
+const defaultSettings: Record<'rva' | 'alpenglow', Omit<SiteSettings, 'id' | 'created_at' | 'updated_at'>> = {
+  rva: {
+    site_key: 'rva',
+    brand_name: rvaData.name,
+    tagline: rvaData.tagline,
+    phone: rvaData.phone,
+    email: rvaData.email,
+    address: 'Aspen, Colorado 81611',
+    social_links: { Facebook: rvaData.social.facebook, Instagram: rvaData.social.instagram },
+    colors: { primary: '#C17A3A', secondary: '#2D3B2D', accent: '#D4A96A', background: '#F5F0EB' },
+    logo_url: rvaData.logo,
+  },
+  alpenglow: {
+    site_key: 'alpenglow',
+    brand_name: alpenglowData.name,
+    tagline: alpenglowData.tagline,
+    phone: alpenglowData.phone,
+    email: alpenglowData.email,
+    address: 'Aspen, Colorado 81611',
+    social_links: { Facebook: alpenglowData.social.facebook, Instagram: alpenglowData.social.instagram },
+    colors: { primary: '#1B2541', secondary: '#C8A96E', accent: '#2A3F6F', background: '#0F1729' },
+    logo_url: alpenglowData.logo,
+  },
 }
 
 export default function SettingsPage() {
@@ -31,10 +45,11 @@ export default function SettingsPage() {
 
   const fetchSettings = useCallback(async () => {
     const { data } = await supabase.from('site_settings').select('*')
-    if (data) {
-      setRvaSettings(data.find((s: SiteSettings) => s.site_key === 'rva') || null)
-      setAlpSettings(data.find((s: SiteSettings) => s.site_key === 'alpenglow') || null)
-    }
+    const rvaRow = data?.find((s: SiteSettings) => s.site_key === 'rva') || null
+    const alpRow = data?.find((s: SiteSettings) => s.site_key === 'alpenglow') || null
+    // Pre-fill with suggested defaults if no data exists
+    setRvaSettings(rvaRow || { ...defaultSettings.rva, id: '', created_at: '', updated_at: '' } as SiteSettings)
+    setAlpSettings(alpRow || { ...defaultSettings.alpenglow, id: '', created_at: '', updated_at: '' } as SiteSettings)
     setLoading(false)
   }, [supabase])
 
@@ -59,7 +74,7 @@ export default function SettingsPage() {
       logo_url: currentSettings?.logo_url || '',
     }
 
-    if (currentSettings?.id) {
+    if (currentSettings?.id && currentSettings.id !== '') {
       const { error } = await supabase.from('site_settings').update(payload).eq('id', currentSettings.id)
       if (error) setToast({ message: error.message, type: 'error' })
       else setToast({ message: 'Settings saved!', type: 'success' })
@@ -76,13 +91,13 @@ export default function SettingsPage() {
   }
 
   const updateField = (field: string, value: string) => {
-    const base = currentSettings || { ...emptySiteSettings, id: '', created_at: '', updated_at: '', site_key: activeTab }
+    const base = currentSettings || { ...defaultSettings[activeTab], id: '', created_at: '', updated_at: '', site_key: activeTab }
     setCurrentSettings({ ...base, [field]: value } as SiteSettings)
   }
 
   const addSocialLink = () => {
     if (!socialKey.trim()) return
-    const base = currentSettings || { ...emptySiteSettings, id: '', created_at: '', updated_at: '', site_key: activeTab }
+    const base = currentSettings || { ...defaultSettings[activeTab], id: '', created_at: '', updated_at: '', site_key: activeTab }
     setCurrentSettings({ ...base, social_links: { ...base.social_links, [socialKey]: socialVal } } as SiteSettings)
     setSocialKey('')
     setSocialVal('')
@@ -97,7 +112,7 @@ export default function SettingsPage() {
 
   const addColor = () => {
     if (!colorKey.trim()) return
-    const base = currentSettings || { ...emptySiteSettings, id: '', created_at: '', updated_at: '', site_key: activeTab }
+    const base = currentSettings || { ...defaultSettings[activeTab], id: '', created_at: '', updated_at: '', site_key: activeTab }
     setCurrentSettings({ ...base, colors: { ...base.colors, [colorKey]: colorVal } } as SiteSettings)
     setColorKey('')
     setColorVal('')
@@ -127,6 +142,20 @@ export default function SettingsPage() {
           Aspen Alpenglow Limousine
         </button>
       </div>
+
+      {currentSettings && !currentSettings.id && (
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+          <div className="flex items-start gap-3">
+            <svg className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <p className="text-sm font-medium text-blue-800">Pre-filled with suggested defaults</p>
+              <p className="text-xs text-blue-600 mt-0.5">These fields are populated with recommended values. Review and click &ldquo;Save Settings&rdquo; to persist them to the database.</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <form onSubmit={handleSave} className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
         <div className="grid sm:grid-cols-2 gap-4">

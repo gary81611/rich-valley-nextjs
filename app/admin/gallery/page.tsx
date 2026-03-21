@@ -7,6 +7,7 @@ import FormField from '@/components/admin/FormField'
 import DeleteConfirmDialog from '@/components/admin/DeleteConfirmDialog'
 import Toast from '@/components/admin/Toast'
 import Image from 'next/image'
+import EmptyState from '@/components/admin/EmptyState'
 
 const emptyImage: Omit<GalleryImage, 'id' | 'created_at' | 'updated_at'> = {
   url: '', alt_text: '', caption: '', site_key: 'rva', display_order: 0, is_active: true,
@@ -88,6 +89,7 @@ export default function GalleryPage() {
         </div>
       </div>
 
+      {!loading && data.length === 0 && <EmptyState entity="gallery images" />}
       {loading ? (
         <div className="flex justify-center py-12"><div className="w-8 h-8 border-4 border-slate-300 border-t-slate-800 rounded-full animate-spin" /></div>
       ) : data.length === 0 ? (

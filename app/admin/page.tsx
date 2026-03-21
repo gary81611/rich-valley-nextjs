@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
-import { rvaData, alpenglowData } from '@/lib/site-data'
+import { rvaData, alpenglowData, galleryImages } from '@/lib/site-data'
 import Link from 'next/link'
 
 interface StatCard {
@@ -66,7 +66,7 @@ export default function AdminDashboard() {
       if (!advCount || advCount === 0) {
         const advData = rvaData.adventures.map((a, i) => ({
           name: a.title, description: a.description, duration: a.duration,
-          difficulty: a.difficulty, image_url: a.image, display_order: i, is_active: true,
+          difficulty: a.difficulty, image_url: a.image, display_order: i, is_active: true, season: a.season,
         }))
         await supabase.from('adventures').insert(advData)
         results.push(`Adventures: ${advData.length} inserted`)
@@ -116,22 +116,9 @@ export default function AdminDashboard() {
       // Gallery
       const { count: galCount } = await supabase.from('gallery_images').select('id', { count: 'exact', head: true })
       if (!galCount || galCount === 0) {
-        const galleryFiles = [
-          '_bzp1124.jpg', '_bzp1131.jpg', '_bzp11311.jpg', '_bzp1136.jpg', '_bzp1139.jpg',
-          '_bzp1144.jpg', '_bzp1146.jpg', '_bzp1149.jpg', '_bzp1154.jpg', '_bzp1159.jpg',
-          '_bzp1162.jpg', '_bzp1177.jpg', '_bzp1188-pano.jpg', '_bzp1189.jpg', '_bzp1190.jpg',
-          '_bzp1231.jpg', '_bzp1232.jpg', '_bzp1256.jpg', '_bzp1257.jpg', '_bzp1290.jpg',
-          '_bzp1293.jpg', '_bzp1297.jpg', '_bzp1330.jpg', '_bzp1341.jpg', '_bzp1795.jpg',
-          'bike-tour.jpeg', 'dsc00536.jpeg', 'dsc02480.jpeg', 'family-hike.jpg',
-          'fullsizerender.jpeg', 'img_0494.jpeg', 'img_1092.jpeg', 'img_1627.jpeg',
-          'img_1721.jpeg', 'img_4071.jpeg', 'img_4226-3863d226.jpeg', 'img_4330.jpeg',
-          'img_4450-fda81333.jpeg', 'img_6038.jpeg', 'img_6117.jpeg', 'img_6142.jpg',
-          'img_6161.jpeg', 'img_65121.jpeg', 'img_6683.jpeg', 'img_8761.jpeg',
-          'kids-fishing.jpeg', 'rva-web-photos3.png',
-        ]
-        const galData = galleryFiles.map((file, i) => ({
-          url: `/images/gallery/${file}`,
-          alt_text: file.replace(/[-_]/g, ' ').replace(/\.\w+$/, '').replace(/\b\w/g, (c) => c.toUpperCase()),
+        const galData = galleryImages.map((img, i) => ({
+          url: img.path,
+          alt_text: img.alt,
           site_key: 'rva' as const,
           display_order: i,
           is_active: true,
@@ -187,8 +174,18 @@ export default function AdminDashboard() {
       const { count: settingsCount } = await supabase.from('site_settings').select('id', { count: 'exact', head: true })
       if (!settingsCount || settingsCount === 0) {
         await supabase.from('site_settings').insert([
-          { site_key: 'rva', brand_name: rvaData.name, tagline: rvaData.tagline, phone: rvaData.phone, address: rvaData.location, logo_url: rvaData.logo },
-          { site_key: 'alpenglow', brand_name: alpenglowData.name, tagline: alpenglowData.tagline, phone: alpenglowData.phone, address: alpenglowData.location, logo_url: alpenglowData.logo },
+          {
+            site_key: 'rva', brand_name: rvaData.name, tagline: rvaData.tagline, phone: rvaData.phone,
+            email: rvaData.email, address: 'Aspen, Colorado 81611', logo_url: rvaData.logo,
+            social_links: { Facebook: rvaData.social.facebook, Instagram: rvaData.social.instagram },
+            colors: { primary: '#C17A3A', secondary: '#2D3B2D', accent: '#D4A96A', background: '#F5F0EB' },
+          },
+          {
+            site_key: 'alpenglow', brand_name: alpenglowData.name, tagline: alpenglowData.tagline, phone: alpenglowData.phone,
+            email: alpenglowData.email, address: 'Aspen, Colorado 81611', logo_url: alpenglowData.logo,
+            social_links: { Facebook: alpenglowData.social.facebook, Instagram: alpenglowData.social.instagram },
+            colors: { primary: '#1B2541', secondary: '#C8A96E', accent: '#2A3F6F', background: '#0F1729' },
+          },
         ])
         results.push('Site Settings: 2 inserted')
       } else {

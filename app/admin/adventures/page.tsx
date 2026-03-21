@@ -7,6 +7,7 @@ import AdminFormModal from '@/components/admin/AdminFormModal'
 import FormField from '@/components/admin/FormField'
 import DeleteConfirmDialog from '@/components/admin/DeleteConfirmDialog'
 import Toast from '@/components/admin/Toast'
+import EmptyState from '@/components/admin/EmptyState'
 
 const emptyAdventure: Omit<Adventure, 'id' | 'created_at' | 'updated_at'> = {
   name: '', description: '', duration: '', price: 0, difficulty: 'moderate',
@@ -91,6 +92,7 @@ export default function AdventuresPage() {
         </button>
       </div>
 
+      {!loading && data.length === 0 && <EmptyState entity="adventures" />}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200">
         {loading ? (
           <div className="flex justify-center py-12"><div className="w-8 h-8 border-4 border-slate-300 border-t-slate-800 rounded-full animate-spin" /></div>
