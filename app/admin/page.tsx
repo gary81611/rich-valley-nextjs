@@ -30,6 +30,7 @@ export default function AdminDashboard() {
         { table: 'gallery_images', label: 'Gallery Images', href: '/admin/gallery' },
         { table: 'faqs', label: 'FAQs', href: '/admin/faqs' },
         { table: 'service_areas', label: 'Service Areas', href: '/admin/service-areas' },
+        { table: 'contact_submissions', label: 'Contact Submissions', href: '/admin/contacts' },
       ]
 
       const results = await Promise.all(
@@ -115,11 +116,28 @@ export default function AdminDashboard() {
       // Gallery
       const { count: galCount } = await supabase.from('gallery_images').select('id', { count: 'exact', head: true })
       if (!galCount || galCount === 0) {
-        const galData = rvaData.gallery.map((url, i) => ({
-          url, alt_text: `Adventure photo ${i + 1}`, site_key: 'rva' as const, display_order: i, is_active: true,
+        const galleryFiles = [
+          '_bzp1124.jpg', '_bzp1131.jpg', '_bzp11311.jpg', '_bzp1136.jpg', '_bzp1139.jpg',
+          '_bzp1144.jpg', '_bzp1146.jpg', '_bzp1149.jpg', '_bzp1154.jpg', '_bzp1159.jpg',
+          '_bzp1162.jpg', '_bzp1177.jpg', '_bzp1188-pano.jpg', '_bzp1189.jpg', '_bzp1190.jpg',
+          '_bzp1231.jpg', '_bzp1232.jpg', '_bzp1256.jpg', '_bzp1257.jpg', '_bzp1290.jpg',
+          '_bzp1293.jpg', '_bzp1297.jpg', '_bzp1330.jpg', '_bzp1341.jpg', '_bzp1795.jpg',
+          'bike-tour.jpeg', 'dsc00536.jpeg', 'dsc02480.jpeg', 'family-hike.jpg',
+          'fullsizerender.jpeg', 'img_0494.jpeg', 'img_1092.jpeg', 'img_1627.jpeg',
+          'img_1721.jpeg', 'img_4071.jpeg', 'img_4226-3863d226.jpeg', 'img_4330.jpeg',
+          'img_4450-fda81333.jpeg', 'img_6038.jpeg', 'img_6117.jpeg', 'img_6142.jpg',
+          'img_6161.jpeg', 'img_65121.jpeg', 'img_6683.jpeg', 'img_8761.jpeg',
+          'kids-fishing.jpeg', 'rva-web-photos3.png',
+        ]
+        const galData = galleryFiles.map((file, i) => ({
+          url: `/images/gallery/${file}`,
+          alt_text: file.replace(/[-_]/g, ' ').replace(/\.\w+$/, '').replace(/\b\w/g, (c) => c.toUpperCase()),
+          site_key: 'rva' as const,
+          display_order: i,
+          is_active: true,
         }))
         await supabase.from('gallery_images').insert(galData)
-        results.push(`Gallery: ${galData.length} inserted`)
+        results.push(`Gallery: ${galData.length} inserted from /images/gallery/`)
       } else {
         results.push('Gallery: skipped (already has data)')
       }
@@ -127,7 +145,28 @@ export default function AdminDashboard() {
       // FAQs
       const { count: faqCount } = await supabase.from('faqs').select('id', { count: 'exact', head: true })
       if (!faqCount || faqCount === 0) {
-        results.push('FAQs: skipped (use page-level FAQs)')
+        const faqData = [
+          // RVA FAQs
+          { site_key: 'rva' as const, question: 'How much does a guided fly fishing trip in Aspen cost?', answer: 'Guided fly fishing trips with Rich Valley Adventures typically range from $150–$350 per person depending on trip length (half-day or full-day) and group size. All gear, licenses, and instruction are included. Call us at 970-456-3666 for current pricing and availability.', display_order: 0, is_active: true },
+          { site_key: 'rva' as const, question: 'What is included in a Rich Valley Adventures guided trip?', answer: 'Every trip includes expert local guides, all necessary gear and equipment, safety briefings, and transportation to the activity location. For fly fishing: rods, reels, waders, boots, and flies. For mountain biking: bikes and helmets. Groups are kept to 2–6 guests per guide for a truly personalized experience.', display_order: 1, is_active: true },
+          { site_key: 'rva' as const, question: 'What is the best time of year for fly fishing in the Roaring Fork Valley?', answer: 'Peak fly fishing season in the Roaring Fork Valley near Aspen runs July through September, when the river is lower and clearer. The full season runs May–October. Spring runoff (April–June) can make the river high and murky. Certain Gold Medal stretches are fishable year-round.', display_order: 2, is_active: true },
+          { site_key: 'rva' as const, question: 'Do I need prior experience for paddle boarding or mountain biking?', answer: "No experience is required for any of our adventures. Our certified guides provide complete instruction, and we select terrain appropriate for each group's ability level. All ages and fitness levels are welcome. Private instruction is available for complete beginners.", display_order: 3, is_active: true },
+          { site_key: 'rva' as const, question: 'How small are Rich Valley Adventures guided groups?', answer: 'We keep groups intentionally small — typically 2 to 6 guests per guide. We do not run large group tours. Private and semi-private bookings are available for families, couples, and corporate groups. Small groups are central to the quality and safety of every experience.', display_order: 4, is_active: true },
+          { site_key: 'rva' as const, question: 'What outdoor adventures are available near Aspen in summer?', answer: 'Rich Valley Adventures offers 7 guided outdoor experiences near Aspen from May through October: fly fishing on the Roaring Fork River, stand-up paddle boarding on mountain lakes, mountain biking on singletrack trails, guided hiking in the Elk Mountains, scenic private Escalade tours, horseback riding, and elevated camping.', display_order: 5, is_active: true },
+          { site_key: 'rva' as const, question: 'Is fly fishing legal on the Roaring Fork River near Aspen?', answer: 'Yes. The Roaring Fork River and many tributaries near Aspen are designated Gold Medal trout waters open to fly fishing with a valid Colorado license. Rich Valley Adventures handles all licensing as part of guided trips — guests do not need to obtain a license separately.', display_order: 6, is_active: true },
+          { site_key: 'rva' as const, question: 'Where is Rich Valley Adventures based and what areas do you serve?', answer: 'We are based in Aspen, Colorado (81611) and guide adventures throughout the Roaring Fork Valley, including Aspen, Snowmass Village, Basalt, and Carbondale. Rich Valley Adventures was founded in 2012 by local outdoor professionals who grew up in the valley.', display_order: 7, is_active: true },
+          // Alpenglow FAQs
+          { site_key: 'alpenglow' as const, question: 'How much does a limo from Aspen to Denver airport cost?', answer: 'A private luxury transfer from Aspen, Colorado to Denver International Airport (DEN) is approximately 3.5–4 hours each way. Pricing varies based on vehicle, time of day, and group size. Call us at 970-456-3666 for a custom quote. We serve Denver (DEN), Eagle (EGE), and Aspen (ASE) airports.', display_order: 0, is_active: true },
+          { site_key: 'alpenglow' as const, question: 'Do you offer airport pickup at Aspen/Pitkin County Airport (ASE)?', answer: 'Yes. We provide meet-and-greet pickup service at Aspen/Pitkin County Airport (ASE). We track your flight in real time and adjust for early arrivals or delays. Our chauffeurs assist with luggage and provide seamless door-to-door service to any destination in Aspen or the Roaring Fork Valley.', display_order: 1, is_active: true },
+          { site_key: 'alpenglow' as const, question: "What's the best way to get from Eagle/Vail airport to Aspen?", answer: 'The most comfortable option is a private car service. Eagle County Regional Airport (EGE) is approximately 70 miles from Aspen via I-70 and Highway 82 — about 1.5 to 2 hours depending on conditions. Aspen Alpenglow Limousine offers direct, door-to-door luxury transfers from Eagle airport to any Aspen destination.', display_order: 2, is_active: true },
+          { site_key: 'alpenglow' as const, question: 'How far in advance should I book a limousine in Aspen?', answer: 'We recommend booking 48–72 hours in advance for standard transfers. For weddings, corporate events, or peak seasons (ski season December–March and summer July–August), book 2–4 weeks ahead. Last-minute bookings are occasionally available — call 970-456-3666 to check.', display_order: 3, is_active: true },
+          { site_key: 'alpenglow' as const, question: 'Do you offer wedding transportation in Aspen?', answer: 'Yes. We specialize in wedding transportation throughout Aspen and Snowmass, Colorado. We provide bridal party transfers, venue logistics, and guest shuttle coordination. Both our Escalade and Sprinter van are available. We work closely with wedding planners to ensure a flawless, elegant experience.', display_order: 4, is_active: true },
+          { site_key: 'alpenglow' as const, question: 'Is Aspen Alpenglow Limousine available 24 hours a day?', answer: 'Yes. We operate 24/7/365 — including early-morning departures, late-night arrivals, and overnight transfers to Denver. Call 970-456-3666 at any hour for assistance.', display_order: 5, is_active: true },
+          { site_key: 'alpenglow' as const, question: 'Can you transport groups to ski resorts from Aspen?', answer: 'Absolutely. We provide private group transportation to Aspen Mountain, Aspen Highlands, Buttermilk, Snowmass ski resort, and other destinations throughout the Roaring Fork Valley. Our Luxury Sprinter van seats up to 14 passengers — ideal for ski groups.', display_order: 6, is_active: true },
+          { site_key: 'alpenglow' as const, question: 'What vehicles does Aspen Alpenglow Limousine use?', answer: 'Our fleet includes a black Executive Cadillac Escalade (up to 6 passengers) and a black Luxury Mercedes Sprinter van (up to 14 passengers). Both feature premium leather interiors, climate control, and complimentary amenities. All vehicles are late-model, meticulously maintained, and professionally chauffeured.', display_order: 7, is_active: true },
+        ]
+        await supabase.from('faqs').insert(faqData)
+        results.push(`FAQs: ${faqData.length} inserted (8 RVA + 8 Alpenglow)`)
       } else {
         results.push('FAQs: skipped (already has data)')
       }

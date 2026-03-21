@@ -44,8 +44,13 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
-  // Skip admin, terms, privacy routes — let them pass through
-  if (pathname.startsWith('/admin') || pathname === '/terms' || pathname === '/privacy') {
+  // Skip admin routes — let them pass through
+  if (pathname.startsWith('/admin')) {
+    return response
+  }
+
+  // Skip shared routes — terms, privacy (these are not brand-specific)
+  if (pathname === '/terms' || pathname === '/privacy') {
     return response
   }
 
