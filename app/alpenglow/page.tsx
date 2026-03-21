@@ -166,7 +166,7 @@ export default function AlpenglowPage() {
       <nav aria-label="Main navigation" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-alp-navy/95 backdrop-blur-md shadow-lg' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <a href="#" className="flex items-center gap-3" aria-label="Aspen Alpenglow Limousine — home">
-            <Image src={alpenglowData.logo} alt="Aspen Alpenglow Limousine logo" width={160} height={50} className="h-14 w-auto object-contain" unoptimized loading="eager" />
+            <Image src={alpenglowData.logo} alt="Aspen Alpenglow Limousine logo" width={160} height={50} className="h-20 w-auto object-contain" unoptimized loading="eager" />
           </a>
           <div className="hidden md:flex items-center gap-8">
             {['Services', 'Fleet', 'Destinations', 'Service Areas', 'Contact'].map((item) => (
@@ -561,7 +561,7 @@ export default function AlpenglowPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div>
-              <Image src={alpenglowData.logo} alt="Aspen Alpenglow Limousine" width={160} height={50} className="h-14 w-auto object-contain mb-4" unoptimized />
+              <Image src={alpenglowData.logo} alt="Aspen Alpenglow Limousine" width={160} height={50} className="h-20 w-auto object-contain mb-4" unoptimized />
               <p className="text-white/65 text-sm leading-relaxed">{alpenglowData.description}</p>
             </div>
             <div>
