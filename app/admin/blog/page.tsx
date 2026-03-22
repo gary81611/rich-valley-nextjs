@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useBrand } from '../contexts/BrandContext'
+import { createClient } from '@/lib/supabase'
 
 interface BlogOutput {
   metaTitle: string
@@ -8,6 +9,11 @@ interface BlogOutput {
   content: string
   internalLinks: string[]
   faqs: { q: string; a: string }[]
+}
+
+interface ParsedLink {
+  text: string
+  url: string
 }
 
 const RVA_KEYWORDS = [
@@ -59,6 +65,28 @@ Return ONLY a JSON object (no markdown fences) with this exact structure:
   ]
 }`
 
+function slugify(str: string): string {
+  return str
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .slice(0, 80)
+}
+
+function parseInternalLink(link: string): ParsedLink {
+  const arrowIdx = link.indexOf('→')
+  if (arrowIdx !== -1) {
+    return { text: link.slice(0, arrowIdx).trim(), url: link.slice(arrowIdx + 1).trim() }
+  }
+  // Try plain " - /path" fallback
+  const dashIdx = link.lastIndexOf(' - /')
+  if (dashIdx !== -1) {
+    return { text: link.slice(0, dashIdx).trim(), url: link.slice(dashIdx + 3).trim() }
+  }
+  return { text: link, url: '#' }
+}
+
 function CopyButton({ text, label = 'Copy' }: { text: string; label?: string }) {
   const [copied, setCopied] = useState(false)
   const handleCopy = () => {
@@ -91,7 +119,6 @@ function CopyButton({ text, label = 'Copy' }: { text: string; label?: string }) 
 }
 
 function MarkdownPreview({ content }: { content: string }) {
-  // Simple markdown renderer for headings, bold, paragraphs
   const lines = content.split('\n')
   return (
     <div className="prose prose-sm max-w-none text-slate-700">
@@ -100,7 +127,6 @@ function MarkdownPreview({ content }: { content: string }) {
         if (line.startsWith('# ')) return <h1 key={i} className="text-lg font-bold text-slate-900 mt-4 mb-2">{line.slice(2)}</h1>
         if (line.startsWith('### ')) return <h3 key={i} className="text-sm font-semibold text-slate-900 mt-3 mb-1">{line.slice(4)}</h3>
         if (line.trim() === '') return <div key={i} className="h-2" />
-        // Render **bold**
         const parts = line.split(/(\*\*[^*]+\*\*)/)
         return (
           <p key={i} className="text-sm leading-relaxed mb-1">
@@ -126,7 +152,18 @@ export default function BlogGeneratorPage() {
   const [error, setError] = useState('')
   const [activeSection, setActiveSection] = useState<'preview' | 'raw'>('preview')
 
-  // Determine which keyword sets to show based on brand context
+  // Publish state
+  const [slugValue, setSlugValue] = useState('')
+  const [publishStatus, setPublishStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle')
+  const [publishMessage, setPublishMessage] = useState('')
+  const [showScheduleForm, setShowScheduleForm] = useState(false)
+  const [scheduledFor, setScheduledFor] = useState('')
+
+  // FAQ selection state
+  const [selectedFaqIndexes, setSelectedFaqIndexes] = useState<Set<number>>(new Set())
+  const [faqSaving, setFaqSaving] = useState(false)
+  const [faqMessage, setFaqMessage] = useState('')
+
   const showRva = brand === 'all' || brand === 'rva'
   const showAal = brand === 'all' || brand === 'alpenglow'
 
@@ -136,6 +173,16 @@ export default function BlogGeneratorPage() {
     setSelectedBrand(brandKey)
     setOutput(null)
     setError('')
+    resetPublishState()
+  }
+
+  const resetPublishState = () => {
+    setPublishStatus('idle')
+    setPublishMessage('')
+    setShowScheduleForm(false)
+    setScheduledFor('')
+    setSelectedFaqIndexes(new Set())
+    setFaqMessage('')
   }
 
   const activeTopic = customTopic.trim() || selectedKeyword
@@ -145,6 +192,7 @@ export default function BlogGeneratorPage() {
     setGenerating(true)
     setError('')
     setOutput(null)
+    resetPublishState()
 
     const brandLabel = selectedBrand === 'rva' ? 'Rich Valley Adventures (RVA)' : 'Aspen Alpenglow Limousine (AAL)'
 
@@ -162,13 +210,13 @@ export default function BlogGeneratorPage() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Generation failed')
 
-      // Parse JSON from result
       let raw = data.result?.trim() || ''
       if (raw.startsWith('```')) {
         raw = raw.replace(/^```(?:json)?\s*\n?/, '').replace(/\n?```\s*$/, '')
       }
       const parsed: BlogOutput = JSON.parse(raw)
       setOutput(parsed)
+      setSlugValue(slugify(parsed.metaTitle))
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate blog post')
     } finally {
@@ -176,14 +224,104 @@ export default function BlogGeneratorPage() {
     }
   }
 
+  const handleSave = async (status: 'draft' | 'scheduled' | 'published') => {
+    if (!output || !slugValue.trim()) return
+    if (status === 'scheduled' && !scheduledFor) {
+      setPublishMessage('Please select a date and time to schedule.')
+      return
+    }
+
+    setPublishStatus('saving')
+    setPublishMessage('')
+
+    const parsedLinks = output.internalLinks.map(parseInternalLink)
+    const parsedFaqs = output.faqs.map(f => ({ question: f.q, answer: f.a }))
+
+    try {
+      const res = await fetch('/api/blog/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          site_key: selectedBrand,
+          slug: slugValue.trim(),
+          title: output.metaTitle,
+          meta_title: output.metaTitle,
+          meta_description: output.metaDescription,
+          content: output.content,
+          internal_links: parsedLinks,
+          faqs: parsedFaqs,
+          status,
+          scheduled_for: status === 'scheduled' ? scheduledFor : null,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Save failed')
+
+      const messages = {
+        draft: 'Saved as draft.',
+        scheduled: `Scheduled for ${new Date(scheduledFor).toLocaleString()}.`,
+        published: 'Published successfully! View it at /blog/' + slugValue,
+      }
+      setPublishStatus('success')
+      setPublishMessage(messages[status])
+      if (status === 'scheduled') setShowScheduleForm(false)
+    } catch (err) {
+      setPublishStatus('error')
+      setPublishMessage(err instanceof Error ? err.message : 'Save failed')
+    }
+  }
+
+  const toggleFaq = (idx: number) => {
+    setSelectedFaqIndexes(prev => {
+      const next = new Set(prev)
+      if (next.has(idx)) next.delete(idx)
+      else next.add(idx)
+      return next
+    })
+  }
+
+  const handleAddFaqsToPage = async () => {
+    if (!output || selectedFaqIndexes.size === 0) return
+    setFaqSaving(true)
+    setFaqMessage('')
+
+    const supabase = createClient()
+    const selectedFaqs = output.faqs
+      .filter((_, i) => selectedFaqIndexes.has(i))
+      .map((f, i) => ({
+        question: f.q,
+        answer: f.a,
+        site_key: selectedBrand,
+        display_order: 100 + i, // append at end
+        is_active: true,
+      }))
+
+    const { error } = await supabase.from('faqs').insert(selectedFaqs)
+    if (error) {
+      setFaqMessage('Error: ' + error.message)
+    } else {
+      setFaqMessage(`Added ${selectedFaqs.length} FAQ${selectedFaqs.length > 1 ? 's' : ''} to the FAQ page.`)
+      setSelectedFaqIndexes(new Set())
+    }
+    setFaqSaving(false)
+  }
+
   return (
     <div>
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-900">Blog Generator</h1>
-        <p className="text-sm text-slate-500 mt-1">
-          Generate SEO-optimized blog posts targeting high-value keywords for Aspen-area search traffic.
-        </p>
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">Blog Generator</h1>
+          <p className="text-sm text-slate-500 mt-1">
+            Generate SEO-optimized blog posts targeting high-value keywords for Aspen-area search traffic.
+          </p>
+        </div>
+        <a
+          href="/admin/blog/manage"
+          className="px-4 py-2 text-sm font-medium bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+        >
+          Manage Posts →
+        </a>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
@@ -251,6 +389,7 @@ export default function BlogGeneratorPage() {
                   setSelectedKeyword('')
                   setOutput(null)
                   setError('')
+                  resetPublishState()
                 }}
                 placeholder="e.g. best fall foliage hikes near Aspen"
                 className="flex-1 px-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-300"
@@ -393,38 +532,197 @@ export default function BlogGeneratorPage() {
                     <CopyButton text={output.internalLinks.join('\n')} />
                   </div>
                   <ul className="space-y-1">
-                    {output.internalLinks.map((link, i) => (
-                      <li key={i} className="text-xs text-slate-600 bg-slate-50 px-3 py-2 rounded-lg flex items-start gap-2">
-                        <svg className="w-3.5 h-3.5 text-slate-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                        </svg>
-                        {link}
-                      </li>
-                    ))}
+                    {output.internalLinks.map((link, i) => {
+                      const parsed = parseInternalLink(link)
+                      return (
+                        <li key={i} className="text-xs text-slate-600 bg-slate-50 px-3 py-2 rounded-lg flex items-center gap-2">
+                          <svg className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                          </svg>
+                          <span className="font-medium text-slate-800">{parsed.text}</span>
+                          <span className="text-slate-400">→</span>
+                          <span className="text-blue-600 font-mono">{parsed.url}</span>
+                        </li>
+                      )
+                    })}
                   </ul>
+                  <p className="mt-2 text-[10px] text-slate-400">These links will be embedded automatically when you publish this post.</p>
                 </div>
               )}
 
-              {/* FAQs */}
+              {/* FAQs with checkboxes */}
               {output.faqs.length > 0 && (
                 <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-sm font-semibold text-slate-900">FAQ Section <span className="text-[10px] text-slate-400 font-normal ml-1">(for featured snippets)</span></h3>
+                    <h3 className="text-sm font-semibold text-slate-900">
+                      FAQ Section <span className="text-[10px] text-slate-400 font-normal ml-1">(for featured snippets)</span>
+                    </h3>
                     <CopyButton text={output.faqs.map(f => `Q: ${f.q}\nA: ${f.a}`).join('\n\n')} />
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     {output.faqs.map((faq, i) => (
-                      <div key={i} className="bg-slate-50 rounded-lg p-3">
-                        <p className="text-xs font-semibold text-slate-800 mb-1">{faq.q}</p>
-                        <p className="text-xs text-slate-600 leading-relaxed">{faq.a}</p>
-                      </div>
+                      <label
+                        key={i}
+                        className={`flex items-start gap-3 bg-slate-50 rounded-lg p-3 cursor-pointer transition-colors ${
+                          selectedFaqIndexes.has(i) ? 'bg-blue-50 border border-blue-200' : 'hover:bg-slate-100'
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedFaqIndexes.has(i)}
+                          onChange={() => toggleFaq(i)}
+                          className="mt-0.5 flex-shrink-0 accent-blue-600"
+                        />
+                        <div>
+                          <p className="text-xs font-semibold text-slate-800 mb-1">{faq.q}</p>
+                          <p className="text-xs text-slate-600 leading-relaxed">{faq.a}</p>
+                        </div>
+                      </label>
                     ))}
                   </div>
+
+                  {/* Add to FAQ Page button */}
+                  <div className="mt-3 flex items-center gap-3">
+                    <button
+                      onClick={handleAddFaqsToPage}
+                      disabled={selectedFaqIndexes.size === 0 || faqSaving}
+                      className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    >
+                      {faqSaving ? (
+                        <div className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                      ) : (
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                        </svg>
+                      )}
+                      Add Selected to FAQ Page ({selectedFaqIndexes.size})
+                    </button>
+                    {faqMessage && (
+                      <span className={`text-xs ${faqMessage.startsWith('Error') ? 'text-red-600' : 'text-green-600'}`}>
+                        {faqMessage}
+                      </span>
+                    )}
+                  </div>
+
                   <div className="mt-3 text-[10px] text-slate-400 bg-blue-50 border border-blue-100 rounded-lg p-2">
-                    Add these Q&amp;As to your site using FAQPage schema or as a visible FAQ section to maximize AI citation chances.
+                    Check the FAQs you want to add to your site's FAQ page, then click the button above.
                   </div>
                 </div>
               )}
+
+              {/* ── PUBLISH SECTION ── */}
+              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                <h3 className="text-sm font-semibold text-slate-900 mb-4">Publish to Blog</h3>
+
+                {/* Slug editor */}
+                <div className="mb-4">
+                  <label className="block text-[10px] font-semibold uppercase tracking-wide text-slate-400 mb-1">
+                    URL Slug
+                  </label>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs text-slate-400 font-mono">/blog/</span>
+                    <input
+                      type="text"
+                      value={slugValue}
+                      onChange={(e) => setSlugValue(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-'))}
+                      className="flex-1 px-3 py-1.5 text-xs font-mono border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-300"
+                    />
+                  </div>
+                  <p className="text-[10px] text-slate-400 mt-1">
+                    {selectedBrand === 'rva' ? 'richvalleyadventures.com' : 'aspenalpenglow.com'}/blog/{slugValue || '…'}
+                  </p>
+                </div>
+
+                {/* Publish buttons */}
+                {publishStatus === 'success' ? (
+                  <div className="flex items-start gap-2 bg-green-50 border border-green-200 rounded-lg p-3">
+                    <svg className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <div>
+                      <p className="text-xs font-semibold text-green-800">Success</p>
+                      <p className="text-xs text-green-700">{publishMessage}</p>
+                    </div>
+                    <button onClick={resetPublishState} className="ml-auto text-[10px] text-green-600 underline">Save again</button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        onClick={() => handleSave('draft')}
+                        disabled={publishStatus === 'saving' || !slugValue.trim()}
+                        className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                        </svg>
+                        Save as Draft
+                      </button>
+
+                      <button
+                        onClick={() => setShowScheduleForm(!showScheduleForm)}
+                        disabled={publishStatus === 'saving' || !slugValue.trim()}
+                        className={`flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
+                          showScheduleForm
+                            ? 'bg-violet-100 text-violet-700 border border-violet-300'
+                            : 'bg-violet-600 text-white hover:bg-violet-700'
+                        }`}
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Schedule
+                      </button>
+
+                      <button
+                        onClick={() => handleSave('published')}
+                        disabled={publishStatus === 'saving' || !slugValue.trim()}
+                        className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                      >
+                        {publishStatus === 'saving' ? (
+                          <div className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                        ) : (
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                        Publish Now
+                      </button>
+                    </div>
+
+                    {/* Schedule form */}
+                    {showScheduleForm && (
+                      <div className="mt-3 p-3 bg-violet-50 border border-violet-200 rounded-lg">
+                        <label className="block text-[10px] font-semibold uppercase tracking-wide text-violet-700 mb-1.5">
+                          Publish Date &amp; Time
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="datetime-local"
+                            value={scheduledFor}
+                            min={new Date().toISOString().slice(0, 16)}
+                            onChange={(e) => setScheduledFor(e.target.value)}
+                            className="flex-1 px-3 py-1.5 text-xs border border-violet-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-400 bg-white"
+                          />
+                          <button
+                            onClick={() => handleSave('scheduled')}
+                            disabled={!scheduledFor || publishStatus === 'saving'}
+                            className="px-3 py-1.5 text-xs font-semibold bg-violet-600 text-white rounded-lg hover:bg-violet-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                          >
+                            Confirm Schedule
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {publishStatus === 'error' && publishMessage && (
+                      <div className="mt-2 text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                        {publishMessage}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
           )}
         </div>
