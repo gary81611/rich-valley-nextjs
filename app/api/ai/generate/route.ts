@@ -62,12 +62,12 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { prompt, type, brand } = await request.json()
+    const { prompt, type, brand, system_prompt_override } = await request.json()
     if (!prompt) {
       return NextResponse.json({ error: 'Prompt is required' }, { status: 400 })
     }
 
-    const systemPrompt = systemPrompts[type] || systemPrompts.free_form
+    const systemPrompt = system_prompt_override || systemPrompts[type] || systemPrompts.free_form
     const context = brand && brandContext[brand] ? `\n\nBusiness context:\n${brandContext[brand]}` : ''
     const enrichedPrompt = `${prompt}${context}`
 
