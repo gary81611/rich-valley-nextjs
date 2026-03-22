@@ -58,6 +58,7 @@ const navGroups: NavGroup[] = [
     label: 'SEARCH & VISIBILITY',
     items: [
       { name: 'SEO Settings', href: '/admin/seo', icon: 'search' },
+      { name: 'Analytics', href: '/admin/analytics', icon: 'chart' },
     ],
   },
 ]
@@ -78,6 +79,7 @@ const iconPaths: Record<string, string> = {
   pencil: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
   list: 'M4 6h16M4 10h16M4 14h16M4 18h16',
   send: 'M12 19l9 2-9-18-9 18 9-2zm0 0v-8',
+  chart: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
 }
 
 function BrandToggle() {
