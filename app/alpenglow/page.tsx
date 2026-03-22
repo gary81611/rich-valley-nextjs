@@ -174,6 +174,9 @@ export default function AlpenglowPage() {
                 {item}
               </a>
             ))}
+            <a href="/blog" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
+              Blog
+            </a>
             <a href={alpenglowData.phoneHref} aria-label={`Call Aspen Alpenglow Limousine at ${alpenglowData.phone}`} className="bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:shadow-lg">
               {alpenglowData.phone}
             </a>
@@ -191,6 +194,9 @@ export default function AlpenglowPage() {
                 {item}
               </a>
             ))}
+            <a href="/blog" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
+              Blog
+            </a>
             <a href={alpenglowData.phoneHref} className="block bg-alp-gold text-alp-navy text-center py-3 rounded-full font-semibold mt-2">
               {alpenglowData.phone}
             </a>

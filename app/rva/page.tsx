@@ -117,6 +117,9 @@ export default function RVAPage() {
                 {item}
               </a>
             ))}
+            <a href="/blog" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+              Blog
+            </a>
             <a href="https://rich-valley-nextjs.vercel.app/?site=alpenglow" target="_blank" rel="noopener noreferrer" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
               Transportation
             </a>
@@ -137,6 +140,9 @@ export default function RVAPage() {
                 {item}
               </a>
             ))}
+            <a href="/blog" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
+              Blog
+            </a>
             <a href="https://rich-valley-nextjs.vercel.app/?site=alpenglow" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
               Transportation
             </a>
