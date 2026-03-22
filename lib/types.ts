@@ -134,3 +134,20 @@ export interface NewsletterSubscriber {
   site_key: 'rva' | 'alpenglow'
   subscribed_at: string
 }
+
+export interface BlogPost {
+  id: string
+  site_key: 'rva' | 'alpenglow'
+  slug: string
+  title: string
+  meta_title: string | null
+  meta_description: string | null
+  content: string | null
+  internal_links: { text: string; url: string }[]
+  faqs: { question: string; answer: string }[]
+  status: 'draft' | 'scheduled' | 'published'
+  scheduled_for: string | null
+  published_at: string | null
+  created_at: string
+  updated_at: string
+}
