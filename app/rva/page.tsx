@@ -142,13 +142,13 @@ export default function RVAPage() {
       </nav>
 
       {/* HERO */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
+      <section className="relative min-h-[115vh] flex items-center justify-center overflow-hidden pt-24">
         <div className="absolute inset-0">
           <Image
             src={photoNotes.rvaHero.current}
             alt="Panoramic view of the Rocky Mountains and Roaring Fork Valley near Aspen, Colorado — home of Rich Valley Adventures guided outdoor experiences"
             fill
-            className="object-cover"
+            className="object-cover object-bottom"
             priority
             unoptimized
             fetchPriority="high"
