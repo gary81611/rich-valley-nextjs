@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
 import NewsletterSignup from '@/components/shared/NewsletterSignup'
@@ -406,7 +407,7 @@ export default function RVAPage() {
             <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold">Gallery</h2>
           </ScrollReveal>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {gallery.map((img, i) => (
+            {gallery.slice(0, 12).map((img, i) => (
               <ScrollReveal key={i} delay={i * 60} className="group">
                 <div className="relative aspect-square rounded-xl overflow-hidden">
                   <Image
@@ -422,6 +423,16 @@ export default function RVAPage() {
               </ScrollReveal>
             ))}
           </div>
+          {gallery.length > 12 && (
+            <ScrollReveal className="text-center mt-12">
+              <Link
+                href="/gallery"
+                className="inline-block bg-rva-copper hover:bg-rva-copper-dark text-white font-semibold px-8 py-3 rounded-full transition-colors duration-300"
+              >
+                See All Photos
+              </Link>
+            </ScrollReveal>
+          )}
         </div>
       </section>
       )}
