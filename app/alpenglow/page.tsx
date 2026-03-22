@@ -222,7 +222,7 @@ export default function AlpenglowPage() {
           <p className="font-cormorant text-xl md:text-2xl text-alp-gold tracking-[0.3em] uppercase mb-6">
             Aspen · Snowmass · Roaring Fork Valley
           </p>
-          <h1 className="font-playfair text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
+          <h1 className="font-playfair text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight" style={{ fontKerning: 'normal', fontFeatureSettings: '"kern" 1' }}>
             Luxury Transportation<br />
             <span className="text-alp-gold-light italic">in the Roaring <span className="whitespace-nowrap">Fork Valley</span></span>
           </h1>
