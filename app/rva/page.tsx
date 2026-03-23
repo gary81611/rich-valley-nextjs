@@ -100,7 +100,7 @@ export default function RVAPage() {
             <a href="/blog" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
               Blog
             </a>
-            <a href="https://rich-valley-nextjs.vercel.app/?site=alpenglow" target="_blank" rel="noopener noreferrer" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+            <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
               Transportation
             </a>
             <a href={rvaData.phoneHref} aria-label={`Call Rich Valley Adventures at ${rvaData.phone}`} className="bg-rva-copper hover:bg-rva-copper-light text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:shadow-lg">
@@ -138,7 +138,7 @@ export default function RVAPage() {
             <a href="/blog" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
               Blog
             </a>
-            <a href="https://rich-valley-nextjs.vercel.app/?site=alpenglow" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
+            <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
               Transportation
             </a>
             <a href={rvaData.phoneHref} className="block bg-rva-copper text-white text-center py-3 rounded-full font-semibold mt-2">
@@ -174,7 +174,7 @@ export default function RVAPage() {
             Expert-guided fly fishing, mountain biking, paddle boarding, hiking, and more — since 2012.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="https://rich-valley-nextjs.vercel.app/?site=alpenglow" target="_blank" rel="noopener noreferrer" className="border-2 border-white text-white hover:bg-white hover:text-rva-forest px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
+            <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" className="border-2 border-white text-white hover:bg-white hover:text-rva-forest px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
               Book Transportation
             </a>
             <a href="#adventures" className="bg-rva-copper hover:bg-rva-copper-light text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block">
