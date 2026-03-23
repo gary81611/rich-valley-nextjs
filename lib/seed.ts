@@ -1,4 +1,5 @@
 import { rvaData, alpenglowData, galleryImages, rvaFaqs, alpenglowFaqs } from '@/lib/site-data'
+import { seedPages } from '@/lib/seed-pages'
 import type { SupabaseClient } from '@supabase/supabase-js'
 
 export async function seedAllTables(supabase: SupabaseClient) {
@@ -123,6 +124,10 @@ export async function seedAllTables(supabase: SupabaseClient) {
     await supabase.from('geo_content_blocks').insert(geoData)
     results.push(`GEO Blocks: ${geoData.length} inserted`)
   }
+
+  // Pages & Navigation
+  const pageResults = await seedPages(supabase)
+  results.push(...pageResults)
 
   return results
 }
