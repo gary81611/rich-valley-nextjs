@@ -124,11 +124,11 @@ const adventureDetails: Record<string, AdventureDetail> = {
   'scenic-escalade-tours': {
     title: 'Scenic Escalade Tours',
     slug: 'scenic-escalade-tours',
-    description: rvaData.adventures[4].description,
+    description: 'See Colorado\'s most iconic landmarks from the comfort of a luxury Cadillac Escalade with a knowledgeable local guide. Maroon Bells, Independence Pass, and beyond.',
     longDescription:
       'See Colorado\'s most iconic landmarks from the comfort of a luxury Cadillac Escalade with a knowledgeable local guide at the wheel. This is the perfect adventure for those who want the views without the vertical — or for guests who want to combine sightseeing with other activities. Half-day tours cover the Roaring Fork Valley\'s highlights, while full-day tours can venture to Independence Pass, Maroon Bells, or other iconic destinations. Complimentary refreshments and flexible itineraries are standard.',
-    image: rvaData.adventures[4].image,
-    heroImage: rvaData.adventures[4].image,
+    image: '/images/adventures/scenic-escalade.png',
+    heroImage: '/images/adventures/scenic-escalade.png',
     duration: 'Half Day / Full Day',
     difficulty: 'Easy — Ride Along',
     whatsIncluded: [
@@ -150,11 +150,11 @@ const adventureDetails: Record<string, AdventureDetail> = {
   'horseback-riding': {
     title: 'Horseback Riding',
     slug: 'horseback-riding',
-    description: rvaData.adventures[5].description,
+    description: rvaData.adventures[4].description,
     longDescription:
       'Experience the Rockies the way the first settlers did — on horseback. Our gentle, well-trained horses carry you through mountain meadows, aspen forests, and along streams with views that stretch for miles. No riding experience is necessary — our wranglers match each guest with the right horse and provide all the instruction you need to ride comfortably and safely. Rides range from two-hour introductory rides to half-day trail rides that explore deeper into the backcountry.',
-    image: rvaData.adventures[5].image,
-    heroImage: rvaData.adventures[5].image,
+    image: rvaData.adventures[4].image,
+    heroImage: rvaData.adventures[4].image,
     duration: '2-4 Hours',
     difficulty: 'All Levels',
     whatsIncluded: [
@@ -176,10 +176,10 @@ const adventureDetails: Record<string, AdventureDetail> = {
   'elevated-camping': {
     title: 'Elevated Camping',
     slug: 'elevated-camping',
-    description: rvaData.adventures[6].description,
+    description: 'Sleep under the stars in comfort — premium canvas tents with real beds, gourmet chef-prepared meals, and guided stargazing deep in the Colorado wilderness.',
     longDescription:
       'This is not roughing it — this is elevated wilderness. Our premium basecamp experience combines the beauty of sleeping under the stars with the comfort of quality gear, gourmet meals, and expert-guided activities. Each camp features spacious canvas tents with real beds, a communal dining area with chef-prepared meals, and guided night-sky viewing with a telescope. Wake up to fresh coffee and a sunrise over the mountains, then spend the day hiking, fishing, or simply relaxing in one of the most beautiful places on Earth.',
-    image: rvaData.adventures[6].image,
+    image: '/images/adventures/elevated-camping.jpeg',
     heroImage: '/images/adventures/elevated-camping.jpeg',
     duration: 'Overnight / Multi-Day',
     difficulty: 'All Levels',
