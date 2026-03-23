@@ -202,6 +202,27 @@ export default function RVAPage() {
         </div>
       </section>
 
+      {/* VIDEO */}
+      <section className="py-16 bg-rva-forest-dark">
+        <div className="max-w-4xl mx-auto px-6">
+          <ScrollReveal className="text-center mb-10">
+            <p className="font-cormorant text-rva-copper-light text-lg tracking-widest uppercase mb-4">See It for Yourself</p>
+            <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold">Experience the Valley</h2>
+          </ScrollReveal>
+          <ScrollReveal>
+            <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl" style={{ paddingBottom: '56.25%' }}>
+              <iframe
+                src="https://www.youtube.com/embed/jxJZKObzjZw?si=9c4ylLMS92Qjmz6w"
+                title="Rich Valley Adventures — Experience the Valley"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full"
+              />
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
       {/* TESTIMONIALS */}
       {testimonials.length > 0 && (
       <section className="py-16 bg-rva-cream-dark">
