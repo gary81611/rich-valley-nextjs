@@ -4,6 +4,9 @@ import { createClient } from '@/lib/supabase'
 import type { CmsPage, TemplateType, PageStatus, SiteId } from '@/lib/pages'
 
 type EditingPage = Pick<CmsPage, 'title' | 'slug' | 'meta_title' | 'meta_description' | 'template_type' | 'status' | 'site_id'>
+type ContentFaq = { question: string; answer: string; category?: string }
+type H2Section = { title: string; content: string }
+type Feature = { title: string; description: string }
 
 const SITE_LABELS: Record<SiteId, string> = { rva: 'RVA', alpenglow: 'ALP' }
 const TEMPLATE_LABELS: Record<TemplateType, string> = { service: 'Service', location: 'Location', faq: 'FAQ', landing: 'Landing' }
@@ -13,6 +16,317 @@ const STATUS_COLORS: Record<PageStatus, string> = {
 }
 
 const blank: EditingPage = { title: '', slug: '', meta_title: '', meta_description: '', template_type: 'service', status: 'draft', site_id: 'rva' }
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+function getContent(editing: Partial<CmsPage>): Record<string, unknown> {
+  return (editing.content as unknown as Record<string, unknown>) || {}
+}
+
+function useContentField(editing: Partial<CmsPage> | null, setEditing: React.Dispatch<React.SetStateAction<Partial<CmsPage> | null>>) {
+  const update = useCallback((field: string, value: unknown) => {
+    setEditing(prev => {
+      if (!prev) return null
+      const merged = { ...((prev.content as unknown as Record<string, unknown>) || {}), [field]: value }
+      return { ...prev, content: merged as unknown as CmsPage['content'] }
+    })
+  }, [setEditing])
+  return update
+}
+
+// ── Sub-components ────────────────────────────────────────────────────────────
+
+function FaqEditor({ faqs, onChange }: { faqs: ContentFaq[]; onChange: (faqs: ContentFaq[]) => void }) {
+  const add = () => onChange([...faqs, { question: '', answer: '' }])
+  const remove = (i: number) => onChange(faqs.filter((_, idx) => idx !== i))
+  const update = (i: number, field: keyof ContentFaq, val: string) => {
+    const next = faqs.map((f, idx) => idx === i ? { ...f, [field]: val } : f)
+    onChange(next)
+  }
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide">FAQs on this page</span>
+        <button
+          type="button"
+          onClick={add}
+          className="text-xs px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200"
+        >
+          + Add FAQ
+        </button>
+      </div>
+      {faqs.length === 0 && (
+        <p className="text-xs text-slate-400 italic">No FAQs yet. Click "+ Add FAQ" to add one.</p>
+      )}
+      {faqs.map((faq, i) => (
+        <div key={i} className="border border-slate-200 rounded-lg p-3 space-y-2 bg-slate-50">
+          <div className="flex gap-2 items-start">
+            <span className="text-xs font-bold text-slate-400 mt-2 w-4 shrink-0">{i + 1}</span>
+            <div className="flex-1 space-y-2">
+              <input
+                type="text"
+                value={faq.question}
+                onChange={e => update(i, 'question', e.target.value)}
+                placeholder="Question"
+                className="w-full border border-slate-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+              />
+              <textarea
+                value={faq.answer}
+                onChange={e => update(i, 'answer', e.target.value)}
+                placeholder="Answer"
+                rows={2}
+                className="w-full border border-slate-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 resize-none"
+              />
+              <input
+                type="text"
+                value={faq.category || ''}
+                onChange={e => update(i, 'category', e.target.value)}
+                placeholder="Category (optional)"
+                className="w-full border border-slate-300 rounded-md px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-slate-400"
+              />
+            </div>
+            <button
+              type="button"
+              onClick={() => remove(i)}
+              className="mt-1.5 text-red-400 hover:text-red-600 text-lg leading-none"
+              title="Remove FAQ"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function H2SectionEditor({ sections, onChange }: { sections: H2Section[]; onChange: (s: H2Section[]) => void }) {
+  const add = () => onChange([...sections, { title: '', content: '' }])
+  const remove = (i: number) => onChange(sections.filter((_, idx) => idx !== i))
+  const update = (i: number, field: keyof H2Section, val: string) => {
+    onChange(sections.map((s, idx) => idx === i ? { ...s, [field]: val } : s))
+  }
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide">H2 Sections</span>
+        <button type="button" onClick={add} className="text-xs px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200">
+          + Add Section
+        </button>
+      </div>
+      {sections.length === 0 && <p className="text-xs text-slate-400 italic">No sections yet.</p>}
+      {sections.map((s, i) => (
+        <div key={i} className="border border-slate-200 rounded-lg p-3 space-y-2 bg-slate-50">
+          <div className="flex gap-2 items-start">
+            <span className="text-xs font-bold text-slate-400 mt-2 w-4 shrink-0">{i + 1}</span>
+            <div className="flex-1 space-y-2">
+              <input
+                type="text"
+                value={s.title}
+                onChange={e => update(i, 'title', e.target.value)}
+                placeholder="Section heading (H2)"
+                className="w-full border border-slate-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+              />
+              <textarea
+                value={s.content}
+                onChange={e => update(i, 'content', e.target.value)}
+                placeholder="Section body content"
+                rows={3}
+                className="w-full border border-slate-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 resize-y"
+              />
+            </div>
+            <button type="button" onClick={() => remove(i)} className="mt-1.5 text-red-400 hover:text-red-600 text-lg leading-none">×</button>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function FeatureEditor({ features, onChange }: { features: Feature[]; onChange: (f: Feature[]) => void }) {
+  const add = () => onChange([...features, { title: '', description: '' }])
+  const remove = (i: number) => onChange(features.filter((_, idx) => idx !== i))
+  const update = (i: number, field: keyof Feature, val: string) => {
+    onChange(features.map((f, idx) => idx === i ? { ...f, [field]: val } : f))
+  }
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Features / Highlights</span>
+        <button type="button" onClick={add} className="text-xs px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200">
+          + Add Feature
+        </button>
+      </div>
+      {features.length === 0 && <p className="text-xs text-slate-400 italic">No features yet.</p>}
+      {features.map((f, i) => (
+        <div key={i} className="border border-slate-200 rounded-lg p-3 bg-slate-50">
+          <div className="flex gap-2 items-start">
+            <span className="text-xs font-bold text-slate-400 mt-2 w-4 shrink-0">{i + 1}</span>
+            <div className="flex-1 space-y-2">
+              <input
+                type="text"
+                value={f.title}
+                onChange={e => update(i, 'title', e.target.value)}
+                placeholder="Feature title"
+                className="w-full border border-slate-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+              />
+              <textarea
+                value={f.description}
+                onChange={e => update(i, 'description', e.target.value)}
+                placeholder="Feature description"
+                rows={2}
+                className="w-full border border-slate-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 resize-none"
+              />
+            </div>
+            <button type="button" onClick={() => remove(i)} className="mt-1.5 text-red-400 hover:text-red-600 text-lg leading-none">×</button>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// ── Content section rendered per template type ────────────────────────────────
+
+function ContentEditor({ editing, setEditing }: { editing: Partial<CmsPage>; setEditing: React.Dispatch<React.SetStateAction<Partial<CmsPage> | null>> }) {
+  const content = getContent(editing)
+  const updateContent = useContentField(editing, setEditing)
+
+  const str = (key: string) => (content[key] as string) || ''
+  const faqs: ContentFaq[] = (content.faqs as ContentFaq[]) || []
+  const h2Sections: H2Section[] = (content.h2_sections as H2Section[]) || []
+  const features: Feature[] = (content.features as Feature[]) || []
+
+  const templateType = editing.template_type || 'service'
+
+  return (
+    <div className="space-y-5">
+      <div className="border-t border-slate-200 pt-5">
+        <h3 className="text-sm font-bold text-slate-700 mb-4">Page Content</h3>
+
+        {/* Hero fields — all templates */}
+        <div className="space-y-3 mb-5">
+          <div>
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Hero Title</label>
+            <input
+              type="text"
+              value={str('hero_title')}
+              onChange={e => updateContent('hero_title', e.target.value)}
+              placeholder="Main hero heading displayed at the top of the page"
+              className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+            />
+          </div>
+          {(templateType === 'service' || templateType === 'landing') && (
+            <div>
+              <label className="block text-xs font-semibold text-slate-600 mb-1">Hero Subtitle</label>
+              <input
+                type="text"
+                value={str('hero_subtitle')}
+                onChange={e => updateContent('hero_subtitle', e.target.value)}
+                placeholder="Optional subtitle below the hero heading"
+                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Intro / description */}
+        {templateType === 'location' ? (
+          <div className="space-y-3 mb-5">
+            <div>
+              <label className="block text-xs font-semibold text-slate-600 mb-1">Area Description</label>
+              <textarea
+                value={str('area_description')}
+                onChange={e => updateContent('area_description', e.target.value)}
+                rows={3}
+                placeholder="Short description of the location/area"
+                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 resize-y"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-600 mb-1">Intro Paragraph</label>
+              <textarea
+                value={str('intro')}
+                onChange={e => updateContent('intro', e.target.value)}
+                rows={3}
+                placeholder="Opening paragraph for the page body"
+                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 resize-y"
+              />
+            </div>
+          </div>
+        ) : templateType !== 'landing' ? (
+          <div className="mb-5">
+            <label className="block text-xs font-semibold text-slate-600 mb-1">Intro Paragraph</label>
+            <textarea
+              value={str('intro')}
+              onChange={e => updateContent('intro', e.target.value)}
+              rows={3}
+              placeholder="Opening paragraph for the page body"
+              className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 resize-y"
+            />
+          </div>
+        ) : null}
+
+        {/* H2 sections — service only */}
+        {templateType === 'service' && (
+          <div className="mb-5">
+            <H2SectionEditor
+              sections={h2Sections}
+              onChange={val => updateContent('h2_sections', val)}
+            />
+          </div>
+        )}
+
+        {/* Features — service only */}
+        {templateType === 'service' && (
+          <div className="mb-5">
+            <FeatureEditor
+              features={features}
+              onChange={val => updateContent('features', val)}
+            />
+          </div>
+        )}
+
+        {/* CTA fields — service, location, faq */}
+        {templateType !== 'landing' && (
+          <div className="grid grid-cols-2 gap-3 mb-5">
+            <div>
+              <label className="block text-xs font-semibold text-slate-600 mb-1">CTA Phone</label>
+              <input
+                type="text"
+                value={str('cta_phone')}
+                onChange={e => updateContent('cta_phone', e.target.value)}
+                placeholder="Phone number for CTA"
+                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-600 mb-1">CTA Text</label>
+              <input
+                type="text"
+                value={str('cta_text')}
+                onChange={e => updateContent('cta_text', e.target.value)}
+                placeholder="Call-to-action button label"
+                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* FAQs — service, location, faq templates */}
+        {templateType !== 'landing' && (
+          <FaqEditor
+            faqs={faqs}
+            onChange={val => updateContent('faqs', val)}
+          />
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ── Main page ─────────────────────────────────────────────────────────────────
 
 export default function AdminPagesPage() {
   const supabase = createClient()
@@ -57,9 +371,15 @@ export default function AdminPagesPage() {
       q = supabase.from('pages').insert(payload)
     } else {
       const payload: Record<string, unknown> = {
-        title: editing.title, slug: editing.slug, meta_title: editing.meta_title,
-        meta_description: editing.meta_description, template_type: editing.template_type,
-        status: editing.status, site_id: editing.site_id, updated_at: new Date().toISOString(),
+        title: editing.title,
+        slug: editing.slug,
+        meta_title: editing.meta_title,
+        meta_description: editing.meta_description,
+        template_type: editing.template_type,
+        status: editing.status,
+        site_id: editing.site_id,
+        content: editing.content || {},
+        updated_at: new Date().toISOString(),
       }
       if (editing.status === 'published' && !editing.published_at) {
         payload.published_at = new Date().toISOString()
@@ -210,12 +530,13 @@ export default function AdminPagesPage() {
 
       {/* Edit Modal */}
       {editing && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 px-4 bg-black/50">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-y-auto">
-            <div className="p-6 border-b border-slate-200">
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-8 px-4 pb-8 bg-black/50 overflow-y-auto">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl my-auto">
+            <div className="p-6 border-b border-slate-200 sticky top-0 bg-white rounded-t-2xl z-10">
               <h2 className="text-lg font-bold text-slate-900">{editing.id ? 'Edit Page' : 'New Page'}</h2>
             </div>
             <div className="p-6 space-y-4">
+              {/* ── Metadata ── */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-600 mb-1">Site</label>
@@ -323,8 +644,12 @@ export default function AdminPagesPage() {
                   <option value="published">Published</option>
                 </select>
               </div>
+
+              {/* ── Content section ── */}
+              <ContentEditor editing={editing} setEditing={setEditing} />
             </div>
-            <div className="p-6 border-t border-slate-200 flex gap-3 justify-end">
+
+            <div className="p-6 border-t border-slate-200 flex gap-3 justify-end sticky bottom-0 bg-white rounded-b-2xl">
               <button onClick={() => setEditing(null)} className="px-4 py-2 text-sm text-slate-600 hover:text-slate-900">Cancel</button>
               <button
                 onClick={save}
