@@ -47,11 +47,20 @@ export default function RVANav() {
               </div>
             )}
           </div>
+          <a href="/rva#about" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+            About
+          </a>
+          <a href="/rva#gallery" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+            Gallery
+          </a>
           <a href="/rva#contact" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
             Contact
           </a>
           <a href="/blog" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
             Blog
+          </a>
+          <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+            Transportation
           </a>
           <a href={rvaData.phoneHref} aria-label={`Call Rich Valley Adventures at ${rvaData.phone}`} className="bg-rva-copper hover:bg-rva-copper-light text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:shadow-lg">
             {rvaData.phone}
@@ -80,11 +89,20 @@ export default function RVANav() {
               </div>
             )}
           </div>
+          <a href="/rva#about" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
+            About
+          </a>
+          <a href="/rva#gallery" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
+            Gallery
+          </a>
           <a href="/rva#contact" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
             Contact
           </a>
           <a href="/blog" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
             Blog
+          </a>
+          <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
+            Transportation
           </a>
           <a href={rvaData.phoneHref} className="block bg-rva-copper text-white text-center py-3 rounded-full font-semibold mt-2">
             {rvaData.phone}
