@@ -6,6 +6,7 @@ import ServicePageTemplate from '@/components/templates/ServicePageTemplate'
 import LocationPageTemplate from '@/components/templates/LocationPageTemplate'
 import FaqPageTemplate from '@/components/templates/FaqPageTemplate'
 import LandingPageTemplate from '@/components/templates/LandingPageTemplate'
+import ALPNav from '@/components/alpenglow/ALPNav'
 
 export const revalidate = 30
 
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: 'Page Not Found | Aspen Alpenglow Limousine' }
   }
 
-  const baseUrl = 'https://aspenalpenglowlimosine.com'
+  const baseUrl = 'https://aspenalpenglowlimousine.com'
   const pageUrl = `${baseUrl}/${slugStr}`
 
   return {
@@ -48,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
   if (!page) return null
 
-  const baseUrl = 'https://aspenalpenglowlimosine.com'
+  const baseUrl = 'https://aspenalpenglowlimousine.com'
   const pageUrl = `${baseUrl}/${page.slug}`
 
   const breadcrumb = {
@@ -137,6 +138,8 @@ export default async function CmsPage({ params }: Props) {
 
   return (
     <>
+      <ALPNav />
+      <div className="h-[86px]" />
       {jsonLdSchemas && jsonLdSchemas.map((schema, i) => (
         <script
           key={i}
