@@ -35,7 +35,7 @@ export default function ALPNav() {
   }, [])
 
   return (
-    <nav aria-label="Main navigation" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-alp-navy/95 backdrop-blur-md shadow-lg' : 'bg-alp-navy/95 backdrop-blur-md shadow-lg'}`}>
+    <nav aria-label="Main navigation" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'shadow-lg' : 'shadow-lg'}`} style={{ backgroundColor: '#1b2338' }}>
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="/alpenglow" className="flex items-center gap-3" aria-label="Aspen Alpenglow Limousine — home">
           <Image src={alpenglowData.logo} alt="Aspen Alpenglow Limousine logo" width={160} height={50} className="h-14 w-auto object-contain" unoptimized loading="eager" />
@@ -52,7 +52,7 @@ export default function ALPNav() {
               <svg className={`w-3.5 h-3.5 transition-transform ${servicesOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
             {servicesOpen && (
-              <div className="absolute top-full left-0 mt-1 w-56 rounded-xl shadow-2xl border border-white/10 py-2 z-50" style={{ backgroundColor: '#1B2338' }}>
+              <div className="absolute top-full left-0 mt-1 w-56 rounded-xl shadow-2xl border border-white/10 py-2 z-50" style={{ backgroundColor: '#1b2338', backdropFilter: 'none' }}>
                 {SERVICE_PAGES.map((page) => (
                   <a key={page.slug} href={`/alpenglow/${page.slug}`} className="block px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
                     {page.label}
@@ -78,7 +78,7 @@ export default function ALPNav() {
               <svg className={`w-3.5 h-3.5 transition-transform ${areasOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
             {areasOpen && (
-              <div className="absolute top-full left-0 mt-1 w-48 rounded-xl shadow-2xl border border-white/10 py-2 z-50" style={{ backgroundColor: '#1B2338' }}>
+              <div className="absolute top-full left-0 mt-1 w-48 rounded-xl shadow-2xl border border-white/10 py-2 z-50" style={{ backgroundColor: '#1b2338', backdropFilter: 'none' }}>
                 {AREA_PAGES.map((page) => (
                   <a key={page.slug} href={`/alpenglow/${page.slug}`} className="block px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
                     {page.label}
