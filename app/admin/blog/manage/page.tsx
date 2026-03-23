@@ -89,7 +89,7 @@ export default function BlogManagePage() {
   const blogUrl = (post: BlogPost) =>
     post.site_key === 'rva'
       ? `https://richvalleyadventures.com/blog/${post.slug}`
-      : `https://aspenalpenglow.com/blog/${post.slug}`
+      : `https://aspenalpenglowlimosine.com/blog/${post.slug}`
 
   return (
     <div>

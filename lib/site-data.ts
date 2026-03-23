@@ -51,7 +51,7 @@ export const rvaData = {
   partnerSite: {
     name: 'Aspen Alpenglow Limousine',
     description: 'Need a ride to the trailhead — or anywhere else? Our sister company offers luxury transportation with the same personal touch.',
-    url: 'https://aspenalpenglow.com',
+    url: 'https://aspenalpenglowlimosine.com',
   },
 }
 

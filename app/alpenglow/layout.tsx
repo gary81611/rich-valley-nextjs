@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-const ALP_URL = 'https://aspenalpenglow.com'
+const ALP_URL = 'https://aspenalpenglowlimosine.com'
 const ALP_OG_IMAGE = 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1200&q=80'
 
 export const metadata: Metadata = {

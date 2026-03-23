@@ -168,7 +168,7 @@ function SchemaTab({ supabase }: { supabase: any }) {
             '@context': 'https://schema.org',
             '@type': ['LocalBusiness', 'LimousineBus'],
             name: 'Aspen Alpenglow Limousine',
-            url: 'https://aspenalpenglow.com',
+            url: 'https://aspenalpenglowlimosine.com',
             telephone: '+1-970-456-3666',
             description: 'Luxury private car and limousine service in Aspen, Colorado. Airport transfers, weddings, ski resort shuttles, corporate travel.',
             foundingDate: '2012',
@@ -883,7 +883,7 @@ export default function SeoAdminPage() {
                   <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
                     <p className="text-[10px] text-slate-400 mb-1.5 uppercase tracking-wider font-medium">Google search preview</p>
                     <p className="text-blue-700 text-base font-medium leading-tight truncate">{page.meta_title || 'Untitled Page'}</p>
-                    <p className="text-green-700 text-xs mt-0.5">{page.canonical_url || `${page.site_key === 'rva' ? 'richvalleyadventures.com' : 'aspenalpenglow.com'}${page.page_slug}`}</p>
+                    <p className="text-green-700 text-xs mt-0.5">{page.canonical_url || `${page.site_key === 'rva' ? 'richvalleyadventures.com' : 'aspenalpenglowlimosine.com'}${page.page_slug}`}</p>
                     <p className="text-slate-600 text-sm mt-1 line-clamp-2">{page.meta_description || 'No description set.'}</p>
                   </div>
                 </div>
@@ -941,11 +941,11 @@ richvalleyadventures.com/gallery
 richvalleyadventures.com/contact
 richvalleyadventures.com/terms
 richvalleyadventures.com/privacy
-aspenalpenglow.com/
-aspenalpenglow.com/services
-aspenalpenglow.com/fleet
-aspenalpenglow.com/destinations
-aspenalpenglow.com/contact`}</pre>
+aspenalpenglowlimosine.com/
+aspenalpenglowlimosine.com/services
+aspenalpenglowlimosine.com/fleet
+aspenalpenglowlimosine.com/destinations
+aspenalpenglowlimosine.com/contact`}</pre>
             </div>
             <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
               <div className="flex items-center gap-2 mb-3">
@@ -958,7 +958,7 @@ Allow: /
 Disallow: /admin/
 
 Sitemap: richvalleyadventures.com/sitemap.xml
-Sitemap: aspenalpenglow.com/sitemap.xml`}</pre>
+Sitemap: aspenalpenglowlimosine.com/sitemap.xml`}</pre>
             </div>
           </div>
         </div>
@@ -981,7 +981,7 @@ Sitemap: aspenalpenglow.com/sitemap.xml`}</pre>
           {
             id: 'bing-webmaster', priority: 'HIGH' as const,
             title: 'Submit to Bing Webmaster Tools',
-            desc: 'Add both sitemaps (richvalleyadventures.com/sitemap.xml, aspenalpenglow.com/sitemap.xml).',
+            desc: 'Add both sitemaps (richvalleyadventures.com/sitemap.xml, aspenalpenglowlimosine.com/sitemap.xml).',
             why: "ChatGPT uses Bing for real-time search. If Bing can't find you, ChatGPT can't recommend you.",
             links: [{ label: 'Open Bing Webmaster', href: 'https://www.bing.com/webmasters' }],
             time: '~15 min',

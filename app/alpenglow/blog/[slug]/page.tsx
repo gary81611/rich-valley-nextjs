@@ -37,10 +37,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: post.meta_title || post.title,
       description: post.meta_description || undefined,
       type: 'article',
-      url: `https://aspenalpenglow.com/blog/${post.slug}`,
+      url: `https://aspenalpenglowlimosine.com/blog/${post.slug}`,
       publishedTime: post.published_at || undefined,
     },
-    alternates: { canonical: `https://aspenalpenglow.com/blog/${post.slug}` },
+    alternates: { canonical: `https://aspenalpenglowlimosine.com/blog/${post.slug}` },
   }
 }
 
@@ -127,11 +127,11 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
     publisher: {
       '@type': 'Organization',
       name: 'Aspen Alpenglow Limousine',
-      url: 'https://aspenalpenglow.com',
+      url: 'https://aspenalpenglowlimosine.com',
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://aspenalpenglow.com/blog/${post.slug}`,
+      '@id': `https://aspenalpenglowlimosine.com/blog/${post.slug}`,
     },
   }
 

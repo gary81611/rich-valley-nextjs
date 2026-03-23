@@ -10,7 +10,7 @@ export default function robots(): MetadataRoute.Robots {
     ],
     sitemap: [
       'https://richvalleyadventures.com/sitemap.xml',
-      'https://aspenalpenglow.com/sitemap.xml',
+      'https://aspenalpenglowlimosine.com/sitemap.xml',
     ],
   }
 }

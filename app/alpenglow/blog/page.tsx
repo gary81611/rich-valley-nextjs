@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     title: 'Blog | Aspen Alpenglow Limousine',
     description: 'Luxury transportation guides and Aspen travel tips.',
     type: 'website',
-    url: 'https://aspenalpenglow.com/blog',
+    url: 'https://aspenalpenglowlimosine.com/blog',
   },
 }
 

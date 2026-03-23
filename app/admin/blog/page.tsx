@@ -629,7 +629,7 @@ export default function BlogGeneratorPage() {
                     />
                   </div>
                   <p className="text-[10px] text-slate-400 mt-1">
-                    {selectedBrand === 'rva' ? 'richvalleyadventures.com' : 'aspenalpenglow.com'}/blog/{slugValue || '…'}
+                    {selectedBrand === 'rva' ? 'richvalleyadventures.com' : 'aspenalpenglowlimosine.com'}/blog/{slugValue || '…'}
                   </p>
                 </div>
 
