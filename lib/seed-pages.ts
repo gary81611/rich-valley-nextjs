@@ -678,7 +678,7 @@ const aalPages: PageSeed[] = [
         { title: 'Custom Tour Design', description: 'We build your tour around your interests — spirits, wine, beer, or a combination — selecting the best venues for your preferences.' },
         { title: 'Marble Distilling Packages', description: 'Signature Aspen Valley craft spirits tours featuring Colorado\'s most celebrated mountain distillery.' },
         { title: 'Palisade Wine Country Day Trips', description: 'Full-day Grand Valley wine country expeditions with 3–4 winery visits and a scenic mountain return.' },
-        { title: 'Roaring Fork Brewery Tours', description: 'Local craft brewery tours featuring Marble Brewing, Colorado's finest in the heart of the valley.' },
+        { title: 'Roaring Fork Brewery Tours', description: 'Local craft brewery tours featuring Marble Brewing, Colorado\'s finest in the heart of the valley.' },
         { title: 'Charcuterie & Provisions', description: 'Pre-order a charcuterie board for the vehicle — perfect for the return from a full day of tasting.' },
       ],
       faqs: [
