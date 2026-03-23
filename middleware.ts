@@ -63,6 +63,13 @@ export async function middleware(request: NextRequest) {
     site = 'rva'
   }
 
+  // 301 redirects for stale RVA URLs indexed by search engines
+  if (site === 'rva') {
+    if (pathname.startsWith('/service-areas') || pathname === '/horseback-riding') {
+      return NextResponse.redirect('https://www.richvalleyadventures.com/', 301)
+    }
+  }
+
   const siteParam = url.searchParams.get('site')
   if (siteParam === 'alpenglow' || siteParam === 'rva') {
     site = siteParam
