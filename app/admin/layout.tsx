@@ -35,6 +35,13 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
+    label: 'PAGES & NAVIGATION',
+    items: [
+      { name: 'CMS Pages', href: '/admin/pages', icon: 'document' },
+      { name: 'Navigation', href: '/admin/navigation', icon: 'menu' },
+    ],
+  },
+  {
     label: 'CONTENT',
     items: [
       { name: 'Blog Generator', href: '/admin/blog', icon: 'pencil' },
@@ -77,6 +84,8 @@ const iconPaths: Record<string, string> = {
   phone: 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z',
   search: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z',
   chart: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
+  document: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+  menu: 'M4 6h16M4 12h8m-8 6h16',
   pencil: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
   list: 'M4 6h16M4 10h16M4 14h16M4 18h16',
   send: 'M12 19l9 2-9-18-9 18 9-2zm0 0v-8',

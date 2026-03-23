@@ -29,7 +29,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${RVA_URL}/privacy`, lastModified, changeFrequency: 'monthly', priority: 0.3 },
   ]
 
-  // Fetch published blog posts from Supabase
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   if (!supabaseUrl || !supabaseKey || !supabaseUrl.startsWith('http')) {
@@ -38,25 +37,43 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const supabase = createClient(supabaseUrl, supabaseKey)
+
+    // Blog posts
     const { data: posts } = await supabase
       .from('blog_posts')
       .select('slug, site_key, published_at, updated_at')
       .eq('status', 'published')
       .order('published_at', { ascending: false })
 
-    if (!posts) return staticEntries
-
-    const blogEntries: MetadataRoute.Sitemap = posts.map((post) => {
+    const blogEntries: MetadataRoute.Sitemap = (posts || []).map((post) => {
       const baseUrl = post.site_key === 'alpenglow' ? ALP_URL : RVA_URL
       return {
         url: `${baseUrl}/blog/${post.slug}`,
         lastModified: post.updated_at ? new Date(post.updated_at) : lastModified,
-        changeFrequency: 'monthly',
+        changeFrequency: 'monthly' as const,
         priority: 0.7,
       }
     })
 
-    return [...staticEntries, ...blogEntries]
+    // CMS pages
+    const { data: pages } = await supabase
+      .from('pages')
+      .select('slug, site_id, updated_at')
+      .eq('status', 'published')
+      .order('site_id')
+      .order('slug')
+
+    const pageEntries: MetadataRoute.Sitemap = (pages || []).map((page) => {
+      const baseUrl = page.site_id === 'alpenglow' ? ALP_URL : RVA_URL
+      return {
+        url: `${baseUrl}/${page.slug}`,
+        lastModified: page.updated_at ? new Date(page.updated_at) : lastModified,
+        changeFrequency: 'weekly' as const,
+        priority: 0.85,
+      }
+    })
+
+    return [...staticEntries, ...blogEntries, ...pageEntries]
   } catch {
     return staticEntries
   }
