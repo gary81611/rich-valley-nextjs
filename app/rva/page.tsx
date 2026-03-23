@@ -78,7 +78,7 @@ export default function RVAPage() {
           </a>
           <div className="hidden md:flex items-center gap-8">
             <div className="relative" onMouseEnter={() => setAdventuresOpen(true)} onMouseLeave={() => setAdventuresOpen(false)}>
-              <button className="flex items-center gap-1 text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+              <button onClick={() => setAdventuresOpen(!adventuresOpen)} className="flex items-center gap-1 text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
                 Adventures
                 <svg className={`w-3.5 h-3.5 transition-transform ${adventuresOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
               </button>
