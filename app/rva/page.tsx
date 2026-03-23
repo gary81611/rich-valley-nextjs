@@ -8,9 +8,25 @@ import { rvaData, photoNotes } from '@/lib/site-data'
 import { createClient } from '@/lib/supabase'
 import type { Adventure, Testimonial, GalleryImage } from '@/lib/types'
 
+const SERVICE_PAGES = [
+  { label: 'Fly Fishing', slug: 'fly-fishing' },
+  { label: 'White Water Rafting', slug: 'white-water-rafting' },
+  { label: 'Hiking Trails', slug: 'hiking-trails' },
+  { label: 'Mountain Biking', slug: 'mountain-biking' },
+  { label: 'Horseback Riding', slug: 'horseback-riding' },
+  { label: 'ATV Tours', slug: 'atv-tours' },
+  { label: 'Jeep Tours', slug: 'jeep-tours' },
+  { label: 'Snowmobile Tours', slug: 'snowmobile-tours' },
+  { label: 'Winter Activities', slug: 'winter-activities' },
+  { label: 'Wine Country Tours', slug: 'wine-country-tours' },
+  { label: 'Ski Resort Transportation', slug: 'ski-resort-transportation' },
+]
+
 export default function RVAPage() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [adventuresOpen, setAdventuresOpen] = useState(false)
+  const [mobileAdventuresOpen, setMobileAdventuresOpen] = useState(false)
   const [adventures, setAdventures] = useState<Array<{ title: string; slug: string; description: string; image: string; duration: string; difficulty: string; season: string }>>(rvaData.adventures)
   const [testimonials, setTestimonials] = useState(rvaData.testimonials)
   const [gallery, setGallery] = useState(rvaData.gallery)
@@ -60,7 +76,22 @@ export default function RVAPage() {
             <Image src={rvaData.logo} alt="Rich Valley Adventures logo" width={160} height={50} className="h-14 w-auto object-contain" unoptimized loading="eager" />
           </a>
           <div className="hidden md:flex items-center gap-8">
-            {['Adventures', 'About', 'Gallery', 'Contact'].map((item) => (
+            <div className="relative" onMouseEnter={() => setAdventuresOpen(true)} onMouseLeave={() => setAdventuresOpen(false)}>
+              <button className="flex items-center gap-1 text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+                Adventures
+                <svg className={`w-3.5 h-3.5 transition-transform ${adventuresOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </button>
+              {adventuresOpen && (
+                <div className="absolute top-full left-0 mt-1 w-56 bg-rva-forest/98 backdrop-blur-md rounded-xl shadow-2xl border border-white/10 py-2 z-50">
+                  {SERVICE_PAGES.map((page) => (
+                    <a key={page.slug} href={`/rva/${page.slug}`} className="block px-4 py-2 text-white/85 hover:text-rva-copper-light hover:bg-white/5 text-sm transition-colors">
+                      {page.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+            {['About', 'Gallery', 'Contact'].map((item) => (
               <a key={item} href={`#${item.toLowerCase()}`} className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
                 {item}
               </a>
@@ -83,7 +114,22 @@ export default function RVAPage() {
         </div>
         {mobileMenuOpen && (
           <div className="md:hidden bg-rva-forest border-t border-white/10 px-6 py-4 space-y-3">
-            {['Adventures', 'About', 'Gallery', 'Contact'].map((item) => (
+            <div>
+              <button onClick={() => setMobileAdventuresOpen(!mobileAdventuresOpen)} className="flex items-center justify-between w-full text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
+                Adventures
+                <svg className={`w-3.5 h-3.5 transition-transform ${mobileAdventuresOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </button>
+              {mobileAdventuresOpen && (
+                <div className="pl-4 space-y-1 border-l border-white/20 ml-2 mt-1">
+                  {SERVICE_PAGES.map((page) => (
+                    <a key={page.slug} href={`/rva/${page.slug}`} onClick={() => setMobileMenuOpen(false)} className="block text-white/75 hover:text-rva-copper-light text-sm py-1.5">
+                      {page.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+            {['About', 'Gallery', 'Contact'].map((item) => (
               <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
                 {item}
               </a>
