@@ -51,7 +51,7 @@ Return ONLY valid JSON array (no markdown fences):
 }
 
 const brandContext: Record<string, string> = {
-  rva: `Rich Valley Adventures is a guided outdoor adventure company in Aspen, Colorado, operating since 2012. They offer 7 guided activities: fly fishing (Roaring Fork River, Gold Medal waters), paddle boarding, mountain biking, trail hiking (Elk Mountains), scenic Escalade tours, horseback riding, and elevated camping/glamping. Small groups of 2-6 guests per guide. All gear included. Phone: 970-456-3666. Based in Aspen, CO 81611. The Roaring Fork River is a Gold Medal trout fishery designated by Colorado Parks and Wildlife. Price range: $150-$350/person.`,
+  rva: `Rich Valley Adventures is a guided outdoor adventure company in Aspen, Colorado, operating since 2012. They offer guided activities: fly fishing (Roaring Fork River, Gold Medal waters), paddle boarding, mountain biking, trail hiking (Elk Mountains), scenic Escalade tours, and elevated camping/glamping. Small groups of 2-6 guests per guide. All gear included. Phone: 970-456-3666. Based in Aspen, CO 81611. The Roaring Fork River is a Gold Medal trout fishery designated by Colorado Parks and Wildlife. Price range: $150-$350/person.`,
   alpenglow: `Aspen Alpenglow Limousine is a luxury private car and limousine service in Aspen, Colorado, operating 24/7 since 2012. Fleet: Executive Cadillac Escalade (6 passengers) and Luxury Mercedes Sprinter van (14 passengers). Services: airport transfers (ASE, EGE, DEN airports), hourly charter, corporate travel, wedding transportation. Serves Aspen, Snowmass Village, Basalt, Carbondale, Glenwood Springs, Vail, Eagle, Denver. Flight tracking, meet-and-greet, complimentary amenities. Phone: 970-456-3666.`,
 }
 

@@ -23,7 +23,6 @@ export const rvaData = {
     { title: 'Paddle Boarding', slug: 'paddle-boarding', description: 'Glide across crystal-clear alpine lakes with stunning mountain backdrops. Perfect for families and first-timers.', image: '/images/adventures/paddle-boarding.jpg', duration: '2–3 Hours', difficulty: 'Beginner Friendly', season: 'summer' as const },
     { title: 'Mountain Biking', slug: 'mountain-biking', description: 'Explore world-class singletrack and scenic trails through aspen groves and alpine meadows.', image: '/images/adventures/mountain-biking.jpg', duration: 'Half Day / Full Day', difficulty: 'All Levels', season: 'summer' as const },
     { title: 'Hiking', slug: 'hiking', description: 'Discover hidden waterfalls, wildflower meadows, and panoramic summit views with guides who bring the ecology and history of the Rockies to life.', image: '/images/adventures/hiking.png', duration: '3–6 Hours', difficulty: 'Moderate', season: 'summer' as const },
-    { title: 'Horseback Riding', slug: 'horseback-riding', description: 'Experience the Rockies the way the first settlers did — on horseback. Gentle trail rides through meadows and aspen forests.', image: '/images/adventures/horseback-riding.png', duration: '2–4 Hours', difficulty: 'All Levels', season: 'summer' as const },
     { title: 'Snowshoeing', slug: 'snowshoeing', description: 'Explore pristine backcountry trails through snow-covered aspen groves and alpine meadows. Our guides lead you through the most beautiful winter landscapes in the Rockies.', image: '/images/adventures/hiking.png', duration: '2–4 Hours', difficulty: 'All Levels', season: 'winter' as const },
   ],
   winterAdventures: [
@@ -44,7 +43,7 @@ export const rvaData = {
   ],
   gallery: [
     '/images/adventures/fly-fishing.png', '/images/adventures/paddle-boarding.jpg', '/images/adventures/mountain-biking.jpg',
-    '/images/adventures/hiking.png', '/images/adventures/elevated-camping.jpeg', '/images/adventures/horseback-riding.png',
+    '/images/adventures/hiking.png', '/images/adventures/elevated-camping.jpeg', '/images/adventures/scenic-escalade.png',
     '/images/adventures/fly-fishing-action.jpeg', '/images/adventures/paddle-boarding-lake.png', '/images/adventures/fishing-catch.jpeg',
   ],
   partnerSite: {
@@ -217,7 +216,7 @@ export const rvaFaqs = [
   { q: 'What is the best time of year for fly fishing in the Roaring Fork Valley?', a: 'Peak fly fishing season in the Roaring Fork Valley near Aspen runs July through September, when the river is lower and clearer. The full season runs May–October. Spring runoff (April–June) can make the river high and murky. Certain Gold Medal stretches are fishable year-round.' },
   { q: 'Do I need prior experience for paddle boarding or mountain biking?', a: "No experience is required for any of our adventures. Our certified guides provide complete instruction, and we select terrain appropriate for each group's ability level. All ages and fitness levels are welcome. Private instruction is available for complete beginners." },
   { q: 'How small are Rich Valley Adventures guided groups?', a: 'We keep groups intentionally small — typically 2 to 6 guests per guide. We do not run large group tours. Private and semi-private bookings are available for families, couples, and corporate groups. Small groups are central to the quality and safety of every experience.' },
-  { q: 'What outdoor adventures are available near Aspen in summer?', a: 'Rich Valley Adventures offers 7 guided outdoor experiences near Aspen from May through October: fly fishing on the Roaring Fork River, stand-up paddle boarding on mountain lakes, mountain biking on singletrack trails, guided hiking in the Elk Mountains, scenic private Escalade tours, horseback riding, and elevated camping.' },
+  { q: 'What outdoor adventures are available near Aspen in summer?', a: 'Rich Valley Adventures offers guided outdoor experiences near Aspen from May through October: fly fishing on the Roaring Fork River, stand-up paddle boarding on mountain lakes, mountain biking on singletrack trails, guided hiking in the Elk Mountains, scenic private Escalade tours, and elevated camping.' },
   { q: 'Is fly fishing legal on the Roaring Fork River near Aspen?', a: 'Yes. The Roaring Fork River and many tributaries near Aspen are designated Gold Medal trout waters open to fly fishing with a valid Colorado license. Rich Valley Adventures handles all licensing as part of guided trips — guests do not need to obtain a license separately.' },
   { q: 'Where is Rich Valley Adventures based and what areas do you serve?', a: 'We are based in Aspen, Colorado (81611) and guide adventures throughout the Roaring Fork Valley, including Aspen, Snowmass Village, Basalt, and Carbondale. Rich Valley Adventures was founded in 2012 by local outdoor professionals who grew up in the valley.' },
 ]

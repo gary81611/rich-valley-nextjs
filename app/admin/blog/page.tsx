@@ -22,7 +22,7 @@ const RVA_KEYWORDS = [
   'guided hiking tours Roaring Fork Valley',
   'Aspen whitewater rafting trips',
   'Colorado mountain biking Aspen trails',
-  'Aspen horseback riding adventures',
+  'Aspen elevated camping glamping adventures',
   'winter snowshoeing tours Aspen',
   'bachelor party activities Aspen Colorado',
   'corporate team building Aspen outdoors',
@@ -43,7 +43,7 @@ const AAL_KEYWORDS = [
 ]
 
 const BLOG_SYSTEM_PROMPT = `You are an expert content writer for two Aspen, Colorado-based businesses:
-- Rich Valley Adventures (RVA): guided outdoor adventures — fly fishing, hiking, biking, horseback riding, snowshoeing, glamping
+- Rich Valley Adventures (RVA): guided outdoor adventures — fly fishing, hiking, biking, snowshoeing, glamping, scenic Escalade tours
 - Aspen Alpenglow Limousine (AAL): luxury private car and limousine service — airport transfers, weddings, ski resort shuttles, corporate travel
 
 Write an SEO-optimized blog post (800-1200 words) that positions the business as a trusted local authority. The writing should be conversational and knowledgeable, written by someone who lives and works in the Aspen area.

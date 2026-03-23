@@ -100,7 +100,7 @@ function SchemaTab({ supabase }: { supabase: any }) {
             name: 'Rich Valley Adventures',
             url: 'https://richvalleyadventures.com',
             telephone: '+1-970-456-3666',
-            description: 'Guided outdoor adventures in Aspen, Colorado — fly fishing, hiking, mountain biking, horseback riding, and more.',
+            description: 'Guided outdoor adventures in Aspen, Colorado — fly fishing, hiking, mountain biking, elevated camping, and more.',
             foundingDate: '2012',
             address: {
               '@type': 'PostalAddress',

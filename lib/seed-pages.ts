@@ -425,49 +425,6 @@ const rvaPages: PageSeed[] = [
       cta_text: 'Book in the Basalt Area',
     },
   },
-  {
-    site_id: 'rva',
-    slug: 'horseback-riding',
-    title: 'Guided Horseback Riding in Aspen, Colorado',
-    meta_title: 'Guided Horseback Riding Aspen CO | Trail Rides | Rich Valley Adventures',
-    meta_description: 'Guided horseback riding through mountain meadows and aspen forests near Aspen, Colorado. All skill levels welcome. Private and group trail rides available.',
-    template_type: 'service',
-    status: 'published',
-    published_at: new Date().toISOString(),
-    og_image: null,
-    schema_markup: null,
-    content: {
-      hero_title: 'Guided Horseback Riding in Aspen, Colorado',
-      hero_subtitle: 'Explore the Rockies on Horseback with Expert Local Guides',
-      intro: `There is no more timeless way to experience the Roaring Fork Valley than from the back of a horse. Aspen and the surrounding mountains have been traversed on horseback for centuries — by Ute people who called this valley home, by miners during the silver rush, and by ranchers who built the communities that still define life here today.\n\nRich Valley Adventures offers guided horseback trail rides through some of the most spectacular terrain in the Colorado Rockies. Our gentle, well-trained horses and patient guides make horseback riding accessible to complete beginners and enjoyable for experienced riders alike. We lead small groups through aspen groves, wildflower meadows, and mountain trails with panoramic views that no road can reach.\n\nTrips operate from late spring through early fall, when the trails are clear and the high country is at its most vivid.`,
-      h2_sections: [
-        {
-          title: 'Trail Rides Through Aspen\'s Mountain Meadows',
-          content: `Our guided rides traverse private ranch land and public trail corridors in the hills above the Roaring Fork Valley. In summer, these routes pass through meadows blanketed in Colorado wildflowers — Indian paintbrush, blue columbine, and stands of golden aspen. Elk, mule deer, and red-tailed hawks are common sightings. The views from higher elevations stretch across the Elk Mountains and down the valley toward Basalt and Carbondale.\n\nWe offer 2-hour introductory rides suitable for first-time riders, half-day rides that venture into more remote terrain, and customized full-day experiences for groups seeking a deeper backcountry exploration. All rides are led by certified wranglers who combine safety expertise with a deep knowledge of local natural and cultural history.`,
-        },
-        {
-          title: 'What\'s Included in Your Guided Horseback Ride',
-          content: `Every ride includes a pre-ride orientation and safety briefing, horse assignment matched to your experience level, helmet and safety equipment, and the services of a certified wrangler guide throughout the ride. Half-day and full-day rides include a trailside snack or lunch. We accommodate riders from age 8 and up, and we cap all rides at 6 riders per guide to ensure a personal, attentive experience.`,
-        },
-      ],
-      features: [
-        { title: 'All Experience Levels Welcome', description: 'First-timers and experienced riders alike — we match your horse and route to your comfort level.' },
-        { title: 'Certified Wrangler Guides', description: 'Safety-trained, knowledgeable guides who make every ride both safe and deeply enriching.' },
-        { title: 'Small Groups (Max 6)', description: 'Intimate group sizes mean more attention, better pace, and a more personal experience on the trail.' },
-        { title: 'Helmets & Safety Gear Provided', description: 'All required safety equipment is provided. Just wear comfortable pants and closed-toe shoes.' },
-        { title: 'Scenic Aspen Terrain', description: 'Routes through wildflower meadows, aspen groves, and ridge trails with sweeping valley views.' },
-        { title: 'Ages 8 and Up', description: 'Family-friendly with weight and age guidelines to ensure every rider has a safe and enjoyable trip.' },
-      ],
-      faqs: [
-        { question: 'Do I need riding experience?', answer: 'No experience is required. Our introductory rides are designed specifically for first-time riders, with a full orientation and a gentle horse matched to your comfort level. Experienced riders are also welcome and can be placed on more spirited horses for more engaging rides.' },
-        { question: 'What should I wear?', answer: 'Wear long pants (jeans are ideal) and closed-toe shoes or boots. Avoid sandals or flip-flops. We provide helmets — we recommend wearing one regardless of experience. Dress in layers, as mountain mornings can be cool even in summer.' },
-        { question: 'Are the rides suitable for children?', answer: 'Yes — riders ages 8 and up are welcome, provided they meet the weight guidelines (up to 250 lbs). We have calm, experienced horses ideal for younger riders and families. Children must be accompanied by an adult.' },
-        { question: 'How far in advance should I book?', answer: 'We recommend booking at least 1–2 weeks in advance, especially in summer. Weekend dates fill quickly. Contact us to check availability and secure your preferred date and time.' },
-      ],
-      cta_phone: '(970) 456-3666',
-      cta_text: 'Book a Guided Horseback Ride',
-    },
-  },
 ]
 
 // ─── AAL PAGE CONTENT ─────────────────────────────────────────────────────────

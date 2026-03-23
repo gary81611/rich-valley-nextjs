@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { alpenglowData } from '@/lib/site-data'
 
@@ -25,6 +25,8 @@ export default function ALPNav() {
   const [areasOpen, setAreasOpen] = useState(false)
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
   const [mobileAreasOpen, setMobileAreasOpen] = useState(false)
+  const closeServicesTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const closeAreasTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60)
@@ -40,13 +42,17 @@ export default function ALPNav() {
         </a>
         <div className="hidden md:flex items-center gap-8">
           {/* Services dropdown */}
-          <div className="relative" onMouseEnter={() => setServicesOpen(true)} onMouseLeave={() => setServicesOpen(false)}>
+          <div
+            className="relative"
+            onMouseEnter={() => { if (closeServicesTimer.current) clearTimeout(closeServicesTimer.current); setServicesOpen(true) }}
+            onMouseLeave={() => { closeServicesTimer.current = setTimeout(() => setServicesOpen(false), 250) }}
+          >
             <button className="flex items-center gap-1 text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
               Services
               <svg className={`w-3.5 h-3.5 transition-transform ${servicesOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
             {servicesOpen && (
-              <div className="absolute top-full left-0 mt-1 w-56 bg-alp-navy/98 backdrop-blur-md rounded-xl shadow-2xl border border-white/10 py-2 z-50">
+              <div className="absolute top-full left-0 mt-1 w-56 bg-alp-navy rounded-xl shadow-2xl border border-white/10 py-2 z-50">
                 {SERVICE_PAGES.map((page) => (
                   <a key={page.slug} href={`/alpenglow/${page.slug}`} className="block px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
                     {page.label}
@@ -62,13 +68,17 @@ export default function ALPNav() {
             Destinations
           </a>
           {/* Service Areas dropdown */}
-          <div className="relative" onMouseEnter={() => setAreasOpen(true)} onMouseLeave={() => setAreasOpen(false)}>
+          <div
+            className="relative"
+            onMouseEnter={() => { if (closeAreasTimer.current) clearTimeout(closeAreasTimer.current); setAreasOpen(true) }}
+            onMouseLeave={() => { closeAreasTimer.current = setTimeout(() => setAreasOpen(false), 250) }}
+          >
             <button className="flex items-center gap-1 text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
               Service Areas
               <svg className={`w-3.5 h-3.5 transition-transform ${areasOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
             {areasOpen && (
-              <div className="absolute top-full left-0 mt-1 w-48 bg-alp-navy/98 backdrop-blur-md rounded-xl shadow-2xl border border-white/10 py-2 z-50">
+              <div className="absolute top-full left-0 mt-1 w-48 bg-alp-navy rounded-xl shadow-2xl border border-white/10 py-2 z-50">
                 {AREA_PAGES.map((page) => (
                   <a key={page.slug} href={`/alpenglow/${page.slug}`} className="block px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
                     {page.label}
