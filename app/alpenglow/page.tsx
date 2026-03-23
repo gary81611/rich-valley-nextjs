@@ -53,6 +53,7 @@ const alpenglowFaqs = [
 const transportationServices = [
   {
     title: 'Hourly Limo Service',
+    href: '/alpenglow/services',
     description: 'Flexible hourly limousine service for any occasion in Aspen and the Roaring Fork Valley.',
     icon: 'Clock',
     features: [
@@ -65,6 +66,7 @@ const transportationServices = [
   },
   {
     title: 'Corporate Travel & Executive Car Service',
+    href: '/alpenglow/corporate-events',
     description: 'Professional, discreet transportation for business travelers and corporate events.',
     icon: 'Briefcase',
     features: [
@@ -77,6 +79,7 @@ const transportationServices = [
   },
   {
     title: 'Airport Transfer',
+    href: '/alpenglow/airport-transfers',
     description: 'Seamless door-to-door transfers to ASE, EGE, and Denver International airports.',
     icon: 'Plane',
     features: [
@@ -89,6 +92,7 @@ const transportationServices = [
   },
   {
     title: 'Wedding Transportation',
+    href: '/alpenglow/wedding-transportation',
     description: 'Elegant, reliable transportation for your special day in Aspen and Snowmass.',
     icon: 'Heart',
     features: [
@@ -110,9 +114,28 @@ const ServiceIcon = ({ icon }: { icon: string }) => {
   return <div className="text-alp-gold">{icons[icon] ?? null}</div>
 }
 
+const SERVICE_PAGES = [
+  { label: 'Airport Transfers', slug: 'airport-transfers' },
+  { label: 'Corporate Events', slug: 'corporate-events' },
+  { label: 'Wedding Transportation', slug: 'wedding-transportation' },
+  { label: 'Ski Resort Transfers', slug: 'ski-resort-transfers' },
+  { label: 'Wine Tours', slug: 'wine-tours' },
+  { label: 'Night Out', slug: 'night-out' },
+]
+
+const AREA_PAGES = [
+  { label: 'Aspen', slug: 'areas/aspen' },
+  { label: 'Snowmass', slug: 'areas/snowmass' },
+  { label: 'Vail', slug: 'areas/vail' },
+]
+
 export default function AlpenglowPage() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [servicesOpen, setServicesOpen] = useState(false)
+  const [areasOpen, setAreasOpen] = useState(false)
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
+  const [mobileAreasOpen, setMobileAreasOpen] = useState(false)
   const [services, setServices] = useState(alpenglowData.services)
   const [fleet, setFleet] = useState(alpenglowData.fleet)
   const [testimonials, setTestimonials] = useState(alpenglowData.testimonials)
@@ -165,15 +188,51 @@ export default function AlpenglowPage() {
       {/* NAV */}
       <nav aria-label="Main navigation" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-alp-navy/95 backdrop-blur-md shadow-lg' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="#" className="flex items-center gap-3" aria-label="Aspen Alpenglow Limousine — home">
+          <a href="/alpenglow" className="flex items-center gap-3" aria-label="Aspen Alpenglow Limousine — home">
             <Image src={alpenglowData.logo} alt="Aspen Alpenglow Limousine logo" width={160} height={50} className="h-14 w-auto object-contain" unoptimized loading="eager" />
           </a>
           <div className="hidden md:flex items-center gap-8">
-            {['Services', 'Fleet', 'Destinations', 'Service Areas', 'Contact'].map((item) => (
-              <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
-                {item}
-              </a>
-            ))}
+            {/* Services dropdown */}
+            <div className="relative" onMouseEnter={() => setServicesOpen(true)} onMouseLeave={() => setServicesOpen(false)}>
+              <button className="flex items-center gap-1 text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
+                Services
+                <svg className={`w-3.5 h-3.5 transition-transform ${servicesOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </button>
+              {servicesOpen && (
+                <div className="absolute top-full left-0 mt-1 w-56 bg-alp-navy/98 backdrop-blur-md rounded-xl shadow-2xl border border-white/10 py-2 z-50">
+                  {SERVICE_PAGES.map((page) => (
+                    <a key={page.slug} href={`/alpenglow/${page.slug}`} className="block px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
+                      {page.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+            <a href="/alpenglow/fleet" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
+              Fleet
+            </a>
+            <a href="/alpenglow/destinations" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
+              Destinations
+            </a>
+            {/* Service Areas dropdown */}
+            <div className="relative" onMouseEnter={() => setAreasOpen(true)} onMouseLeave={() => setAreasOpen(false)}>
+              <button className="flex items-center gap-1 text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
+                Service Areas
+                <svg className={`w-3.5 h-3.5 transition-transform ${areasOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </button>
+              {areasOpen && (
+                <div className="absolute top-full left-0 mt-1 w-48 bg-alp-navy/98 backdrop-blur-md rounded-xl shadow-2xl border border-white/10 py-2 z-50">
+                  {AREA_PAGES.map((page) => (
+                    <a key={page.slug} href={`/alpenglow/${page.slug}`} className="block px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
+                      {page.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+            <a href="/alpenglow/contact" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
+              Contact
+            </a>
             <a href="/blog" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
               Blog
             </a>
@@ -189,11 +248,45 @@ export default function AlpenglowPage() {
         </div>
         {mobileMenuOpen && (
           <div className="md:hidden bg-alp-navy border-t border-white/10 px-6 py-4 space-y-3">
-            {['Services', 'Fleet', 'Destinations', 'Service Areas', 'Contact'].map((item) => (
-              <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
-                {item}
-              </a>
-            ))}
+            <div>
+              <button onClick={() => setMobileServicesOpen(!mobileServicesOpen)} className="flex items-center justify-between w-full text-white/90 hover:text-alp-gold-light text-sm font-medium py-2">
+                Services
+                <svg className={`w-3.5 h-3.5 transition-transform ${mobileServicesOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </button>
+              {mobileServicesOpen && (
+                <div className="pl-4 space-y-1 border-l border-white/20 ml-2 mt-1">
+                  {SERVICE_PAGES.map((page) => (
+                    <a key={page.slug} href={`/alpenglow/${page.slug}`} onClick={() => setMobileMenuOpen(false)} className="block text-white/75 hover:text-alp-gold-light text-sm py-1.5">
+                      {page.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+            <a href="/alpenglow/fleet" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
+              Fleet
+            </a>
+            <a href="/alpenglow/destinations" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
+              Destinations
+            </a>
+            <div>
+              <button onClick={() => setMobileAreasOpen(!mobileAreasOpen)} className="flex items-center justify-between w-full text-white/90 hover:text-alp-gold-light text-sm font-medium py-2">
+                Service Areas
+                <svg className={`w-3.5 h-3.5 transition-transform ${mobileAreasOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </button>
+              {mobileAreasOpen && (
+                <div className="pl-4 space-y-1 border-l border-white/20 ml-2 mt-1">
+                  {AREA_PAGES.map((page) => (
+                    <a key={page.slug} href={`/alpenglow/${page.slug}`} onClick={() => setMobileMenuOpen(false)} className="block text-white/75 hover:text-alp-gold-light text-sm py-1.5">
+                      {page.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+            <a href="/alpenglow/contact" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
+              Contact
+            </a>
             <a href="/blog" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
               Blog
             </a>
@@ -230,10 +323,10 @@ export default function AlpenglowPage() {
             Distinguished private car and limousine service — available 24/7 since 2012.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="#contact" className="bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block">
+            <a href="/alpenglow/contact" className="bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block">
               Reserve Your Ride
             </a>
-            <a href="#services" className="border-2 border-white text-white hover:bg-white hover:text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
+            <a href="/alpenglow/services" className="border-2 border-white text-white hover:bg-white hover:text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
               Our Services
             </a>
           </div>
@@ -282,7 +375,7 @@ export default function AlpenglowPage() {
                         <span key={f} className="bg-white/5 text-white/70 text-xs px-3 py-1.5 rounded-full border border-white/10">{f}</span>
                       ))}
                     </div>
-                    <a href="#contact" className="inline-block bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-8 py-3 rounded-full font-semibold text-sm transition-all hover:shadow-lg">
+                    <a href="/alpenglow/contact" className="inline-block bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-8 py-3 rounded-full font-semibold text-sm transition-all hover:shadow-lg">
                       Reserve Now
                     </a>
                   </div>
@@ -329,7 +422,7 @@ export default function AlpenglowPage() {
                       </li>
                     ))}
                   </ul>
-                  <a href="#contact" className="mt-6 inline-flex items-center gap-2 text-alp-gold font-semibold text-sm hover:text-alp-gold-light transition-colors">
+                  <a href={service.href} className="mt-6 inline-flex items-center gap-2 text-alp-gold font-semibold text-sm hover:text-alp-gold-light transition-colors">
                     Book This Service
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                   </a>
@@ -573,18 +666,18 @@ export default function AlpenglowPage() {
             <div>
               <h4 className="font-playfair text-lg font-semibold mb-5 text-alp-gold">Services</h4>
               <ul className="space-y-2">
-                {alpenglowData.services.map((s) => (
-                  <li key={s.title}>
-                    <a href="#services" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">{s.title}</a>
-                  </li>
-                ))}
+                <li><a href="/alpenglow/airport-transfers" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Airport Transfers</a></li>
+                <li><a href="/alpenglow/corporate-events" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Corporate Events</a></li>
+                <li><a href="/alpenglow/wedding-transportation" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Wedding Transportation</a></li>
+                <li><a href="/alpenglow/ski-resort-transfers" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Ski Resort Transfers</a></li>
+                <li><a href="/alpenglow/wine-tours" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Wine Tours</a></li>
+                <li><a href="/alpenglow/night-out" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Night Out</a></li>
               </ul>
             </div>
             <div>
               <h4 className="font-playfair text-lg font-semibold mb-5 text-alp-gold">Quick Links</h4>
               <ul className="space-y-2">
-                <li><a href="#contact" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Book Transportation</a></li>
-                <li><a href="#" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Review Us</a></li>
+                <li><a href="/alpenglow/contact" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Book Transportation</a></li>
                 <li><a href="/terms" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Terms & Conditions</a></li>
                 <li><a href="/privacy" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Privacy Policy</a></li>
               </ul>
