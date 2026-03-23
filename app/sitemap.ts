@@ -12,12 +12,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date()
 
   const staticEntries: MetadataRoute.Sitemap = [
+    // RVA pages — no hash-anchor URLs
     { url: RVA_URL, lastModified, changeFrequency: 'weekly', priority: 1.0 },
-    { url: `${RVA_URL}/#adventures`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${RVA_URL}/#about`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${RVA_URL}/#gallery`, lastModified, changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${RVA_URL}/#faq`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${RVA_URL}/#contact`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${RVA_URL}/blog`, lastModified, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${RVA_URL}/terms`, lastModified, changeFrequency: 'monthly', priority: 0.3 },
     { url: `${RVA_URL}/privacy`, lastModified, changeFrequency: 'monthly', priority: 0.3 },
