@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: 'Page Not Found | Aspen Alpenglow Limousine' }
   }
 
-  const baseUrl = 'https://aspenalpenglowlimosine.com'
+  const baseUrl = 'https://aspenalpenglowlimousine.com'
   const pageUrl = `${baseUrl}/${slugStr}`
 
   return {
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
   if (!page) return null
 
-  const baseUrl = 'https://aspenalpenglowlimosine.com'
+  const baseUrl = 'https://aspenalpenglowlimousine.com'
   const pageUrl = `${baseUrl}/${page.slug}`
 
   const breadcrumb = {

@@ -102,7 +102,7 @@ export default function AdminPagesPage() {
   }
 
   const pageUrl = (p: CmsPage) => {
-    const base = p.site_id === 'alpenglow' ? 'https://aspenalpenglowlimosine.com' : 'https://richvalleyadventures.com'
+    const base = p.site_id === 'alpenglow' ? 'https://aspenalpenglowlimousine.com' : 'https://richvalleyadventures.com'
     return `${base}/${p.slug}`
   }
 
@@ -304,7 +304,7 @@ export default function AdminPagesPage() {
                     {editing.meta_title || editing.title}
                   </p>
                   <p className="text-[#006621] text-xs">
-                    {editing.site_id === 'alpenglow' ? 'aspenalpenglowlimosine.com' : 'richvalleyadventures.com'}/{editing.slug || '…'}
+                    {editing.site_id === 'alpenglow' ? 'aspenalpenglowlimousine.com' : 'richvalleyadventures.com'}/{editing.slug || '…'}
                   </p>
                   {editing.meta_description && (
                     <p className="text-[#545454] text-sm mt-1 line-clamp-2">{editing.meta_description}</p>
