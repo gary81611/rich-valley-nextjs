@@ -37,6 +37,9 @@ export const metadata: Metadata = {
     description: 'Expert-guided fly fishing, paddle boarding, mountain biking & more in the Roaring Fork Valley. Since 2012.',
     images: [RVA_OG_IMAGE],
   },
+  verification: {
+    google: '-q1tnKm96Tll0PlWAdnV5kSJHd-doPIrpc7BWnHb53o',
+  },
   other: {
     'geo.region': 'US-CO',
     'geo.placename': 'Aspen, Colorado',
