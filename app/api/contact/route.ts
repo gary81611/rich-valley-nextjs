@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            from: 'Rich Valley <noreply@richvalleyadventures.com>',
+            from: 'Rich Valley <noreply@adaptedprotech.com>',
             to: ['kit@richvalleyadventures.com'],
             subject: `New ${brand === 'alpenglow' ? 'Transportation' : 'Adventure'} Inquiry from ${name}`,
             html: `<h2>New Contact Form Submission</h2><p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Phone:</strong> ${phone || 'N/A'}</p><p><strong>Service:</strong> ${service || 'N/A'}</p><p><strong>Preferred Date:</strong> ${preferred_date || 'N/A'}</p><p><strong>Details:</strong> ${details || 'N/A'}</p>`,
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            from: 'Rich Valley <noreply@richvalleyadventures.com>',
+            from: 'Rich Valley <noreply@adaptedprotech.com>',
             to: [email],
             subject: `We received your inquiry — ${brand === 'alpenglow' ? 'Aspen Alpenglow Limousine' : 'Rich Valley Adventures'}`,
             html: `<h2>Thanks for reaching out, ${name}!</h2><p>We've received your inquiry and will get back to you within 24 hours.</p><p>In the meantime, feel free to call us at <strong>970-456-3666</strong>.</p><p>— The ${brand === 'alpenglow' ? 'Aspen Alpenglow Limousine' : 'Rich Valley Adventures'} Team</p>`,

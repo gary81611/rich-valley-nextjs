@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            from: `${brandName} <noreply@richvalleyadventures.com>`,
+            from: `${brandName} <noreply@adaptedprotech.com>`,
             to: [email],
             subject: `Welcome to ${brandName}!`,
             html: `<h2>Thanks for subscribing!</h2><p>You'll be the first to know about exclusive offers, new adventures, and seasonal specials from ${brandName}.</p><p>— The Team in Aspen, Colorado</p>`,
