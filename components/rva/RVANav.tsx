@@ -1,0 +1,96 @@
+'use client'
+import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import { rvaData } from '@/lib/site-data'
+
+const SERVICE_PAGES = [
+  { label: 'Fly Fishing', slug: 'fly-fishing' },
+  { label: 'Paddle Boarding', slug: 'paddle-boarding' },
+  { label: 'Mountain Biking', slug: 'mountain-biking' },
+  { label: 'Hiking', slug: 'hiking' },
+  { label: 'Horseback Riding', slug: 'horseback-riding' },
+  { label: 'Snowshoeing', slug: 'snowshoeing' },
+  { label: 'Wine Tours', slug: 'wine-tours' },
+]
+
+export default function RVANav() {
+  const [scrolled, setScrolled] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [adventuresOpen, setAdventuresOpen] = useState(false)
+  const [mobileAdventuresOpen, setMobileAdventuresOpen] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 60)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  return (
+    <nav aria-label="Main navigation" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-rva-forest/95 backdrop-blur-md shadow-lg' : 'bg-rva-forest/95 backdrop-blur-md shadow-lg'}`}>
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="/rva" className="flex items-center gap-3" aria-label="Rich Valley Adventures — home">
+          <Image src={rvaData.logo} alt="Rich Valley Adventures logo" width={160} height={50} className="h-14 w-auto object-contain" unoptimized loading="eager" />
+        </a>
+        <div className="hidden md:flex items-center gap-8">
+          <div className="relative" onMouseEnter={() => setAdventuresOpen(true)} onMouseLeave={() => setAdventuresOpen(false)}>
+            <button className="flex items-center gap-1 text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+              Adventures
+              <svg className={`w-3.5 h-3.5 transition-transform ${adventuresOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            {adventuresOpen && (
+              <div className="absolute top-full left-0 mt-1 w-56 bg-rva-forest/98 backdrop-blur-md rounded-xl shadow-2xl border border-white/10 py-2 z-50">
+                {SERVICE_PAGES.map((page) => (
+                  <a key={page.slug} href={`/rva/${page.slug}`} className="block px-4 py-2 text-white/85 hover:text-rva-copper-light hover:bg-white/5 text-sm transition-colors">
+                    {page.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+          <a href="/rva#contact" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+            Contact
+          </a>
+          <a href="/blog" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+            Blog
+          </a>
+          <a href={rvaData.phoneHref} aria-label={`Call Rich Valley Adventures at ${rvaData.phone}`} className="bg-rva-copper hover:bg-rva-copper-light text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:shadow-lg">
+            {rvaData.phone}
+          </a>
+        </div>
+        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle mobile navigation menu" aria-expanded={mobileMenuOpen} className="md:hidden text-white p-2">
+          <div className="w-6 h-0.5 bg-white mb-1.5"></div>
+          <div className="w-6 h-0.5 bg-white mb-1.5"></div>
+          <div className="w-6 h-0.5 bg-white"></div>
+        </button>
+      </div>
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-rva-forest border-t border-white/10 px-6 py-4 space-y-3">
+          <div>
+            <button onClick={() => setMobileAdventuresOpen(!mobileAdventuresOpen)} className="flex items-center justify-between w-full text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
+              Adventures
+              <svg className={`w-3.5 h-3.5 transition-transform ${mobileAdventuresOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            {mobileAdventuresOpen && (
+              <div className="pl-4 space-y-1 border-l border-white/20 ml-2 mt-1">
+                {SERVICE_PAGES.map((page) => (
+                  <a key={page.slug} href={`/rva/${page.slug}`} onClick={() => setMobileMenuOpen(false)} className="block text-white/75 hover:text-rva-copper-light text-sm py-1.5">
+                    {page.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+          <a href="/rva#contact" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
+            Contact
+          </a>
+          <a href="/blog" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
+            Blog
+          </a>
+          <a href={rvaData.phoneHref} className="block bg-rva-copper text-white text-center py-3 rounded-full font-semibold mt-2">
+            {rvaData.phone}
+          </a>
+        </div>
+      )}
+    </nav>
+  )
+}

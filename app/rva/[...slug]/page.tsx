@@ -6,6 +6,7 @@ import ServicePageTemplate from '@/components/templates/ServicePageTemplate'
 import LocationPageTemplate from '@/components/templates/LocationPageTemplate'
 import FaqPageTemplate from '@/components/templates/FaqPageTemplate'
 import LandingPageTemplate from '@/components/templates/LandingPageTemplate'
+import RVANav from '@/components/rva/RVANav'
 
 export const revalidate = 30
 
@@ -133,6 +134,8 @@ export default async function CmsPage({ params }: Props) {
 
   return (
     <>
+      <RVANav />
+      <div className="h-[86px]" />
       {jsonLdSchemas && jsonLdSchemas.map((schema, i) => (
         <script
           key={i}

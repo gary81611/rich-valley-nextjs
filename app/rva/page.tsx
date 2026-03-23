@@ -28,6 +28,7 @@ export default function RVAPage() {
   const [adventuresOpen, setAdventuresOpen] = useState(false)
   const [mobileAdventuresOpen, setMobileAdventuresOpen] = useState(false)
   const [adventures, setAdventures] = useState<Array<{ title: string; slug: string; description: string; image: string; duration: string; difficulty: string; season: string }>>(rvaData.adventures)
+  const [activeSeason, setActiveSeason] = useState<string | null>(null)
   const [testimonials, setTestimonials] = useState(rvaData.testimonials)
   const [gallery, setGallery] = useState(rvaData.gallery)
 
@@ -207,13 +208,28 @@ export default function RVAPage() {
               Seven ways to experience the Roaring Fork Valley — each one expertly guided, fully equipped, and unforgettable.
             </p>
             <div className="flex justify-center gap-3 mt-6">
-              <span className="bg-rva-copper/20 text-rva-copper-light text-xs px-4 py-1.5 rounded-full border border-rva-copper/30">Summer Offerings</span>
-              <span className="bg-white/10 text-white/60 text-xs px-4 py-1.5 rounded-full border border-white/10">Winter Offerings</span>
-              <span className="bg-white/10 text-white/60 text-xs px-4 py-1.5 rounded-full border border-white/10">Year-Round</span>
+              {[
+                { label: 'All', value: null },
+                { label: 'Summer', value: 'summer' },
+                { label: 'Winter', value: 'winter' },
+                { label: 'Year-Round', value: 'year-round' },
+              ].map(({ label, value }) => (
+                <button
+                  key={label}
+                  onClick={() => setActiveSeason(value)}
+                  className={`text-xs px-4 py-1.5 rounded-full border transition-colors ${
+                    activeSeason === value
+                      ? 'bg-rva-copper/20 text-rva-copper-light border-rva-copper/30'
+                      : 'bg-white/10 text-white/60 border-white/10 hover:bg-white/20 hover:text-white/90'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
             </div>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {adventures.map((adventure, i) => (
+            {(activeSeason ? adventures.filter(a => a.season === activeSeason) : adventures).map((adventure, i) => (
               <ScrollReveal key={adventure.title} delay={i * 80} className="group">
                 <div className="bg-rva-forest rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
                   <div className="relative aspect-[4/3] overflow-hidden">
@@ -236,10 +252,10 @@ export default function RVAPage() {
                   <div className="p-6 flex flex-col flex-1">
                     <h3 className="font-playfair text-2xl text-rva-copper font-semibold mb-3">{adventure.title}</h3>
                     <p className="text-white/75 text-sm leading-relaxed flex-1">{adventure.description}</p>
-                    <a href="#contact" className="mt-5 text-rva-copper-light text-sm font-semibold hover:text-rva-copper transition-colors flex items-center gap-2">
-                      Book This Adventure
+                    <Link href={`/rva/${adventure.slug}`} className="mt-5 text-rva-copper-light text-sm font-semibold hover:text-rva-copper transition-colors flex items-center gap-2">
+                      Learn More
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </ScrollReveal>
