@@ -10,7 +10,7 @@ const isRva = (site: SiteId) => site === 'rva'
 
 export default function LocationPageTemplate({ site, title, content }: Props) {
   const rva = isRva(site)
-  const phone = content.cta_phone || (rva ? '(970) 948-7474' : '(970) 925-8000')
+  const phone = content.cta_phone || (rva ? '(970) 456-3666' : '(970) 456-3666')
 
   return (
     <div className={rva ? 'font-inter text-rva-forest' : 'font-inter text-alp-navy'}>

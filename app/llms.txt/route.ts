@@ -48,7 +48,7 @@ Rich Valley Adventures is an Aspen, Colorado-based guided outdoor adventure comp
 We offer guided fly fishing, mountain biking, stand-up paddle boarding, hiking, snowshoeing, and private transportation services in the Roaring Fork Valley.
 
 ## Contact
-- Phone: (970) 948-7474
+- Phone: (970) 456-3666
 - Location: Aspen, Colorado 81611
 - Service Area: Aspen, Snowmass Village, Basalt, Carbondale, Roaring Fork Valley
 - Website: https://richvalleyadventures.com
@@ -90,7 +90,7 @@ Aspen Alpenglow Limousine is a professional luxury ground transportation company
 We provide airport transfers, ski resort shuttles, wedding transportation, corporate event logistics, wine tours, and night-out services.
 
 ## Contact
-- Phone: (970) 925-8000
+- Phone: (970) 456-3666
 - Location: Aspen, Colorado 81611
 - Service Area: Aspen, Snowmass Village, Basalt, Carbondale, Glenwood Springs, Vail, Denver
 - Website: https://aspenalpenglowlimousine.com

@@ -10,7 +10,7 @@ const isRva = (site: SiteId) => site === 'rva'
 
 export default function FaqPageTemplate({ site, title, content }: Props) {
   const rva = isRva(site)
-  const phone = content.cta_phone || (rva ? '(970) 948-7474' : '(970) 925-8000')
+  const phone = content.cta_phone || (rva ? '(970) 456-3666' : '(970) 456-3666')
 
   // Group by category
   const categories = Array.from(new Set(content.faqs.map(f => f.category || 'General')))
