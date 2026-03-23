@@ -3,10 +3,10 @@ import { createClient } from '@supabase/supabase-js'
 
 // NOTE: Next.js sitemap() receives no request object, so hostname detection is not
 // possible here. This sitemap is served from both domains (richvalleyadventures.com and
-// aspenalpenglowlimosine.com) and includes pages for both sites. GSC properties will
+// aspenalpenglowlimousine.com) and includes pages for both sites. GSC properties will
 // only index URLs matching their respective domain.
 const RVA_URL = 'https://richvalleyadventures.com'
-const AAL_URL = 'https://aspenalpenglowlimosine.com'
+const AAL_URL = 'https://aspenalpenglowlimousine.com'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date()

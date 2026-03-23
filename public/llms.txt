@@ -27,7 +27,7 @@ Phone: 970-456-3666
 
 ---
 
-## Aspen Alpenglow Limousine (aspenalpenglow.com)
+## Aspen Alpenglow Limousine (aspenalpenglowlimousine.com)
 
 Distinguished private car and limousine service in Aspen and the Roaring Fork Valley — available 24/7 since 2012.
 
@@ -41,19 +41,19 @@ Phone: 970-456-3666
 
 ### Key pages
 
-- Home / About: https://aspenalpenglow.com
-- Services: https://aspenalpenglow.com/#services
-- Fleet: https://aspenalpenglow.com/#fleet
-- Service Areas: https://aspenalpenglow.com/#service-areas
-- FAQ: https://aspenalpenglow.com/#faq
-- Contact / Book: https://aspenalpenglow.com/#contact
-- Blog: https://aspenalpenglow.com/blog
-- Terms: https://aspenalpenglow.com/terms
-- Privacy: https://aspenalpenglow.com/privacy
+- Home / About: https://aspenalpenglowlimousine.com
+- Services: https://aspenalpenglowlimousine.com/#services
+- Fleet: https://aspenalpenglowlimousine.com/#fleet
+- Service Areas: https://aspenalpenglowlimousine.com/#service-areas
+- FAQ: https://aspenalpenglowlimousine.com/#faq
+- Contact / Book: https://aspenalpenglowlimousine.com/#contact
+- Blog: https://aspenalpenglowlimousine.com/blog
+- Terms: https://aspenalpenglowlimousine.com/terms
+- Privacy: https://aspenalpenglowlimousine.com/privacy
 
 ---
 
 ## Sitemaps
 
 - https://richvalleyadventures.com/sitemap.xml
-- https://aspenalpenglow.com/sitemap.xml
+- https://aspenalpenglowlimousine.com/sitemap.xml
