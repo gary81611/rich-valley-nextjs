@@ -8,7 +8,6 @@ const serviceOptions = [
   'Mountain Biking',
   'Trail Hiking',
   'Scenic Escalade Tours',
-  'Horseback Riding',
   'Elevated Camping',
   'Winter Adventure',
   'Other / Not Sure',

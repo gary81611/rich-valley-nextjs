@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import ScrollReveal from '@/components/shared/ScrollReveal'
@@ -21,6 +21,7 @@ export default function RVAPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [adventuresOpen, setAdventuresOpen] = useState(false)
   const [mobileAdventuresOpen, setMobileAdventuresOpen] = useState(false)
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [adventures, setAdventures] = useState<Array<{ title: string; slug: string; description: string; image: string; duration: string; difficulty: string; season: string }>>(rvaData.adventures)
   const [activeSeason, setActiveSeason] = useState<string | null>(null)
   const [testimonials, setTestimonials] = useState(rvaData.testimonials)
@@ -71,13 +72,17 @@ export default function RVAPage() {
             <Image src={rvaData.logo} alt="Rich Valley Adventures logo" width={160} height={50} className="h-14 w-auto object-contain" unoptimized loading="eager" />
           </a>
           <div className="hidden md:flex items-center gap-8">
-            <div className="relative" onMouseEnter={() => setAdventuresOpen(true)} onMouseLeave={() => setAdventuresOpen(false)}>
+            <div
+              className="relative"
+              onMouseEnter={() => { if (closeTimerRef.current) clearTimeout(closeTimerRef.current); setAdventuresOpen(true) }}
+              onMouseLeave={() => { closeTimerRef.current = setTimeout(() => setAdventuresOpen(false), 250) }}
+            >
               <button onClick={() => setAdventuresOpen(!adventuresOpen)} className="flex items-center gap-1 text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
                 Adventures
                 <svg className={`w-3.5 h-3.5 transition-transform ${adventuresOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
               </button>
               {adventuresOpen && (
-                <div className="absolute top-full left-0 mt-1 w-56 bg-rva-forest/98 backdrop-blur-md rounded-xl shadow-2xl border border-white/10 py-2 z-50">
+                <div className="absolute top-full left-0 mt-1 w-56 bg-rva-forest rounded-xl shadow-2xl border border-white/10 py-2 z-50">
                   {SERVICE_PAGES.map((page) => (
                     <a key={page.slug} href={`/rva/${page.slug}`} className="block px-4 py-2 text-white/85 hover:text-rva-copper-light hover:bg-white/5 text-sm transition-colors">
                       {page.label}

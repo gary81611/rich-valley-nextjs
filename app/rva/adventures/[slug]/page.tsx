@@ -147,32 +147,6 @@ const adventureDetails: Record<string, AdventureDetail> = {
       'Accessible for all abilities',
     ],
   },
-  'horseback-riding': {
-    title: 'Horseback Riding',
-    slug: 'horseback-riding',
-    description: rvaData.adventures[4].description,
-    longDescription:
-      'Experience the Rockies the way the first settlers did — on horseback. Our gentle, well-trained horses carry you through mountain meadows, aspen forests, and along streams with views that stretch for miles. No riding experience is necessary — our wranglers match each guest with the right horse and provide all the instruction you need to ride comfortably and safely. Rides range from two-hour introductory rides to half-day trail rides that explore deeper into the backcountry.',
-    image: rvaData.adventures[4].image,
-    heroImage: rvaData.adventures[4].image,
-    duration: '2-4 Hours',
-    difficulty: 'All Levels',
-    whatsIncluded: [
-      'Experienced wrangler guide',
-      'Well-trained trail horse',
-      'Helmet (optional)',
-      'Riding instruction for beginners',
-      'Snacks and water',
-      'Transportation to stable',
-      'Small groups (max 6 riders)',
-    ],
-    highlights: [
-      'Gentle, well-trained horses',
-      'Mountain meadow trails',
-      'No experience necessary',
-      'Classic Colorado experience',
-    ],
-  },
   'elevated-camping': {
     title: 'Elevated Camping',
     slug: 'elevated-camping',
@@ -208,7 +182,6 @@ const allSlugs = [
   'mountain-biking',
   'trail-hiking',
   'scenic-escalade-tours',
-  'horseback-riding',
   'elevated-camping',
 ]
 

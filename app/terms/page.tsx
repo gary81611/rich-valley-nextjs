@@ -30,7 +30,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="font-playfair text-2xl font-semibold text-slate-900 mb-3">4. Adventure Services — Rich Valley Adventures</h2>
-            <p className="text-slate-700 leading-relaxed">Participants must follow all safety instructions provided by guides. All necessary equipment is provided and must be returned in good condition. Participants acknowledge the inherent risks associated with outdoor activities including but not limited to fly fishing, mountain biking, paddle boarding, hiking, horseback riding, and camping. Participants under 18 must have a parent or guardian present or provide signed consent.</p>
+            <p className="text-slate-700 leading-relaxed">Participants must follow all safety instructions provided by guides. All necessary equipment is provided and must be returned in good condition. Participants acknowledge the inherent risks associated with outdoor activities including but not limited to fly fishing, mountain biking, paddle boarding, hiking, and camping. Participants under 18 must have a parent or guardian present or provide signed consent.</p>
           </section>
 
           <section>

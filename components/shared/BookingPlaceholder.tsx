@@ -12,7 +12,7 @@ export default function BookingPlaceholder({ accentColor, accentHover, phone, ph
   const [form, setForm] = useState({ name: '', email: '', phone: '', service: '', preferred_date: '', details: '' })
 
   const serviceOptions = variant === 'rva'
-    ? ['Fly Fishing', 'Paddle Boarding', 'Mountain Biking', 'Trail Hiking', 'Scenic Escalade Tour', 'Horseback Riding', 'Elevated Camping', 'Snowshoeing', 'Cross-Country Skiing', 'Ice Fishing', 'Winter Escalade Tour']
+    ? ['Fly Fishing', 'Paddle Boarding', 'Mountain Biking', 'Trail Hiking', 'Scenic Escalade Tour', 'Elevated Camping', 'Snowshoeing', 'Cross-Country Skiing', 'Ice Fishing', 'Winter Escalade Tour']
     : ['Airport Transfer', 'Hourly Charter', 'Corporate Travel', 'Wedding Transportation', 'Custom Request']
 
   const handleSubmit = async (e: React.FormEvent) => {
