@@ -37,6 +37,9 @@ export const metadata: Metadata = {
     description: 'Distinguished private car and limousine service throughout Aspen and the Roaring Fork Valley. Available 24/7 since 2012.',
     images: [ALP_OG_IMAGE],
   },
+  verification: {
+    google: 'REPLACE_WITH_AAL_GSC_VERIFICATION_CODE',
+  },
   other: {
     'geo.region': 'US-CO',
     'geo.placename': 'Aspen, Colorado',
