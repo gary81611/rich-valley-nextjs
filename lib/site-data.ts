@@ -8,7 +8,7 @@ export const rvaData = {
   description: 'Since 2012, Rich Valley Adventures has been dedicated to protecting and sharing the beauty of Aspen and the Roaring Fork Valley through guided outdoor experiences that create lasting memories.',
   phone: PHONE, phoneHref: PHONE_HREF, location: LOCATION,
   logo: '/images/logos/rva-logo.png',
-  email: 'info@richvalleyadventures.com',
+  email: 'kit@richvalleyadventures.com',
   social: {
     facebook: 'https://www.facebook.com/richvalleyadventures',
     instagram: 'https://www.instagram.com/richvalleyadventures',
@@ -61,7 +61,7 @@ export const alpenglowData = {
   description: 'Since 2012, Aspen Alpenglow Limousine has provided distinguished private car and limousine service throughout Aspen, Snowmass, and the Roaring Fork Valley. Available 24/7.',
   phone: PHONE, phoneHref: PHONE_HREF, location: LOCATION,
   logo: '/images/logos/alpenglow-logo.png',
-  email: 'info@aspenalpenglow.com',
+  email: 'kit@richvalleyadventures.com',
   social: {
     facebook: 'https://www.facebook.com/aspenalpenglow',
     instagram: 'https://www.instagram.com/aspenalpenglow',

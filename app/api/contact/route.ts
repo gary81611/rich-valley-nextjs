@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
           headers: { 'Authorization': `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({
             from: 'Rich Valley <noreply@richvalleyadventures.com>',
-            to: ['info@richvalleyadventures.com'],
+            to: ['kit@richvalleyadventures.com'],
             subject: `New ${brand === 'alpenglow' ? 'Transportation' : 'Adventure'} Inquiry from ${name}`,
             html: `<h2>New Contact Form Submission</h2><p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Phone:</strong> ${phone || 'N/A'}</p><p><strong>Service:</strong> ${service || 'N/A'}</p><p><strong>Preferred Date:</strong> ${preferred_date || 'N/A'}</p><p><strong>Details:</strong> ${details || 'N/A'}</p>`,
           }),
