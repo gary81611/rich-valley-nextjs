@@ -10,16 +10,10 @@ import type { Adventure, Testimonial, GalleryImage } from '@/lib/types'
 
 const SERVICE_PAGES = [
   { label: 'Fly Fishing', slug: 'fly-fishing' },
-  { label: 'White Water Rafting', slug: 'white-water-rafting' },
-  { label: 'Hiking Trails', slug: 'hiking-trails' },
+  { label: 'Hiking', slug: 'hiking' },
   { label: 'Mountain Biking', slug: 'mountain-biking' },
-  { label: 'Horseback Riding', slug: 'horseback-riding' },
-  { label: 'ATV Tours', slug: 'atv-tours' },
-  { label: 'Jeep Tours', slug: 'jeep-tours' },
-  { label: 'Snowmobile Tours', slug: 'snowmobile-tours' },
-  { label: 'Winter Activities', slug: 'winter-activities' },
-  { label: 'Wine Country Tours', slug: 'wine-country-tours' },
-  { label: 'Ski Resort Transportation', slug: 'ski-resort-transportation' },
+  { label: 'Paddle Boarding', slug: 'paddle-boarding' },
+  { label: 'Snowshoeing', slug: 'snowshoeing' },
 ]
 
 export default function RVAPage() {
