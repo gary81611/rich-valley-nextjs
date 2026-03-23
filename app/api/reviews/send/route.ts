@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     }
 
     const fromName = brand === 'alpenglow' ? 'Aspen Alpenglow Limousine' : 'Rich Valley Adventures'
-    const fromEmail = 'noreply@richvalleyadventures.com'
+    const fromEmail = 'noreply@adaptedprotech.com'
 
     const emailRes = await fetch('https://api.resend.com/emails', {
       method: 'POST',
