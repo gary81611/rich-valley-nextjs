@@ -160,7 +160,7 @@ export default function AlpenglowPage() {
     async function fetchSupabaseData() {
       try {
         const supabase = createClient()
-        const [svcRes, fleetRes, testRes, geoRes, faqRes, navRes, settingsRes] = await Promise.all([
+        const [svcRes, fleetRes, testRes, geoRes, faqRes, navRes, settingsRes, areasRes] = await Promise.all([
           supabase.from('services').select('*').eq('is_active', true).order('display_order'),
           supabase.from('fleet_vehicles').select('*').eq('is_active', true),
           supabase.from('testimonials').select('*').eq('is_active', true).eq('site_key', 'alpenglow'),
@@ -168,6 +168,7 @@ export default function AlpenglowPage() {
           supabase.from('faqs').select('*').eq('is_active', true).eq('site_key', 'alpenglow').order('display_order'),
           supabase.from('navigation').select('*').eq('site_id', 'alpenglow').eq('is_visible', true).order('position'),
           supabase.from('site_settings').select('phone').eq('site_key', 'alpenglow').single(),
+          supabase.from('service_areas').select('name').eq('site_key', 'alpenglow').eq('is_active', true).order('name'),
         ])
         if (svcRes.data && svcRes.data.length > 0) {
           setServices(svcRes.data.map((s: ServiceType) => ({
@@ -189,7 +190,10 @@ export default function AlpenglowPage() {
           setGeoBlocks(geoRes.data)
         }
         if (faqRes.data && faqRes.data.length > 0) {
-          setFaqs(faqRes.data.map((f: { question: string; answer: string }) => ({ q: f.question, a: f.answer })))
+          const mapped = faqRes.data
+            .filter((f: { question: string; answer: string }) => f.question && f.answer)
+            .map((f: { question: string; answer: string }) => ({ q: f.question, a: f.answer }))
+          if (mapped.length > 0) setFaqs(mapped)
         }
         if (navRes.data && navRes.data.length > 0) {
           const servicesParent = navRes.data.find((item: { parent_id: string | null; label: string }) => !item.parent_id && item.label === 'Services')
@@ -197,11 +201,12 @@ export default function AlpenglowPage() {
             const children = navRes.data.filter((item: { parent_id: string | null }) => item.parent_id === servicesParent.id)
             if (children.length > 0) setServiceNavItems(children.map((item: { label: string; href: string }) => ({ label: item.label, href: item.href })))
           }
-          const areasParent = navRes.data.find((item: { parent_id: string | null; label: string }) => !item.parent_id && item.label === 'Service Areas')
-          if (areasParent) {
-            const children = navRes.data.filter((item: { parent_id: string | null }) => item.parent_id === areasParent.id)
-            if (children.length > 0) setAreaNavItems(children.map((item: { label: string; href: string }) => ({ label: item.label, href: item.href })))
-          }
+        }
+        if (areasRes.data && areasRes.data.length > 0) {
+          setAreaNavItems(areasRes.data.map((area: { name: string }) => ({
+            label: area.name,
+            href: `/alpenglow/areas/${area.name.toLowerCase().replace(/\s+/g, '-')}`,
+          })))
         }
         if (settingsRes.data?.phone) {
           setPhone(settingsRes.data.phone)

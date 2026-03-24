@@ -39,9 +39,10 @@ export default function ALPNav() {
     async function fetchNavData() {
       try {
         const supabase = createClient()
-        const [navRes, settingsRes] = await Promise.all([
+        const [navRes, settingsRes, areasRes] = await Promise.all([
           supabase.from('navigation').select('*').eq('site_id', 'alpenglow').eq('is_visible', true).order('position'),
           supabase.from('site_settings').select('phone').eq('site_key', 'alpenglow').single(),
+          supabase.from('service_areas').select('name').eq('site_key', 'alpenglow').eq('is_active', true).order('name'),
         ])
         if (navRes.data && navRes.data.length > 0) {
           const servicesParent = navRes.data.find((item: { parent_id: string | null; label: string }) => !item.parent_id && item.label === 'Services')
@@ -49,11 +50,12 @@ export default function ALPNav() {
             const children = navRes.data.filter((item: { parent_id: string | null }) => item.parent_id === servicesParent.id)
             if (children.length > 0) setServiceNavItems(children.map((item: { label: string; href: string }) => ({ label: item.label, href: item.href })))
           }
-          const areasParent = navRes.data.find((item: { parent_id: string | null; label: string }) => !item.parent_id && item.label === 'Service Areas')
-          if (areasParent) {
-            const children = navRes.data.filter((item: { parent_id: string | null }) => item.parent_id === areasParent.id)
-            if (children.length > 0) setAreaNavItems(children.map((item: { label: string; href: string }) => ({ label: item.label, href: item.href })))
-          }
+        }
+        if (areasRes.data && areasRes.data.length > 0) {
+          setAreaNavItems(areasRes.data.map((area: { name: string }) => ({
+            label: area.name,
+            href: `/alpenglow/areas/${area.name.toLowerCase().replace(/\s+/g, '-')}`,
+          })))
         }
         if (settingsRes.data?.phone) {
           setPhone(settingsRes.data.phone)
