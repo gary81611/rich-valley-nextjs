@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-const RVA_URL = 'https://richvalleyadventures.com'
+const RVA_URL = 'https://www.richvalleyadventures.com'
 const RVA_OG_IMAGE = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80'
 
 export const metadata: Metadata = {

@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js'
 // possible here. This sitemap is served from both domains (richvalleyadventures.com and
 // aspenalpenglowlimousine.com) and includes pages for both sites. GSC properties will
 // only index URLs matching their respective domain.
-const RVA_URL = 'https://richvalleyadventures.com'
+const RVA_URL = 'https://www.richvalleyadventures.com'
 const AAL_URL = 'https://aspenalpenglowlimousine.com'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
