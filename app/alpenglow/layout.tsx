@@ -163,23 +163,43 @@ const localBusinessSchema = {
 const vehicleSchemas = [
   {
     '@context': 'https://schema.org',
-    '@type': 'Vehicle',
-    name: 'Executive Cadillac Escalade — 6 Passenger',
+    '@type': 'Service',
+    name: 'Executive Cadillac Escalade — 6 Passenger Luxury Car Service',
     description:
       'Luxury Cadillac Escalade with premium leather interior, climate control, entertainment system, and complimentary amenities. Seats up to 6 passengers. Used for airport transfers, private charters, and executive travel in Aspen, Colorado.',
-    vehicleConfiguration: 'SUV Limousine',
-    seatingCapacity: 6,
-    color: 'Black',
+    serviceType: 'Luxury Limousine & Private Car Service',
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'Aspen Alpenglow Limousine',
+      telephone: '+19704563666',
+      url: ALP_URL,
+    },
+    areaServed: [
+      { '@type': 'City', name: 'Aspen', containedIn: 'Colorado, USA' },
+      { '@type': 'City', name: 'Snowmass Village', containedIn: 'Colorado, USA' },
+      { '@type': 'City', name: 'Glenwood Springs', containedIn: 'Colorado, USA' },
+    ],
+    additionalProperty: { '@type': 'PropertyValue', name: 'Passenger Capacity', value: 6 },
   },
   {
     '@context': 'https://schema.org',
-    '@type': 'Vehicle',
-    name: 'Luxury Mercedes Sprinter Van — 14 Passenger',
+    '@type': 'Service',
+    name: 'Luxury Mercedes Sprinter Van — 14 Passenger Group Transportation',
     description:
       'Luxury Mercedes Sprinter van with premium seating, ambient lighting, and entertainment. Seats up to 14 passengers. Ideal for group airport transfers, wedding parties, and corporate events in Aspen and the Roaring Fork Valley.',
-    vehicleConfiguration: 'Luxury Van',
-    seatingCapacity: 14,
-    color: 'Black',
+    serviceType: 'Luxury Group Transportation & Sprinter Van Service',
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'Aspen Alpenglow Limousine',
+      telephone: '+19704563666',
+      url: ALP_URL,
+    },
+    areaServed: [
+      { '@type': 'City', name: 'Aspen', containedIn: 'Colorado, USA' },
+      { '@type': 'City', name: 'Snowmass Village', containedIn: 'Colorado, USA' },
+      { '@type': 'City', name: 'Glenwood Springs', containedIn: 'Colorado, USA' },
+    ],
+    additionalProperty: { '@type': 'PropertyValue', name: 'Passenger Capacity', value: 14 },
   },
 ]
 
