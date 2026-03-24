@@ -73,7 +73,7 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
       provider: {
         '@type': 'LocalBusiness',
         name: 'Aspen Alpenglow Limousine',
-        telephone: '+19709258000',
+        telephone: '+19704563666',
         address: { '@type': 'PostalAddress', addressLocality: 'Aspen', addressRegion: 'CO', addressCountry: 'US' },
       },
       areaServed: [
