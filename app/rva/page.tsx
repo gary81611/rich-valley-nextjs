@@ -8,12 +8,14 @@ import { rvaData, photoNotes } from '@/lib/site-data'
 import { createClient } from '@/lib/supabase'
 import type { Adventure, Testimonial, GalleryImage } from '@/lib/types'
 
-const SERVICE_PAGES = [
-  { label: 'Fly Fishing', slug: 'fly-fishing' },
-  { label: 'Hiking', slug: 'hiking' },
-  { label: 'Mountain Biking', slug: 'mountain-biking' },
-  { label: 'Paddle Boarding', slug: 'paddle-boarding' },
-  { label: 'Snowshoeing', slug: 'snowshoeing' },
+interface NavItem { label: string; href: string }
+
+const FALLBACK_ADVENTURE_PAGES: NavItem[] = [
+  { label: 'Fly Fishing', href: '/rva/fly-fishing' },
+  { label: 'Hiking', href: '/rva/hiking' },
+  { label: 'Mountain Biking', href: '/rva/mountain-biking' },
+  { label: 'Paddle Boarding', href: '/rva/paddle-boarding' },
+  { label: 'Snowshoeing', href: '/rva/snowshoeing' },
 ]
 
 export default function RVAPage() {
@@ -26,6 +28,9 @@ export default function RVAPage() {
   const [activeSeason, setActiveSeason] = useState<string | null>(null)
   const [testimonials, setTestimonials] = useState(rvaData.testimonials)
   const [gallery, setGallery] = useState(rvaData.gallery)
+  const [adventureNavItems, setAdventureNavItems] = useState<NavItem[]>(FALLBACK_ADVENTURE_PAGES)
+  const [phone, setPhone] = useState(rvaData.phone)
+  const [phoneHref, setPhoneHref] = useState(rvaData.phoneHref)
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60)
@@ -37,10 +42,12 @@ export default function RVAPage() {
     async function fetchSupabaseData() {
       try {
         const supabase = createClient()
-        const [advRes, testRes, galRes] = await Promise.all([
+        const [advRes, testRes, galRes, navRes, settingsRes] = await Promise.all([
           supabase.from('adventures').select('*').eq('is_active', true).order('display_order'),
           supabase.from('testimonials').select('*').eq('is_active', true).eq('site_key', 'rva'),
           supabase.from('gallery_images').select('*').eq('is_active', true).eq('site_key', 'rva').order('display_order'),
+          supabase.from('navigation').select('*').eq('site_id', 'rva').eq('is_visible', true).order('position'),
+          supabase.from('site_settings').select('phone').eq('site_key', 'rva').single(),
         ])
         if (advRes.data && advRes.data.length > 0) {
           setAdventures(advRes.data.map((a: Adventure) => ({
@@ -55,6 +62,17 @@ export default function RVAPage() {
         }
         if (galRes.data && galRes.data.length > 0) {
           setGallery(galRes.data.map((g: GalleryImage) => g.url))
+        }
+        if (navRes.data && navRes.data.length > 0) {
+          const adventuresParent = navRes.data.find((item: { parent_id: string | null; label: string }) => !item.parent_id && item.label === 'Adventures')
+          if (adventuresParent) {
+            const children = navRes.data.filter((item: { parent_id: string | null }) => item.parent_id === adventuresParent.id)
+            if (children.length > 0) setAdventureNavItems(children.map((item: { label: string; href: string }) => ({ label: item.label, href: item.href })))
+          }
+        }
+        if (settingsRes.data?.phone) {
+          setPhone(settingsRes.data.phone)
+          setPhoneHref(`tel:+1${settingsRes.data.phone.replace(/\D/g, '')}`)
         }
       } catch {
         // Use static fallback — Supabase may not be configured
@@ -83,9 +101,9 @@ export default function RVAPage() {
               </button>
               {adventuresOpen && (
                 <div className="absolute top-full left-0 mt-1 w-56 bg-rva-forest rounded-xl shadow-2xl border border-white/10 py-2 z-50">
-                  {SERVICE_PAGES.map((page) => (
-                    <a key={page.slug} href={`/rva/${page.slug}`} className="block px-4 py-2 text-white/85 hover:text-rva-copper-light hover:bg-white/5 text-sm transition-colors">
-                      {page.label}
+                  {adventureNavItems.map((item) => (
+                    <a key={item.href} href={item.href} className="block px-4 py-2 text-white/85 hover:text-rva-copper-light hover:bg-white/5 text-sm transition-colors">
+                      {item.label}
                     </a>
                   ))}
                 </div>
@@ -102,8 +120,8 @@ export default function RVAPage() {
             <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
               Transportation
             </a>
-            <a href={rvaData.phoneHref} aria-label={`Call Rich Valley Adventures at ${rvaData.phone}`} className="bg-rva-copper hover:bg-rva-copper-light text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:shadow-lg">
-              {rvaData.phone}
+            <a href={phoneHref} aria-label={`Call Rich Valley Adventures at ${phone}`} className="bg-rva-copper hover:bg-rva-copper-light text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:shadow-lg">
+              {phone}
             </a>
           </div>
           <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle mobile navigation menu" aria-expanded={mobileMenuOpen} className="md:hidden text-white p-2">
@@ -121,9 +139,9 @@ export default function RVAPage() {
               </button>
               {mobileAdventuresOpen && (
                 <div className="pl-4 space-y-1 border-l border-white/20 ml-2 mt-1">
-                  {SERVICE_PAGES.map((page) => (
-                    <a key={page.slug} href={`/rva/${page.slug}`} onClick={() => setMobileMenuOpen(false)} className="block text-white/75 hover:text-rva-copper-light text-sm py-1.5">
-                      {page.label}
+                  {adventureNavItems.map((item) => (
+                    <a key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className="block text-white/75 hover:text-rva-copper-light text-sm py-1.5">
+                      {item.label}
                     </a>
                   ))}
                 </div>
@@ -140,8 +158,8 @@ export default function RVAPage() {
             <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
               Transportation
             </a>
-            <a href={rvaData.phoneHref} className="block bg-rva-copper text-white text-center py-3 rounded-full font-semibold mt-2">
-              {rvaData.phone}
+            <a href={phoneHref} className="block bg-rva-copper text-white text-center py-3 rounded-full font-semibold mt-2">
+              {phone}
             </a>
           </div>
         )}
@@ -362,8 +380,8 @@ export default function RVAPage() {
               <BookingPlaceholder
                 accentColor="bg-rva-copper"
                 accentHover="hover:bg-rva-copper-light"
-                phone={rvaData.phone}
-                phoneHref={rvaData.phoneHref}
+                phone={phone}
+                phoneHref={phoneHref}
                 variant="rva"
               />
             </div>
@@ -402,7 +420,7 @@ export default function RVAPage() {
               <h4 className="font-playfair text-lg font-semibold mb-5 text-rva-copper">Contact</h4>
               <div className="space-y-3 text-white/65 text-sm">
                 <p>{rvaData.location}</p>
-                <a href={rvaData.phoneHref} className="block hover:text-rva-copper-light transition-colors">{rvaData.phone}</a>
+                <a href={phoneHref} className="block hover:text-rva-copper-light transition-colors">{phone}</a>
                 <div className="pt-3 border-t border-white/10">
                   <p className="text-white/40 text-xs mb-2">Sister Company</p>
                   <a href={rvaData.partnerSite.url} target="_blank" rel="noopener noreferrer" className="text-rva-copper-light hover:text-rva-copper transition-colors">

@@ -2,20 +2,23 @@
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { alpenglowData } from '@/lib/site-data'
+import { createClient } from '@/lib/supabase'
 
-const SERVICE_PAGES = [
-  { label: 'Airport Transfers', slug: 'airport-transfers' },
-  { label: 'Corporate Events', slug: 'corporate-events' },
-  { label: 'Wedding Transportation', slug: 'wedding-transportation' },
-  { label: 'Ski Resort Transfers', slug: 'ski-resort-transfers' },
-  { label: 'Wine Tours', slug: 'wine-tours' },
-  { label: 'Night Out', slug: 'night-out' },
+interface NavItem { label: string; href: string }
+
+const FALLBACK_SERVICE_PAGES: NavItem[] = [
+  { label: 'Airport Transfers', href: '/alpenglow/airport-transfers' },
+  { label: 'Corporate Events', href: '/alpenglow/corporate-events' },
+  { label: 'Wedding Transportation', href: '/alpenglow/wedding-transportation' },
+  { label: 'Ski Resort Transfers', href: '/alpenglow/ski-resort-transfers' },
+  { label: 'Wine Tours', href: '/alpenglow/wine-tours' },
+  { label: 'Night Out', href: '/alpenglow/night-out' },
 ]
 
-const AREA_PAGES = [
-  { label: 'Aspen', slug: 'areas/aspen' },
-  { label: 'Snowmass', slug: 'areas/snowmass' },
-  { label: 'Vail', slug: 'areas/vail' },
+const FALLBACK_AREA_PAGES: NavItem[] = [
+  { label: 'Aspen', href: '/alpenglow/areas/aspen' },
+  { label: 'Snowmass', href: '/alpenglow/areas/snowmass' },
+  { label: 'Vail', href: '/alpenglow/areas/vail' },
 ]
 
 export default function ALPNav() {
@@ -27,6 +30,41 @@ export default function ALPNav() {
   const [mobileAreasOpen, setMobileAreasOpen] = useState(false)
   const closeServicesTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const closeAreasTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [serviceNavItems, setServiceNavItems] = useState<NavItem[]>(FALLBACK_SERVICE_PAGES)
+  const [areaNavItems, setAreaNavItems] = useState<NavItem[]>(FALLBACK_AREA_PAGES)
+  const [phone, setPhone] = useState(alpenglowData.phone)
+  const [phoneHref, setPhoneHref] = useState(alpenglowData.phoneHref)
+
+  useEffect(() => {
+    async function fetchNavData() {
+      try {
+        const supabase = createClient()
+        const [navRes, settingsRes] = await Promise.all([
+          supabase.from('navigation').select('*').eq('site_id', 'alpenglow').eq('is_visible', true).order('position'),
+          supabase.from('site_settings').select('phone').eq('site_key', 'alpenglow').single(),
+        ])
+        if (navRes.data && navRes.data.length > 0) {
+          const servicesParent = navRes.data.find((item: { parent_id: string | null; label: string }) => !item.parent_id && item.label === 'Services')
+          if (servicesParent) {
+            const children = navRes.data.filter((item: { parent_id: string | null }) => item.parent_id === servicesParent.id)
+            if (children.length > 0) setServiceNavItems(children.map((item: { label: string; href: string }) => ({ label: item.label, href: item.href })))
+          }
+          const areasParent = navRes.data.find((item: { parent_id: string | null; label: string }) => !item.parent_id && item.label === 'Service Areas')
+          if (areasParent) {
+            const children = navRes.data.filter((item: { parent_id: string | null }) => item.parent_id === areasParent.id)
+            if (children.length > 0) setAreaNavItems(children.map((item: { label: string; href: string }) => ({ label: item.label, href: item.href })))
+          }
+        }
+        if (settingsRes.data?.phone) {
+          setPhone(settingsRes.data.phone)
+          setPhoneHref(`tel:+1${settingsRes.data.phone.replace(/\D/g, '')}`)
+        }
+      } catch {
+        // Use static fallback
+      }
+    }
+    fetchNavData()
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60)
@@ -53,9 +91,9 @@ export default function ALPNav() {
             </button>
             {servicesOpen && (
               <div className="absolute top-full left-0 mt-1 w-56 rounded-xl shadow-2xl border border-white/10 py-2 z-50" style={{ backgroundColor: '#1b2338', backdropFilter: 'none' }}>
-                {SERVICE_PAGES.map((page) => (
-                  <a key={page.slug} href={`/alpenglow/${page.slug}`} className="block px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
-                    {page.label}
+                {serviceNavItems.map((item) => (
+                  <a key={item.href} href={item.href} className="block px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
+                    {item.label}
                   </a>
                 ))}
               </div>
@@ -79,9 +117,9 @@ export default function ALPNav() {
             </button>
             {areasOpen && (
               <div className="absolute top-full left-0 mt-1 w-48 rounded-xl shadow-2xl border border-white/10 py-2 z-50" style={{ backgroundColor: '#1b2338', backdropFilter: 'none' }}>
-                {AREA_PAGES.map((page) => (
-                  <a key={page.slug} href={`/alpenglow/${page.slug}`} className="block px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
-                    {page.label}
+                {areaNavItems.map((item) => (
+                  <a key={item.href} href={item.href} className="block px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
+                    {item.label}
                   </a>
                 ))}
               </div>
@@ -93,8 +131,8 @@ export default function ALPNav() {
           <a href="/blog" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
             Blog
           </a>
-          <a href={alpenglowData.phoneHref} aria-label={`Call Aspen Alpenglow Limousine at ${alpenglowData.phone}`} className="bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:shadow-lg">
-            {alpenglowData.phone}
+          <a href={phoneHref} aria-label={`Call Aspen Alpenglow Limousine at ${phone}`} className="bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:shadow-lg">
+            {phone}
           </a>
         </div>
         <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle mobile navigation menu" aria-expanded={mobileMenuOpen} className="md:hidden text-white p-2">
@@ -112,9 +150,9 @@ export default function ALPNav() {
             </button>
             {mobileServicesOpen && (
               <div className="pl-4 space-y-1 border-l border-white/20 ml-2 mt-1">
-                {SERVICE_PAGES.map((page) => (
-                  <a key={page.slug} href={`/alpenglow/${page.slug}`} onClick={() => setMobileMenuOpen(false)} className="block text-white/75 hover:text-alp-gold-light text-sm py-1.5">
-                    {page.label}
+                {serviceNavItems.map((item) => (
+                  <a key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className="block text-white/75 hover:text-alp-gold-light text-sm py-1.5">
+                    {item.label}
                   </a>
                 ))}
               </div>
@@ -133,9 +171,9 @@ export default function ALPNav() {
             </button>
             {mobileAreasOpen && (
               <div className="pl-4 space-y-1 border-l border-white/20 ml-2 mt-1">
-                {AREA_PAGES.map((page) => (
-                  <a key={page.slug} href={`/alpenglow/${page.slug}`} onClick={() => setMobileMenuOpen(false)} className="block text-white/75 hover:text-alp-gold-light text-sm py-1.5">
-                    {page.label}
+                {areaNavItems.map((item) => (
+                  <a key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className="block text-white/75 hover:text-alp-gold-light text-sm py-1.5">
+                    {item.label}
                   </a>
                 ))}
               </div>
@@ -147,8 +185,8 @@ export default function ALPNav() {
           <a href="/blog" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
             Blog
           </a>
-          <a href={alpenglowData.phoneHref} className="block bg-alp-gold text-alp-navy text-center py-3 rounded-full font-semibold mt-2">
-            {alpenglowData.phone}
+          <a href={phoneHref} className="block bg-alp-gold text-alp-navy text-center py-3 rounded-full font-semibold mt-2">
+            {phone}
           </a>
         </div>
       )}
