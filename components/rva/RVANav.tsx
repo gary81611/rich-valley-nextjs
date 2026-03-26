@@ -27,11 +27,14 @@ export default function RVANav() {
 
   return (
     <nav aria-label="Main navigation" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-rva-forest/95 backdrop-blur-md shadow-lg' : 'bg-rva-forest/95 backdrop-blur-md shadow-lg'}`}>
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="/rva" className="flex items-center gap-3" aria-label="Rich Valley Adventures — home">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center">
+        <a href="/rva" className="flex items-center gap-3 flex-shrink-0" aria-label="Rich Valley Adventures — home">
           <Image src={rvaData.logo} alt="Rich Valley Adventures logo" width={160} height={50} className="h-14 w-auto object-contain" unoptimized loading="eager" />
         </a>
-        <div className="hidden md:flex items-center gap-8">
+        <a href="tel:9704563666" aria-label="Call Rich Valley Adventures at 970-456-3666" className="ml-4 flex-shrink-0 bg-rva-copper hover:bg-rva-copper-light text-white px-4 py-2 rounded-full text-sm font-semibold transition-all hover:shadow-lg">
+          970-456-3666
+        </a>
+        <div className="hidden md:flex items-center gap-8 ml-auto">
           <div
             className="relative"
             onMouseEnter={() => { if (closeTimerRef.current) clearTimeout(closeTimerRef.current); setAdventuresOpen(true) }}
@@ -66,11 +69,8 @@ export default function RVANav() {
           <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
             Transportation
           </a>
-          <a href={rvaData.phoneHref} aria-label={`Call Rich Valley Adventures at ${rvaData.phone}`} className="bg-rva-copper hover:bg-rva-copper-light text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:shadow-lg">
-            {rvaData.phone}
-          </a>
         </div>
-        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle mobile navigation menu" aria-expanded={mobileMenuOpen} className="md:hidden text-white p-2">
+        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle mobile navigation menu" aria-expanded={mobileMenuOpen} className="md:hidden ml-auto text-white p-2">
           <div className="w-6 h-0.5 bg-white mb-1.5"></div>
           <div className="w-6 h-0.5 bg-white mb-1.5"></div>
           <div className="w-6 h-0.5 bg-white"></div>
