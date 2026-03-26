@@ -37,10 +37,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: post.meta_title || post.title,
       description: post.meta_description || undefined,
       type: 'article',
-      url: `https://richvalleyadventures.com/blog/${post.slug}`,
+      url: `https://www.richvalleyadventures.com/blog/${post.slug}`,
       publishedTime: post.published_at || undefined,
     },
-    alternates: { canonical: `https://richvalleyadventures.com/blog/${post.slug}` },
+    alternates: { canonical: `https://www.richvalleyadventures.com/blog/${post.slug}` },
   }
 }
 
@@ -127,11 +127,11 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
     publisher: {
       '@type': 'Organization',
       name: 'Rich Valley Adventures',
-      url: 'https://richvalleyadventures.com',
+      url: 'https://www.richvalleyadventures.com',
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://richvalleyadventures.com/blog/${post.slug}`,
+      '@id': `https://www.richvalleyadventures.com/blog/${post.slug}`,
     },
   }
 

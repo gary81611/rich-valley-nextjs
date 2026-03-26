@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: 'Page Not Found | Rich Valley Adventures' }
   }
 
-  const baseUrl = 'https://richvalleyadventures.com'
+  const baseUrl = 'https://www.richvalleyadventures.com'
   const pageUrl = `${baseUrl}/${slugStr}`
 
   return {
@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
   if (!page) return null
 
-  const baseUrl = 'https://richvalleyadventures.com'
+  const baseUrl = 'https://www.richvalleyadventures.com'
   const pageUrl = `${baseUrl}/${page.slug}`
 
   const breadcrumb = {

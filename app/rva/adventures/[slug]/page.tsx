@@ -197,11 +197,14 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   return {
     title: `${adventure.title} | Rich Valley Adventures | Aspen, CO`,
     description: adventure.description,
+    alternates: {
+      canonical: `https://www.richvalleyadventures.com/adventures/${adventure.slug}`,
+    },
     openGraph: {
       title: `${adventure.title} — Guided Adventure in Aspen | Rich Valley Adventures`,
       description: adventure.description,
       type: 'website',
-      url: `https://richvalleyadventures.com/adventures/${adventure.slug}`,
+      url: `https://www.richvalleyadventures.com/adventures/${adventure.slug}`,
       images: [
         {
           url: adventure.heroImage,

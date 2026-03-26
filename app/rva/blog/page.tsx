@@ -8,11 +8,14 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Blog | Rich Valley Adventures — Aspen Outdoor Adventure Tips & Guides',
   description: 'Expert outdoor adventure guides, fly fishing tips, hiking routes, and local insights from our team at Rich Valley Adventures in Aspen, Colorado.',
+  alternates: {
+    canonical: 'https://www.richvalleyadventures.com/blog',
+  },
   openGraph: {
     title: 'Blog | Rich Valley Adventures',
     description: 'Outdoor adventure guides and local tips from Aspen, Colorado.',
     type: 'website',
-    url: 'https://richvalleyadventures.com/blog',
+    url: 'https://www.richvalleyadventures.com/blog',
   },
 }
 

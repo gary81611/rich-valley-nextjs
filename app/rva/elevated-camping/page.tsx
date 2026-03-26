@@ -6,12 +6,15 @@ export const metadata: Metadata = {
   title: 'Elevated Camping | Glamping in Aspen | Rich Valley Adventures',
   description:
     'Experience elevated camping near Aspen, Colorado — premium canvas tents, gourmet chef-prepared meals, guided night-sky viewing, and all the comforts of home in the heart of the Colorado wilderness.',
+  alternates: {
+    canonical: 'https://www.richvalleyadventures.com/elevated-camping',
+  },
   openGraph: {
     title: 'Elevated Camping — Glamping Near Aspen | Rich Valley Adventures',
     description:
       'Premium basecamp with gourmet meals, real beds, and guided stargazing in the Roaring Fork Valley. This is not roughing it.',
     type: 'website',
-    url: 'https://richvalleyadventures.com/elevated-camping',
+    url: 'https://www.richvalleyadventures.com/elevated-camping',
     images: [
       {
         url: '/images/adventures/elevated-camping.jpeg',

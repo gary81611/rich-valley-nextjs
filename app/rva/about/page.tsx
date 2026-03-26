@@ -7,12 +7,15 @@ export const metadata: Metadata = {
   title: 'About Rich Valley Adventures | Our Story Since 2012 | Aspen, CO',
   description:
     'Learn about Rich Valley Adventures — founded in 2012 by Kit and a team of local Aspen guides. 14+ years of guided fly fishing, hiking, biking, and more in the Roaring Fork Valley.',
+  alternates: {
+    canonical: 'https://www.richvalleyadventures.com/about',
+  },
   openGraph: {
     title: 'About Rich Valley Adventures | Our Story Since 2012',
     description:
       'Founded in 2012 by local Aspen guides. 14+ years, 3,000+ adventures, 4.9 rating. Discover the team behind Rich Valley Adventures.',
     type: 'website',
-    url: 'https://richvalleyadventures.com/about',
+    url: 'https://www.richvalleyadventures.com/about',
     images: [
       {
         url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80',
