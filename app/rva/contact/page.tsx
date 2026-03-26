@@ -7,12 +7,15 @@ export const metadata: Metadata = {
   title: 'Contact Rich Valley Adventures | Book Your Aspen Adventure',
   description:
     'Contact Rich Valley Adventures to book guided fly fishing, paddle boarding, mountain biking, hiking, and more in Aspen, Colorado. Call 970-456-3666 or fill out our booking form.',
+  alternates: {
+    canonical: 'https://www.richvalleyadventures.com/contact',
+  },
   openGraph: {
     title: 'Contact Rich Valley Adventures | Book Your Aspen Adventure',
     description:
       'Get in touch to plan your guided outdoor adventure in the Roaring Fork Valley. Call 970-456-3666 or use our online form.',
     type: 'website',
-    url: 'https://richvalleyadventures.com/contact',
+    url: 'https://www.richvalleyadventures.com/contact',
   },
 }
 

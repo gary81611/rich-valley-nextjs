@@ -68,6 +68,9 @@ export async function middleware(request: NextRequest) {
     if (pathname.startsWith('/service-areas') || pathname === '/horseback-riding') {
       return NextResponse.redirect('https://www.richvalleyadventures.com/', 301)
     }
+    if (pathname === '/winter-offerings') {
+      return NextResponse.redirect('https://www.richvalleyadventures.com/winter', 301)
+    }
   }
 
   const siteParam = url.searchParams.get('site')

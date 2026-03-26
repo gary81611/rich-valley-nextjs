@@ -6,12 +6,15 @@ export const metadata: Metadata = {
   title: 'Winter Adventures | Rich Valley Adventures | Aspen, CO',
   description:
     'Explore winter in the Roaring Fork Valley with Rich Valley Adventures. Guided snowshoeing, cross-country skiing, ice fishing, and winter Escalade tours in Aspen, Colorado.',
+  alternates: {
+    canonical: 'https://www.richvalleyadventures.com/winter',
+  },
   openGraph: {
     title: 'Winter Adventures in Aspen | Rich Valley Adventures',
     description:
       'Guided snowshoeing, cross-country skiing, ice fishing, and scenic winter tours in the Roaring Fork Valley.',
     type: 'website',
-    url: 'https://richvalleyadventures.com/winter',
+    url: 'https://www.richvalleyadventures.com/winter',
   },
 }
 
