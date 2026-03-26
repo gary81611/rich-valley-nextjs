@@ -1,52 +1,30 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import RVANav from '@/components/rva/RVANav'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
 import { rvaData, photoNotes } from '@/lib/site-data'
 import { createClient } from '@/lib/supabase'
 import type { Adventure, Testimonial, GalleryImage } from '@/lib/types'
 
-interface NavItem { label: string; href: string }
-
-const FALLBACK_ADVENTURE_PAGES: NavItem[] = [
-  { label: 'Fly Fishing', href: '/rva/fly-fishing' },
-  { label: 'Hiking', href: '/rva/hiking' },
-  { label: 'Mountain Biking', href: '/rva/mountain-biking' },
-  { label: 'Paddle Boarding', href: '/rva/paddle-boarding' },
-  { label: 'Snowshoeing', href: '/rva/snowshoeing' },
-]
-
 export default function RVAPage() {
-  const [scrolled, setScrolled] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [adventuresOpen, setAdventuresOpen] = useState(false)
-  const [mobileAdventuresOpen, setMobileAdventuresOpen] = useState(false)
-  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [adventures, setAdventures] = useState<Array<{ title: string; slug: string; description: string; image: string; duration: string; difficulty: string; season: string }>>(rvaData.adventures)
   const [activeSeason, setActiveSeason] = useState<string | null>(null)
   const [testimonials, setTestimonials] = useState(rvaData.testimonials)
   const [gallery, setGallery] = useState(rvaData.gallery)
-  const [adventureNavItems, setAdventureNavItems] = useState<NavItem[]>(FALLBACK_ADVENTURE_PAGES)
   const [phone, setPhone] = useState(rvaData.phone)
   const [phoneHref, setPhoneHref] = useState(rvaData.phoneHref)
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   useEffect(() => {
     async function fetchSupabaseData() {
       try {
         const supabase = createClient()
-        const [advRes, testRes, galRes, navRes, settingsRes] = await Promise.all([
+        const [advRes, testRes, galRes, settingsRes] = await Promise.all([
           supabase.from('adventures').select('*').eq('is_active', true).order('display_order'),
           supabase.from('testimonials').select('*').eq('is_active', true).eq('site_key', 'rva'),
           supabase.from('gallery_images').select('*').eq('is_active', true).eq('site_key', 'rva').order('display_order'),
-          supabase.from('navigation').select('*').eq('site_id', 'rva').eq('is_visible', true).order('position'),
           supabase.from('site_settings').select('phone').eq('site_key', 'rva').single(),
         ])
         if (advRes.data && advRes.data.length > 0) {
@@ -63,13 +41,6 @@ export default function RVAPage() {
         if (galRes.data && galRes.data.length > 0) {
           setGallery(galRes.data.map((g: GalleryImage) => g.url))
         }
-        if (navRes.data && navRes.data.length > 0) {
-          const adventuresParent = navRes.data.find((item: { parent_id: string | null; label: string }) => !item.parent_id && item.label === 'Adventures')
-          if (adventuresParent) {
-            const children = navRes.data.filter((item: { parent_id: string | null }) => item.parent_id === adventuresParent.id)
-            if (children.length > 0) setAdventureNavItems(children.map((item: { label: string; href: string }) => ({ label: item.label, href: item.href })))
-          }
-        }
         if (settingsRes.data?.phone) {
           setPhone(settingsRes.data.phone)
           setPhoneHref(`tel:+1${settingsRes.data.phone.replace(/\D/g, '')}`)
@@ -83,87 +54,7 @@ export default function RVAPage() {
 
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
-      {/* NAV */}
-      <nav aria-label="Main navigation" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-rva-forest/95 backdrop-blur-md shadow-lg' : 'bg-transparent'}`}>
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="#" className="flex items-center gap-3" aria-label="Rich Valley Adventures — home">
-            <Image src={rvaData.logo} alt="Rich Valley Adventures logo" width={160} height={50} className="h-14 w-auto object-contain" unoptimized loading="eager" />
-          </a>
-          <div className="hidden md:flex items-center gap-8">
-            <div
-              className="relative"
-              onMouseEnter={() => { if (closeTimerRef.current) clearTimeout(closeTimerRef.current); setAdventuresOpen(true) }}
-              onMouseLeave={() => { closeTimerRef.current = setTimeout(() => setAdventuresOpen(false), 250) }}
-            >
-              <button onClick={() => setAdventuresOpen(!adventuresOpen)} className="flex items-center gap-1 text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
-                Adventures
-                <svg className={`w-3.5 h-3.5 transition-transform ${adventuresOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-              </button>
-              {adventuresOpen && (
-                <div className="absolute top-full left-0 mt-1 w-56 bg-rva-forest rounded-xl shadow-2xl border border-white/10 py-2 z-50">
-                  {adventureNavItems.map((item) => (
-                    <a key={item.href} href={item.href} className="block px-4 py-2 text-white/85 hover:text-rva-copper-light hover:bg-white/5 text-sm transition-colors">
-                      {item.label}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-            {['About', 'Gallery', 'Contact'].map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
-                {item}
-              </a>
-            ))}
-            <a href="/blog" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
-              Blog
-            </a>
-            <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
-              Transportation
-            </a>
-            <a href={phoneHref} aria-label={`Call Rich Valley Adventures at ${phone}`} className="bg-rva-copper hover:bg-rva-copper-light text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:shadow-lg">
-              {phone}
-            </a>
-          </div>
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle mobile navigation menu" aria-expanded={mobileMenuOpen} className="md:hidden text-white p-2">
-            <div className="w-6 h-0.5 bg-white mb-1.5"></div>
-            <div className="w-6 h-0.5 bg-white mb-1.5"></div>
-            <div className="w-6 h-0.5 bg-white"></div>
-          </button>
-        </div>
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-rva-forest border-t border-white/10 px-6 py-4 space-y-3">
-            <div>
-              <button onClick={() => setMobileAdventuresOpen(!mobileAdventuresOpen)} className="flex items-center justify-between w-full text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
-                Adventures
-                <svg className={`w-3.5 h-3.5 transition-transform ${mobileAdventuresOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-              </button>
-              {mobileAdventuresOpen && (
-                <div className="pl-4 space-y-1 border-l border-white/20 ml-2 mt-1">
-                  {adventureNavItems.map((item) => (
-                    <a key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className="block text-white/75 hover:text-rva-copper-light text-sm py-1.5">
-                      {item.label}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-            {['About', 'Gallery', 'Contact'].map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
-                {item}
-              </a>
-            ))}
-            <a href="/blog" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
-              Blog
-            </a>
-            <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
-              Transportation
-            </a>
-            <a href={phoneHref} className="block bg-rva-copper text-white text-center py-3 rounded-full font-semibold mt-2">
-              {phone}
-            </a>
-          </div>
-        )}
-      </nav>
+      <RVANav />
 
       {/* HERO */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
