@@ -78,9 +78,9 @@ export default function ALPNav() {
     <nav aria-label="Main navigation" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'shadow-lg' : 'shadow-lg'}`} style={{ backgroundColor: '#1b2338' }}>
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center">
         <a href="/alpenglow" className="flex items-center gap-3 flex-shrink-0" aria-label="Aspen Alpenglow Limousine — home">
-          <Image src={alpenglowData.logo} alt="Aspen Alpenglow Limousine logo" width={160} height={50} className="h-14 w-auto object-contain" unoptimized loading="eager" />
+          <Image src={alpenglowData.logo} alt="Aspen Alpenglow Limousine logo" width={160} height={50} className="h-10 md:h-14 w-auto object-contain" unoptimized loading="eager" />
         </a>
-        <a href={phoneHref} aria-label={`Call Aspen Alpenglow Limousine at ${phone}`} className="ml-4 flex-shrink-0 bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-4 py-2 rounded-full text-sm font-semibold transition-all hover:shadow-lg">
+        <a href={phoneHref} aria-label={`Call Aspen Alpenglow Limousine at ${phone}`} className="ml-3 flex-shrink-0 bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-semibold transition-all hover:shadow-lg">
           {phone}
         </a>
         <div className="hidden md:flex items-center gap-8 ml-auto">
