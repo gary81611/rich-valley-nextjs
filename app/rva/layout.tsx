@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import RVANav from '@/components/rva/RVANav'
+import RVAFooter from '@/components/rva/RVAFooter'
 
 const RVA_URL = 'https://www.richvalleyadventures.com'
 const RVA_OG_IMAGE = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80'
@@ -248,7 +250,9 @@ export default function RVALayout({ children }: { children: React.ReactNode }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
+      <RVANav />
       {children}
+      <RVAFooter />
     </>
   )
 }

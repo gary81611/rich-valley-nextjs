@@ -1,5 +1,4 @@
 'use client'
-// Force rebuild: cache bust v2
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { rvaData } from '@/lib/site-data'
@@ -32,7 +31,7 @@ export default function RVANav() {
         <a href="/rva" className="flex items-center gap-3 flex-shrink-0" aria-label="Rich Valley Adventures — home">
           <Image src={rvaData.logo} alt="Rich Valley Adventures logo" width={160} height={50} className="h-10 md:h-14 w-auto object-contain" unoptimized loading="eager" />
         </a>
-        <a href="tel:9704563666" aria-label="Call Rich Valley Adventures at 970-456-3666" className="ml-3 flex-shrink-0 bg-rva-copper hover:bg-rva-copper-light text-white px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-semibold transition-all hover:shadow-lg">
+        <a href="tel:+19704563666" aria-label="Call Rich Valley Adventures at 970-456-3666" className="ml-3 flex-shrink-0 bg-rva-copper hover:bg-rva-copper-light text-white px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-semibold transition-all hover:shadow-lg">
           970-456-3666
         </a>
         <div className="hidden md:flex items-center gap-8 ml-auto">

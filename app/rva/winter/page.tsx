@@ -25,7 +25,7 @@ const winterAdventures = [
       'Trek through snow-covered meadows and frozen aspen groves on guided snowshoe adventures. Our guides lead you through pristine winter landscapes that few visitors ever see. Routes range from gentle valley walks to more challenging backcountry terrain. All snowshoe equipment, trekking poles, and hot drinks are included.',
     duration: '2-4 Hours',
     difficulty: 'All Levels',
-    image: '/images/rva/winter/snowshoeing.jpeg',
+    image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80',
   },
   {
     title: 'Cross-Country Skiing',
@@ -33,7 +33,7 @@ const winterAdventures = [
       'Glide through the quiet winter wilderness on groomed and backcountry trails. Whether you are a first-time skier or an experienced Nordic enthusiast, our guides will match the route to your ability. We provide skis, boots, poles, and expert instruction. Full-day tours include a trailside hot lunch.',
     duration: 'Half Day / Full Day',
     difficulty: 'Beginner to Intermediate',
-    image: '/images/rva/winter/cross-country.jpeg',
+    image: 'https://images.unsplash.com/photo-1482784160316-6eb046863ece?w=800&q=80',
   },
   {
     title: 'Ice Fishing',
@@ -41,7 +41,7 @@ const winterAdventures = [
       'Experience the quiet thrill of ice fishing on frozen alpine lakes near Aspen. Our guides set up everything — auger, shelter, heater, rods, bait — so all you have to do is drop a line and enjoy the mountain views. Hot coffee and snacks keep you warm while you wait for that first bite.',
     duration: '3-5 Hours',
     difficulty: 'All Levels',
-    image: '/images/rva/winter/ice-fishing.jpeg',
+    image: 'https://images.unsplash.com/photo-1543039625-14cbd3802e7d?w=800&q=80',
   },
   {
     title: 'Winter Escalade Tours',
@@ -49,7 +49,7 @@ const winterAdventures = [
       'See the Roaring Fork Valley in its winter glory from the warmth of a luxury Cadillac Escalade. Drive through snow-dusted passes, visit frozen waterfalls, and stop at scenic overlooks with panoramic mountain views. Perfect for families, groups, or anyone who wants the winter experience without the cold.',
     duration: 'Half Day / Full Day',
     difficulty: 'Easy — Ride Along',
-    image: '/images/rva/winter/winter-escalade.jpeg',
+    image: 'https://images.unsplash.com/photo-1520208422220-d12a3c588e6c?w=800&q=80',
   },
 ]
 

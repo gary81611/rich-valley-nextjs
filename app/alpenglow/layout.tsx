@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import ALPNav from '@/components/alpenglow/ALPNav'
+import ALPFooter from '@/components/alpenglow/ALPFooter'
 
 const ALP_URL = 'https://aspenalpenglowlimousine.com'
 const ALP_OG_IMAGE = 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1200&q=80'
@@ -296,7 +298,9 @@ export default function AlpenglowLayout({ children }: { children: React.ReactNod
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
+      <ALPNav />
       {children}
+      <ALPFooter />
     </>
   )
 }

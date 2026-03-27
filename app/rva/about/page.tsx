@@ -102,7 +102,7 @@ export default function AboutPage() {
             <div className="relative">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/5]">
                 <Image
-                  src="/images/rva/about/founder-kit.jpeg"
+                  src="/images/about/founder-kit.jpeg"
                   alt="Kit — founder and lead guide of Rich Valley Adventures, Aspen Colorado"
                   fill
                   className="object-cover"
@@ -157,7 +157,7 @@ export default function AboutPage() {
             <div className="relative order-2 lg:order-1">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3]">
                 <Image
-                  src="/images/rva/about/team-1.jpeg"
+                  src="/images/about/team-1.jpeg"
                   alt="The Rich Valley Adventures guide team — local outdoor experts in Aspen, Colorado"
                   fill
                   className="object-cover"

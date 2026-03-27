@@ -6,7 +6,6 @@ import ServicePageTemplate from '@/components/templates/ServicePageTemplate'
 import LocationPageTemplate from '@/components/templates/LocationPageTemplate'
 import FaqPageTemplate from '@/components/templates/FaqPageTemplate'
 import LandingPageTemplate from '@/components/templates/LandingPageTemplate'
-import ALPNav from '@/components/alpenglow/ALPNav'
 
 export const revalidate = 30
 
@@ -138,7 +137,6 @@ export default async function CmsPage({ params }: Props) {
 
   return (
     <>
-      <ALPNav />
       <div className="h-[86px]" />
       {jsonLdSchemas && jsonLdSchemas.map((schema, i) => (
         <script
