@@ -26,7 +26,7 @@ export default function GalleryPage() {
   const supabase = createClient()
 
   const fetchData = useCallback(async () => {
-    let query = supabase.from('gallery_images').select('*').order('display_order')
+    let query = supabase.from('gallery_images').select('*').in('site_key', ['rva', 'alpenglow']).order('display_order')
     if (filter !== 'all') query = query.eq('site_key', filter)
     const { data: rows } = await query
     setData(rows || [])

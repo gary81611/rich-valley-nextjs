@@ -18,7 +18,7 @@ export default function NewsletterPage() {
   const supabase = createClient()
 
   const fetchData = useCallback(async () => {
-    const { data: rows } = await supabase.from('newsletter_subscribers').select('*').order('subscribed_at', { ascending: false })
+    const { data: rows } = await supabase.from('newsletter_subscribers').select('*').in('site_key', ['rva', 'alpenglow']).order('subscribed_at', { ascending: false })
     setData(rows || [])
     setLoading(false)
   }, [supabase])

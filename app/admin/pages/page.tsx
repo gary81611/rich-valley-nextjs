@@ -345,7 +345,7 @@ export default function AdminPagesPage() {
 
   const load = useCallback(async () => {
     setLoading(true)
-    let q = supabase.from('pages').select('*').order('site_id').order('slug')
+    let q = supabase.from('pages').select('*').in('site_id', ['rva', 'alpenglow']).order('site_id').order('slug')
     if (siteFilter !== 'all') q = q.eq('site_id', siteFilter)
     const { data } = await q
     setPages((data as CmsPage[]) || [])

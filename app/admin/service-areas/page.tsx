@@ -25,7 +25,7 @@ export default function ServiceAreasPage() {
   const supabase = createClient()
 
   const fetchData = useCallback(async () => {
-    const { data: rows } = await supabase.from('service_areas').select('*').order('name')
+    const { data: rows } = await supabase.from('service_areas').select('*').in('site_key', ['rva', 'alpenglow']).order('name')
     setData(rows || [])
     setLoading(false)
   }, [supabase])

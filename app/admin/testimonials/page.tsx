@@ -26,7 +26,7 @@ export default function TestimonialsPage() {
   const supabase = createClient()
 
   const fetchData = useCallback(async () => {
-    let query = supabase.from('testimonials').select('*').order('created_at', { ascending: false })
+    let query = supabase.from('testimonials').select('*').in('site_key', ['rva', 'alpenglow']).order('created_at', { ascending: false })
     if (filter !== 'all') query = query.eq('site_key', filter)
     const { data: rows } = await query
     setData(rows || [])
