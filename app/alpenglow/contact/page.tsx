@@ -1,41 +1,9 @@
 'use client'
 
-import { useState, FormEvent } from 'react'
 import Link from 'next/link'
+import InquiryForm from '@/components/shared/InquiryForm'
 
 export default function ContactPage() {
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    service: '',
-    pickupDate: '',
-    details: '',
-  })
-  const [submitting, setSubmitting] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
-  const [error, setError] = useState('')
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault()
-    setSubmitting(true)
-    setError('')
-
-    try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, brand: 'alpenglow' }),
-      })
-
-      if (!res.ok) throw new Error('Failed to send message')
-      setSubmitted(true)
-    } catch {
-      setError('Something went wrong. Please call us at 970-456-3666 or try again.')
-    } finally {
-      setSubmitting(false)
-    }
-  }
 
   return (
     <div className="min-h-screen bg-alp-pearl font-inter">
@@ -67,144 +35,14 @@ export default function ContactPage() {
       <section className="py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-12">
-            {/* Form */}
+            {/* Guided Inquiry Form */}
             <div className="lg:col-span-2">
-              {submitted ? (
-                <div className="bg-white rounded-2xl shadow-md p-8 sm:p-12 border border-alp-pearl-dark text-center">
-                  <div className="w-16 h-16 bg-alp-gold/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <svg className="w-8 h-8 text-alp-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <h2 className="font-playfair text-3xl font-bold text-alp-navy mb-4">
-                    Message Sent
-                  </h2>
-                  <p className="text-alp-slate text-lg mb-6">
-                    Thank you for reaching out. We will get back to you shortly with a confirmation and quote.
-                  </p>
-                  <p className="text-alp-slate text-sm">
-                    Need immediate assistance? Call{' '}
-                    <a href="tel:+19704563666" className="text-alp-gold font-semibold hover:underline">
-                      970-456-3666
-                    </a>
-                  </p>
-                </div>
-              ) : (
-                <form
-                  onSubmit={handleSubmit}
-                  className="bg-white rounded-2xl shadow-md p-8 sm:p-12 border border-alp-pearl-dark"
-                >
-                  <h2 className="font-playfair text-2xl font-bold text-alp-navy mb-8">
-                    Request a Booking
-                  </h2>
-
-                  <div className="grid sm:grid-cols-2 gap-6 mb-6">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-semibold text-alp-navy mb-2">
-                        Full Name *
-                      </label>
-                      <input
-                        id="name"
-                        type="text"
-                        required
-                        value={form.name}
-                        onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        className="w-full px-4 py-3 border border-alp-pearl-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-alp-gold/50 focus:border-alp-gold text-alp-navy"
-                        placeholder="Your name"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-semibold text-alp-navy mb-2">
-                        Email *
-                      </label>
-                      <input
-                        id="email"
-                        type="email"
-                        required
-                        value={form.email}
-                        onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        className="w-full px-4 py-3 border border-alp-pearl-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-alp-gold/50 focus:border-alp-gold text-alp-navy"
-                        placeholder="you@example.com"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid sm:grid-cols-2 gap-6 mb-6">
-                    <div>
-                      <label htmlFor="phone" className="block text-sm font-semibold text-alp-navy mb-2">
-                        Phone
-                      </label>
-                      <input
-                        id="phone"
-                        type="tel"
-                        value={form.phone}
-                        onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                        className="w-full px-4 py-3 border border-alp-pearl-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-alp-gold/50 focus:border-alp-gold text-alp-navy"
-                        placeholder="(555) 123-4567"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="service" className="block text-sm font-semibold text-alp-navy mb-2">
-                        Service *
-                      </label>
-                      <select
-                        id="service"
-                        required
-                        value={form.service}
-                        onChange={(e) => setForm({ ...form, service: e.target.value })}
-                        className="w-full px-4 py-3 border border-alp-pearl-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-alp-gold/50 focus:border-alp-gold text-alp-navy bg-white"
-                      >
-                        <option value="">Select a service</option>
-                        <option value="Airport Transfer">Airport Transfer</option>
-                        <option value="Hourly Charter">Hourly Charter</option>
-                        <option value="Corporate">Corporate</option>
-                        <option value="Wedding">Wedding</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="mb-6">
-                    <label htmlFor="pickupDate" className="block text-sm font-semibold text-alp-navy mb-2">
-                      Pickup Date
-                    </label>
-                    <input
-                      id="pickupDate"
-                      type="date"
-                      value={form.pickupDate}
-                      onChange={(e) => setForm({ ...form, pickupDate: e.target.value })}
-                      className="w-full px-4 py-3 border border-alp-pearl-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-alp-gold/50 focus:border-alp-gold text-alp-navy"
-                    />
-                  </div>
-
-                  <div className="mb-8">
-                    <label htmlFor="details" className="block text-sm font-semibold text-alp-navy mb-2">
-                      Trip Details
-                    </label>
-                    <textarea
-                      id="details"
-                      rows={4}
-                      value={form.details}
-                      onChange={(e) => setForm({ ...form, details: e.target.value })}
-                      className="w-full px-4 py-3 border border-alp-pearl-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-alp-gold/50 focus:border-alp-gold text-alp-navy resize-none"
-                      placeholder="Pickup location, destination, number of passengers, special requests..."
-                    />
-                  </div>
-
-                  {error && (
-                    <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                      {error}
-                    </div>
-                  )}
-
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="w-full bg-alp-gold text-alp-navy font-bold px-8 py-4 rounded-full hover:bg-alp-gold-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-lg"
-                  >
-                    {submitting ? 'Sending...' : 'Send Booking Request'}
-                  </button>
-                </form>
-              )}
+              <div className="bg-white rounded-2xl shadow-md p-8 sm:p-12 border border-alp-pearl-dark">
+                <h2 className="font-playfair text-2xl font-bold text-alp-navy mb-8">
+                  Request a Booking
+                </h2>
+                <InquiryForm brand="alpenglow" />
+              </div>
             </div>
 
             {/* Sidebar */}

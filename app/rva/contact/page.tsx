@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { PHONE, PHONE_HREF, LOCATION } from '@/lib/site-data'
-import ContactForm from './ContactForm'
+import InquiryForm from '@/components/shared/InquiryForm'
 
 export const metadata: Metadata = {
   title: 'Contact Rich Valley Adventures | Book Your Aspen Adventure',
@@ -61,7 +61,7 @@ export default function ContactPage() {
                 <h2 className="font-playfair text-2xl text-rva-forest font-bold mb-6">
                   Send Us a Message
                 </h2>
-                <ContactForm />
+                <InquiryForm brand="rva" />
               </div>
             </div>
 
