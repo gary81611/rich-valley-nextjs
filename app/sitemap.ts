@@ -36,6 +36,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const supabase = createClient(supabaseUrl, supabaseKey)
 
+    const signal = AbortSignal.timeout(10000)
+
     // Blog posts — RVA only
     const { data: posts } = await supabase
       .from('blog_posts')
@@ -43,6 +45,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .eq('status', 'published')
       .eq('site_key', 'rva')
       .order('published_at', { ascending: false })
+      .abortSignal(signal)
 
     const blogEntries: MetadataRoute.Sitemap = (posts || []).map((post) => ({
       url: `${RVA_URL}/blog/${post.slug}`,
@@ -58,6 +61,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .eq('status', 'published')
       .eq('site_id', 'rva')
       .order('slug')
+      .abortSignal(signal)
 
     const rvaPageEntries: MetadataRoute.Sitemap = (rvaPages || []).map((page) => ({
       url: `${RVA_URL}/${page.slug}`,
@@ -73,6 +77,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .eq('status', 'published')
       .eq('site_id', 'alpenglow')
       .order('slug')
+      .abortSignal(signal)
 
     const aalPageEntries: MetadataRoute.Sitemap = (aalPages || []).map((page) => ({
       url: `${AAL_URL}/${page.slug}`,
@@ -88,6 +93,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .eq('status', 'published')
       .eq('site_key', 'alpenglow')
       .order('published_at', { ascending: false })
+      .abortSignal(signal)
 
     const aalBlogEntries: MetadataRoute.Sitemap = (aalPosts || []).map((post) => ({
       url: `${AAL_URL}/blog/${post.slug}`,

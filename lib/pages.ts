@@ -81,30 +81,40 @@ export async function getPageBySlug(siteId: SiteId, slug: string): Promise<CmsPa
   const supabase = getServerClient()
   if (!supabase) return null
 
-  const { data, error } = await supabase
-    .from('pages')
-    .select('*')
-    .eq('site_id', siteId)
-    .eq('slug', slug)
-    .eq('status', 'published')
-    .single()
+  try {
+    const { data, error } = await supabase
+      .from('pages')
+      .select('*')
+      .eq('site_id', siteId)
+      .eq('slug', slug)
+      .eq('status', 'published')
+      .abortSignal(AbortSignal.timeout(8000))
+      .single()
 
-  if (error || !data) return null
-  return data as CmsPage
+    if (error || !data) return null
+    return data as CmsPage
+  } catch {
+    return null
+  }
 }
 
 export async function getAllPublishedPages(siteId: SiteId): Promise<CmsPage[]> {
   const supabase = getServerClient()
   if (!supabase) return []
 
-  const { data } = await supabase
-    .from('pages')
-    .select('*')
-    .eq('site_id', siteId)
-    .eq('status', 'published')
-    .order('slug')
+  try {
+    const { data } = await supabase
+      .from('pages')
+      .select('*')
+      .eq('site_id', siteId)
+      .eq('status', 'published')
+      .order('slug')
+      .abortSignal(AbortSignal.timeout(8000))
 
-  return (data as CmsPage[]) || []
+    return (data as CmsPage[]) || []
+  } catch {
+    return []
+  }
 }
 
 export async function getAllPagesAdmin(siteId?: SiteId): Promise<CmsPage[]> {
