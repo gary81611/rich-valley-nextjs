@@ -94,7 +94,13 @@ const localBusinessSchema = {
     'https://www.facebook.com/richvalleyadventures',
     'https://www.instagram.com/richvalleyadventures',
     'https://www.tripadvisor.com/richvalleyadventures',
+    'https://aspenalpenglowlimousine.com',
   ],
+  parentOrganization: {
+    '@type': 'Organization',
+    name: 'Rich Valley Adventures & Aspen Alpenglow Limousine',
+    url: 'https://www.richvalleyadventures.com',
+  },
   aggregateRating: {
     '@type': 'AggregateRating',
     ratingValue: '4.9',
