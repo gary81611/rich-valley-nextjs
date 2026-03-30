@@ -50,6 +50,13 @@ const navGroups: NavGroup[] = [
       { name: 'Testimonials & Reviews', href: '/admin/testimonials', icon: 'star' },
       { name: 'FAQs', href: '/admin/faqs', icon: 'help' },
       { name: 'Service Areas', href: '/admin/service-areas', icon: 'map' },
+      { name: 'Guides', href: '/admin/guides', icon: 'users', badge: 'rva' },
+      { name: 'Winter Adventures', href: '/admin/winter', icon: 'compass', badge: 'rva' },
+      { name: 'Locations', href: '/admin/locations', icon: 'map', badge: 'rva' },
+      { name: 'Elevated Camping', href: '/admin/camping', icon: 'compass', badge: 'rva' },
+      { name: 'Pricing Routes', href: '/admin/pricing', icon: 'briefcase', badge: 'alpenglow' },
+      { name: 'Destinations', href: '/admin/destinations', icon: 'map', badge: 'alpenglow' },
+      { name: 'River Conditions', href: '/admin/conditions', icon: 'chart', badge: 'rva' },
     ],
   },
   {
