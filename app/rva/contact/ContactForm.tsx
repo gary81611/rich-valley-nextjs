@@ -7,7 +7,7 @@ const serviceOptions = [
   'Paddle Boarding',
   'Mountain Biking',
   'Trail Hiking',
-  'Scenic Escalade Tours',
+  'Chauffeur Guided Tours and Excursions',
   'Elevated Camping',
   'Winter Adventure',
   'Other / Not Sure',

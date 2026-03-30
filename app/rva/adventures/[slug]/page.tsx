@@ -121,14 +121,14 @@ const adventureDetails: Record<string, AdventureDetail> = {
       'Elk Mountain ecology & history',
     ],
   },
-  'scenic-escalade-tours': {
-    title: 'Scenic Escalade Tours',
-    slug: 'scenic-escalade-tours',
+  'chauffeur-guided-tours-tours': {
+    title: 'Chauffeur Guided Tours and Excursions',
+    slug: 'chauffeur-guided-tours-tours',
     description: 'See Colorado\'s most iconic landmarks from the comfort of a luxury Cadillac Escalade with a knowledgeable local guide. Maroon Bells, Independence Pass, and beyond.',
     longDescription:
       'See Colorado\'s most iconic landmarks from the comfort of a luxury Cadillac Escalade with a knowledgeable local guide at the wheel. This is the perfect adventure for those who want the views without the vertical — or for guests who want to combine sightseeing with other activities. Half-day tours cover the Roaring Fork Valley\'s highlights, while full-day tours can venture to Independence Pass, Maroon Bells, or other iconic destinations. Complimentary refreshments and flexible itineraries are standard.',
-    image: '/images/adventures/scenic-escalade.png',
-    heroImage: '/images/adventures/scenic-escalade.png',
+    image: '/images/adventures/chauffeur-guided-tours.png',
+    heroImage: '/images/adventures/chauffeur-guided-tours.png',
     duration: 'Half Day / Full Day',
     difficulty: 'Easy — Ride Along',
     whatsIncluded: [
@@ -181,7 +181,7 @@ const allSlugs = [
   'paddle-boarding',
   'mountain-biking',
   'trail-hiking',
-  'scenic-escalade-tours',
+  'chauffeur-guided-tours-tours',
   'elevated-camping',
 ]
 

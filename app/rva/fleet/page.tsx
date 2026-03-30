@@ -71,7 +71,7 @@ export default function FleetPage() {
                   </h2>
                   <p className="text-gray-600 leading-relaxed mb-6">
                     {i === 0
-                      ? 'Our flagship Cadillac Escalade offers the ultimate in comfort and style. Premium leather interior, whisper-quiet ride, and ample space for luggage — perfect for scenic Escalade tours, airport transfers, and intimate celebrations.'
+                      ? 'Our flagship Cadillac Escalade offers the ultimate in comfort and style. Premium leather interior, whisper-quiet ride, and ample space for luggage — perfect for scenic Chauffeur Guided Tours, airport transfers, and intimate celebrations.'
                       : 'Our Mercedes Sprinter combines spacious group capacity with true luxury. Standing headroom, executive seating, and entertainment make it ideal for wedding parties, corporate groups, ski teams, and scenic tours through the Roaring Fork Valley.'}
                   </p>
                   <ul className="grid grid-cols-2 gap-3 mb-8">

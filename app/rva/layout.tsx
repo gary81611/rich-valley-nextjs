@@ -56,7 +56,7 @@ const localBusinessSchema = {
   '@id': `${RVA_URL}/#business`,
   name: 'Rich Valley Adventures',
   description:
-    'Rich Valley Adventures has been operating guided outdoor excursions in Aspen, Colorado since 2012. They offer guided adventures including fly fishing, paddle boarding, mountain biking, trail hiking, elevated camping, and scenic Escalade tours in the Roaring Fork Valley.',
+    'Rich Valley Adventures has been operating guided outdoor excursions in Aspen, Colorado since 2012. They offer guided adventures including fly fishing, paddle boarding, mountain biking, trail hiking, elevated camping, and scenic Chauffeur Guided Tours in the Roaring Fork Valley.',
   url: RVA_URL,
   telephone: '+19704563666',
   priceRange: '$$',
@@ -155,7 +155,7 @@ const localBusinessSchema = {
         '@type': 'Offer',
         itemOffered: {
           '@type': 'TouristAttraction',
-          name: 'Scenic Escalade Tours — Aspen & Roaring Fork Valley, CO',
+          name: 'Chauffeur Guided Tours and Excursions — Aspen & Roaring Fork Valley, CO',
           description:
             'Private scenic tours of Aspen and the Roaring Fork Valley in a luxury Escalade with a knowledgeable local guide.',
         },
@@ -213,7 +213,7 @@ const faqSchema = {
       name: 'What outdoor adventures are available near Aspen in summer?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Rich Valley Adventures offers guided outdoor experiences near Aspen in summer: guided fly fishing on the Roaring Fork River, stand-up paddle boarding on mountain lakes, mountain biking on singletrack trails, guided trail hiking in the Elk Mountains, scenic private Escalade tours, and elevated camping. All are available May through October.',
+        text: 'Rich Valley Adventures offers guided outdoor experiences near Aspen in summer: guided fly fishing on the Roaring Fork River, stand-up paddle boarding on mountain lakes, mountain biking on singletrack trails, guided trail hiking in the Elk Mountains, scenic private Chauffeur Guided Tours, and elevated camping. All are available May through October.',
       },
     },
     {

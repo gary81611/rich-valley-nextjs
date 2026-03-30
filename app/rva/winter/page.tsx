@@ -5,7 +5,7 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'Winter Adventures | Rich Valley Adventures | Aspen, CO',
   description:
-    'Explore winter in the Roaring Fork Valley with Rich Valley Adventures. Guided snowshoeing, cross-country skiing, ice fishing, and winter Escalade tours in Aspen, Colorado.',
+    'Explore winter in the Roaring Fork Valley with Rich Valley Adventures. Guided snowshoeing, cross-country skiing, ice fishing, and winter Chauffeur Guided Tours in Aspen, Colorado.',
   alternates: {
     canonical: 'https://www.richvalleyadventures.com/winter',
   },
@@ -44,7 +44,7 @@ const winterAdventures = [
     image: 'https://images.unsplash.com/photo-1543039625-14cbd3802e7d?w=800&q=80',
   },
   {
-    title: 'Winter Escalade Tours',
+    title: 'Winter Chauffeur Guided Tours',
     description:
       'See the Roaring Fork Valley in its winter glory from the warmth of a luxury Cadillac Escalade. Drive through snow-dusted passes, visit frozen waterfalls, and stop at scenic overlooks with panoramic mountain views. Perfect for families, groups, or anyone who wants the winter experience without the cold.',
     duration: 'Half Day / Full Day',
