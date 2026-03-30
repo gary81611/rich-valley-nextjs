@@ -10,6 +10,9 @@ const SERVICE_PAGES = [
   { label: 'Hiking', slug: 'hiking' },
   { label: 'Snowshoeing', slug: 'snowshoeing' },
   { label: 'Wine Tours', slug: 'wine-tours' },
+  { label: 'Winter Adventures', slug: 'winter' },
+  { label: 'River & Trail Conditions', slug: 'conditions' },
+  { label: 'Meet Your Guides', slug: 'guides' },
 ]
 
 export default function RVANav() {
@@ -54,6 +57,9 @@ export default function RVANav() {
               </div>
             )}
           </div>
+          <a href="/rva/locations" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+            Locations
+          </a>
           <a href="/rva#about" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
             About
           </a>
@@ -93,6 +99,9 @@ export default function RVANav() {
               </div>
             )}
           </div>
+          <a href="/rva/locations" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
+            Locations
+          </a>
           <a href="/rva#about" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
             About
           </a>
