@@ -1,5 +1,5 @@
 // Seed blog posts into Supabase
-// Run: npx tsx scripts/seed-blog.ts
+// Run: NEXT_PUBLIC_SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... npx tsx scripts/seed-blog.ts
 
 import { createClient } from '@supabase/supabase-js'
 import { BLOG_POSTS } from '../lib/rva-blog-posts'
@@ -15,14 +15,11 @@ async function seed() {
       slug: post.slug,
       title: post.title,
       content: post.content,
-      excerpt: post.excerpt,
-      author: post.author,
+      meta_title: post.title,
+      meta_description: post.excerpt,
       site_key: 'rva',
       status: 'published',
       published_at: post.date,
-      seo_title: post.title,
-      seo_description: post.excerpt,
-      tags: post.tags,
     }, { onConflict: 'slug' })
 
     console.log(error ? `ERROR ${post.slug}: ${error.message}` : `OK: ${post.slug}`)
