@@ -14,12 +14,14 @@ interface AdventureDetail {
   difficulty: string
   whatsIncluded: string[]
   highlights: string[]
+  bestFor?: string
 }
 
 const adventureDetails: Record<string, AdventureDetail> = {
   'fly-fishing': {
     title: 'Fly Fishing',
     slug: 'fly-fishing',
+    bestFor: 'Serious anglers and beginners alike — all gear provided',
     description: rvaData.adventures[0].description,
     longDescription:
       'Wade into the pristine waters of the Roaring Fork River and its tributaries with expert local guides who have fished these Gold Medal waters for decades. Whether you are a complete beginner or an experienced angler looking for new water, our guides will put you on fish. We provide all equipment — premium rods, reels, waders, boots, and hand-tied flies — so you just show up ready for the experience of a lifetime. The Roaring Fork Valley offers some of the finest trout fishing in the Rocky Mountain West, with healthy populations of rainbow, brown, and brook trout.',
@@ -46,6 +48,7 @@ const adventureDetails: Record<string, AdventureDetail> = {
   'paddle-boarding': {
     title: 'Paddle Boarding',
     slug: 'paddle-boarding',
+    bestFor: 'Families and anyone looking for a fun day on the water',
     description: rvaData.adventures[1].description,
     longDescription:
       'Experience the serenity of stand-up paddle boarding on crystal-clear alpine lakes surrounded by towering peaks. Our certified instructors start every session with a land-based lesson before getting you on the water with confidence. We select locations based on conditions and group ability — calm lakes for beginners, gentle river stretches for the more adventurous. All boards, paddles, and safety gear are provided. This is one of our most popular family activities and a perfect way to cool off on a warm Colorado afternoon.',
@@ -72,6 +75,7 @@ const adventureDetails: Record<string, AdventureDetail> = {
   'mountain-biking': {
     title: 'Mountain Biking',
     slug: 'mountain-biking',
+    bestFor: 'Adventurous riders comfortable on trails — all levels welcome',
     description: rvaData.adventures[2].description,
     longDescription:
       'Explore world-class singletrack trails that wind through aspen groves, alpine meadows, and along mountain ridgelines. The Roaring Fork Valley is home to some of the best mountain biking in Colorado, and our guides know every trail — from smooth, beginner-friendly paths to technical descents that will challenge even experienced riders. We provide top-of-the-line full-suspension mountain bikes, helmets, and all safety gear. Half-day rides focus on a single trail system, while full-day adventures cover more ground with a trailside lunch.',
@@ -98,6 +102,7 @@ const adventureDetails: Record<string, AdventureDetail> = {
   'trail-hiking': {
     title: 'Trail Hiking',
     slug: 'trail-hiking',
+    bestFor: 'Nature lovers and groups of all fitness levels',
     description: rvaData.adventures[3].description,
     longDescription:
       'Discover the hidden waterfalls, wildflower meadows, and panoramic summit views that make the Elk Mountains one of America\'s most spectacular hiking destinations. Our guides are naturalists and local historians who bring every trail to life with stories about the geology, ecology, and mining heritage of the region. We offer everything from easy valley walks to challenging summit pushes, with routes tailored to your group\'s fitness level and interests. All hikes include transportation, trekking poles, snacks, and water.',
@@ -122,6 +127,7 @@ const adventureDetails: Record<string, AdventureDetail> = {
     ],
   },
   'chauffeur-guided-tours-tours': {
+    bestFor: 'Anyone who wants to explore the valley in comfort',
     title: 'Chauffeur Guided Tours and Excursions',
     slug: 'chauffeur-guided-tours-tours',
     description: 'See Colorado\'s most iconic landmarks from the comfort of a luxury Cadillac Escalade with a knowledgeable local guide. Maroon Bells, Independence Pass, and beyond.',
@@ -150,6 +156,7 @@ const adventureDetails: Record<string, AdventureDetail> = {
   'elevated-camping': {
     title: 'Elevated Camping',
     slug: 'elevated-camping',
+    bestFor: 'Groups and families who want the outdoors without roughing it',
     description: 'Sleep under the stars in comfort — premium canvas tents with real beds, gourmet chef-prepared meals, and guided stargazing deep in the Colorado wilderness.',
     longDescription:
       'This is not roughing it — this is elevated wilderness. Our premium basecamp experience combines the beauty of sleeping under the stars with the comfort of quality gear, gourmet meals, and expert-guided activities. Each camp features spacious canvas tents with real beds, a communal dining area with chef-prepared meals, and guided night-sky viewing with a telescope. Wake up to fresh coffee and a sunrise over the mountains, then spend the day hiking, fishing, or simply relaxing in one of the most beautiful places on Earth.',
@@ -295,6 +302,38 @@ export default function AdventureDetailPage({ params }: { params: { slug: string
         </div>
       </section>
 
+      {/* "Best For" tag + Mobile CTA card */}
+      <section className="bg-rva-cream pt-8 pb-0">
+        <div className="max-w-7xl mx-auto px-6">
+          {/* Best For tag */}
+          {adventure.bestFor && (
+            <p className="text-sm text-rva-forest/60 mb-4 flex items-center gap-2">
+              <svg className="w-4 h-4 text-rva-copper flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+              <span><strong className="text-rva-forest/80">Best for:</strong> {adventure.bestFor}</span>
+            </p>
+          )}
+
+          {/* Mobile-only CTA card (Change 4) */}
+          <div className="lg:hidden bg-white rounded-xl p-5 shadow-sm border border-rva-copper/10 mb-6">
+            <div className="flex items-center justify-between text-sm text-rva-forest/70 mb-4">
+              <span>{adventure.duration}</span>
+              <span>{adventure.difficulty}</span>
+              <span>2-6 guests</span>
+            </div>
+            {/* TODO: Replace [ASK KIT] with actual pricing from Kit */}
+            {/* <p className="text-lg font-semibold text-rva-forest mb-3">Starting from $[ASK KIT]/person</p> */}
+            <div className="flex gap-3">
+              <Link href="/rva/contact" className="flex-1 bg-rva-copper hover:bg-rva-copper-light text-white text-center py-3 rounded-full text-sm font-semibold transition-colors">
+                Request Booking
+              </Link>
+              <a href="tel:+19704563666" className="flex-1 border-2 border-rva-forest/20 text-rva-forest text-center py-3 rounded-full text-sm font-medium transition-colors hover:border-rva-forest/40">
+                Call Now
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Content */}
       <section className="py-16 bg-rva-cream">
         <div className="max-w-7xl mx-auto px-6">
@@ -357,12 +396,14 @@ export default function AdventureDetailPage({ params }: { params: { slug: string
               {/* Booking CTA */}
               <div className="bg-rva-forest rounded-2xl p-8 text-white mb-8 sticky top-8">
                 <h3 className="font-playfair text-2xl font-bold mb-2">Book This Adventure</h3>
+                {/* TODO: Replace [ASK KIT] with actual pricing from Kit */}
+                {/* <p className="text-2xl font-light text-rva-copper-light mb-2">Starting from $[ASK KIT]<span className="text-sm text-white/60">/person</span></p> */}
                 <p className="text-white/75 text-sm mb-6">
                   Ready to experience {adventure.title.toLowerCase()} in the Roaring Fork Valley?
-                  Get in touch to check availability and pricing.
+                  Get in touch to check availability.
                 </p>
                 <Link
-                  href="/contact"
+                  href="/rva/contact"
                   className="block bg-rva-copper hover:bg-rva-copper-light text-white text-center px-6 py-3.5 rounded-full font-semibold transition-all hover:shadow-lg w-full mb-4"
                 >
                   Request Booking
