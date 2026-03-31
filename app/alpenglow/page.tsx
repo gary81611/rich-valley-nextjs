@@ -4,7 +4,7 @@ import Image from 'next/image'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
 import NewsletterSignup from '@/components/shared/NewsletterSignup'
-import { alpenglowData, photoNotes } from '@/lib/site-data'
+import { alpenglowData } from '@/lib/site-data'
 import { createClient } from '@/lib/supabase'
 import type { Service as ServiceType, FleetVehicle, Testimonial, GalleryImage } from '@/lib/types'
 
@@ -14,6 +14,38 @@ interface GeoBlock {
   answer: string
   block_type: string
 }
+
+const defaultStats = [
+  { value: '24/7', label: 'Dispatch Available' },
+  { value: '14+', label: 'Years of Service' },
+  { value: '4.9', label: 'Client Rating' },
+]
+
+const defaultWhyChooseUs = [
+  { title: 'Flight Tracking', description: 'We monitor your flight in real-time so your ride is waiting, even if plans change.' },
+  { title: 'Local Knowledge', description: 'Our drivers live here. They know the fastest routes and the valley inside out.' },
+  { title: 'Impeccable Fleet', description: 'Late-model luxury vehicles, professionally detailed before every ride.' },
+  { title: 'White-Glove Service', description: 'Meet-and-greet, luggage handling, complimentary refreshments — every detail covered.' },
+]
+
+const defaultServiceAreas = [
+  { name: 'Aspen', description: 'Downtown, Aspen Mountain, Aspen Highlands' },
+  { name: 'Snowmass Village', description: 'Base Village, Snowmass Ski Area' },
+  { name: 'Basalt & El Jebel', description: 'Mid-valley convenience' },
+  { name: 'Carbondale', description: 'Crystal Valley, Redstone, Marble' },
+  { name: 'Glenwood Springs', description: 'Hot springs, I-70 corridor' },
+  { name: 'Eagle / Vail', description: 'EGE airport, Vail Valley connections' },
+  { name: 'Denver', description: 'Denver International Airport (DEN) transfers' },
+  { name: 'Rifle', description: 'Rifle Falls, I-70 western corridor' },
+]
+
+const defaultDestinations = [
+  { name: 'Garden of the Gods', image: '/images/destinations/garden-of-the-gods.jpg', description: 'Stunning red rock formations in Colorado Springs — a must-see on any Colorado road trip.' },
+  { name: 'Denver Botanic Gardens', image: '/images/destinations/denver-botanic-gardens.jpg', description: 'World-class botanical gardens in the heart of Denver with seasonal exhibits.' },
+  { name: 'Red Rocks Amphitheatre', image: '/images/destinations/red-rocks.jpg', description: 'Iconic open-air concert venue set among dramatic red sandstone formations.' },
+  { name: 'Coors Field', image: '/images/destinations/coors-field.jpg', description: 'Home of the Colorado Rockies — catch a game with luxury transportation.' },
+  { name: 'Pikes Peak', image: '/images/destinations/pikes-peak.jpg', description: "America's Mountain at 14,115 feet — breathtaking views of the Front Range." },
+]
 
 const alpenglowFaqs = [
   {
@@ -115,9 +147,13 @@ const ServiceIcon = ({ icon }: { icon: string }) => {
 }
 
 export default function AlpenglowPage() {
-  const [services, setServices] = useState(alpenglowData.services)
-  const [fleet, setFleet] = useState(alpenglowData.fleet)
-  const [testimonials, setTestimonials] = useState(alpenglowData.testimonials)
+  const [services, setServices] = useState<{ title: string; slug: string; description: string; features: string[]; icon: string }[]>([])
+  const [fleet, setFleet] = useState<{ name: string; image: string; passengers: string; features: string[] }[]>([])
+  const [testimonials, setTestimonials] = useState<{ quote: string; name: string; location: string }[]>([])
+  const [stats, setStats] = useState(defaultStats)
+  const [whyChooseUs, setWhyChooseUs] = useState(defaultWhyChooseUs)
+  const [serviceAreas, setServiceAreas] = useState(defaultServiceAreas)
+  const [destinations, setDestinations] = useState(defaultDestinations)
   const [geoBlocks, setGeoBlocks] = useState<GeoBlock[]>([])
   const [faqs, setFaqs] = useState(alpenglowFaqs)
   const [phone, setPhone] = useState(alpenglowData.phone)
@@ -127,13 +163,16 @@ export default function AlpenglowPage() {
     async function fetchSupabaseData() {
       try {
         const supabase = createClient()
-        const [svcRes, fleetRes, testRes, geoRes, faqRes, settingsRes] = await Promise.all([
+        const [svcRes, fleetRes, testRes, geoRes, faqRes, settingsRes, vpRes, saRes, destRes] = await Promise.all([
           supabase.from('services').select('*').eq('is_active', true).order('display_order'),
           supabase.from('fleet_vehicles').select('*').eq('is_active', true),
           supabase.from('testimonials').select('*').eq('is_active', true).eq('site_key', 'alpenglow'),
           supabase.from('geo_content_blocks').select('*').eq('is_active', true).eq('site_key', 'alpenglow').eq('display_on_page', '/').order('display_order'),
           supabase.from('faqs').select('*').eq('is_active', true).eq('site_key', 'alpenglow').order('display_order'),
-          supabase.from('site_settings').select('phone').eq('site_key', 'alpenglow').single(),
+          supabase.from('site_settings').select('phone, stats').eq('site_key', 'alpenglow').single(),
+          supabase.from('value_propositions').select('*').eq('site_key', 'alpenglow').eq('is_active', true).order('display_order'),
+          supabase.from('service_areas').select('*').eq('site_key', 'alpenglow').eq('is_active', true).order('display_order'),
+          supabase.from('destinations').select('*').eq('is_active', true).order('display_order'),
         ])
         if (svcRes.data && svcRes.data.length > 0) {
           setServices(svcRes.data.map((s: ServiceType) => ({
@@ -164,6 +203,24 @@ export default function AlpenglowPage() {
           setPhone(settingsRes.data.phone)
           setPhoneHref(`tel:+1${settingsRes.data.phone.replace(/\D/g, '')}`)
         }
+        if (settingsRes.data?.stats && Array.isArray(settingsRes.data.stats) && settingsRes.data.stats.length > 0) {
+          setStats(settingsRes.data.stats)
+        }
+        if (vpRes.data && vpRes.data.length > 0) {
+          setWhyChooseUs(vpRes.data.map((vp: { title: string; description: string }) => ({
+            title: vp.title, description: vp.description,
+          })))
+        }
+        if (saRes.data && saRes.data.length > 0) {
+          setServiceAreas(saRes.data.map((sa: { name: string; description: string }) => ({
+            name: sa.name, description: sa.description,
+          })))
+        }
+        if (destRes.data && destRes.data.length > 0) {
+          setDestinations(destRes.data.map((d: { name: string; image_url: string; description: string }) => ({
+            name: d.name, image: d.image_url || '/images/destinations/garden-of-the-gods.jpg', description: d.description,
+          })))
+        }
       } catch {
         // Use static fallback
       }
@@ -177,7 +234,7 @@ export default function AlpenglowPage() {
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0">
           <Image
-            src={photoNotes.alpenglowHero.current}
+            src="/images/about/pexels-outdoor.png"
             alt="Luxury black Escalade limousine on a mountain road in Aspen, Colorado — Aspen Alpenglow Limousine private car service"
             fill
             className="object-cover"
@@ -210,7 +267,7 @@ export default function AlpenglowPage() {
         {/* Stats bar */}
         <div className="absolute bottom-0 left-0 right-0 bg-alp-navy/90 backdrop-blur-sm border-t border-white/10">
           <div className="max-w-4xl mx-auto px-6 py-5 grid grid-cols-3 gap-4 text-center">
-            {alpenglowData.stats.map((stat) => (
+            {stats.map((stat) => (
               <div key={stat.label}>
                 <div className="font-playfair text-3xl font-bold text-alp-gold">{stat.value}</div>
                 <div className="text-white/70 text-xs tracking-wide uppercase mt-1">{stat.label}</div>
@@ -317,7 +374,7 @@ export default function AlpenglowPage() {
             <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold">The Alpenglow Difference</h2>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {alpenglowData.whyChooseUs.map((item, i) => (
+            {whyChooseUs.map((item, i) => (
               <ScrollReveal key={item.title} delay={i * 100}>
                 <div className="text-center p-8 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-alp-pearl-dark">
                   <div className="w-16 h-16 bg-alp-navy rounded-2xl flex items-center justify-center mx-auto mb-6">
@@ -341,7 +398,7 @@ export default function AlpenglowPage() {
             <p className="text-alp-slate text-xl max-w-2xl mx-auto">From Aspen to Vail and everywhere in between.</p>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {alpenglowData.serviceAreas.map((area, i) => (
+            {serviceAreas.map((area, i) => (
               <ScrollReveal key={area.name} delay={i * 80}>
                 <div className="bg-white rounded-xl p-6 border border-alp-pearl-dark hover:border-alp-gold/40 hover:shadow-md transition-all">
                   <div className="flex items-start gap-4">
@@ -395,7 +452,7 @@ export default function AlpenglowPage() {
             </p>
           </ScrollReveal>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {alpenglowData.destinations.map((dest, i) => (
+            {destinations.map((dest, i) => (
               <ScrollReveal key={dest.name} delay={i * 80} className="group">
                 <div className="relative aspect-[3/4] rounded-xl overflow-hidden">
                   <Image

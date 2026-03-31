@@ -15,10 +15,16 @@ const FALLBACK_SERVICE_PAGES: NavItem[] = [
   { label: 'Night Out', href: '/alpenglow/night-out' },
 ]
 
-const FALLBACK_AREA_PAGES: NavItem[] = alpenglowData.serviceAreas.map((a) => ({
-  label: a.name,
-  href: `/service-areas/${a.slug}`,
-}))
+const FALLBACK_AREA_PAGES: NavItem[] = [
+  { label: 'Aspen', href: '/service-areas/aspen' },
+  { label: 'Snowmass Village', href: '/service-areas/snowmass-village' },
+  { label: 'Basalt', href: '/service-areas/basalt' },
+  { label: 'Carbondale', href: '/service-areas/carbondale' },
+  { label: 'Glenwood Springs', href: '/service-areas/glenwood-springs' },
+  { label: 'Eagle / Vail', href: '/service-areas/eagle-vail' },
+  { label: 'Denver', href: '/service-areas/denver' },
+  { label: 'Rifle', href: '/service-areas/rifle' },
+]
 
 export default function ALPNav() {
   const [scrolled, setScrolled] = useState(false)
@@ -51,10 +57,9 @@ export default function ALPNav() {
           }
         }
         if (areasRes.data && areasRes.data.length > 0) {
-          const staticSlugMap = Object.fromEntries(alpenglowData.serviceAreas.map((a) => [a.name, a.slug]))
-          setAreaNavItems(areasRes.data.map((area: { name: string }) => ({
+          setAreaNavItems(areasRes.data.map((area: { name: string; slug?: string }) => ({
             label: area.name,
-            href: `/service-areas/${staticSlugMap[area.name] || area.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`,
+            href: `/service-areas/${area.slug || area.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`,
           })))
         }
         if (settingsRes.data?.phone) {

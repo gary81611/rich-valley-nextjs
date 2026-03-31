@@ -9,6 +9,13 @@ export interface SiteSettings {
   social_links: Record<string, string>
   colors: Record<string, string>
   logo_url: string
+  stats: { label: string; value: string }[]
+  about_content: {
+    founder_story: string
+    company_narrative: string
+    team_characteristics: string[]
+    cta_text: string
+  } | null
   created_at: string
   updated_at: string
 }
@@ -17,6 +24,11 @@ export interface Adventure {
   id: string
   name: string
   description: string
+  long_description: string
+  whats_included: string[]
+  highlights: string[]
+  best_for: string
+  group_size: string
   duration: string
   price: number
   difficulty: string
@@ -31,7 +43,10 @@ export interface Adventure {
 export interface Service {
   id: string
   name: string
+  slug: string
   description: string
+  features: string[]
+  icon: string
   price_from: number
   image_url: string
   display_order: number
@@ -89,7 +104,11 @@ export interface FAQ {
 export interface ServiceArea {
   id: string
   name: string
+  slug: string
   description: string
+  long_description: string
+  key_destinations: string[]
+  display_order: number
   site_key: 'rva' | 'alpenglow'
   is_active: boolean
   created_at: string

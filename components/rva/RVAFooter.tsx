@@ -1,6 +1,15 @@
 import Image from 'next/image'
 import { rvaData } from '@/lib/site-data'
 
+const FOOTER_ADVENTURES = [
+  { title: 'Fly Fishing', href: '/rva/fly-fishing' },
+  { title: 'Paddle Boarding', href: '/rva/paddle-boarding' },
+  { title: 'Mountain Biking', href: '/rva/mountain-biking' },
+  { title: 'Hiking', href: '/rva/hiking' },
+  { title: 'Elevated Camping', href: '/rva/elevated-camping' },
+  { title: 'Winter Adventures', href: '/rva/winter' },
+]
+
 export default function RVAFooter() {
   const phone = rvaData.phone
   const phoneHref = rvaData.phoneHref
@@ -16,9 +25,9 @@ export default function RVAFooter() {
           <div>
             <h4 className="font-playfair text-lg font-semibold mb-5 text-rva-copper">Adventures</h4>
             <ul className="space-y-2">
-              {rvaData.adventures.map((a) => (
+              {FOOTER_ADVENTURES.map((a) => (
                 <li key={a.title}>
-                  <a href="/rva/adventures" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">{a.title}</a>
+                  <a href={a.href} className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">{a.title}</a>
                 </li>
               ))}
             </ul>

@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { rvaData, photoNotes } from '@/lib/site-data'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'About Rich Valley Adventures | Our Story Since 2012 | Aspen, CO',
@@ -27,7 +29,18 @@ export const metadata: Metadata = {
   },
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const supabase = await createServerSupabaseClient()
+
+  const { data: settings } = await supabase
+    .from('site_settings')
+    .select('*')
+    .eq('site_key', 'rva')
+    .single()
+
+  const stats = settings?.stats || []
+  const about = settings?.about_content || null
+
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
       {/* Breadcrumb */}
@@ -80,18 +93,28 @@ export default function AboutPage() {
               <h2 className="font-playfair text-4xl md:text-5xl text-rva-forest font-bold mb-8 leading-tight">
                 Meet Kit — Founder &amp; Lead Guide
               </h2>
-              <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                Kit grew up on the banks of the Roaring Fork River, learning to fly fish before he could
-                ride a bike. After years guiding across Colorado and the Mountain West, he founded Rich
-                Valley Adventures in 2012 with a simple idea: share the real Aspen — the hidden trails,
-                the secret fishing holes, the places only locals know.
-              </p>
-              <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                What started as one guide and a truck full of fly rods has grown into a full-service
-                adventure company offering seven distinct guided experiences. But the philosophy has
-                never changed: small groups, expert guides, and trips that feel personal — not
-                packaged.
-              </p>
+              {about?.founder_story ? (
+                about.founder_story.split('\n\n').map((paragraph: string, i: number) => (
+                  <p key={i} className="text-gray-700 text-lg leading-relaxed mb-6">
+                    {paragraph}
+                  </p>
+                ))
+              ) : (
+                <>
+                  <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                    Kit grew up on the banks of the Roaring Fork River, learning to fly fish before he could
+                    ride a bike. After years guiding across Colorado and the Mountain West, he founded Rich
+                    Valley Adventures in 2012 with a simple idea: share the real Aspen — the hidden trails,
+                    the secret fishing holes, the places only locals know.
+                  </p>
+                  <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                    What started as one guide and a truck full of fly rods has grown into a full-service
+                    adventure company offering seven distinct guided experiences. But the philosophy has
+                    never changed: small groups, expert guides, and trips that feel personal — not
+                    packaged.
+                  </p>
+                </>
+              )}
               <p className="text-gray-600 text-base leading-relaxed border-l-4 border-rva-copper/30 pl-4">
                 &ldquo;We don&apos;t just guide trips — we share our home with you. Every river bend,
                 every summit, every campfire story. That&apos;s what makes this different.&rdquo;
@@ -126,27 +149,39 @@ export default function AboutPage() {
           <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold mb-8">
             A Decade of Adventure
           </h2>
-          <p className="text-white/80 text-lg leading-relaxed mb-6">
-            Over 14 years, Rich Valley Adventures has grown from a passion project into one of
-            Aspen&apos;s most trusted adventure outfitters. We&apos;ve guided more than 3,000
-            adventures across the Roaring Fork Valley — from quiet fly fishing mornings on Gold Medal
-            waters to multi-day elevated camping experiences under the stars.
-          </p>
-          <p className="text-white/80 text-lg leading-relaxed mb-12">
-            Every year brings new trails to explore, new guests to welcome, and new stories to tell.
-            But our core promise remains the same: when you adventure with us, you&apos;re not a
-            tourist — you&apos;re a guest in our valley.
-          </p>
-          <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
-            {rvaData.stats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="font-playfair text-4xl md:text-5xl font-bold text-rva-copper-light">
-                  {stat.value}
+          {about?.company_narrative ? (
+            about.company_narrative.split('\n\n').map((paragraph: string, i: number) => (
+              <p key={i} className="text-white/80 text-lg leading-relaxed mb-6">
+                {paragraph}
+              </p>
+            ))
+          ) : (
+            <>
+              <p className="text-white/80 text-lg leading-relaxed mb-6">
+                Over 14 years, Rich Valley Adventures has grown from a passion project into one of
+                Aspen&apos;s most trusted adventure outfitters. We&apos;ve guided more than 3,000
+                adventures across the Roaring Fork Valley — from quiet fly fishing mornings on Gold Medal
+                waters to multi-day elevated camping experiences under the stars.
+              </p>
+              <p className="text-white/80 text-lg leading-relaxed mb-12">
+                Every year brings new trails to explore, new guests to welcome, and new stories to tell.
+                But our core promise remains the same: when you adventure with us, you&apos;re not a
+                tourist — you&apos;re a guest in our valley.
+              </p>
+            </>
+          )}
+          {stats.length > 0 && (
+            <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto mt-6">
+              {stats.map((stat: { label: string; value: string }) => (
+                <div key={stat.label} className="text-center">
+                  <div className="font-playfair text-4xl md:text-5xl font-bold text-rva-copper-light">
+                    {stat.value}
+                  </div>
+                  <div className="text-white/60 text-sm uppercase tracking-wide mt-2">{stat.label}</div>
                 </div>
-                <div className="text-white/60 text-sm uppercase tracking-wide mt-2">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -184,12 +219,15 @@ export default function AboutPage() {
                 turns a good trip into an unforgettable one.
               </p>
               <ul className="space-y-3">
-                {[
-                  'Wilderness First-Aid certified',
-                  'Average 8+ years guiding experience',
-                  'Local naturalists & historians',
-                  'CPR & swift-water rescue trained',
-                ].map((item) => (
+                {(about?.team_characteristics && about.team_characteristics.length > 0
+                  ? about.team_characteristics
+                  : [
+                      'Wilderness First-Aid certified',
+                      'Average 8+ years guiding experience',
+                      'Local naturalists & historians',
+                      'CPR & swift-water rescue trained',
+                    ]
+                ).map((item: string) => (
                   <li key={item} className="flex items-center gap-3 text-gray-700">
                     <span className="w-2 h-2 bg-rva-copper rounded-full flex-shrink-0" />
                     {item}
@@ -202,28 +240,20 @@ export default function AboutPage() {
       </section>
 
       {/* Stats Bar */}
-      <section className="py-16 bg-rva-cream-dark">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="font-playfair text-4xl font-bold text-rva-copper">14+</div>
-              <div className="text-gray-600 text-sm uppercase tracking-wide mt-2">Years Operating</div>
-            </div>
-            <div>
-              <div className="font-playfair text-4xl font-bold text-rva-copper">3,000+</div>
-              <div className="text-gray-600 text-sm uppercase tracking-wide mt-2">Adventures Led</div>
-            </div>
-            <div>
-              <div className="font-playfair text-4xl font-bold text-rva-copper">4.9</div>
-              <div className="text-gray-600 text-sm uppercase tracking-wide mt-2">Average Rating</div>
-            </div>
-            <div>
-              <div className="font-playfair text-4xl font-bold text-rva-copper">7</div>
-              <div className="text-gray-600 text-sm uppercase tracking-wide mt-2">Adventure Types</div>
+      {stats.length > 0 && (
+        <section className="py-16 bg-rva-cream-dark">
+          <div className="max-w-5xl mx-auto px-6">
+            <div className={`grid grid-cols-2 ${stats.length >= 4 ? 'md:grid-cols-4' : stats.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-8 text-center`}>
+              {stats.map((stat: { label: string; value: string }) => (
+                <div key={stat.label}>
+                  <div className="font-playfair text-4xl font-bold text-rva-copper">{stat.value}</div>
+                  <div className="text-gray-600 text-sm uppercase tracking-wide mt-2">{stat.label}</div>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* CTA */}
       <section className="py-20 bg-rva-forest">
@@ -232,7 +262,7 @@ export default function AboutPage() {
             Ready to Experience the Valley?
           </h2>
           <p className="text-white/75 text-lg mb-8 max-w-2xl mx-auto">
-            Whether it&apos;s your first visit or your fourteenth, we&apos;ll make it unforgettable.
+            {about?.cta_text || "Whether it's your first visit or your fourteenth, we'll make it unforgettable."}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

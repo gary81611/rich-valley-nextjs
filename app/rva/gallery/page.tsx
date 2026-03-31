@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { rvaData } from '@/lib/site-data'
 import { createClient } from '@/lib/supabase'
 import type { GalleryImage } from '@/lib/types'
 
@@ -13,14 +12,8 @@ interface GalleryItem {
   caption: string
 }
 
-const staticGallery: GalleryItem[] = rvaData.gallery.map((url, i) => ({
-  url,
-  alt: `Rich Valley Adventures — guided outdoor experience in Aspen, Colorado (photo ${i + 1})`,
-  caption: '',
-}))
-
 export default function GalleryPage() {
-  const [images, setImages] = useState<GalleryItem[]>(staticGallery)
+  const [images, setImages] = useState<GalleryItem[]>([])
 
   useEffect(() => {
     async function fetchGallery() {

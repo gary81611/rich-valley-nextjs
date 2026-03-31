@@ -1,14 +1,46 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { rvaData, alpenglowData } from '@/lib/site-data'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Services | Rich Valley Adventures',
   description: 'Guided outdoor adventures and luxury transportation in Aspen and the Roaring Fork Valley. Fly fishing, hiking, mountain biking, scenic tours, and more from Rich Valley Adventures.',
 }
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const supabase = await createServerSupabaseClient()
+
+  const { data: adventuresRaw } = await supabase
+    .from('adventures')
+    .select('*')
+    .eq('is_active', true)
+    .order('display_order')
+
+  const { data: servicesRaw } = await supabase
+    .from('services')
+    .select('*')
+    .eq('is_active', true)
+    .order('display_order')
+
+  const adventures = (adventuresRaw ?? []).map((a: any) => ({
+    title: a.name,
+    slug: a.name.toLowerCase().replace(/\s+/g, '-'),
+    description: a.description,
+    image: a.image_url,
+    duration: a.duration,
+    difficulty: a.difficulty,
+  }))
+
+  const services = (servicesRaw ?? []).map((s: any) => ({
+    title: s.name,
+    slug: s.slug || s.name.toLowerCase().replace(/\s+/g, '-'),
+    description: s.description,
+    features: s.features || [],
+  }))
+
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
       {/* Breadcrumb */}
@@ -54,38 +86,42 @@ export default function ServicesPage() {
               Expert-led experiences for all skill levels, with all gear included.
             </p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {rvaData.adventures.map((adventure) => (
-              <Link
-                key={adventure.slug}
-                href={`/adventures/${adventure.slug}`}
-                className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-rva-cream-dark hover:-translate-y-1"
-              >
-                <div className="relative h-48 bg-rva-forest-dark">
-                  <Image
-                    src={adventure.image}
-                    alt={adventure.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    unoptimized
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="font-playfair text-xl font-bold text-rva-forest group-hover:text-rva-copper transition-colors mb-2">
-                    {adventure.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-2">
-                    {adventure.description}
-                  </p>
-                  <div className="flex items-center gap-3 text-xs text-gray-500">
-                    <span>{adventure.duration}</span>
-                    <span className="w-1 h-1 bg-gray-300 rounded-full" />
-                    <span>{adventure.difficulty}</span>
+          {adventures.length === 0 ? (
+            <p className="text-center text-gray-500">No adventures available at this time. Check back soon!</p>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {adventures.map((adventure) => (
+                <Link
+                  key={adventure.slug}
+                  href={`/adventures/${adventure.slug}`}
+                  className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-rva-cream-dark hover:-translate-y-1"
+                >
+                  <div className="relative h-48 bg-rva-forest-dark">
+                    <Image
+                      src={adventure.image}
+                      alt={adventure.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      unoptimized
+                    />
                   </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+                  <div className="p-6">
+                    <h3 className="font-playfair text-xl font-bold text-rva-forest group-hover:text-rva-copper transition-colors mb-2">
+                      {adventure.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-2">
+                      {adventure.description}
+                    </p>
+                    <div className="flex items-center gap-3 text-xs text-gray-500">
+                      <span>{adventure.duration}</span>
+                      <span className="w-1 h-1 bg-gray-300 rounded-full" />
+                      <span>{adventure.difficulty}</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -103,31 +139,35 @@ export default function ServicesPage() {
               Our sister company offers premium car service throughout the Roaring Fork Valley and beyond.
             </p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {alpenglowData.services.map((service) => (
-              <div
-                key={service.slug}
-                className="bg-white rounded-2xl shadow-md p-6 border border-rva-cream-dark"
-              >
-                <h3 className="font-playfair text-lg font-bold text-rva-forest mb-2">
-                  {service.title}
-                </h3>
-                <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
-                  {service.description}
-                </p>
-                <ul className="space-y-1">
-                  {service.features.slice(0, 2).map((feature) => (
-                    <li key={feature} className="flex items-center gap-2 text-xs text-gray-500">
-                      <svg className="w-3 h-3 text-rva-copper flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+          {services.length === 0 ? (
+            <p className="text-center text-gray-500">No services available at this time. Check back soon!</p>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {services.map((service) => (
+                <div
+                  key={service.slug}
+                  className="bg-white rounded-2xl shadow-md p-6 border border-rva-cream-dark"
+                >
+                  <h3 className="font-playfair text-lg font-bold text-rva-forest mb-2">
+                    {service.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                    {service.description}
+                  </p>
+                  <ul className="space-y-1">
+                    {service.features.slice(0, 2).map((feature: string) => (
+                      <li key={feature} className="flex items-center gap-2 text-xs text-gray-500">
+                        <svg className="w-3 h-3 text-rva-copper flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

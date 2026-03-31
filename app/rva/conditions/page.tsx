@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { createClient } from '@/lib/supabase'
 
 const CONDITION_COLORS: Record<string, string> = {
   good: '#16A34A',
@@ -27,12 +28,37 @@ type Station = {
   discharge_time?: string
 }
 
+type FishingReport = {
+  id: string
+  title: string
+  content: string
+  river: string | null
+  hatch_info: string | null
+  fly_recommendations: string | null
+  water_clarity: string | null
+  published_at: string
+  guides: { name: string } | null
+}
+
+type TrailCondition = {
+  id: string
+  section: string
+  label: string
+  description: string
+  icon: string | null
+  display_order: number
+}
+
 export default function ConditionsPage() {
   const [stations, setStations] = useState<Station[]>([])
   const [loading, setLoading] = useState(true)
   const [fetchedAt, setFetchedAt] = useState('')
+  const [fishingReport, setFishingReport] = useState<FishingReport | null>(null)
+  const [reportExpanded, setReportExpanded] = useState(false)
+  const [trailConditions, setTrailConditions] = useState<TrailCondition[]>([])
 
   useEffect(() => {
+    // Fetch USGS data
     fetch('/api/usgs-conditions')
       .then(r => r.json())
       .then(d => {
@@ -41,7 +67,43 @@ export default function ConditionsPage() {
       })
       .catch(() => {})
       .finally(() => setLoading(false))
+
+    // Fetch latest fishing report
+    const supabase = createClient()
+
+    supabase
+      .from('fishing_reports')
+      .select('*, guides(name)')
+      .eq('is_published', true)
+      .order('published_at', { ascending: false })
+      .limit(1)
+      .single()
+      .then(({ data }) => {
+        if (data) setFishingReport(data as FishingReport)
+      })
+
+    // Fetch trail conditions
+    supabase
+      .from('trail_conditions')
+      .select('*')
+      .eq('is_active', true)
+      .order('display_order')
+      .then(({ data }) => {
+        if (data) setTrailConditions(data as TrailCondition[])
+      })
   }, [])
+
+  // Group trail conditions by section
+  const trailGroups: Record<string, TrailCondition[]> = {}
+  for (const tc of trailConditions) {
+    if (!trailGroups[tc.section]) trailGroups[tc.section] = []
+    trailGroups[tc.section].push(tc)
+  }
+
+  const wildlife = trailGroups['wildlife'] || []
+  const birdwatching = trailGroups['birdwatching'] || []
+  const trailStatus = trailGroups['trail_status'] || []
+  const general = trailGroups['general'] || []
 
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
@@ -86,7 +148,7 @@ export default function ConditionsPage() {
                     )}
                     {s.water_temp_f !== undefined && (
                       <div>
-                        <p className="text-2xl font-light text-rva-forest-dark">{s.water_temp_f}° <span className="text-sm text-rva-forest/50">F</span></p>
+                        <p className="text-2xl font-light text-rva-forest-dark">{s.water_temp_f}&deg; <span className="text-sm text-rva-forest/50">F</span></p>
                         <p className="text-xs text-rva-forest/40">Water Temp</p>
                       </div>
                     )}
@@ -98,44 +160,149 @@ export default function ConditionsPage() {
               ))}
             </div>
           )}
-          <p className="text-xs text-rva-forest/40 mt-4">Data source: USGS Water Services · Updated hourly</p>
+          <p className="text-xs text-rva-forest/40 mt-4">Data source: USGS Water Services &middot; Updated hourly</p>
         </div>
 
-        {/* Expert Commentary */}
+        {/* Latest Fishing Report */}
         <div className="mb-12 bg-white p-8 rounded-lg border border-rva-copper/10">
-          <h2 className="font-playfair text-2xl text-rva-forest-dark mb-4">Expert Report</h2>
-          <p className="text-sm text-rva-forest/60 mb-4">Weekly commentary from Kit McLendon, Lead Fly Fishing Guide</p>
-          <div className="bg-rva-cream p-6 rounded-lg">
-            <p className="text-rva-forest/70 italic leading-relaxed">
-              Expert river reports will be updated weekly during fishing season. Kit covers hatch reports, fly recommendations, water clarity, and river observations across the Roaring Fork, Frying Pan, Colorado River, and Gunnison River.
-            </p>
-            <p className="text-xs text-rva-copper mt-4">Check back for the latest from the river — or <Link href="/rva/contact" className="underline">book a guided trip</Link> and get the report firsthand.</p>
-          </div>
+          <h2 className="font-playfair text-2xl text-rva-forest-dark mb-4">Latest Fishing Report</h2>
+          {fishingReport ? (
+            <>
+              <div className="flex items-center gap-3 mb-4">
+                {fishingReport.guides?.name && (
+                  <p className="text-sm text-rva-forest/60">By {fishingReport.guides.name}</p>
+                )}
+                <p className="text-sm text-rva-forest/40">
+                  {new Date(fishingReport.published_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                </p>
+              </div>
+              <h3 className="font-semibold text-rva-forest-dark mb-3">{fishingReport.title}</h3>
+
+              {/* Details row */}
+              <div className="flex flex-wrap gap-4 mb-4">
+                {fishingReport.river && (
+                  <span className="text-xs bg-rva-copper/10 text-rva-copper px-2 py-1 rounded">
+                    {fishingReport.river}
+                  </span>
+                )}
+                {fishingReport.water_clarity && (
+                  <span className="text-xs bg-rva-forest/10 text-rva-forest px-2 py-1 rounded">
+                    Clarity: {fishingReport.water_clarity}
+                  </span>
+                )}
+              </div>
+
+              {fishingReport.hatch_info && (
+                <div className="mb-3">
+                  <p className="text-xs font-semibold text-rva-forest-dark uppercase tracking-wide mb-1">Hatch Report</p>
+                  <p className="text-sm text-rva-forest/70">{fishingReport.hatch_info}</p>
+                </div>
+              )}
+
+              {fishingReport.fly_recommendations && (
+                <div className="mb-3">
+                  <p className="text-xs font-semibold text-rva-forest-dark uppercase tracking-wide mb-1">Fly Recommendations</p>
+                  <p className="text-sm text-rva-forest/70">{fishingReport.fly_recommendations}</p>
+                </div>
+              )}
+
+              <div className="bg-rva-cream p-6 rounded-lg">
+                <p className="text-rva-forest/70 leading-relaxed text-sm">
+                  {reportExpanded
+                    ? fishingReport.content
+                    : fishingReport.content.length > 300
+                      ? fishingReport.content.slice(0, 300) + '...'
+                      : fishingReport.content
+                  }
+                </p>
+                {fishingReport.content.length > 300 && (
+                  <button
+                    onClick={() => setReportExpanded(!reportExpanded)}
+                    className="text-rva-copper text-sm font-semibold mt-3 hover:underline"
+                  >
+                    {reportExpanded ? 'Show less' : 'Read more'}
+                  </button>
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="bg-rva-cream p-6 rounded-lg">
+              <p className="text-rva-forest/70 italic leading-relaxed">
+                Fishing reports will be updated regularly during fishing season. Our guides cover hatch reports, fly recommendations, water clarity, and river observations across the Roaring Fork, Frying Pan, Colorado River, and Gunnison River.
+              </p>
+              <p className="text-xs text-rva-copper mt-4">Check back for the latest from the river — or <Link href="/rva/contact" className="underline">book a guided trip</Link> and get the report firsthand.</p>
+            </div>
+          )}
         </div>
 
         {/* Trail Conditions */}
         <div className="mb-12 bg-white p-8 rounded-lg border border-rva-copper/10">
           <h2 className="font-playfair text-2xl text-rva-forest-dark mb-4">Trail Conditions</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="font-semibold text-rva-forest-dark mb-2">Wildlife Awareness</h3>
-              <ul className="text-sm text-rva-forest/70 space-y-1">
-                <li>🐻 Bear activity — store food properly, carry bear spray</li>
-                <li>🦁 Mountain lion habitat — hike in groups</li>
-                <li>🦌 Elk and mule deer active at dawn/dusk</li>
-                <li>🕷 Tick season (spring-fall) — check after hikes</li>
-              </ul>
+
+          {trailConditions.length > 0 ? (
+            <div className="space-y-6">
+              {/* Trail Status */}
+              {trailStatus.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-rva-forest-dark mb-2">Trail Status</h3>
+                  <ul className="text-sm text-rva-forest/70 space-y-1">
+                    {trailStatus.map(tc => (
+                      <li key={tc.id}>{tc.icon ? `${tc.icon} ` : ''}{tc.label} — {tc.description}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* General */}
+              {general.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-rva-forest-dark mb-2">General Conditions</h3>
+                  <ul className="text-sm text-rva-forest/70 space-y-1">
+                    {general.map(tc => (
+                      <li key={tc.id}>{tc.icon ? `${tc.icon} ` : ''}{tc.label} — {tc.description}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Wildlife */}
+                {wildlife.length > 0 && (
+                  <div>
+                    <h3 className="font-semibold text-rva-forest-dark mb-2">Wildlife Awareness</h3>
+                    <ul className="text-sm text-rva-forest/70 space-y-1">
+                      {wildlife.map(tc => (
+                        <li key={tc.id}>{tc.icon ? `${tc.icon} ` : ''}{tc.label} — {tc.description}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Birdwatching */}
+                {birdwatching.length > 0 && (
+                  <div>
+                    <h3 className="font-semibold text-rva-forest-dark mb-2">Birdwatching Highlights</h3>
+                    <ul className="text-sm text-rva-forest/70 space-y-1">
+                      {birdwatching.map(tc => (
+                        <li key={tc.id}>{tc.icon ? `${tc.icon} ` : ''}{tc.label} — {tc.description}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
             </div>
-            <div>
-              <h3 className="font-semibold text-rva-forest-dark mb-2">Birdwatching Highlights</h3>
-              <ul className="text-sm text-rva-forest/70 space-y-1">
-                <li>🦅 Bald eagle — winter along the Roaring Fork</li>
-                <li>🐦 American dipper — year-round along rivers</li>
-                <li>🏔 Mountain bluebird — meadows above 8,000ft</li>
-                <li>🌸 Calliope hummingbird — summer wildflower areas</li>
-              </ul>
+          ) : (
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="font-semibold text-rva-forest-dark mb-2">Wildlife Awareness</h3>
+                <p className="text-sm text-rva-forest/50 italic">Trail condition updates coming soon.</p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-rva-forest-dark mb-2">Birdwatching Highlights</h3>
+                <p className="text-sm text-rva-forest/50 italic">Trail condition updates coming soon.</p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* CTA */}

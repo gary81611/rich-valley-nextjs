@@ -9,8 +9,29 @@ import DeleteConfirmDialog from '@/components/admin/DeleteConfirmDialog'
 import Toast from '@/components/admin/Toast'
 import EmptyState from '@/components/admin/EmptyState'
 
-const emptyArea: Omit<ServiceArea, 'id' | 'created_at' | 'updated_at'> = {
-  name: '', description: '', site_key: 'alpenglow', is_active: true,
+type ServiceAreaForm = Omit<ServiceArea, 'id' | 'created_at' | 'updated_at' | 'key_destinations'> & {
+  key_destinations: string
+}
+
+const emptyArea: ServiceAreaForm = {
+  name: '',
+  description: '',
+  slug: '',
+  long_description: '',
+  key_destinations: '',
+  display_order: 0,
+  site_key: 'alpenglow',
+  is_active: true,
+}
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
 }
 
 export default function ServiceAreasPage() {
@@ -18,14 +39,14 @@ export default function ServiceAreasPage() {
   const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
   const [editing, setEditing] = useState<ServiceArea | null>(null)
-  const [form, setForm] = useState(emptyArea)
+  const [form, setForm] = useState<ServiceAreaForm>(emptyArea)
   const [saving, setSaving] = useState(false)
   const [deleteItem, setDeleteItem] = useState<ServiceArea | null>(null)
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
   const supabase = createClient()
 
   const fetchData = useCallback(async () => {
-    const { data: rows } = await supabase.from('service_areas').select('*').in('site_key', ['rva', 'alpenglow']).order('name')
+    const { data: rows } = await supabase.from('service_areas').select('*').in('site_key', ['rva', 'alpenglow']).order('display_order').order('name')
     setData(rows || [])
     setLoading(false)
   }, [supabase])
@@ -35,19 +56,45 @@ export default function ServiceAreasPage() {
   const openAdd = () => { setEditing(null); setForm(emptyArea); setModalOpen(true) }
   const openEdit = (item: ServiceArea) => {
     setEditing(item)
-    setForm({ name: item.name, description: item.description, site_key: item.site_key, is_active: item.is_active })
+    const destinations = Array.isArray(item.key_destinations)
+      ? (item.key_destinations as string[]).join(', ')
+      : ''
+    setForm({
+      name: item.name,
+      description: item.description,
+      slug: item.slug || '',
+      long_description: item.long_description || '',
+      key_destinations: destinations,
+      display_order: item.display_order ?? 0,
+      site_key: item.site_key,
+      is_active: item.is_active,
+    })
     setModalOpen(true)
   }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setSaving(true)
+    const keyDestinations = form.key_destinations
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)
+    const payload = {
+      name: form.name,
+      description: form.description,
+      slug: form.slug,
+      long_description: form.long_description,
+      key_destinations: keyDestinations,
+      display_order: form.display_order,
+      site_key: form.site_key,
+      is_active: form.is_active,
+    }
     if (editing) {
-      const { error } = await supabase.from('service_areas').update(form).eq('id', editing.id)
+      const { error } = await supabase.from('service_areas').update(payload).eq('id', editing.id)
       if (error) setToast({ message: error.message, type: 'error' })
       else setToast({ message: 'Service area updated!', type: 'success' })
     } else {
-      const { error } = await supabase.from('service_areas').insert(form)
+      const { error } = await supabase.from('service_areas').insert(payload)
       if (error) setToast({ message: error.message, type: 'error' })
       else setToast({ message: 'Service area created!', type: 'success' })
     }
@@ -69,11 +116,21 @@ export default function ServiceAreasPage() {
     fetchData()
   }
 
-  const updateForm = (name: string, value: string | number | boolean) => setForm((prev) => ({ ...prev, [name]: value }))
+  const updateForm = (name: string, value: string | number | boolean) => {
+    setForm((prev) => {
+      const updated = { ...prev, [name]: value }
+      if (name === 'name' && typeof value === 'string') {
+        updated.slug = slugify(value)
+      }
+      return updated
+    })
+  }
 
   const columns: Column<ServiceArea>[] = [
     { key: 'name', label: 'Name' },
+    { key: 'slug', label: 'Slug' },
     { key: 'description', label: 'Description' },
+    { key: 'display_order', label: 'Order', render: (item) => String(item.display_order ?? 0) },
     { key: 'site_key', label: 'Site', render: (item) => item.site_key === 'rva' ? 'RVA' : 'Alpenglow' },
     { key: 'actions', label: 'Actions' },
   ]
@@ -95,7 +152,11 @@ export default function ServiceAreasPage() {
       </div>
       <AdminFormModal isOpen={modalOpen} title={editing ? 'Edit Service Area' : 'Add Service Area'} onSubmit={handleSubmit} onClose={() => setModalOpen(false)} loading={saving}>
         <FormField label="Name" name="name" value={form.name} onChange={updateForm} required help="Town or area name (e.g., 'Snowmass Village')." preview="Service areas page" />
-        <FormField label="Description" name="description" type="textarea" value={form.description} onChange={updateForm} help="Brief note — distance from Aspen, service availability." preview="Service areas detail" />
+        <FormField label="Slug" name="slug" value={form.slug} onChange={updateForm} required help="URL slug, auto-generated from name. Used in /service-areas/[slug]." preview="URL path" />
+        <FormField label="Description" name="description" type="textarea" value={form.description} onChange={updateForm} help="Brief note — distance from Aspen, service availability." preview="Service areas list" />
+        <FormField label="Long Description" name="long_description" type="textarea" value={form.long_description} onChange={updateForm} help="Detailed description for the area detail page." preview="Service area detail page" />
+        <FormField label="Key Destinations" name="key_destinations" type="textarea" value={form.key_destinations} onChange={updateForm} help="Comma-separated list of key destinations (e.g., 'Downtown Aspen, The Little Nell, Wheeler Opera House')." preview="Service area detail page" />
+        <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} help="Sort order (lower numbers appear first)." />
         <FormField label="Site" name="site_key" type="select" value={form.site_key} onChange={updateForm} options={[{ value: 'rva', label: 'RVA' }, { value: 'alpenglow', label: 'Alpenglow' }]} help="Which brand serves this area." preview="Controls which site shows it" />
         <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} help="Toggle visibility." />
       </AdminFormModal>

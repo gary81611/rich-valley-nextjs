@@ -1,15 +1,29 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { alpenglowData } from '@/lib/site-data'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Popular Destinations | Rich Valley Adventures',
   description: 'Explore Colorado\'s top destinations with Rich Valley Adventures — Garden of the Gods, Red Rocks, Pikes Peak, and more. Luxury transportation available through Aspen Alpenglow Limousine.',
 }
 
-export default function DestinationsPage() {
-  const destinations = alpenglowData.destinations
+export default async function DestinationsPage() {
+  const supabase = await createServerSupabaseClient()
+
+  const { data: destinationsRaw } = await supabase
+    .from('destinations')
+    .select('*')
+    .eq('is_active', true)
+    .order('display_order')
+
+  const destinations = (destinationsRaw ?? []).map((dest: any) => ({
+    name: dest.name,
+    description: dest.description,
+    image: dest.image_url || dest.image,
+  }))
 
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
@@ -45,41 +59,45 @@ export default function DestinationsPage() {
       {/* Destinations Grid */}
       <section className="py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-6 space-y-12">
-          {destinations.map((dest, i) => (
-            <div
-              key={dest.name}
-              className="bg-white rounded-3xl shadow-md overflow-hidden border border-rva-cream-dark"
-            >
-              <div className={`grid lg:grid-cols-2 ${i % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''}`}>
-                <div className="relative h-64 sm:h-80 lg:h-auto min-h-[280px] bg-rva-forest-dark">
-                  <Image
-                    src={dest.image}
-                    alt={dest.name}
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
-                </div>
-                <div className="p-8 sm:p-12 flex flex-col justify-center">
-                  <h2 className="font-playfair text-2xl sm:text-3xl font-bold text-rva-forest mb-4">
-                    {dest.name}
-                  </h2>
-                  <p className="text-gray-600 leading-relaxed mb-6">
-                    {dest.description}
-                  </p>
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center gap-2 bg-rva-copper hover:bg-rva-copper-light text-white font-bold px-6 py-3 rounded-full transition-colors w-fit"
-                  >
-                    Plan a Trip
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Link>
+          {destinations.length === 0 ? (
+            <p className="text-center text-gray-500">No destinations available at this time. Check back soon!</p>
+          ) : (
+            destinations.map((dest, i) => (
+              <div
+                key={dest.name}
+                className="bg-white rounded-3xl shadow-md overflow-hidden border border-rva-cream-dark"
+              >
+                <div className={`grid lg:grid-cols-2 ${i % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''}`}>
+                  <div className="relative h-64 sm:h-80 lg:h-auto min-h-[280px] bg-rva-forest-dark">
+                    <Image
+                      src={dest.image}
+                      alt={dest.name}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
+                  </div>
+                  <div className="p-8 sm:p-12 flex flex-col justify-center">
+                    <h2 className="font-playfair text-2xl sm:text-3xl font-bold text-rva-forest mb-4">
+                      {dest.name}
+                    </h2>
+                    <p className="text-gray-600 leading-relaxed mb-6">
+                      {dest.description}
+                    </p>
+                    <Link
+                      href="/contact"
+                      className="inline-flex items-center gap-2 bg-rva-copper hover:bg-rva-copper-light text-white font-bold px-6 py-3 rounded-full transition-colors w-fit"
+                    >
+                      Plan a Trip
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </section>
 

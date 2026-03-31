@@ -1,14 +1,30 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { rvaData, alpenglowData } from '@/lib/site-data'
+import { rvaData } from '@/lib/site-data'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Service Areas | Rich Valley Adventures',
   description: 'Rich Valley Adventures serves the entire Roaring Fork Valley — Aspen, Snowmass, Basalt, Carbondale, Glenwood Springs, and beyond. Guided outdoor adventures across Colorado.',
 }
 
-export default function ServiceAreasPage() {
-  const areas = alpenglowData.serviceAreas
+export default async function ServiceAreasPage() {
+  const supabase = await createServerSupabaseClient()
+
+  const { data: areasRaw } = await supabase
+    .from('service_areas')
+    .select('*')
+    .eq('is_active', true)
+    .order('display_order')
+    .order('name')
+
+  const areas = (areasRaw ?? []).map((area: any) => ({
+    name: area.name,
+    description: area.description,
+    slug: area.slug,
+  }))
 
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
@@ -44,29 +60,33 @@ export default function ServiceAreasPage() {
       {/* Areas Grid */}
       <section className="py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {areas.map((area) => (
-              <div
-                key={area.name}
-                className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-8 border border-rva-cream-dark hover:-translate-y-1"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-rva-copper/10 rounded-full flex items-center justify-center">
-                    <svg className="w-5 h-5 text-rva-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
+          {areas.length === 0 ? (
+            <p className="text-center text-gray-500">No service areas available at this time. Check back soon!</p>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {areas.map((area) => (
+                <div
+                  key={area.name}
+                  className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-8 border border-rva-cream-dark hover:-translate-y-1"
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-rva-copper/10 rounded-full flex items-center justify-center">
+                      <svg className="w-5 h-5 text-rva-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    </div>
+                    <h2 className="font-playfair text-xl font-bold text-rva-forest group-hover:text-rva-copper transition-colors">
+                      {area.name}
+                    </h2>
                   </div>
-                  <h2 className="font-playfair text-xl font-bold text-rva-forest group-hover:text-rva-copper transition-colors">
-                    {area.name}
-                  </h2>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {area.description}
+                  </p>
                 </div>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {area.description}
-                </p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

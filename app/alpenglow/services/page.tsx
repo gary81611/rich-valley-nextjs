@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { alpenglowData } from '@/lib/site-data'
 import { createClient } from '@/lib/supabase'
 import type { Service } from '@/lib/types'
 
@@ -40,7 +39,7 @@ const slugMap: Record<string, string> = {
 }
 
 export default function ServicesPage() {
-  const [services, setServices] = useState(alpenglowData.services)
+  const [services, setServices] = useState<{ title: string; slug: string; description: string; features: string[]; icon: string }[]>([])
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
@@ -56,15 +55,15 @@ export default function ServicesPage() {
         if (data && data.length > 0) {
           const mapped = data.map((s: Service) => ({
             title: s.name,
-            slug: s.name.toLowerCase().replace(/\s+/g, '-'),
+            slug: s.slug || s.name.toLowerCase().replace(/\s+/g, '-'),
             description: s.description,
-            features: [] as string[],
-            icon: 'Plane',
+            features: Array.isArray(s.features) ? s.features as string[] : [],
+            icon: s.icon || 'Plane',
           }))
           setServices(mapped)
         }
       } catch {
-        // fallback to static data
+        // DB fetch failed — services stays empty
       } finally {
         setLoaded(true)
       }
@@ -101,46 +100,56 @@ export default function ServicesPage() {
       {/* Services Grid */}
       <section className="py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`grid md:grid-cols-2 gap-8 transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}>
-            {services.map((service) => {
-              const slug = slugMap[service.title] || service.title.toLowerCase().replace(/\s+/g, '-')
-              return (
-                <Link
-                  key={service.title}
-                  href={`/services/${slug}`}
-                  className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-8 border border-alp-pearl-dark hover:-translate-y-1"
-                >
-                  <div className="text-alp-gold mb-5">
-                    {iconMap[service.icon] || iconMap.Plane}
-                  </div>
-                  <h2 className="font-playfair text-2xl font-bold text-alp-navy mb-3 group-hover:text-alp-gold transition-colors">
-                    {service.title}
-                  </h2>
-                  <p className="text-alp-slate mb-6 leading-relaxed">
-                    {service.description}
-                  </p>
-                  {service.features && service.features.length > 0 && (
-                    <ul className="space-y-2 mb-6">
-                      {service.features.map((feature) => (
-                        <li key={feature} className="flex items-start gap-2 text-sm text-alp-navy">
-                          <svg className="w-4 h-4 text-alp-gold mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <span className="inline-flex items-center text-alp-gold font-semibold text-sm group-hover:gap-2 transition-all">
-                    Learn More
-                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </span>
-                </Link>
-              )
-            })}
-          </div>
+          {!loaded ? (
+            <div className="flex justify-center py-16">
+              <div className="animate-spin rounded-full h-10 w-10 border-2 border-alp-gold border-t-transparent" />
+            </div>
+          ) : services.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-alp-slate text-lg">No services available at this time. Please check back soon.</p>
+            </div>
+          ) : (
+            <div className={`grid md:grid-cols-2 gap-8 transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}>
+              {services.map((service) => {
+                const slug = slugMap[service.title] || service.slug || service.title.toLowerCase().replace(/\s+/g, '-')
+                return (
+                  <Link
+                    key={service.title}
+                    href={`/services/${slug}`}
+                    className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-8 border border-alp-pearl-dark hover:-translate-y-1"
+                  >
+                    <div className="text-alp-gold mb-5">
+                      {iconMap[service.icon] || iconMap.Plane}
+                    </div>
+                    <h2 className="font-playfair text-2xl font-bold text-alp-navy mb-3 group-hover:text-alp-gold transition-colors">
+                      {service.title}
+                    </h2>
+                    <p className="text-alp-slate mb-6 leading-relaxed">
+                      {service.description}
+                    </p>
+                    {service.features && service.features.length > 0 && (
+                      <ul className="space-y-2 mb-6">
+                        {service.features.map((feature) => (
+                          <li key={feature} className="flex items-start gap-2 text-sm text-alp-navy">
+                            <svg className="w-4 h-4 text-alp-gold mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    <span className="inline-flex items-center text-alp-gold font-semibold text-sm group-hover:gap-2 transition-all">
+                      Learn More
+                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </Link>
+                )
+              })}
+            </div>
+          )}
         </div>
       </section>
 

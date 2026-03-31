@@ -2,13 +2,65 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { alpenglowData } from '@/lib/site-data'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'About | Aspen Alpenglow Limousine',
   description: 'Since 2012, Aspen Alpenglow Limousine has provided distinguished private car and limousine service throughout Aspen, Snowmass, and the Roaring Fork Valley. Learn about our story, fleet, and team.',
 }
 
-export default function AboutPage() {
+const defaultStats = [
+  { value: '24/7', label: 'Dispatch Available' },
+  { value: '14+', label: 'Years of Service' },
+  { value: '4.9', label: 'Client Rating' },
+]
+
+const defaultWhyChooseUs = [
+  { title: 'Flight Tracking', description: 'We monitor your flight in real-time so your ride is waiting, even if plans change.' },
+  { title: 'Local Knowledge', description: 'Our drivers live here. They know the fastest routes and the valley inside out.' },
+  { title: 'Impeccable Fleet', description: 'Late-model luxury vehicles, professionally detailed before every ride.' },
+  { title: 'White-Glove Service', description: 'Meet-and-greet, luggage handling, complimentary refreshments — every detail covered.' },
+]
+
+const defaultFleet = [
+  { name: 'Executive Escalade', image: '/images/fleet/escalade.png', passengers: 'Up to 6 Passengers', features: ['Premium leather interior', 'Climate control', 'USB & WiFi', 'Privacy partition available'] },
+  { name: 'Luxury Sprinter', image: '/images/fleet/sprinter.png', passengers: 'Up to 14 Passengers', features: ['Executive seating', 'Entertainment system', 'Overhead storage', 'Standing headroom'] },
+]
+
+export default async function AboutPage() {
+  let stats = defaultStats
+  let whyChooseUs = defaultWhyChooseUs
+  let fleet = defaultFleet
+
+  try {
+    const supabase = await createServerSupabaseClient()
+    const [settingsRes, vpRes, fleetRes] = await Promise.all([
+      supabase.from('site_settings').select('stats').eq('site_key', 'alpenglow').single(),
+      supabase.from('value_propositions').select('title, description').eq('site_key', 'alpenglow').eq('is_active', true).order('display_order'),
+      supabase.from('fleet_vehicles').select('*').eq('is_active', true),
+    ])
+    if (settingsRes.data?.stats && Array.isArray(settingsRes.data.stats) && settingsRes.data.stats.length > 0) {
+      stats = settingsRes.data.stats
+    }
+    if (vpRes.data && vpRes.data.length > 0) {
+      whyChooseUs = vpRes.data.map((vp: { title: string; description: string }) => ({
+        title: vp.title, description: vp.description,
+      }))
+    }
+    if (fleetRes.data && fleetRes.data.length > 0) {
+      fleet = fleetRes.data.map((v: { name: string; image_url: string; capacity: number; description: string }) => ({
+        name: v.name,
+        image: v.image_url || '/images/fleet/escalade.png',
+        passengers: `Up to ${v.capacity} Passengers`,
+        features: v.description ? [v.description] : [],
+      }))
+    }
+  } catch {
+    // Use defaults on error
+  }
+
   return (
     <div className="min-h-screen bg-alp-pearl font-inter">
       {/* Breadcrumb */}
@@ -77,7 +129,7 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="grid grid-cols-3 gap-8 text-center">
-              {alpenglowData.stats.map((stat) => (
+              {stats.map((stat) => (
                 <div key={stat.label}>
                   <div className="font-playfair text-4xl md:text-5xl font-bold text-alp-gold">
                     {stat.value}
@@ -108,7 +160,7 @@ export default function AboutPage() {
             we treat every ride as the most important one of the day.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {alpenglowData.whyChooseUs.map((item) => (
+            {whyChooseUs.map((item) => (
               <div key={item.title} className="text-center">
                 <h3 className="font-playfair text-lg font-bold text-alp-gold mb-2">
                   {item.title}
@@ -137,7 +189,7 @@ export default function AboutPage() {
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
-            {alpenglowData.fleet.map((vehicle) => (
+            {fleet.map((vehicle) => (
               <div
                 key={vehicle.name}
                 className="bg-white rounded-2xl shadow-md overflow-hidden border border-alp-pearl-dark"

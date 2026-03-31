@@ -1,5 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Our Guides | Rich Valley Adventures — Expert Local Guides in Aspen',
@@ -7,16 +11,38 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://www.richvalleyadventures.com/rva/guides' },
 }
 
-const GUIDES = [
-  { slug: 'kit-mclendon', name: 'Kit McLendon', title: 'Lead Fly Fishing Guide', specialties: ['Hatch reports', 'Fly recommendations', 'Water clarity', 'River observations', 'Trail information'], icon: '🎣' },
-  { slug: 'bart-chandler', name: 'Bart Chandler', title: 'Shooting Guide', specialties: ['Sporting clay instruction', 'Shotgun clinics', 'Safety training'], icon: '🎯' },
-  { slug: 'bobby-regan', name: 'Bobby Regan', title: 'Kids Fishing Specialist', specialties: ['Youth fly fishing', 'Family adventures', 'Patient instruction', 'Fun-focused guiding'], icon: '🐟' },
-  { slug: 'alex-macintyre', name: 'Alex Macintyre', title: 'Boat Captain', specialties: ['Float trips', 'River navigation', 'Multi-day expeditions'], icon: '🚣' },
-  { slug: 'jason-fagre', name: 'Jason Fagre', title: 'Chef & Hunting Guide', specialties: ['Field-to-table dining', 'Elk hunting', 'Backcountry cooking', 'Wilderness survival'], icon: '🏔' },
-  { slug: 'john-mudrey', name: 'John Mudrey', title: 'Dry Fly Specialist & Nymphing Connoisseur', specialties: ['Dry fly technique', 'Nymphing mastery', 'Technical water', 'Advanced instruction'], icon: '🪰' },
-]
+interface Guide {
+  id: string
+  slug: string
+  name: string
+  title: string
+  specialties: string[]
+  icon: string
+  image_url: string | null
+  is_active: boolean
+  display_order: number
+}
 
-export default function GuidesPage() {
+async function getGuides(): Promise<Guide[]> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  if (!url || !url.startsWith('http')) return []
+
+  try {
+    const supabase = await createServerSupabaseClient()
+    const { data } = await supabase
+      .from('guides')
+      .select('*')
+      .eq('is_active', true)
+      .order('display_order', { ascending: true })
+    return (data as Guide[]) || []
+  } catch {
+    return []
+  }
+}
+
+export default async function GuidesPage() {
+  const guides = await getGuides()
+
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
       <div className="bg-rva-forest-dark pt-32 pb-16">
@@ -28,29 +54,46 @@ export default function GuidesPage() {
       </div>
 
       <div className="max-w-5xl mx-auto px-6 py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {GUIDES.map(g => (
-            <div key={g.slug} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-              {/* Placeholder photo area */}
-              <div className="aspect-[4/3] bg-gradient-to-br from-rva-forest/10 to-rva-copper/10 flex items-center justify-center">
-                <div className="text-center">
-                  <p className="text-5xl mb-2">{g.icon}</p>
-                  <p className="text-xs text-rva-forest/40 uppercase tracking-wider">Photo Coming Soon</p>
+        {guides.length === 0 ? (
+          <div className="text-center py-16">
+            <p className="text-rva-forest/60 text-lg">Our guide profiles are being updated. Check back soon!</p>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {guides.map(g => (
+              <div key={g.slug} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                {g.image_url ? (
+                  <div className="aspect-[4/3] relative">
+                    <Image
+                      src={g.image_url}
+                      alt={g.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  </div>
+                ) : (
+                  <div className="aspect-[4/3] bg-gradient-to-br from-rva-forest/10 to-rva-copper/10 flex items-center justify-center">
+                    <div className="text-center">
+                      <p className="text-5xl mb-2">{g.icon}</p>
+                      <p className="text-xs text-rva-forest/40 uppercase tracking-wider">Photo Coming Soon</p>
+                    </div>
+                  </div>
+                )}
+                <div className="p-6">
+                  <h2 className="font-playfair text-xl font-semibold text-rva-forest-dark mb-1">{g.name}</h2>
+                  <p className="text-sm text-rva-copper font-medium mb-3">{g.title}</p>
+                  <p className="text-xs text-rva-forest/40 mb-3">✓ First Aid Certified</p>
+                  <div className="flex flex-wrap gap-1">
+                    {g.specialties.map(s => (
+                      <span key={s} className="text-xs bg-rva-copper/10 text-rva-copper px-2 py-0.5 rounded">{s}</span>
+                    ))}
+                  </div>
                 </div>
               </div>
-              <div className="p-6">
-                <h2 className="font-playfair text-xl font-semibold text-rva-forest-dark mb-1">{g.name}</h2>
-                <p className="text-sm text-rva-copper font-medium mb-3">{g.title}</p>
-                <p className="text-xs text-rva-forest/40 mb-3">✓ First Aid Certified</p>
-                <div className="flex flex-wrap gap-1">
-                  {g.specialties.map(s => (
-                    <span key={s} className="text-xs bg-rva-copper/10 text-rva-copper px-2 py-0.5 rounded">{s}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         <div className="mt-16 text-center">
           <p className="text-rva-forest/60 mb-6">All transportation provided by <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" className="text-rva-copper hover:underline">Aspen Alpenglow Limousine</a></p>
@@ -60,16 +103,18 @@ export default function GuidesPage() {
         </div>
       </div>
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(
-        GUIDES.map(g => ({
-          '@context': 'https://schema.org',
-          '@type': 'Person',
-          name: g.name,
-          jobTitle: g.title,
-          worksFor: { '@type': 'Organization', name: 'Rich Valley Adventures', url: 'https://www.richvalleyadventures.com' },
-          hasCredential: { '@type': 'EducationalOccupationalCredential', credentialCategory: 'First Aid Certification' },
-        }))
-      )}} />
+      {guides.length > 0 && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(
+          guides.map(g => ({
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            name: g.name,
+            jobTitle: g.title,
+            worksFor: { '@type': 'Organization', name: 'Rich Valley Adventures', url: 'https://www.richvalleyadventures.com' },
+            hasCredential: { '@type': 'EducationalOccupationalCredential', credentialCategory: 'First Aid Certification' },
+          }))
+        )}} />
+      )}
     </div>
   )
 }

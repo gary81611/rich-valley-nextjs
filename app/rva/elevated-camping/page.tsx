@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Elevated Camping | Glamping in Aspen | Rich Valley Adventures',
@@ -26,40 +29,25 @@ export const metadata: Metadata = {
   },
 }
 
-const includedItems = [
-  {
-    title: 'Gourmet Meals',
-    description:
-      'Chef-prepared breakfast, lunch, and dinner using fresh, local ingredients. Dietary accommodations available.',
-  },
-  {
-    title: 'Premium Gear',
-    description:
-      'Spacious canvas tents with real beds, quality linens, and camp furniture. No sleeping on the ground here.',
-  },
-  {
-    title: 'Guided Night-Sky Viewing',
-    description:
-      'Our guides set up a telescope and walk you through the constellations, planets, and deep-sky objects visible from our remote camp.',
-  },
-  {
-    title: 'Expert Wilderness Guide',
-    description:
-      'A dedicated guide stays with your group the entire trip — leading activities, sharing stories, and keeping everyone safe.',
-  },
-  {
-    title: 'All Camping Equipment',
-    description:
-      'Campfire setup, cooking gear, camp chairs, lanterns, first-aid supplies — everything you need is already there.',
-  },
-  {
-    title: 'Daytime Activities',
-    description:
-      'Hiking, fishing, nature walks, or simply relaxing. Your guide tailors the day to your group\'s interests.',
-  },
-]
+async function fetchCampingPackages() {
+  const supabase = await createServerSupabaseClient()
+  const { data, error } = await supabase
+    .from('camping_packages')
+    .select('id, title, description')
+    .eq('is_active', true)
+    .order('display_order', { ascending: true })
 
-export default function ElevatedCampingPage() {
+  if (error) {
+    console.error('Error fetching camping packages:', error)
+    return []
+  }
+
+  return data ?? []
+}
+
+export default async function ElevatedCampingPage() {
+  const includedItems = await fetchCampingPackages()
+
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
       {/* Breadcrumb */}
@@ -137,29 +125,31 @@ export default function ElevatedCampingPage() {
       </section>
 
       {/* What's Included */}
-      <section className="py-24 bg-rva-forest-dark">
-        <div className="max-w-7xl mx-auto px-6">
-          <p className="font-cormorant text-rva-copper-light text-lg tracking-widest uppercase mb-4 text-center">
-            Everything You Need
-          </p>
-          <h2 className="font-playfair text-3xl md:text-4xl text-white font-bold mb-12 text-center">
-            What&apos;s Included
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {includedItems.map((item) => (
-              <div
-                key={item.title}
-                className="bg-rva-forest rounded-2xl p-8 border border-white/10"
-              >
-                <h3 className="font-playfair text-xl text-rva-copper font-semibold mb-3">
-                  {item.title}
-                </h3>
-                <p className="text-white/70 text-sm leading-relaxed">{item.description}</p>
-              </div>
-            ))}
+      {includedItems.length > 0 && (
+        <section className="py-24 bg-rva-forest-dark">
+          <div className="max-w-7xl mx-auto px-6">
+            <p className="font-cormorant text-rva-copper-light text-lg tracking-widest uppercase mb-4 text-center">
+              Everything You Need
+            </p>
+            <h2 className="font-playfair text-3xl md:text-4xl text-white font-bold mb-12 text-center">
+              What&apos;s Included
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {includedItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-rva-forest rounded-2xl p-8 border border-white/10"
+                >
+                  <h3 className="font-playfair text-xl text-rva-copper font-semibold mb-3">
+                    {item.title}
+                  </h3>
+                  <p className="text-white/70 text-sm leading-relaxed">{item.description}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Details */}
       <section className="py-24 bg-rva-cream">

@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { rvaData } from '@/lib/site-data'
 import { createClient } from '@/lib/supabase'
 import type { Adventure } from '@/lib/types'
 
@@ -26,16 +25,6 @@ function toSlug(title: string): string {
     .replace(/(^-|-$)/g, '')
 }
 
-const staticAdventures: AdventureCard[] = rvaData.adventures.map((a) => ({
-  title: a.title,
-  slug: toSlug(a.title),
-  description: a.description,
-  image: a.image,
-  duration: a.duration,
-  difficulty: a.difficulty,
-  season: a.title === 'Elevated Camping' ? 'year-round' : 'summer',
-}))
-
 const seasonTabs: { label: string; value: Season }[] = [
   { label: 'All', value: 'all' },
   { label: 'Summer', value: 'summer' },
@@ -44,7 +33,7 @@ const seasonTabs: { label: string; value: Season }[] = [
 ]
 
 export default function AdventuresPage() {
-  const [adventures, setAdventures] = useState<AdventureCard[]>(staticAdventures)
+  const [adventures, setAdventures] = useState<AdventureCard[]>([])
   const [activeSeason, setActiveSeason] = useState<Season>('all')
 
   useEffect(() => {

@@ -16,6 +16,8 @@ const defaultSettings: Record<'rva' | 'alpenglow', Omit<SiteSettings, 'id' | 'cr
     social_links: { Facebook: rvaData.social.facebook, Instagram: rvaData.social.instagram },
     colors: { primary: '#C17A3A', secondary: '#2D3B2D', accent: '#D4A96A', background: '#F5F0EB' },
     logo_url: rvaData.logo,
+    stats: [],
+    about_content: null,
   },
   alpenglow: {
     site_key: 'alpenglow',
@@ -27,6 +29,8 @@ const defaultSettings: Record<'rva' | 'alpenglow', Omit<SiteSettings, 'id' | 'cr
     social_links: { Facebook: alpenglowData.social.facebook, Instagram: alpenglowData.social.instagram },
     colors: { primary: '#1B2541', secondary: '#C8A96E', accent: '#2A3F6F', background: '#0F1729' },
     logo_url: alpenglowData.logo,
+    stats: [],
+    about_content: null,
   },
 }
 
@@ -41,6 +45,8 @@ export default function SettingsPage() {
   const [socialVal, setSocialVal] = useState('')
   const [colorKey, setColorKey] = useState('')
   const [colorVal, setColorVal] = useState('')
+  const [statLabel, setStatLabel] = useState('')
+  const [statValue, setStatValue] = useState('')
   const supabase = createClient()
 
   const fetchSettings = useCallback(async () => {
@@ -72,6 +78,8 @@ export default function SettingsPage() {
       social_links: currentSettings?.social_links || {},
       colors: currentSettings?.colors || {},
       logo_url: currentSettings?.logo_url || '',
+      stats: currentSettings?.stats || [],
+      about_content: currentSettings?.about_content || null,
     }
 
     if (currentSettings?.id && currentSettings.id !== '') {
@@ -123,6 +131,35 @@ export default function SettingsPage() {
     const colors = { ...currentSettings.colors }
     delete colors[key]
     setCurrentSettings({ ...currentSettings, colors })
+  }
+
+  const addStat = () => {
+    if (!statLabel.trim() || !statValue.trim()) return
+    const base = currentSettings || { ...defaultSettings[activeTab], id: '', created_at: '', updated_at: '', site_key: activeTab }
+    const existing = base.stats || []
+    setCurrentSettings({ ...base, stats: [...existing, { label: statLabel, value: statValue }] } as SiteSettings)
+    setStatLabel('')
+    setStatValue('')
+  }
+
+  const removeStat = (index: number) => {
+    if (!currentSettings) return
+    const stats = [...(currentSettings.stats || [])]
+    stats.splice(index, 1)
+    setCurrentSettings({ ...currentSettings, stats })
+  }
+
+  const updateStatField = (index: number, field: 'label' | 'value', val: string) => {
+    if (!currentSettings) return
+    const stats = [...(currentSettings.stats || [])]
+    stats[index] = { ...stats[index], [field]: val }
+    setCurrentSettings({ ...currentSettings, stats })
+  }
+
+  const updateAboutContent = (field: string, value: string | string[]) => {
+    const base = currentSettings || { ...defaultSettings[activeTab], id: '', created_at: '', updated_at: '', site_key: activeTab }
+    const existing = base.about_content || { founder_story: '', company_narrative: '', team_characteristics: [], cta_text: '' }
+    setCurrentSettings({ ...base, about_content: { ...existing, [field]: value } } as SiteSettings)
   }
 
   if (loading) {
@@ -223,6 +260,87 @@ export default function SettingsPage() {
             <button type="button" onClick={addColor} className="px-3 py-1.5 bg-slate-100 text-slate-700 text-sm rounded-lg hover:bg-slate-200">Add</button>
           </div>
         </div>
+
+        {/* Site Statistics */}
+        <div>
+          <h3 className="text-sm font-semibold text-slate-800 mb-2">Site Statistics</h3>
+          <div className="space-y-2 mb-2">
+            {(currentSettings?.stats || []).map((stat, index) => (
+              <div key={index} className="flex items-center gap-2 text-sm">
+                <input
+                  type="text"
+                  value={stat.label}
+                  onChange={(e) => updateStatField(index, 'label', e.target.value)}
+                  className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm w-40"
+                  placeholder="Label"
+                />
+                <input
+                  type="text"
+                  value={stat.value}
+                  onChange={(e) => updateStatField(index, 'value', e.target.value)}
+                  className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm flex-1"
+                  placeholder="Value"
+                />
+                <button type="button" onClick={() => removeStat(index)} className="text-red-500 text-xs">Remove</button>
+              </div>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <input type="text" placeholder="Label" value={statLabel} onChange={(e) => setStatLabel(e.target.value)} className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm w-40" />
+            <input type="text" placeholder="Value" value={statValue} onChange={(e) => setStatValue(e.target.value)} className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm flex-1" />
+            <button type="button" onClick={addStat} className="px-3 py-1.5 bg-slate-100 text-slate-700 text-sm rounded-lg hover:bg-slate-200">Add</button>
+          </div>
+        </div>
+
+        {/* About Page Content — RVA only */}
+        {activeTab === 'rva' && (
+          <div>
+            <h3 className="text-sm font-semibold text-slate-800 mb-2">About Page Content</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Founder Story</label>
+                <textarea
+                  rows={5}
+                  value={currentSettings?.about_content?.founder_story || ''}
+                  onChange={(e) => updateAboutContent('founder_story', e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-500"
+                  placeholder="The founder's story paragraph(s)..."
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Company Narrative</label>
+                <textarea
+                  rows={5}
+                  value={currentSettings?.about_content?.company_narrative || ''}
+                  onChange={(e) => updateAboutContent('company_narrative', e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-500"
+                  placeholder="The 'Since 2012' / decade of adventure narrative..."
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Team Characteristics</label>
+                <input
+                  type="text"
+                  value={(currentSettings?.about_content?.team_characteristics || []).join(', ')}
+                  onChange={(e) => updateAboutContent('team_characteristics', e.target.value.split(',').map(s => s.trim()).filter(Boolean))}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-500"
+                  placeholder="Wilderness First-Aid certified, Average 8+ years experience, ..."
+                />
+                <p className="text-xs text-slate-500 mt-1">Comma-separated list of team qualities</p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">CTA Text</label>
+                <input
+                  type="text"
+                  value={currentSettings?.about_content?.cta_text || ''}
+                  onChange={(e) => updateAboutContent('cta_text', e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-500"
+                  placeholder="Whether it's your first visit or your fourteenth..."
+                />
+              </div>
+            </div>
+          </div>
+        )}
 
         <button type="submit" disabled={saving} className="px-6 py-2.5 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 disabled:opacity-50">
           {saving ? 'Saving...' : 'Save Settings'}

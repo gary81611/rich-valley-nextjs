@@ -1,14 +1,33 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { alpenglowData } from '@/lib/site-data'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Fleet | Rich Valley Adventures',
   description: 'Our sister company Aspen Alpenglow Limousine provides luxury transportation in an Executive Escalade (6 passengers) and Luxury Sprinter (14 passengers) for scenic tours and transfers.',
 }
 
-export default function FleetPage() {
+async function getFleetVehicles() {
+  const supabase = await createServerSupabaseClient()
+  const { data, error } = await supabase
+    .from('fleet_vehicles')
+    .select('id, name, image, passengers, features, description, vehicle_type')
+    .eq('is_active', true)
+    .order('display_order', { ascending: true })
+
+  if (error) {
+    console.error('Error fetching fleet vehicles:', error)
+    return []
+  }
+  return data ?? []
+}
+
+export default async function FleetPage() {
+  const vehicles = await getFleetVehicles()
+
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
       {/* Breadcrumb */}
@@ -44,56 +63,60 @@ export default function FleetPage() {
       {/* Fleet Cards */}
       <section className="py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-6 space-y-16">
-          {alpenglowData.fleet.map((vehicle, i) => (
-            <div
-              key={vehicle.name}
-              className="bg-white rounded-3xl shadow-lg overflow-hidden border border-rva-cream-dark"
-            >
-              <div className={`grid lg:grid-cols-2 ${i % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''}`}>
-                <div className="relative h-72 sm:h-96 lg:h-auto min-h-[280px] bg-rva-forest-dark">
-                  <Image
-                    src={vehicle.image}
-                    alt={`${vehicle.name} — luxury vehicle from Aspen Alpenglow Limousine`}
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
-                </div>
-                <div className="p-8 sm:p-12 flex flex-col justify-center">
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="bg-rva-copper/10 text-rva-copper text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                      {i === 0 ? 'SUV' : 'Van'}
-                    </span>
-                    <span className="text-gray-500 text-sm">{vehicle.passengers}</span>
+          {vehicles.length === 0 ? (
+            <div className="text-center py-20">
+              <p className="text-gray-500 text-lg">No vehicles available at this time. Please check back soon.</p>
+            </div>
+          ) : (
+            vehicles.map((vehicle, i) => (
+              <div
+                key={vehicle.id}
+                className="bg-white rounded-3xl shadow-lg overflow-hidden border border-rva-cream-dark"
+              >
+                <div className={`grid lg:grid-cols-2 ${i % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''}`}>
+                  <div className="relative h-72 sm:h-96 lg:h-auto min-h-[280px] bg-rva-forest-dark">
+                    <Image
+                      src={vehicle.image}
+                      alt={`${vehicle.name} — luxury vehicle from Aspen Alpenglow Limousine`}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
                   </div>
-                  <h2 className="font-playfair text-3xl sm:text-4xl font-bold text-rva-forest mb-4">
-                    {vehicle.name}
-                  </h2>
-                  <p className="text-gray-600 leading-relaxed mb-6">
-                    {i === 0
-                      ? 'Our flagship Cadillac Escalade offers the ultimate in comfort and style. Premium leather interior, whisper-quiet ride, and ample space for luggage — perfect for scenic Chauffeur Guided Tours, airport transfers, and intimate celebrations.'
-                      : 'Our Mercedes Sprinter combines spacious group capacity with true luxury. Standing headroom, executive seating, and entertainment make it ideal for wedding parties, corporate groups, ski teams, and scenic tours through the Roaring Fork Valley.'}
-                  </p>
-                  <ul className="grid grid-cols-2 gap-3 mb-8">
-                    {vehicle.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-2 text-sm text-rva-forest">
-                        <svg className="w-4 h-4 text-rva-copper flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    href="/contact"
-                    className="inline-block bg-rva-copper hover:bg-rva-copper-light text-white font-bold px-8 py-3 rounded-full transition-colors text-center w-fit"
-                  >
-                    Book a Ride
-                  </Link>
+                  <div className="p-8 sm:p-12 flex flex-col justify-center">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="bg-rva-copper/10 text-rva-copper text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                        {vehicle.vehicle_type ?? (i === 0 ? 'SUV' : 'Van')}
+                      </span>
+                      <span className="text-gray-500 text-sm">{vehicle.passengers}</span>
+                    </div>
+                    <h2 className="font-playfair text-3xl sm:text-4xl font-bold text-rva-forest mb-4">
+                      {vehicle.name}
+                    </h2>
+                    <p className="text-gray-600 leading-relaxed mb-6">
+                      {vehicle.description}
+                    </p>
+                    <ul className="grid grid-cols-2 gap-3 mb-8">
+                      {(vehicle.features as string[])?.map((feature) => (
+                        <li key={feature} className="flex items-center gap-2 text-sm text-rva-forest">
+                          <svg className="w-4 h-4 text-rva-copper flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    <Link
+                      href="/contact"
+                      className="inline-block bg-rva-copper hover:bg-rva-copper-light text-white font-bold px-8 py-3 rounded-full transition-colors text-center w-fit"
+                    >
+                      Book a Ride
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </section>
 

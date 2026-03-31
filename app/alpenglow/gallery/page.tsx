@@ -1,23 +1,38 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { alpenglowData } from '@/lib/site-data'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Gallery | Aspen Alpenglow Limousine',
   description: 'Browse photos of our luxury fleet, vehicles, and the stunning Colorado destinations we serve. Executive Escalade, Luxury Sprinter, and scenic Roaring Fork Valley views.',
 }
 
-const galleryImages = [
-  { src: '/images/fleet/escalade.png', alt: 'Executive Cadillac Escalade — luxury SUV for private transportation in Aspen' },
-  { src: '/images/fleet/sprinter.png', alt: 'Luxury Mercedes Sprinter — group transportation in the Roaring Fork Valley' },
-  ...alpenglowData.destinations.map((dest) => ({
-    src: dest.image,
-    alt: `${dest.name} — popular Colorado destination served by Aspen Alpenglow Limousine`,
-  })),
-]
+async function fetchGalleryImages() {
+  const supabase = await createServerSupabaseClient()
+  const { data, error } = await supabase
+    .from('gallery_images')
+    .select('*')
+    .eq('site_key', 'alpenglow')
+    .eq('is_active', true)
+    .order('display_order', { ascending: true })
 
-export default function GalleryPage() {
+  if (error) {
+    console.error('Failed to fetch gallery images:', error)
+    return []
+  }
+
+  return (data ?? []).map((img) => ({
+    src: img.image_url || img.path || img.src,
+    alt: img.alt ?? '',
+  }))
+}
+
+export default async function GalleryPage() {
+  const galleryImages = await fetchGalleryImages()
+
   return (
     <div className="min-h-screen bg-alp-pearl font-inter">
       {/* Breadcrumb */}
@@ -46,41 +61,47 @@ export default function GalleryPage() {
       {/* Masonry Grid */}
       <section className="py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-            {galleryImages.map((img, i) => {
-              const aspectClass =
-                i % 5 === 0
-                  ? 'aspect-[3/4]'
-                  : i % 5 === 1
-                    ? 'aspect-square'
-                    : i % 5 === 2
-                      ? 'aspect-[4/3]'
-                      : i % 5 === 3
-                        ? 'aspect-[3/2]'
-                        : 'aspect-[4/5]'
+          {galleryImages.length === 0 ? (
+            <div className="text-center py-24">
+              <p className="text-alp-navy-deep/50 text-lg">No gallery images available at this time.</p>
+            </div>
+          ) : (
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+              {galleryImages.map((img, i) => {
+                const aspectClass =
+                  i % 5 === 0
+                    ? 'aspect-[3/4]'
+                    : i % 5 === 1
+                      ? 'aspect-square'
+                      : i % 5 === 2
+                        ? 'aspect-[4/3]'
+                        : i % 5 === 3
+                          ? 'aspect-[3/2]'
+                          : 'aspect-[4/5]'
 
-              return (
-                <div
-                  key={i}
-                  className="group relative break-inside-avoid rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300"
-                >
-                  <div className={`relative ${aspectClass}`}>
-                    <Image
-                      src={img.src}
-                      alt={img.alt}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
-                      unoptimized
-                    />
-                    <div className="absolute inset-0 bg-alp-navy-deep/0 group-hover:bg-alp-navy-deep/30 transition-colors duration-300" />
-                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-alp-navy-deep/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <p className="text-white text-sm">{img.alt}</p>
+                return (
+                  <div
+                    key={i}
+                    className="group relative break-inside-avoid rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300"
+                  >
+                    <div className={`relative ${aspectClass}`}>
+                      <Image
+                        src={img.src}
+                        alt={img.alt}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                        unoptimized
+                      />
+                      <div className="absolute inset-0 bg-alp-navy-deep/0 group-hover:bg-alp-navy-deep/30 transition-colors duration-300" />
+                      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-alp-navy-deep/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <p className="text-white text-sm">{img.alt}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )
-            })}
-          </div>
+                )
+              })}
+            </div>
+          )}
         </div>
       </section>
 

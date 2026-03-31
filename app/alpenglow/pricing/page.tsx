@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { AIRPORT_INBOUND, AIRPORT_OUTBOUND, LOCAL_ROUTES, LONG_DISTANCE, HOURLY_SERVICES, POLICIES, FLEET } from '@/lib/aal-pricing'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Pricing | Aspen Alpenglow Limousine — All-Inclusive Transportation Rates',
@@ -12,7 +14,42 @@ export const metadata: Metadata = {
   },
 }
 
-function PriceTable({ title, routes }: { title: string; routes: typeof AIRPORT_INBOUND }) {
+const POLICIES = [
+  'Chartered services: 4-hour minimum',
+  'All reservations: 24-hour cancellation policy',
+  'Events: 7-day cancellation policy',
+  'First 15 minutes of wait time included',
+  '30 minutes included for airport arrivals',
+  'Winter and summer rates are the same',
+  'All reservations must be held with a credit card',
+  'All-inclusive pricing — no hidden service charges or gratuity added',
+]
+
+const FLEET = [
+  { name: '2025 Ford Transit Van', seats: 14, features: ['WiFi', 'XM Radio', 'Starlink', 'Water', 'Myers 6X Ski Rack'] },
+  { name: '2026 Chevrolet Suburban', seats: 7, features: ['WiFi', 'Starlink', 'XM Radio', 'Water', 'Yakima Roof Rack', 'Myers 6X Ski Rack'] },
+  { name: '2025 Chevrolet Suburban', seats: 7, features: ['WiFi', 'Starlink', 'XM Radio', 'Water', 'Yakima Roof Rack', 'Myers 6X Ski Rack'] },
+]
+
+type RouteRow = {
+  from: string
+  to: string
+  distance: string
+  driveTime: string
+  suvPrice: number
+  sprinterPrice: string
+  slug: string
+}
+
+type HourlyRow = {
+  service: string
+  suvPrice: number | null
+  sprinterPrice: string
+  note: string | null
+}
+
+function PriceTable({ title, routes }: { title: string; routes: RouteRow[] }) {
+  if (routes.length === 0) return null
   return (
     <div className="mb-12">
       <h2 className="font-playfair text-2xl font-semibold text-alp-navy mb-6">{title}</h2>
@@ -32,7 +69,7 @@ function PriceTable({ title, routes }: { title: string; routes: typeof AIRPORT_I
               <tr key={r.slug} className="border-b border-alp-pearl hover:bg-alp-pearl/50 transition-colors">
                 <td className="py-3 px-4">
                   <span className="font-medium text-alp-navy">{r.from}</span>
-                  <span className="text-alp-navy/40 mx-2">→</span>
+                  <span className="text-alp-navy/40 mx-2">&rarr;</span>
                   <span className="font-medium text-alp-navy">{r.to}</span>
                 </td>
                 <td className="py-3 px-4 text-alp-navy/60">{r.distance}</td>
@@ -48,7 +85,52 @@ function PriceTable({ title, routes }: { title: string; routes: typeof AIRPORT_I
   )
 }
 
-export default function PricingPage() {
+export default async function PricingPage() {
+  const supabase = await createServerSupabaseClient()
+
+  const { data: rows } = await supabase
+    .from('pricing_routes')
+    .select('*')
+    .eq('is_active', true)
+    .order('display_order')
+
+  const allRoutes = rows || []
+
+  // Group by category
+  const grouped: Record<string, typeof allRoutes> = {}
+  for (const r of allRoutes) {
+    const cat = r.category || 'other'
+    if (!grouped[cat]) grouped[cat] = []
+    grouped[cat].push(r)
+  }
+
+  // Map DB rows to route shape
+  const mapRoute = (r: (typeof allRoutes)[0]): RouteRow => ({
+    from: r.origin,
+    to: r.destination,
+    distance: r.distance,
+    driveTime: r.drive_time,
+    suvPrice: r.suv_price,
+    sprinterPrice: r.price_note || 'Contact for quote',
+    slug: r.route_name,
+  })
+
+  // Map DB rows to hourly shape
+  const mapHourly = (r: (typeof allRoutes)[0]): HourlyRow => ({
+    service: r.route_name,
+    suvPrice: r.suv_price,
+    sprinterPrice: r.price_note || 'Contact for quote',
+    note: r.drive_time,
+  })
+
+  const AIRPORT_INBOUND = (grouped['airport-inbound'] || []).map(mapRoute)
+  const AIRPORT_OUTBOUND = (grouped['airport-outbound'] || []).map(mapRoute)
+  const LOCAL_ROUTES = (grouped['local'] || []).map(mapRoute)
+  const LONG_DISTANCE = (grouped['long-distance'] || []).map(mapRoute)
+  const HOURLY_SERVICES = (grouped['hourly'] || []).map(mapHourly)
+
+  const hasRoutes = allRoutes.length > 0
+
   return (
     <div className="min-h-screen bg-white font-inter">
       {/* Hero */}
@@ -61,37 +143,45 @@ export default function PricingPage() {
       </div>
 
       <div className="max-w-5xl mx-auto px-6 py-16">
+        {!hasRoutes && (
+          <div className="text-center py-12 text-alp-navy/50 mb-12">
+            <p className="text-lg">Pricing information is being updated. Please call for current rates.</p>
+          </div>
+        )}
+
         <PriceTable title="Airport to Aspen/Snowmass" routes={AIRPORT_INBOUND} />
         <PriceTable title="Aspen to Airport" routes={AIRPORT_OUTBOUND} />
         <PriceTable title="Local / Roaring Fork Valley" routes={LOCAL_ROUTES} />
         <PriceTable title="Long-Distance / Resort-to-Resort" routes={LONG_DISTANCE} />
 
         {/* Hourly & Special Services */}
-        <div className="mb-12">
-          <h2 className="font-playfair text-2xl font-semibold text-alp-navy mb-6">Hourly Charter &amp; In-Town</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b-2 border-alp-gold/30">
-                  <th className="text-left py-3 px-4 font-semibold text-alp-navy">Service</th>
-                  <th className="text-right py-3 px-4 font-semibold text-alp-navy">SUV</th>
-                  <th className="text-right py-3 px-4 font-semibold text-alp-navy">Sprinter</th>
-                </tr>
-              </thead>
-              <tbody>
-                {HOURLY_SERVICES.map((s) => (
-                  <tr key={s.service} className="border-b border-alp-pearl hover:bg-alp-pearl/50">
-                    <td className="py-3 px-4 font-medium text-alp-navy">{s.service}</td>
-                    <td className="py-3 px-4 text-right font-semibold text-alp-gold">
-                      {s.suvPrice ? `$${s.suvPrice}${s.note || ''}` : '—'}
-                    </td>
-                    <td className="py-3 px-4 text-right text-alp-navy/50 text-xs">{s.sprinterPrice}</td>
+        {HOURLY_SERVICES.length > 0 && (
+          <div className="mb-12">
+            <h2 className="font-playfair text-2xl font-semibold text-alp-navy mb-6">Hourly Charter &amp; In-Town</h2>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b-2 border-alp-gold/30">
+                    <th className="text-left py-3 px-4 font-semibold text-alp-navy">Service</th>
+                    <th className="text-right py-3 px-4 font-semibold text-alp-navy">SUV</th>
+                    <th className="text-right py-3 px-4 font-semibold text-alp-navy">Sprinter</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {HOURLY_SERVICES.map((s) => (
+                    <tr key={s.service} className="border-b border-alp-pearl hover:bg-alp-pearl/50">
+                      <td className="py-3 px-4 font-medium text-alp-navy">{s.service}</td>
+                      <td className="py-3 px-4 text-right font-semibold text-alp-gold">
+                        {s.suvPrice ? `$${s.suvPrice}${s.note || ''}` : '\u2014'}
+                      </td>
+                      <td className="py-3 px-4 text-right text-alp-navy/50 text-xs">{s.sprinterPrice}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Fleet */}
         <div className="mb-12 bg-alp-pearl rounded-xl p-8">
@@ -117,7 +207,7 @@ export default function PricingPage() {
           <ul className="space-y-2">
             {POLICIES.map((p) => (
               <li key={p} className="flex items-start gap-3 text-sm text-alp-navy/70">
-                <span className="text-alp-gold mt-0.5">✓</span>
+                <span className="text-alp-gold mt-0.5">{'\u2713'}</span>
                 {p}
               </li>
             ))}

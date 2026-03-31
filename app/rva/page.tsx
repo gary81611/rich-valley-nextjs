@@ -4,48 +4,64 @@ import Image from 'next/image'
 import Link from 'next/link'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
-import { rvaData, photoNotes } from '@/lib/site-data'
 import { createClient } from '@/lib/supabase'
 import type { Adventure, Testimonial, GalleryImage } from '@/lib/types'
 
 export default function RVAPage() {
-  const [adventures, setAdventures] = useState<Array<{ title: string; slug: string; description: string; image: string; duration: string; difficulty: string; season: string }>>(rvaData.adventures)
+  const [adventures, setAdventures] = useState<Array<{ title: string; slug: string; description: string; image: string; duration: string; difficulty: string; season: string }>>([])
   const [activeSeason, setActiveSeason] = useState<string | null>(null)
-  const [testimonials, setTestimonials] = useState(rvaData.testimonials)
-  const [gallery, setGallery] = useState(rvaData.gallery)
-  const [phone, setPhone] = useState(rvaData.phone)
-  const [phoneHref, setPhoneHref] = useState(rvaData.phoneHref)
+  const [testimonials, setTestimonials] = useState<Array<{ quote: string; name: string; location: string }>>([])
+  const [gallery, setGallery] = useState<string[]>([])
+  const [phone, setPhone] = useState('970-456-3666')
+  const [phoneHref, setPhoneHref] = useState('tel:+19704563666')
+  const [stats, setStats] = useState([
+    { value: '14+', label: 'Years of Experience' },
+    { value: '3,000+', label: 'Adventures Led' },
+    { value: '4.9', label: 'Average Rating' },
+  ])
+  const [fishingReport, setFishingReport] = useState<{ title: string; date: string; author: string; preview: string } | null>(null)
 
   useEffect(() => {
     async function fetchSupabaseData() {
-      try {
-        const supabase = createClient()
-        const [advRes, testRes, galRes, settingsRes] = await Promise.all([
-          supabase.from('adventures').select('*').eq('is_active', true).order('display_order'),
-          supabase.from('testimonials').select('*').eq('is_active', true).eq('site_key', 'rva'),
-          supabase.from('gallery_images').select('*').eq('is_active', true).eq('site_key', 'rva').order('display_order'),
-          supabase.from('site_settings').select('phone').eq('site_key', 'rva').single(),
-        ])
-        if (advRes.data && advRes.data.length > 0) {
-          setAdventures(advRes.data.map((a: Adventure) => ({
-            title: a.name, slug: a.name.toLowerCase().replace(/\s+/g, '-'), description: a.description, image: a.image_url || '/images/adventures/fly-fishing.png',
-            duration: a.duration, difficulty: a.difficulty, season: a.season || 'summer',
-          })))
-        }
-        if (testRes.data && testRes.data.length > 0) {
-          setTestimonials(testRes.data.map((t: Testimonial) => ({
-            quote: t.quote, name: t.author, location: '',
-          })))
-        }
-        if (galRes.data && galRes.data.length > 0) {
-          setGallery(galRes.data.map((g: GalleryImage) => g.url))
-        }
-        if (settingsRes.data?.phone) {
-          setPhone(settingsRes.data.phone)
-          setPhoneHref(`tel:+1${settingsRes.data.phone.replace(/\D/g, '')}`)
-        }
-      } catch {
-        // Use static fallback — Supabase may not be configured
+      const supabase = createClient()
+      const [advRes, testRes, galRes, settingsRes, reportRes] = await Promise.all([
+        supabase.from('adventures').select('*').eq('is_active', true).order('display_order'),
+        supabase.from('testimonials').select('*').eq('is_active', true).eq('site_key', 'rva'),
+        supabase.from('gallery_images').select('*').eq('is_active', true).eq('site_key', 'rva').order('display_order'),
+        supabase.from('site_settings').select('phone, settings').eq('site_key', 'rva').single(),
+        supabase.from('fishing_reports').select('title, date, content, guides(name)').eq('is_published', true).order('date', { ascending: false }).limit(1).single(),
+      ])
+      if (advRes.data && advRes.data.length > 0) {
+        setAdventures(advRes.data.map((a: Adventure) => ({
+          title: a.name, slug: a.name.toLowerCase().replace(/\s+/g, '-'), description: a.description, image: a.image_url || '/images/adventures/fly-fishing.png',
+          duration: a.duration, difficulty: a.difficulty, season: a.season || 'summer',
+        })))
+      }
+      if (testRes.data && testRes.data.length > 0) {
+        setTestimonials(testRes.data.map((t: Testimonial) => ({
+          quote: t.quote, name: t.author, location: '',
+        })))
+      }
+      if (galRes.data && galRes.data.length > 0) {
+        setGallery(galRes.data.map((g: GalleryImage) => g.url))
+      }
+      if (settingsRes.data?.phone) {
+        setPhone(settingsRes.data.phone)
+        setPhoneHref(`tel:+1${settingsRes.data.phone.replace(/\D/g, '')}`)
+      }
+      if (settingsRes.data?.settings?.stats) {
+        setStats(settingsRes.data.settings.stats)
+      }
+      if (reportRes.data) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const r = reportRes.data as any
+        const guideName = Array.isArray(r.guides) ? r.guides[0]?.name : r.guides?.name
+        setFishingReport({
+          title: r.title,
+          date: r.published_at || r.created_at,
+          author: guideName || 'Staff',
+          preview: r.content?.length > 200 ? r.content.slice(0, 200) + '...' : r.content || '',
+        })
       }
     }
     fetchSupabaseData()
@@ -57,7 +73,7 @@ export default function RVAPage() {
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
         <div className="absolute inset-0">
           <Image
-            src={photoNotes.rvaHero.current}
+            src="/images/about/hero.jpg"
             alt="Panoramic view of the Rocky Mountains and Roaring Fork Valley near Aspen, Colorado — home of Rich Valley Adventures guided outdoor experiences"
             fill
             className="object-cover object-bottom"
@@ -93,7 +109,7 @@ export default function RVAPage() {
         {/* Stats bar */}
         <div className="absolute bottom-0 left-0 right-0 bg-rva-forest/90 backdrop-blur-sm border-t border-white/10">
           <div className="max-w-4xl mx-auto px-6 py-5 grid grid-cols-3 gap-4 text-center">
-            {rvaData.stats.map((stat) => (
+            {stats.map((stat) => (
               <div key={stat.label}>
                 <div className="font-playfair text-3xl font-bold text-rva-copper-light">{stat.value}</div>
                 <div className="text-white/70 text-xs tracking-wide uppercase mt-1">{stat.label}</div>
@@ -189,6 +205,34 @@ export default function RVAPage() {
           </ScrollReveal>
         </div>
       </section>
+
+      {/* LATEST FISHING REPORT */}
+      {fishingReport && (
+      <section className="py-16 bg-rva-cream">
+        <div className="max-w-3xl mx-auto px-6">
+          <ScrollReveal className="text-center mb-10">
+            <p className="font-cormorant text-rva-copper text-lg tracking-widest uppercase mb-4">River Conditions</p>
+            <h2 className="font-playfair text-4xl md:text-5xl text-rva-forest font-bold">Latest Fishing Report</h2>
+          </ScrollReveal>
+          <ScrollReveal delay={100}>
+            <div className="bg-white rounded-2xl p-8 md:p-10 shadow-sm border border-rva-cream-dark">
+              <h3 className="font-playfair text-2xl text-rva-forest font-semibold mb-2">{fishingReport.title}</h3>
+              <p className="text-rva-copper text-sm mb-4">
+                {new Date(fishingReport.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} · {fishingReport.author}
+              </p>
+              <p className="text-gray-700 leading-relaxed mb-6">{fishingReport.preview}</p>
+              <Link
+                href="/rva/conditions"
+                className="inline-flex items-center gap-2 text-rva-copper font-semibold hover:text-rva-copper-light transition-colors"
+              >
+                Read Full Report
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              </Link>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+      )}
 
       {/* TESTIMONIALS */}
       {testimonials.length > 0 && (

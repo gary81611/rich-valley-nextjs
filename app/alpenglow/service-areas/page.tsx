@@ -1,10 +1,13 @@
-'use client'
-
-import { useState, useEffect } from 'react'
+import type { Metadata } from 'next'
 import Link from 'next/link'
-import { alpenglowData } from '@/lib/site-data'
-import { createClient } from '@/lib/supabase'
-import type { ServiceArea } from '@/lib/types'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
+
+export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: 'Service Areas | Aspen Alpenglow Limousine',
+  description: 'Aspen Alpenglow Limousine proudly serves the entire Roaring Fork Valley and beyond — from Aspen to Denver.',
+}
 
 const slugMap: Record<string, string> = {
   'Aspen': 'aspen',
@@ -17,37 +20,24 @@ const slugMap: Record<string, string> = {
   'Rifle': 'rifle',
 }
 
-export default function ServiceAreasPage() {
-  const [areas, setAreas] = useState(alpenglowData.serviceAreas)
-  const [loaded, setLoaded] = useState(false)
+type ServiceArea = {
+  id: number
+  name: string
+  description: string
+  site_key: string
+  is_active: boolean
+}
 
-  useEffect(() => {
-    async function fetchAreas() {
-      try {
-        const supabase = createClient()
-        const { data } = await supabase
-          .from('service_areas')
-          .select('*')
-          .eq('site_key', 'alpenglow')
-          .eq('is_active', true)
-          .order('name')
+export default async function ServiceAreasPage() {
+  const supabase = await createServerSupabaseClient()
+  const { data } = await supabase
+    .from('service_areas')
+    .select('*')
+    .eq('site_key', 'alpenglow')
+    .eq('is_active', true)
+    .order('name')
 
-        if (data && data.length > 0) {
-          const mapped = data.map((a: ServiceArea) => ({
-            name: a.name,
-            slug: a.name.toLowerCase().replace(/[\s/&]+/g, '-'),
-            description: a.description,
-          }))
-          setAreas(mapped)
-        }
-      } catch {
-        // fallback to static data
-      } finally {
-        setLoaded(true)
-      }
-    }
-    fetchAreas()
-  }, [])
+  const areas: ServiceArea[] = data ?? []
 
   return (
     <div className="min-h-screen bg-alp-pearl font-inter">
@@ -78,39 +68,45 @@ export default function ServiceAreasPage() {
       {/* Areas Grid */}
       <section className="py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`grid sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}>
-            {areas.map((area) => {
-              const slug = slugMap[area.name] || area.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
-              return (
-                <Link
-                  key={area.name}
-                  href={`/service-areas/${slug}`}
-                  className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-8 border border-alp-pearl-dark hover:-translate-y-1"
-                >
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 bg-alp-gold/10 rounded-full flex items-center justify-center">
-                      <svg className="w-5 h-5 text-alp-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
+          {areas.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-alp-slate text-lg">Service area information is being updated. Please contact us for coverage details.</p>
+            </div>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {areas.map((area) => {
+                const slug = slugMap[area.name] || area.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+                return (
+                  <Link
+                    key={area.id}
+                    href={`/service-areas/${slug}`}
+                    className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-8 border border-alp-pearl-dark hover:-translate-y-1"
+                  >
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 bg-alp-gold/10 rounded-full flex items-center justify-center">
+                        <svg className="w-5 h-5 text-alp-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                      </div>
+                      <h2 className="font-playfair text-xl font-bold text-alp-navy group-hover:text-alp-gold transition-colors">
+                        {area.name}
+                      </h2>
                     </div>
-                    <h2 className="font-playfair text-xl font-bold text-alp-navy group-hover:text-alp-gold transition-colors">
-                      {area.name}
-                    </h2>
-                  </div>
-                  <p className="text-alp-slate text-sm leading-relaxed mb-4">
-                    {area.description}
-                  </p>
-                  <span className="inline-flex items-center text-alp-gold font-semibold text-sm">
-                    View Area
-                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </span>
-                </Link>
-              )
-            })}
-          </div>
+                    <p className="text-alp-slate text-sm leading-relaxed mb-4">
+                      {area.description}
+                    </p>
+                    <span className="inline-flex items-center text-alp-gold font-semibold text-sm">
+                      View Area
+                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </Link>
+                )
+              })}
+            </div>
+          )}
         </div>
       </section>
 
