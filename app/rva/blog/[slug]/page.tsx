@@ -6,6 +6,18 @@ import type { BlogPost } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
 
+/** Map legacy /adventures/* paths to canonical /rva/* routes (Related Resources + DB seed). */
+function normalizeRvaBlogLinkUrl(url: string): string {
+  if (!url.startsWith('/')) return url
+  const [path, query] = url.split('?', 2)
+  const suffix = query != null ? `?${query}` : ''
+  if (path === '/adventures') return `/rva${suffix}`
+  if (!path.startsWith('/adventures/')) return url
+  const rest = path.slice('/adventures/'.length)
+  if (rest === 'glamping') return `/rva/elevated-camping${suffix}`
+  return `/rva/${rest}${suffix}`
+}
+
 async function getPost(slug: string): Promise<BlogPost | null> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   if (!url || !url.startsWith('http')) return null
@@ -234,7 +246,7 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
                   {post.internal_links.map((link, i) => (
                     <li key={i}>
                       <Link
-                        href={link.url}
+                        href={normalizeRvaBlogLinkUrl(link.url)}
                         className="flex items-center gap-2 text-sm text-rva-copper hover:text-rva-forest font-medium transition-colors group"
                       >
                         <svg className="w-4 h-4 flex-shrink-0 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
