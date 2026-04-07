@@ -11,8 +11,6 @@ const SERVICE_PAGES = [
   { label: 'Snowshoeing', slug: 'snowshoeing' },
   { label: 'Wine Tours', slug: 'wine-tours' },
   { label: 'Winter Adventures', slug: 'winter' },
-  { label: 'River & Trail Conditions', slug: 'conditions' },
-  { label: 'Meet Your Guides', slug: 'guides' },
 ]
 
 export default function RVANav() {

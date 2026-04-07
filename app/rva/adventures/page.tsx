@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
 import type { Adventure } from '@/lib/types'
+import { isBookableAdventureName, slugFromAdventureName } from '@/lib/rva-adventure-filters'
 
 type Season = 'all' | 'summer' | 'winter' | 'year-round'
 
@@ -19,10 +20,7 @@ interface AdventureCard {
 }
 
 function toSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')
+  return slugFromAdventureName(title)
 }
 
 const seasonTabs: { label: string; value: Season }[] = [
@@ -48,15 +46,17 @@ export default function AdventuresPage() {
 
         if (data && data.length > 0) {
           setAdventures(
-            data.map((a: Adventure) => ({
-              title: a.name,
-              slug: toSlug(a.name),
-              description: a.description,
-              image: a.image_url || '/images/rva/flyfishing.png',
-              duration: a.duration,
-              difficulty: a.difficulty,
-              season: a.season || 'summer',
-            }))
+            data
+              .filter((a: Adventure) => isBookableAdventureName(a.name))
+              .map((a: Adventure) => ({
+                title: a.name,
+                slug: toSlug(a.name),
+                description: a.description,
+                image: a.image_url || '/images/rva/flyfishing.png',
+                duration: a.duration,
+                difficulty: a.difficulty,
+                season: a.season || 'summer',
+              })),
           )
         }
       } catch {

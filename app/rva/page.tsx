@@ -6,6 +6,7 @@ import ScrollReveal from '@/components/shared/ScrollReveal'
 import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
 import { createClient } from '@/lib/supabase'
 import type { Adventure, Testimonial, GalleryImage } from '@/lib/types'
+import { isBookableAdventureName } from '@/lib/rva-adventure-filters'
 
 export default function RVAPage() {
   const [adventures, setAdventures] = useState<Array<{ title: string; slug: string; description: string; image: string; duration: string; difficulty: string; season: string }>>([])
@@ -44,10 +45,19 @@ export default function RVAPage() {
         supabase.from('fishing_reports').select('title, date, content, guides(name)').eq('is_published', true).order('date', { ascending: false }).limit(1).single(),
       ])
       if (advRes.data && advRes.data.length > 0) {
-        setAdventures(advRes.data.map((a: Adventure) => ({
-          title: a.name, slug: a.name.toLowerCase().replace(/\s+/g, '-'), description: a.description, image: a.image_url || '/images/adventures/fly-fishing.png',
-          duration: a.duration, difficulty: a.difficulty, season: a.season || 'summer',
-        })))
+        setAdventures(
+          advRes.data
+            .filter((a: Adventure) => isBookableAdventureName(a.name))
+            .map((a: Adventure) => ({
+              title: a.name,
+              slug: a.name.toLowerCase().replace(/\s+/g, '-'),
+              description: a.description,
+              image: a.image_url || '/images/adventures/fly-fishing.png',
+              duration: a.duration,
+              difficulty: a.difficulty,
+              season: a.season || 'summer',
+            })),
+        )
       }
       if (testRes.data && testRes.data.length > 0) {
         setTestimonials(testRes.data.map((t: Testimonial) => ({
@@ -217,6 +227,24 @@ export default function RVAPage() {
               </ScrollReveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ABOUT — anchor for nav; links to guides (not a bookable adventure card) */}
+      <section id="about" className="py-14 bg-rva-cream border-t border-rva-cream-dark">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <p className="font-cormorant text-rva-copper text-lg tracking-widest uppercase mb-3">Our Team</p>
+          <h2 className="font-playfair text-3xl md:text-4xl text-rva-forest font-bold mb-4">Local Guides, Year-Round</h2>
+          <p className="text-gray-600 text-lg mb-6">
+            First Aid certified, valley-raised, and passionate about these mountains — meet the people behind your trip.
+          </p>
+          <Link
+            href="/rva/guides"
+            className="inline-flex items-center gap-2 text-rva-copper font-semibold hover:text-rva-copper-light transition-colors text-lg"
+          >
+            Meet Our Guides
+            <span aria-hidden>→</span>
+          </Link>
         </div>
       </section>
 
