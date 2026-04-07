@@ -2,18 +2,20 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { serviceAreaMatchesPathSlug } from '@/lib/alpenglow-service-areas'
 
 export const dynamic = 'force-dynamic'
 
-async function getArea(slug: string) {
+async function getArea(pathSlug: string) {
   const supabase = await createServerSupabaseClient()
-  const { data } = await supabase
+  const { data: rows } = await supabase
     .from('service_areas')
     .select('*')
-    .eq('slug', slug)
+    .eq('site_key', 'alpenglow')
     .eq('is_active', true)
-    .single()
-  return data
+
+  if (!rows?.length) return null
+  return rows.find((area) => serviceAreaMatchesPathSlug(area, pathSlug)) ?? null
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

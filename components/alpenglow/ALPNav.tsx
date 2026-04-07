@@ -3,16 +3,19 @@ import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { alpenglowData } from '@/lib/site-data'
 import { createClient } from '@/lib/supabase'
+import { hrefForServiceArea } from '@/lib/alpenglow-service-areas'
+import { normalizeAalServiceNavHref } from '@/lib/alpenglow-nav'
 
 interface NavItem { label: string; href: string }
 
+/** Links must hit `app/alpenglow/services/[slug]` (`/services/...` on the public host), not the CMS catch-all under `/alpenglow/{slug}`. */
 const FALLBACK_SERVICE_PAGES: NavItem[] = [
-  { label: 'Airport Transfers', href: '/alpenglow/airport-transfers' },
-  { label: 'Corporate Events', href: '/alpenglow/corporate-events' },
-  { label: 'Wedding Transportation', href: '/alpenglow/wedding-transportation' },
-  { label: 'Ski Resort Transfers', href: '/alpenglow/ski-resort-transfers' },
-  { label: 'Wine Tours', href: '/alpenglow/wine-tours' },
-  { label: 'Night Out', href: '/alpenglow/night-out' },
+  { label: 'Airport Transfers', href: '/services/airport-transfers' },
+  { label: 'Corporate Events', href: '/services/corporate-events' },
+  { label: 'Wedding Transportation', href: '/services/wedding-transportation' },
+  { label: 'Ski Resort Transfers', href: '/services/ski-resort-transfers' },
+  { label: 'Wine Tours', href: '/services/wine-tours' },
+  { label: 'Night Out', href: '/services/night-out' },
 ]
 
 const FALLBACK_AREA_PAGES: NavItem[] = [
@@ -47,20 +50,29 @@ export default function ALPNav() {
         const [navRes, settingsRes, areasRes] = await Promise.all([
           supabase.from('navigation').select('*').eq('site_id', 'alpenglow').eq('is_visible', true).order('position'),
           supabase.from('site_settings').select('phone').eq('site_key', 'alpenglow').single(),
-          supabase.from('service_areas').select('name').eq('site_key', 'alpenglow').eq('is_active', true).order('name'),
+          supabase.from('service_areas').select('name, slug').eq('site_key', 'alpenglow').eq('is_active', true).order('name'),
         ])
         if (navRes.data && navRes.data.length > 0) {
           const servicesParent = navRes.data.find((item: { parent_id: string | null; label: string }) => !item.parent_id && item.label === 'Services')
           if (servicesParent) {
             const children = navRes.data.filter((item: { parent_id: string | null }) => item.parent_id === servicesParent.id)
-            if (children.length > 0) setServiceNavItems(children.map((item: { label: string; href: string }) => ({ label: item.label, href: item.href })))
+            if (children.length > 0) {
+              setServiceNavItems(
+                children.map((item: { label: string; href: string }) => ({
+                  label: item.label,
+                  href: normalizeAalServiceNavHref(item.href),
+                })),
+              )
+            }
           }
         }
         if (areasRes.data && areasRes.data.length > 0) {
-          setAreaNavItems(areasRes.data.map((area: { name: string; slug?: string }) => ({
-            label: area.name,
-            href: `/service-areas/${area.slug || area.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`,
-          })))
+          setAreaNavItems(
+            areasRes.data.map((area: { name: string; slug: string | null }) => ({
+              label: area.name,
+              href: hrefForServiceArea(area),
+            })),
+          )
         }
         if (settingsRes.data?.phone) {
           setPhone(settingsRes.data.phone)

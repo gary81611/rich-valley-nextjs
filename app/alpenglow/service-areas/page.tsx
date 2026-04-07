@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { hrefForServiceArea } from '@/lib/alpenglow-service-areas'
 
 export const dynamic = 'force-dynamic'
 
@@ -9,23 +10,13 @@ export const metadata: Metadata = {
   description: 'Aspen Alpenglow Limousine proudly serves the entire Roaring Fork Valley and beyond — from Aspen to Denver.',
 }
 
-const slugMap: Record<string, string> = {
-  'Aspen': 'aspen',
-  'Snowmass Village': 'snowmass-village',
-  'Basalt & El Jebel': 'basalt',
-  'Carbondale': 'carbondale',
-  'Glenwood Springs': 'glenwood-springs',
-  'Eagle / Vail': 'eagle-vail',
-  'Denver': 'denver',
-  'Rifle': 'rifle',
-}
-
 type ServiceArea = {
   id: number
   name: string
   description: string
   site_key: string
   is_active: boolean
+  slug: string | null
 }
 
 export default async function ServiceAreasPage() {
@@ -75,11 +66,10 @@ export default async function ServiceAreasPage() {
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {areas.map((area) => {
-                const slug = slugMap[area.name] || area.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
                 return (
                   <Link
                     key={area.id}
-                    href={`/service-areas/${slug}`}
+                    href={hrefForServiceArea(area)}
                     className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-8 border border-alp-pearl-dark hover:-translate-y-1"
                   >
                     <div className="flex items-center gap-3 mb-4">
