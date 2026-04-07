@@ -1,40 +1,37 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { createServerSupabaseClient } from '@/lib/supabase-server'
 
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Our Guides | Rich Valley Adventures — Expert Local Guides in Aspen',
-  description: 'Meet the Rich Valley Adventures guide team. First Aid certified experts in fly fishing, hunting, hiking, and outdoor adventures in the Roaring Fork Valley.',
+  description:
+    'Meet the Rich Valley Adventures guide team. First Aid certified experts in fly fishing, hunting, hiking, and outdoor adventures in the Roaring Fork Valley.',
   alternates: { canonical: 'https://www.richvalleyadventures.com/rva/guides' },
 }
 
-interface Guide {
+type GuideRow = {
   id: string
-  slug: string
   name: string
   title: string
-  specialties: string[]
-  icon: string
-  image_url: string | null
-  is_active: boolean
+  specialties: string[] | null
+  certifications: string[] | null
+  bio: string | null
+  photo_url: string | null
   display_order: number
+  is_active: boolean
 }
 
-async function getGuides(): Promise<Guide[]> {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  if (!url || !url.startsWith('http')) return []
-
+async function getGuides(): Promise<GuideRow[]> {
+  const origin =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
   try {
-    const supabase = await createServerSupabaseClient()
-    const { data } = await supabase
-      .from('guides')
-      .select('*')
-      .eq('is_active', true)
-      .order('display_order', { ascending: true })
-    return (data as Guide[]) || []
+    const res = await fetch(`${origin}/api/guides`, { next: { revalidate: 120 } })
+    if (!res.ok) return []
+    const data = await res.json()
+    return (data.guides as GuideRow[]) || []
   } catch {
     return []
   }
@@ -60,12 +57,12 @@ export default async function GuidesPage() {
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {guides.map(g => (
-              <div key={g.slug} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                {g.image_url ? (
+            {guides.map((g) => (
+              <div key={g.id} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                {g.photo_url ? (
                   <div className="aspect-[4/3] relative">
                     <Image
-                      src={g.image_url}
+                      src={g.photo_url}
                       alt={g.name}
                       fill
                       className="object-cover"
@@ -75,7 +72,7 @@ export default async function GuidesPage() {
                 ) : (
                   <div className="aspect-[4/3] bg-gradient-to-br from-rva-forest/10 to-rva-copper/10 flex items-center justify-center">
                     <div className="text-center">
-                      <p className="text-5xl mb-2">{g.icon}</p>
+                      <p className="text-5xl font-playfair text-rva-forest/30 mb-2">{g.name.charAt(0)}</p>
                       <p className="text-xs text-rva-forest/40 uppercase tracking-wider">Photo Coming Soon</p>
                     </div>
                   </div>
@@ -83,10 +80,15 @@ export default async function GuidesPage() {
                 <div className="p-6">
                   <h2 className="font-playfair text-xl font-semibold text-rva-forest-dark mb-1">{g.name}</h2>
                   <p className="text-sm text-rva-copper font-medium mb-3">{g.title}</p>
-                  <p className="text-xs text-rva-forest/40 mb-3">✓ First Aid Certified</p>
+                  {g.certifications && g.certifications.length > 0 && (
+                    <p className="text-xs text-rva-forest/50 mb-3">{g.certifications.join(' · ')}</p>
+                  )}
+                  {g.bio && <p className="text-sm text-rva-forest/70 leading-relaxed mb-3">{g.bio}</p>}
                   <div className="flex flex-wrap gap-1">
-                    {g.specialties.map(s => (
-                      <span key={s} className="text-xs bg-rva-copper/10 text-rva-copper px-2 py-0.5 rounded">{s}</span>
+                    {(g.specialties || []).map((s) => (
+                      <span key={s} className="text-xs bg-rva-copper/10 text-rva-copper px-2 py-0.5 rounded">
+                        {s}
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -96,7 +98,12 @@ export default async function GuidesPage() {
         )}
 
         <div className="mt-16 text-center">
-          <p className="text-rva-forest/60 mb-6">All transportation provided by <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" className="text-rva-copper hover:underline">Aspen Alpenglow Limousine</a></p>
+          <p className="text-rva-forest/60 mb-6">
+            All transportation provided by{' '}
+            <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" className="text-rva-copper hover:underline">
+              Aspen Alpenglow Limousine
+            </a>
+          </p>
           <Link href="/rva/contact" className="inline-block bg-rva-copper hover:bg-rva-copper-light text-white px-8 py-3 rounded-full font-semibold transition-colors">
             Book an Adventure — 970-456-3666
           </Link>
@@ -104,16 +111,21 @@ export default async function GuidesPage() {
       </div>
 
       {guides.length > 0 && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(
-          guides.map(g => ({
-            '@context': 'https://schema.org',
-            '@type': 'Person',
-            name: g.name,
-            jobTitle: g.title,
-            worksFor: { '@type': 'Organization', name: 'Rich Valley Adventures', url: 'https://www.richvalleyadventures.com' },
-            hasCredential: { '@type': 'EducationalOccupationalCredential', credentialCategory: 'First Aid Certification' },
-          }))
-        )}} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              guides.map((g) => ({
+                '@context': 'https://schema.org',
+                '@type': 'Person',
+                name: g.name,
+                jobTitle: g.title,
+                worksFor: { '@type': 'Organization', name: 'Rich Valley Adventures', url: 'https://www.richvalleyadventures.com' },
+                hasCredential: { '@type': 'EducationalOccupationalCredential', credentialCategory: 'First Aid Certification' },
+              })),
+            ),
+          }}
+        />
       )}
     </div>
   )
