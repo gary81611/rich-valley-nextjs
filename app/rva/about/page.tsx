@@ -178,7 +178,14 @@ export default async function AboutPage() {
               {
                 name: 'Kit McLendon',
                 title: 'Lead Fly Fishing Guide',
-                tags: ['Hatch reports', 'Fly recommendations', 'Water clarity', 'River observations', 'Trails', 'Boat ramp logistics'],
+                tags: [
+                  'Hatch reports',
+                  'Fly recommendations',
+                  'Water clarity assessment',
+                  'River observations',
+                  'Trail information',
+                  'Boat ramp logistics',
+                ],
                 note: 'Primary expert for river conditions reporting',
               },
               {
