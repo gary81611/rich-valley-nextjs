@@ -51,9 +51,9 @@ Snowmass is just a 10-minute shuttle from Aspen and offers a completely differen
 
 If your kids want to camp but you'd prefer not to sleep on the ground, our elevated camping experience is the answer. We set up a comfortable basecamp — real beds, camp lighting, gourmet meals — and you get all the magic of sleeping under Colorado stars without any of the rough edges. Kids absolutely love it, especially the guided night-sky viewing that comes with every trip.
 
-## 9. Scenic Escalade Tours — For Kids Who Need a Rest Day
+## 9. Chauffeur Guided Tours and Excursions — For Kids Who Need a Rest Day
 
-Every family trip has a recovery day. Maybe legs are tired, maybe the littlest one didn't sleep well, maybe you just want to see things without hiking to them. Our Scenic Escalade Tours put you in a comfortable luxury Escalade with a knowledgeable local guide who shows you the highlights — Maroon Bells overlooks, Independence Pass, old mining towns, wildlife hotspots — at a pace that works for everyone. Windows down, questions answered, no mileage required.
+Every family trip has a recovery day. Maybe legs are tired, maybe the littlest one didn't sleep well, maybe you just want to see things without hiking to them. Our Chauffeur Guided Tours and Excursions put you in a comfortable SUV or van with a knowledgeable local guide who shows you the highlights — Maroon Bells overlooks, Independence Pass, old mining towns, wildlife hotspots — at a pace that works for everyone. Windows down, questions answered, no mileage required.
 
 ---
 

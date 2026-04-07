@@ -104,8 +104,8 @@ We provide airport transfers, ski resort shuttles, wedding transportation, corpo
 - Wine & Brewery Tours — Marble Distilling, Palisade wine country, Roaring Fork craft breweries
 
 ## Fleet
-- Cadillac Escalade ESV: 6 passengers, leather seating, climate control, luggage capacity
-- Mercedes-Benz Sprinter Executive Van: 14 passengers, leather seating, ample cargo space
+- Chevrolet Suburban (2025–2026): 7 passengers, Starlink WiFi, ski racks, roof storage on select models
+- Ford Transit Van (2025): 14 passengers, Starlink WiFi, ski rack
 
 ## Business Details
 - Founded: 2012

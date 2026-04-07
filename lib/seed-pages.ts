@@ -231,7 +231,7 @@ const rvaPages: PageSeed[] = [
     slug: 'transportation',
     title: 'Private Transportation Services in Aspen, Colorado',
     meta_title: 'Private Transportation Aspen CO | Airport Transfers | Rich Valley Adventures',
-    meta_description: 'Private transportation services in Aspen, CO. Airport transfers from ASE and EGE, adventure transportation, Maroon Bells shuttles, and group transport in luxury Escalades.',
+    meta_description: 'Private transportation services in Aspen, CO. Airport transfers from ASE and EGE, adventure transportation, Maroon Bells shuttles, and group transport with Aspen Alpenglow Limousine.',
     template_type: 'service',
     status: 'published',
     published_at: new Date().toISOString(),
@@ -240,7 +240,7 @@ const rvaPages: PageSeed[] = [
     content: {
       hero_title: 'Private Transportation Services in Aspen, Colorado',
       hero_subtitle: 'Comfortable, Reliable Transport for Every Adventure',
-      intro: `Getting around Aspen — and getting to the wilderness trailheads, rivers, and lakes that make this valley special — requires local knowledge and reliable transportation. Rich Valley Adventures provides private transportation services that connect you seamlessly to every adventure we offer, and to the broader Roaring Fork Valley.\n\nOur primary transport vehicle is a luxury Cadillac Escalade — spacious, comfortable, and capable of handling Aspen\'s mountain roads in any season. Whether you need an airport pickup from Aspen/Pitkin County Airport or Eagle County Regional Airport, a shuttle to the Maroon Bells Wilderness trailhead, or transport between adventures across the valley, we provide professional door-to-door service.\n\nTransportation can be booked as a standalone service or bundled with any guided adventure. Bundle bookings receive discounted transport pricing.`,
+      intro: `Getting around Aspen — and getting to the wilderness trailheads, rivers, and lakes that make this valley special — requires local knowledge and reliable transportation. Rich Valley Adventures provides private transportation services that connect you seamlessly to every adventure we offer, and to the broader Roaring Fork Valley.\n\nOur primary transport partner is Aspen Alpenglow Limousine — late-model Chevrolet Suburbans and a Ford Transit Van, spacious and capable on Aspen\'s mountain roads in any season. Whether you need an airport pickup from Aspen/Pitkin County Airport or Eagle County Regional Airport, a shuttle to the Maroon Bells Wilderness trailhead, or transport between adventures across the valley, we provide professional door-to-door service.\n\nTransportation can be booked as a standalone service or bundled with any guided adventure. Bundle bookings receive discounted transport pricing.`,
       h2_sections: [
         {
           title: 'Airport Transfers — Aspen & Eagle County Airports',
@@ -248,11 +248,11 @@ const rvaPages: PageSeed[] = [
         },
         {
           title: 'Maroon Bells Shuttle & Adventure Transport',
-          content: `During summer, the road to Maroon Lake is restricted to shuttle buses after 8am — but private transportation for active recreation access is permitted with proper coordination. We navigate the permit system so you arrive at the trailhead when you want, not when the bus schedule allows.\n\nFor fly fishing trips on the Frying Pan or Crystal River, mountain biking shuttles to distant trailheads, or paddle board equipment transport to Ruedi Reservoir — our Escalade handles the logistics while you relax and enjoy the scenery. All adventure bookings include complimentary local transport within a 15-mile radius of Aspen.`,
+          content: `During summer, the road to Maroon Lake is restricted to shuttle buses after 8am — but private transportation for active recreation access is permitted with proper coordination. We navigate the permit system so you arrive at the trailhead when you want, not when the bus schedule allows.\n\nFor fly fishing trips on the Frying Pan or Crystal River, mountain biking shuttles to distant trailheads, or paddle board equipment transport to Ruedi Reservoir — our Alpenglow vehicles handle the logistics while you relax and enjoy the scenery. All adventure bookings include complimentary local transport within a 15-mile radius of Aspen.`,
         },
       ],
       features: [
-        { title: 'Luxury Cadillac Escalade', description: 'Spacious, climate-controlled, and capable on mountain roads in any season. Fits up to 6 passengers with adventure gear.' },
+        { title: 'Aspen Alpenglow Limousine fleet', description: 'Chevrolet Suburbans (7 passengers) and Ford Transit Van (14 passengers), climate-controlled and equipped for mountain roads in any season.' },
         { title: 'Airport Pickups & Drop-offs', description: 'ASE and EGE airport transfers with real-time flight monitoring — we\'re there when you land, every time.' },
         { title: 'Adventure Shuttles', description: 'Trailhead drops, fishing river access, SUP gear transport — we handle the logistics so you don\'t have to.' },
         { title: 'Valley-Wide Coverage', description: 'Aspen, Snowmass Village, Basalt, Carbondale, and beyond — we know every road in the Roaring Fork Valley.' },
@@ -262,7 +262,7 @@ const rvaPages: PageSeed[] = [
       faqs: [
         { question: 'Can you pick me up from my hotel in Aspen?', answer: 'Yes — all transportation services include door-to-door hotel, condo, or private residence pickup anywhere in Aspen and Snowmass Village. Extended pickup zones to Basalt, Carbondale, or other valley towns available for an additional fee.' },
         { question: 'How far is Aspen Airport from downtown?', answer: 'Aspen/Pitkin County Airport (ASE) is approximately 3 miles from downtown Aspen — a 10-minute drive. Eagle County Airport (EGE) near Glenwood Springs is approximately 70 miles and a 90-minute drive via Highway 82.' },
-        { question: 'Can the Escalade carry ski or outdoor equipment?', answer: 'Yes — the Escalade has generous cargo capacity for ski bags, snowboards, fly fishing gear, bikes (with roof or hitch rack available), and paddle boards. Let us know your gear requirements when booking.' },
+        { question: 'Can your vehicles carry ski or outdoor equipment?', answer: 'Yes — Aspen Alpenglow Limousine vehicles have generous cargo capacity for ski bags, snowboards, fly fishing gear, bikes (with roof or hitch rack available), and paddle boards. Let us know your gear requirements when booking.' },
         { question: 'Do you track flight arrivals?', answer: 'Yes. For airport pickups, we monitor your flight status in real time and adjust our arrival accordingly for delays or early arrivals. You\'ll never wait for a ride at the curb.' },
       ],
       cta_phone: '(970) 456-3666',
@@ -358,7 +358,7 @@ const rvaPages: PageSeed[] = [
       ],
       faqs: [
         { question: 'What is the best outdoor activity in Aspen for beginners?', answer: 'Paddle boarding on Ruedi Reservoir and guided hiking in the Maroon Bells are both excellent for first-timers. Fly fishing is also very accessible with one of our beginner-friendly guide sessions.' },
-        { question: 'Is Aspen good for adventure activities in winter?', answer: 'Absolutely. Aspen\'s winter is spectacular — snowshoeing, Nordic skiing, ice fishing, and Escalade backcountry tours offer incredible experiences from December through March.' },
+        { question: 'Is Aspen good for adventure activities in winter?', answer: 'Absolutely. Aspen\'s winter is spectacular — snowshoeing, Nordic skiing, ice fishing, and Chauffeur Guided Tours and Excursions offer incredible experiences from December through March.' },
         { question: 'How do I get to Aspen?', answer: 'Aspen/Pitkin County Airport (ASE) has direct flights from Denver, Dallas, Los Angeles, Chicago, and New York seasonally. Eagle County Airport (EGE) and Denver International Airport (DEN) serve as alternative gateways with ground transportation available.' },
       ],
       cta_phone: '(970) 456-3666',

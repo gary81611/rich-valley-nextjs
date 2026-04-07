@@ -8,7 +8,7 @@ const RVA_SERVICES = [
   { id: 'hiking', label: 'Hiking & Backpacking', icon: '🥾' },
   { id: 'horseback', label: 'Horseback Riding', icon: '🐎' },
   { id: 'winter', label: 'Winter Adventures', icon: '❄️' },
-  { id: 'guided-tours', label: 'Chauffeur Guided Tours', icon: '🚙' },
+  { id: 'guided-tours', label: 'Chauffeur Guided Tours and Excursions', icon: '🚙' },
   { id: 'custom', label: 'Custom Adventure', icon: '✨' },
 ]
 
@@ -17,7 +17,7 @@ const AAL_SERVICES = [
   { id: 'hourly', label: 'Hourly Charter', icon: '🕐' },
   { id: 'corporate', label: 'Corporate Transportation', icon: '💼' },
   { id: 'wedding', label: 'Wedding & Special Events', icon: '💒' },
-  { id: 'guided-tours', label: 'Chauffeur Guided Tours', icon: '🚙' },
+  { id: 'guided-tours', label: 'Chauffeur Guided Tours and Excursions', icon: '🚙' },
   { id: 'custom', label: 'Custom Request', icon: '✨' },
 ]
 

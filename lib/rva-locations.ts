@@ -69,7 +69,7 @@ export const LOCATIONS: Location[] = [
     rivers: ['Crystal River'],
     activities: ['Fly Fishing', 'Chauffeur Guided Tours', 'Photography', 'Historic Tours'],
     highlights: ['Crystal River fishing', 'Historic Redstone Inn', 'Marble quarries', 'Scenic drives'],
-    faq: [{ q: 'How do I get to Marble from Aspen?', a: 'Marble is about 1 hour from Aspen via Carbondale. Book a Chauffeur Guided Tour with Rich Valley Adventures for the most comfortable and informative journey, with transport by Aspen Alpenglow Limousine.' }],
+    faq: [{ q: 'How do I get to Marble from Aspen?', a: 'Marble is about 1 hour from Aspen via Carbondale. Book Chauffeur Guided Tours and Excursions with Rich Valley Adventures for the most comfortable and informative journey, with transport by Aspen Alpenglow Limousine.' }],
   },
   {
     slug: 'vail', name: 'Vail', tagline: 'Expanded adventure options',

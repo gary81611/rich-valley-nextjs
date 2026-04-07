@@ -53,7 +53,7 @@ For groups with two or more days to invest, we build multi-activity itineraries 
 
 **Day 1:** Morning fly fishing on the Roaring Fork (full group, split into pods), riverside lunch, afternoon guided hike to a high overlook, group dinner in Aspen with facilitated retrospective.
 
-**Day 2:** Morning mountain biking at Snowmass or the Government Trail, afternoon scenic Escalade tour with the leadership team, evening at the hotel for structured reflection and planning.
+**Day 2:** Morning mountain biking at Snowmass or the Government Trail, afternoon Chauffeur Guided Tours and Excursions with the leadership team, evening at the hotel for structured reflection and planning.
 
 We coordinate everything — transportation between venues, catering, equipment, guides — so the retreat organizer is free to focus on the people, not the logistics.
 

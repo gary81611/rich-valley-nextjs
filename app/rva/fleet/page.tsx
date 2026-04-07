@@ -7,7 +7,8 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Fleet | Rich Valley Adventures',
-  description: 'Our sister company Aspen Alpenglow Limousine provides luxury transportation in an Executive Escalade (6 passengers) and Luxury Sprinter (14 passengers) for scenic tours and transfers.',
+  description:
+    'Our sister company Aspen Alpenglow Limousine provides luxury transportation in Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (14 passengers) for Chauffeur Guided Tours and Excursions and transfers.',
 }
 
 async function getFleetVehicles() {

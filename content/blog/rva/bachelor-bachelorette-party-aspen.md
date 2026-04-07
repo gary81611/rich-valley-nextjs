@@ -37,9 +37,9 @@ For groups who want their adrenaline in larger doses, the Colorado River through
 
 For the groups who want to actually work hard and earn their dinner, the mountain biking around Aspen and Snowmass is some of the best in Colorado. The Government Trail, the Snowmass Bike Park, and the network above Basalt all have options for every level from intermediate to expert. Rent bikes in town, hire a guide who knows which trails to string together, and turn it into a half-day adventure that will absolutely earn the night out.
 
-### Scenic Escalade Tour — The Recovery Day Option
+### Chauffeur Guided Tours and Excursions — The Recovery Day Option
 
-Every bach party has the morning where half the group isn't quite ready for strenuous activity. Our Scenic Escalade Tours are designed for exactly that situation: a comfortable, luxurious vehicle, a knowledgeable local guide, and a morning hitting the highlights — Maroon Bells, Independence Pass overlooks, Basalt, Carbondale — without any effort required beyond looking out the window and asking good questions.
+Every bach party has the morning where half the group isn't quite ready for strenuous activity. Our Chauffeur Guided Tours and Excursions are designed for exactly that situation: a comfortable, luxurious vehicle, a knowledgeable local guide, and a morning hitting the highlights — Maroon Bells, Independence Pass overlooks, Basalt, Carbondale — without any effort required beyond looking out the window and asking good questions.
 
 ## Nightlife and Dining
 

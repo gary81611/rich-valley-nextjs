@@ -163,7 +163,7 @@ const localBusinessSchema = {
           '@type': 'TouristAttraction',
           name: 'Chauffeur Guided Tours and Excursions — Aspen & Roaring Fork Valley, CO',
           description:
-            'Private scenic tours of Aspen and the Roaring Fork Valley in a luxury Escalade with a knowledgeable local guide.',
+            'Private scenic tours of Aspen and the Roaring Fork Valley on Chauffeur Guided Tours and Excursions with a knowledgeable local guide and luxury vehicle.',
         },
       },
     ],
