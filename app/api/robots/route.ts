@@ -7,7 +7,34 @@ export async function GET(request: Request) {
     ? 'https://aspenalpenglowlimousine.com/sitemap.xml'
     : 'https://www.richvalleyadventures.com/sitemap.xml'
 
-  const content = `User-agent: *\nAllow: /\n\nSitemap: ${sitemapUrl}\n`
+  if (isAAL) {
+    const content = `User-agent: *
+Allow: /
+
+Sitemap: ${sitemapUrl}
+`
+    return new Response(content, {
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    })
+  }
+
+  // RVA — disallow legacy indexed paths; explicitly allow key marketing pages
+  const content = `User-agent: *
+Disallow: /service-areas/
+Disallow: /service-areas-locations/
+Allow: /rva/conditions
+Allow: /rva/guides
+Allow: /rva/fly-fishing
+Allow: /rva/hiking
+Allow: /rva/mountain-biking
+Allow: /rva/paddle-boarding
+Allow: /rva/elevated-camping
+Allow: /rva/winter
+Allow: /rva/locations
+Allow: /
+
+Sitemap: ${sitemapUrl}
+`
 
   return new Response(content, {
     headers: { 'Content-Type': 'text/plain; charset=utf-8' },

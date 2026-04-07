@@ -63,13 +63,13 @@ export async function middleware(request: NextRequest) {
     site = 'rva'
   }
 
-  // 301 redirects for stale RVA URLs indexed by search engines
+  // 301 redirects for stale RVA URLs (see also next.config.js redirects)
   if (site === 'rva') {
-    if (pathname.startsWith('/service-areas') || pathname === '/horseback-riding') {
-      return NextResponse.redirect('https://www.richvalleyadventures.com/', 301)
-    }
     if (pathname === '/winter-offerings') {
-      return NextResponse.redirect('https://www.richvalleyadventures.com/winter', 301)
+      return NextResponse.redirect(new URL('/winter', request.url), 301)
+    }
+    if (pathname === '/horseback-riding') {
+      return NextResponse.redirect(new URL('/rva', request.url), 301)
     }
   }
 
