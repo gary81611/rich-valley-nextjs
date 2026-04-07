@@ -52,19 +52,19 @@ export const metadata: Metadata = {
 
 const localBusinessSchema = {
   '@context': 'https://schema.org',
-  '@type': ['LocalBusiness', 'TaxiService'],
+  '@type': ['LocalBusiness', 'LimousineService'],
   '@id': `${ALP_URL}/#business`,
   name: 'Aspen Alpenglow Limousine',
   description:
-    'Aspen Alpenglow Limousine has provided distinguished private car and limousine service in Aspen, Colorado since 2012. They offer airport transfers, hourly charter, corporate travel, wedding transportation, and private group tours throughout the Roaring Fork Valley. The fleet includes two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (14 passengers). Service is available 24 hours a day, 7 days a week.',
+    'Distinguished private car and limousine service in Aspen, Colorado. Airport transfers, wedding transportation, corporate travel, and ski resort shuttles. Available 24/7 since 2012.',
   url: ALP_URL,
   telephone: '+19704563666',
-  priceRange: '$$$',
+  priceRange: '$$$$',
   image: ALP_OG_IMAGE,
   foundingDate: '2012',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Aspen',
+    streetAddress: '',
     addressLocality: 'Aspen',
     addressRegion: 'CO',
     postalCode: '81611',
@@ -262,7 +262,7 @@ const faqSchema = {
       name: 'Can you transport groups to ski resorts from Aspen?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Absolutely. Aspen Alpenglow Limousine provides private group transportation to and from Aspen Mountain, Aspen Highlands, Buttermilk, Snowmass ski resort, and other destinations throughout the Roaring Fork Valley. Our Luxury Sprinter van seats up to 14 passengers and is perfect for ski groups.',
+        text: 'Absolutely. Aspen Alpenglow Limousine provides private group transportation to and from Aspen Mountain, Aspen Highlands, Buttermilk, Snowmass ski resort, and other destinations throughout the Roaring Fork Valley. Our Ford Transit Van seats up to 14 passengers and is perfect for ski groups.',
       },
     },
     {

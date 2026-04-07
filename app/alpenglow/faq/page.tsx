@@ -19,12 +19,12 @@ const DEN_COST_ANSWER =
 
 const CHARTER_MIN_FAQ = {
   q: 'Is there a minimum for charter bookings?',
-  a: 'Chartered services require a 4-hour minimum. Standard cancellation is 24 hours; events require 7-day notice.',
+  a: 'Chartered services require a 4-hour minimum. Cancellation: 24 hours standard, 7 days for events.',
 }
 
 const ALL_INCLUSIVE_FAQ = {
   q: 'Is your pricing all-inclusive?',
-  a: 'Yes — all Aspen Alpenglow Limousine rates are fully all-inclusive. No service charges, no gratuity, no hidden fees.',
+  a: 'Yes — all rates are fully all-inclusive. No service charges, no gratuity, no hidden fees.',
 }
 
 const DEN_TRANSFER_SCHEMA_FAQ = {
@@ -65,6 +65,20 @@ const FALLBACK_FAQS: { q: string; a: string }[] = [
   },
 ]
 
+/** Normalize legacy CMS copy that still references Escalade / Sprinter. */
+function normalizeVehicleAnswerText(a: string): string {
+  let t = a
+  if (/both our escalade/i.test(t) && /sprinter/i.test(t)) {
+    t = t.replace(
+      /both our escalade and sprinter van are available\.?/i,
+      'Both our Suburban SUVs and Ford Transit Van are available.',
+    )
+  }
+  t = t.replace(/\bour luxury sprinter van seats\b/gi, 'Our Ford Transit Van seats')
+  t = t.replace(/\bluxury sprinter van seats\b/gi, 'Ford Transit Van seats')
+  return t
+}
+
 function applyClientContent(faqs: { q: string; a: string }[]) {
   const rows = faqs.length > 0 ? faqs : FALLBACK_FAQS
 
@@ -72,7 +86,7 @@ function applyClientContent(faqs: { q: string; a: string }[]) {
     const ql = q.toLowerCase()
     if (ql.includes('what vehicles') && ql.includes('alpenglow')) return { q, a: VEHICLE_ANSWER }
     if (ql.includes('denver airport') && (ql.includes('cost') || ql.includes('limo'))) return { q, a: DEN_COST_ANSWER }
-    return { q, a }
+    return { q, a: normalizeVehicleAnswerText(a) }
   })
 
   const alreadyCharter = patched.some((f) => f.q.toLowerCase().includes('minimum for charter'))
