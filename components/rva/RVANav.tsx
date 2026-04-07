@@ -60,6 +60,9 @@ export default function RVANav() {
           <a href="/rva/locations" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
             Locations
           </a>
+          <a href="/rva/conditions" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+            Conditions
+          </a>
           <a href="/rva#about" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
             About
           </a>
@@ -101,6 +104,9 @@ export default function RVANav() {
           </div>
           <a href="/rva/locations" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
             Locations
+          </a>
+          <a href="/rva/conditions" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
+            Conditions
           </a>
           <a href="/rva#about" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
             About
