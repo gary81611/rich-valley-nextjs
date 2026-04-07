@@ -50,6 +50,18 @@ export const metadata: Metadata = {
   },
 }
 
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${ALP_URL}/#website`,
+  url: ALP_URL,
+  name: 'Aspen Alpenglow Limousine',
+  inLanguage: 'en-US',
+  description:
+    'Distinguished private car and limousine service in Aspen, Colorado — airport transfers, weddings, corporate travel, ski resort shuttles.',
+  publisher: { '@id': `${ALP_URL}/#business` },
+}
+
 const localBusinessSchema = {
   '@context': 'https://schema.org',
   '@type': ['LocalBusiness', 'LimousineService'],
@@ -61,6 +73,12 @@ const localBusinessSchema = {
   telephone: '+19704563666',
   priceRange: '$$$$',
   image: ALP_OG_IMAGE,
+  logo: {
+    '@type': 'ImageObject',
+    url: ALP_OG_IMAGE,
+    width: 1200,
+    height: 630,
+  },
   foundingDate: '2012',
   address: {
     '@type': 'PostalAddress',
@@ -283,6 +301,10 @@ export default function AlpenglowLayout({ children }: { children: React.ReactNod
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       <link rel="preconnect" href="https://lirp.cdn-website.com" crossOrigin="anonymous" />
       <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}

@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 
-const RVA_URL = 'https://www.richvalleyadventures.com'
-const AAL_URL = 'https://aspenalpenglowlimousine.com'
+const RVA_ORIGIN = 'https://www.richvalleyadventures.com'
+const AAL_ORIGIN = 'https://aspenalpenglowlimousine.com'
 
 type SitemapEntry = {
   url: string
@@ -14,35 +14,67 @@ function toXml(entries: SitemapEntry[]): string {
   const urls = entries
     .map(
       ({ url, lastModified, changeFrequency, priority }) =>
-        `  <url>\n    <loc>${url}</loc>\n    <lastmod>${lastModified.toISOString()}</lastmod>\n    <changefreq>${changeFrequency}</changefreq>\n    <priority>${priority.toFixed(1)}</priority>\n  </url>`
+        `  <url>\n    <loc>${escapeXml(url)}</loc>\n    <lastmod>${lastModified.toISOString()}</lastmod>\n    <changefreq>${changeFrequency}</changefreq>\n    <priority>${priority.toFixed(1)}</priority>\n  </url>`,
     )
     .join('\n')
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>`
 }
 
+function escapeXml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+}
+
+function dedupeByUrl(entries: SitemapEntry[]): SitemapEntry[] {
+  const seen = new Set<string>()
+  const out: SitemapEntry[] = []
+  for (const e of entries) {
+    if (seen.has(e.url)) continue
+    seen.add(e.url)
+    out.push(e)
+  }
+  return out
+}
+
 export async function GET(request: Request) {
   const hostname = request.headers.get('host') || ''
-  const isAAL =
-    hostname.includes('aspenalpenglow') || hostname.includes('alpenglow')
-  const BASE_URL = isAAL ? AAL_URL : RVA_URL
+  const isAAL = hostname.includes('aspenalpenglow') || hostname.includes('alpenglow')
   const siteKey = isAAL ? 'alpenglow' : 'rva'
   const lastModified = new Date()
 
+  /** Paths must match real routes + metadata canonicals (SEO/AEO). */
   const staticEntries: SitemapEntry[] = isAAL
     ? [
-        { url: AAL_URL, lastModified, changeFrequency: 'weekly', priority: 1.0 },
-        { url: `${AAL_URL}/about`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
-        { url: `${AAL_URL}/services`, lastModified, changeFrequency: 'monthly', priority: 0.9 },
-        { url: `${AAL_URL}/fleet`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
-        { url: `${AAL_URL}/destinations`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
-        { url: `${AAL_URL}/contact`, lastModified, changeFrequency: 'monthly', priority: 0.9 },
-        { url: `${AAL_URL}/blog`, lastModified, changeFrequency: 'weekly', priority: 0.7 },
+        { url: AAL_ORIGIN, lastModified, changeFrequency: 'weekly', priority: 1.0 },
+        { url: `${AAL_ORIGIN}/alpenglow/pricing`, lastModified, changeFrequency: 'weekly', priority: 0.95 },
+        { url: `${AAL_ORIGIN}/alpenglow/faq`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
+        { url: `${AAL_ORIGIN}/alpenglow/services`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
+        { url: `${AAL_ORIGIN}/alpenglow/fleet`, lastModified, changeFrequency: 'monthly', priority: 0.85 },
+        { url: `${AAL_ORIGIN}/alpenglow/contact`, lastModified, changeFrequency: 'monthly', priority: 0.85 },
+        { url: `${AAL_ORIGIN}/alpenglow/gallery`, lastModified, changeFrequency: 'monthly', priority: 0.65 },
+        { url: `${AAL_ORIGIN}/alpenglow/destinations`, lastModified, changeFrequency: 'monthly', priority: 0.65 },
+        { url: `${AAL_ORIGIN}/alpenglow/service-areas`, lastModified, changeFrequency: 'monthly', priority: 0.65 },
+        { url: `${AAL_ORIGIN}/blog`, lastModified, changeFrequency: 'weekly', priority: 0.75 },
+        { url: `${AAL_ORIGIN}/terms`, lastModified, changeFrequency: 'yearly', priority: 0.25 },
+        { url: `${AAL_ORIGIN}/privacy`, lastModified, changeFrequency: 'yearly', priority: 0.25 },
       ]
     : [
-        { url: RVA_URL, lastModified, changeFrequency: 'weekly', priority: 1.0 },
-        { url: `${RVA_URL}/blog`, lastModified, changeFrequency: 'weekly', priority: 0.8 },
-        { url: `${RVA_URL}/terms`, lastModified, changeFrequency: 'monthly', priority: 0.3 },
-        { url: `${RVA_URL}/privacy`, lastModified, changeFrequency: 'monthly', priority: 0.3 },
+        { url: `${RVA_ORIGIN}/rva`, lastModified, changeFrequency: 'weekly', priority: 1.0 },
+        { url: `${RVA_ORIGIN}/rva/fly-fishing`, lastModified, changeFrequency: 'weekly', priority: 0.95 },
+        { url: `${RVA_ORIGIN}/rva/conditions`, lastModified, changeFrequency: 'daily', priority: 0.9 },
+        { url: `${RVA_ORIGIN}/rva/guides`, lastModified, changeFrequency: 'weekly', priority: 0.85 },
+        { url: `${RVA_ORIGIN}/rva/locations`, lastModified, changeFrequency: 'weekly', priority: 0.85 },
+        { url: `${RVA_ORIGIN}/rva/contact`, lastModified, changeFrequency: 'monthly', priority: 0.9 },
+        { url: `${RVA_ORIGIN}/rva/gallery`, lastModified, changeFrequency: 'monthly', priority: 0.75 },
+        { url: `${RVA_ORIGIN}/rva/about`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
+        { url: `${RVA_ORIGIN}/rva/winter`, lastModified, changeFrequency: 'monthly', priority: 0.75 },
+        { url: `${RVA_ORIGIN}/rva/elevated-camping`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
+        { url: `${RVA_ORIGIN}/rva/adventures`, lastModified, changeFrequency: 'weekly', priority: 0.8 },
+        { url: `${RVA_ORIGIN}/rva/services`, lastModified, changeFrequency: 'monthly', priority: 0.65 },
+        { url: `${RVA_ORIGIN}/rva/fleet`, lastModified, changeFrequency: 'monthly', priority: 0.55 },
+        { url: `${RVA_ORIGIN}/rva/destinations`, lastModified, changeFrequency: 'monthly', priority: 0.65 },
+        { url: `${RVA_ORIGIN}/blog`, lastModified, changeFrequency: 'weekly', priority: 0.8 },
+        { url: `${RVA_ORIGIN}/terms`, lastModified, changeFrequency: 'yearly', priority: 0.25 },
+        { url: `${RVA_ORIGIN}/privacy`, lastModified, changeFrequency: 'yearly', priority: 0.25 },
       ]
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -75,21 +107,25 @@ export async function GET(request: Request) {
         .order('slug'),
     ])
 
+    const base = isAAL ? AAL_ORIGIN : RVA_ORIGIN
+
     const blogEntries: SitemapEntry[] = (posts || []).map((post) => ({
-      url: `${BASE_URL}/blog/${post.slug}`,
+      url: `${base}/blog/${post.slug}`,
       lastModified: post.updated_at ? new Date(post.updated_at) : lastModified,
       changeFrequency: 'monthly',
       priority: 0.7,
     }))
 
     const pageEntries: SitemapEntry[] = (pages || []).map((page) => ({
-      url: `${BASE_URL}/${page.slug}`,
+      url: isAAL ? `${base}/${page.slug}` : `${base}/rva/${page.slug}`,
       lastModified: page.updated_at ? new Date(page.updated_at) : lastModified,
       changeFrequency: 'weekly',
       priority: 0.85,
     }))
 
-    return new Response(toXml([...staticEntries, ...blogEntries, ...pageEntries]), {
+    const merged = dedupeByUrl([...staticEntries, ...blogEntries, ...pageEntries])
+
+    return new Response(toXml(merged), {
       headers: {
         'Content-Type': 'application/xml',
         'Cache-Control': 'public, max-age=3600',

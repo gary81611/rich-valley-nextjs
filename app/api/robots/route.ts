@@ -10,6 +10,7 @@ export async function GET(request: Request) {
   if (isAAL) {
     const content = `User-agent: *
 Allow: /
+Allow: /llms.txt
 
 Sitemap: ${sitemapUrl}
 `
@@ -22,6 +23,7 @@ Sitemap: ${sitemapUrl}
   const content = `User-agent: *
 Disallow: /service-areas/
 Disallow: /service-areas-locations/
+Allow: /llms.txt
 Allow: /rva/conditions
 Allow: /rva/guides
 Allow: /rva/fly-fishing
