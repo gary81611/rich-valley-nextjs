@@ -19,12 +19,17 @@ const DEN_COST_ANSWER =
 
 const CHARTER_MIN_FAQ = {
   q: 'Is there a minimum for charter bookings?',
-  a: 'Chartered services require a 4-hour minimum booking. Point-to-point transfers (airport, local routes, ski resort shuttles) have no minimum. All reservations require a credit card to hold. Cancellation policy: 24 hours for standard bookings, 7 days for events.',
+  a: 'Chartered services require a 4-hour minimum. Standard cancellation is 24 hours; events require 7-day notice.',
 }
 
 const ALL_INCLUSIVE_FAQ = {
   q: 'Is your pricing all-inclusive?',
-  a: 'Yes — Aspen Alpenglow Limousine pricing is fully all-inclusive. No service charges, no gratuity, no hidden fees. The rate you see on our pricing page is the total price you pay. Winter and summer rates are the same.',
+  a: 'Yes — all Aspen Alpenglow Limousine rates are fully all-inclusive. No service charges, no gratuity, no hidden fees.',
+}
+
+const DEN_TRANSFER_SCHEMA_FAQ = {
+  q: 'How much does a transfer from Aspen to Denver airport cost?',
+  a: 'The Aspen to Denver International Airport transfer is $1,475 all-inclusive. Drive time is approximately 3.5 to 4 hours.',
 }
 
 async function getFaqsFromDb(): Promise<{ q: string; a: string }[]> {
@@ -94,6 +99,53 @@ function applyClientContent(faqs: { q: string; a: string }[]) {
   return out
 }
 
+/** Canonical answers for JSON-LD when the visible question matches (CMS text may lag). */
+function canonicalAnswerForSchema(question: string): string | null {
+  const ql = question.toLowerCase()
+  if (ql.includes('pricing all-inclusive') || (ql.includes('all-inclusive') && ql.includes('pricing'))) {
+    return ALL_INCLUSIVE_FAQ.a
+  }
+  if (ql.includes('minimum for charter')) {
+    return CHARTER_MIN_FAQ.a
+  }
+  if (ql.includes('denver') && (ql.includes('cost') || ql.includes('how much') || ql.includes('limo'))) {
+    return DEN_TRANSFER_SCHEMA_FAQ.a
+  }
+  if (ql.includes('what vehicles') && ql.includes('alpenglow')) {
+    return VEHICLE_ANSWER
+  }
+  return null
+}
+
+const SCHEMA_EXTRA_FAQS: { q: string; a: string }[] = [
+  ALL_INCLUSIVE_FAQ,
+  CHARTER_MIN_FAQ,
+  DEN_TRANSFER_SCHEMA_FAQ,
+]
+
+function buildFaqPageJsonLd(visibleFaqs: { q: string; a: string }[]) {
+  const merged: { q: string; a: string }[] = visibleFaqs.map((f) => {
+    const c = canonicalAnswerForSchema(f.q)
+    return c ? { q: f.q, a: c } : f
+  })
+  const seen = new Set(merged.map((f) => f.q.trim().toLowerCase()))
+  for (const s of SCHEMA_EXTRA_FAQS) {
+    if (!seen.has(s.q.trim().toLowerCase())) {
+      merged.push(s)
+      seen.add(s.q.trim().toLowerCase())
+    }
+  }
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: merged.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  }
+}
+
 export default async function FAQPage() {
   const faqs = applyClientContent(await getFaqsFromDb())
   const FAQS = faqs.map((faq) => ({ q: faq.q, a: faq.a }))
@@ -153,15 +205,7 @@ export default async function FAQPage() {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'FAQPage',
-              mainEntity: FAQS.map((f) => ({
-                '@type': 'Question',
-                name: f.q,
-                acceptedAnswer: { '@type': 'Answer', text: f.a },
-              })),
-            }),
+            __html: JSON.stringify(buildFaqPageJsonLd(FAQS)),
           }}
         />
       )}
