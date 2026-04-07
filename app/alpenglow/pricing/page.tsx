@@ -1,6 +1,73 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+
+type DbPricingRoute = {
+  route_name: string
+  category: string | null
+  origin: string
+  destination: string
+  distance: string
+  drive_time: string
+  suv_price: number
+  price_note: string | null
+  display_order: number | null
+}
+
+const SPRINTER_NOTE = 'Contact for Sprinter quote'
+
+/** Confirmed owner rates / routes — merged on top of CMS rows so the public page matches the questionnaire. */
+function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
+  const list = rows.map((r) => ({ ...r }))
+
+  const patches: Record<string, Partial<Pick<DbPricingRoute, 'distance' | 'drive_time' | 'suv_price'>>> = {
+    'Aspen to Woody Creek': { suv_price: 150 },
+    'Aspen to Crested Butte': { distance: '~100 mi', drive_time: '2.5 hr', suv_price: 1475 },
+    'Aspen to Telluride': { distance: '~200 mi', drive_time: '4.5 hr' },
+    'Aspen to Beaver Creek': { distance: '~105 mi', drive_time: '2 hr', suv_price: 800 },
+    'Aspen to Breckenridge': { distance: '~150 mi', drive_time: '3 hr', suv_price: 900 },
+  }
+
+  for (const r of list) {
+    const p = patches[r.route_name]
+    if (p) Object.assign(r, p)
+  }
+
+  const names = new Set(list.map((r) => r.route_name))
+  if (!names.has('KAPA to Aspen')) {
+    list.push({
+      route_name: 'KAPA to Aspen',
+      category: 'airport-inbound',
+      origin: 'KAPA (Centennial Airport, Denver)',
+      destination: 'Aspen',
+      distance: '~210 mi',
+      drive_time: '3.75 hr',
+      suv_price: 1475,
+      price_note: SPRINTER_NOTE,
+      display_order: 998,
+    })
+  }
+  if (!names.has('Aspen to KAPA')) {
+    list.push({
+      route_name: 'Aspen to KAPA',
+      category: 'airport-outbound',
+      origin: 'Aspen',
+      destination: 'KAPA (Centennial Airport, Denver)',
+      distance: '~210 mi',
+      drive_time: '3.75 hr',
+      suv_price: 1475,
+      price_note: SPRINTER_NOTE,
+      display_order: 999,
+    })
+  }
+
+  return list.sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
+}
+
+const CONFIRMED_FLEET_FOR_PRICING = [
+  { name: '2026 Chevrolet Suburban', seats: 7, features: ['WiFi (Starlink)', 'XM Radio', 'Yakima + ski racks'] },
+  { name: '2025 Chevrolet Suburban', seats: 7, features: ['WiFi (Starlink)', 'XM Radio', 'Yakima + ski racks'] },
+  { name: '2025 Ford Transit Van', seats: 14, features: ['WiFi (Starlink)', 'XM Radio', 'Myers ski rack'] },
+]
 
 export const dynamic = 'force-dynamic'
 
@@ -14,22 +81,6 @@ export const metadata: Metadata = {
   },
 }
 
-const POLICIES = [
-  'Chartered services: 4-hour minimum',
-  'All reservations: 24-hour cancellation policy',
-  'Events: 7-day cancellation policy',
-  'First 15 minutes of wait time included',
-  '30 minutes included for airport arrivals',
-  'Winter and summer rates are the same',
-  'All reservations must be held with a credit card',
-  'All-inclusive pricing — no hidden service charges or gratuity added',
-]
-
-const FLEET = [
-  { name: '2025 Ford Transit Van', seats: 14, features: ['WiFi', 'XM Radio', 'Starlink', 'Water', 'Myers 6X Ski Rack'] },
-  { name: '2026 Chevrolet Suburban', seats: 7, features: ['WiFi', 'Starlink', 'XM Radio', 'Water', 'Yakima Roof Rack', 'Myers 6X Ski Rack'] },
-  { name: '2025 Chevrolet Suburban', seats: 7, features: ['WiFi', 'Starlink', 'XM Radio', 'Water', 'Yakima Roof Rack', 'Myers 6X Ski Rack'] },
-]
 
 type RouteRow = {
   from: string
@@ -88,13 +139,34 @@ function PriceTable({ title, routes }: { title: string; routes: RouteRow[] }) {
 export default async function PricingPage() {
   const supabase = await createServerSupabaseClient()
 
-  const { data: rows } = await supabase
-    .from('pricing_routes')
-    .select('*')
-    .eq('is_active', true)
-    .order('display_order')
+  const [{ data: rows }, { data: fleetRows }, { data: policyRows }] = await Promise.all([
+    supabase
+      .from('pricing_routes')
+      .select('*')
+      .eq('is_active', true)
+      .order('display_order'),
+    supabase
+      .from('fleet_vehicles')
+      .select('name, capacity, features')
+      .eq('is_active', true)
+      .order('display_order'),
+    supabase
+      .from('pricing_policies')
+      .select('title')
+      .eq('is_active', true)
+      .order('display_order'),
+  ])
 
-  const allRoutes = rows || []
+  const FLEET_FROM_DB = (fleetRows || []).map((v: any) => ({
+    name: v.name,
+    seats: v.capacity,
+    features: Array.isArray(v.features) ? (v.features as string[]) : [],
+  }))
+  const FLEET = FLEET_FROM_DB.length > 0 ? FLEET_FROM_DB : CONFIRMED_FLEET_FOR_PRICING
+
+  const POLICIES = policyRows ? policyRows.map((p: any) => p.title) : []
+
+  const allRoutes = applyConfirmedPricingRoutes((rows || []) as DbPricingRoute[])
 
   // Group by category
   const grouped: Record<string, typeof allRoutes> = {}
@@ -151,6 +223,10 @@ export default async function PricingPage() {
 
         <PriceTable title="Airport to Aspen/Snowmass" routes={AIRPORT_INBOUND} />
         <PriceTable title="Aspen to Airport" routes={AIRPORT_OUTBOUND} />
+        <p className="text-sm text-alp-navy/70 mb-12 max-w-3xl leading-relaxed">
+          <strong className="text-alp-navy">FBO partners:</strong> EGE — Signature Aviation | KRIL (Rifle) — Atlantic
+          Aviation | GJT — West Star Aviation | KAPA — Centennial Airport Denver
+        </p>
         <PriceTable title="Local / Roaring Fork Valley" routes={LOCAL_ROUTES} />
         <PriceTable title="Long-Distance / Resort-to-Resort" routes={LONG_DISTANCE} />
 
@@ -184,35 +260,41 @@ export default async function PricingPage() {
         )}
 
         {/* Fleet */}
-        <div className="mb-12 bg-alp-pearl rounded-xl p-8">
-          <h2 className="font-playfair text-2xl font-semibold text-alp-navy mb-6">Our Fleet</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            {FLEET.map((v) => (
-              <div key={v.name} className="bg-white rounded-lg p-5">
-                <h3 className="font-semibold text-alp-navy mb-2">{v.name}</h3>
-                <p className="text-sm text-alp-navy/60 mb-3">{v.seats} passengers</p>
-                <div className="flex flex-wrap gap-1">
-                  {v.features.map((f) => (
-                    <span key={f} className="text-xs bg-alp-gold/10 text-alp-gold px-2 py-0.5 rounded">{f}</span>
-                  ))}
+        {FLEET.length > 0 && (
+          <div className="mb-12 bg-alp-pearl rounded-xl p-8">
+            <h2 className="font-playfair text-2xl font-semibold text-alp-navy mb-6">Our Fleet</h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              {FLEET.map((v) => (
+                <div key={v.name} className="bg-white rounded-lg p-5">
+                  <h3 className="font-semibold text-alp-navy mb-2">{v.name}</h3>
+                  <p className="text-sm text-alp-navy/60 mb-3">{v.seats} passengers</p>
+                  {v.features.length > 0 && (
+                    <div className="flex flex-wrap gap-1">
+                      {v.features.map((f) => (
+                        <span key={f} className="text-xs bg-alp-gold/10 text-alp-gold px-2 py-0.5 rounded">{f}</span>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Policies */}
-        <div className="mb-12">
-          <h2 className="font-playfair text-2xl font-semibold text-alp-navy mb-6">Booking Policies</h2>
-          <ul className="space-y-2">
-            {POLICIES.map((p) => (
-              <li key={p} className="flex items-start gap-3 text-sm text-alp-navy/70">
-                <span className="text-alp-gold mt-0.5">{'\u2713'}</span>
-                {p}
-              </li>
-            ))}
-          </ul>
-        </div>
+        {POLICIES.length > 0 && (
+          <div className="mb-12">
+            <h2 className="font-playfair text-2xl font-semibold text-alp-navy mb-6">Booking Policies</h2>
+            <ul className="space-y-2">
+              {POLICIES.map((p) => (
+                <li key={p} className="flex items-start gap-3 text-sm text-alp-navy/70">
+                  <span className="text-alp-gold mt-0.5">{'\u2713'}</span>
+                  {p}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* CTA */}
         <div className="text-center bg-alp-navy rounded-xl p-10">
