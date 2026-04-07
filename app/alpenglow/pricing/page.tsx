@@ -13,18 +13,25 @@ type DbPricingRoute = {
   display_order: number | null
 }
 
-const SPRINTER_NOTE = 'Contact for Sprinter quote'
+const TRANSIT_NOTE = 'Contact for Ford Transit Van quote'
 
 /** Confirmed owner rates / routes — merged on top of CMS rows so the public page matches the questionnaire. */
 function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
-  const list = rows.map((r) => ({ ...r }))
+  const list = rows.map((r) => {
+    const row = { ...r }
+    if (row.price_note) {
+      row.price_note = row.price_note.replace(/Sprinter/gi, 'Ford Transit Van')
+    }
+    return row
+  })
 
-  const patches: Record<string, Partial<Pick<DbPricingRoute, 'distance' | 'drive_time' | 'suv_price'>>> = {
+  const patches: Record<string, Partial<Pick<DbPricingRoute, 'distance' | 'drive_time' | 'suv_price' | 'price_note' | 'route_name'>>> = {
     'Aspen to Woody Creek': { suv_price: 150 },
     'Aspen to Crested Butte': { distance: '~100 mi', drive_time: '2.5 hr', suv_price: 1475 },
     'Aspen to Telluride': { distance: '~200 mi', drive_time: '4.5 hr' },
     'Aspen to Beaver Creek': { distance: '~105 mi', drive_time: '2 hr', suv_price: 800 },
     'Aspen to Breckenridge': { distance: '~150 mi', drive_time: '3 hr', suv_price: 900 },
+    'Hourly Charter (Limo Coach/Sprinter)': { route_name: 'Hourly Charter (Ford Transit Van)' },
   }
 
   for (const r of list) {
@@ -37,12 +44,12 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
     list.push({
       route_name: 'KAPA to Aspen',
       category: 'airport-inbound',
-      origin: 'KAPA (Centennial Airport, Denver)',
+      origin: 'KAPA (Centennial Denver)',
       destination: 'Aspen',
       distance: '~210 mi',
       drive_time: '3.75 hr',
       suv_price: 1475,
-      price_note: SPRINTER_NOTE,
+      price_note: TRANSIT_NOTE,
       display_order: 998,
     })
   }
@@ -51,11 +58,11 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
       route_name: 'Aspen to KAPA',
       category: 'airport-outbound',
       origin: 'Aspen',
-      destination: 'KAPA (Centennial Airport, Denver)',
+      destination: 'KAPA (Centennial)',
       distance: '~210 mi',
       drive_time: '3.75 hr',
       suv_price: 1475,
-      price_note: SPRINTER_NOTE,
+      price_note: TRANSIT_NOTE,
       display_order: 999,
     })
   }
@@ -112,7 +119,7 @@ function PriceTable({ title, routes }: { title: string; routes: RouteRow[] }) {
               <th className="text-left py-3 px-4 font-semibold text-alp-navy">Distance</th>
               <th className="text-left py-3 px-4 font-semibold text-alp-navy">Drive Time</th>
               <th className="text-right py-3 px-4 font-semibold text-alp-navy">SUV (7 pass.)</th>
-              <th className="text-right py-3 px-4 font-semibold text-alp-navy">Sprinter (14 pass.)</th>
+              <th className="text-right py-3 px-4 font-semibold text-alp-navy">Ford Transit Van (14 pass.)</th>
             </tr>
           </thead>
           <tbody>
@@ -183,7 +190,7 @@ export default async function PricingPage() {
     distance: r.distance,
     driveTime: r.drive_time,
     suvPrice: r.suv_price,
-    sprinterPrice: r.price_note || 'Contact for quote',
+    sprinterPrice: (r.price_note || 'Contact for quote').replace(/Sprinter/gi, 'Ford Transit Van'),
     slug: r.route_name,
   })
 
@@ -191,7 +198,7 @@ export default async function PricingPage() {
   const mapHourly = (r: (typeof allRoutes)[0]): HourlyRow => ({
     service: r.route_name,
     suvPrice: r.suv_price,
-    sprinterPrice: r.price_note || 'Contact for quote',
+    sprinterPrice: (r.price_note || 'Contact for quote').replace(/Sprinter/gi, 'Ford Transit Van'),
     note: r.drive_time,
   })
 
@@ -224,7 +231,7 @@ export default async function PricingPage() {
         <PriceTable title="Airport to Aspen/Snowmass" routes={AIRPORT_INBOUND} />
         <PriceTable title="Aspen to Airport" routes={AIRPORT_OUTBOUND} />
         <p className="text-sm text-alp-navy/70 mb-12 max-w-3xl leading-relaxed">
-          <strong className="text-alp-navy">FBO partners:</strong> EGE — Signature Aviation | KRIL (Rifle) — Atlantic
+          <strong className="text-alp-navy">FBO Partners:</strong> EGE — Signature Aviation | KRIL (Rifle) — Atlantic
           Aviation | GJT — West Star Aviation | KAPA — Centennial Airport Denver
         </p>
         <PriceTable title="Local / Roaring Fork Valley" routes={LOCAL_ROUTES} />
@@ -240,7 +247,7 @@ export default async function PricingPage() {
                   <tr className="border-b-2 border-alp-gold/30">
                     <th className="text-left py-3 px-4 font-semibold text-alp-navy">Service</th>
                     <th className="text-right py-3 px-4 font-semibold text-alp-navy">SUV</th>
-                    <th className="text-right py-3 px-4 font-semibold text-alp-navy">Sprinter</th>
+                    <th className="text-right py-3 px-4 font-semibold text-alp-navy">Ford Transit Van</th>
                   </tr>
                 </thead>
                 <tbody>
