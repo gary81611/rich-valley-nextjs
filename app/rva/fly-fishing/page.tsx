@@ -30,8 +30,33 @@ export default function FlyFishingPage() {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.richvalleyadventures.com' },
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.richvalleyadventures.com/rva' },
         { '@type': 'ListItem', position: 2, name: flyFishingPageTitle, item: pageUrl },
+      ],
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': ['LocalBusiness', 'TouristInformationCenter'],
+      name: 'Rich Valley Adventures',
+      url: 'https://www.richvalleyadventures.com/rva',
+      telephone: '+19704563666',
+      email: 'kit@richvalleyadventures.com',
+      description:
+        'Expert-guided fly fishing, hiking, mountain biking, paddle boarding, hunting, and elevated camping in Aspen, Colorado and the Roaring Fork Valley since 2012.',
+      priceRange: '$$$$',
+      openingHours: 'Mo-Su 00:00-23:59',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: '',
+        addressLocality: 'Aspen',
+        addressRegion: 'CO',
+        postalCode: '81611',
+        addressCountry: 'US',
+      },
+      geo: { '@type': 'GeoCoordinates', latitude: 39.1911, longitude: -106.8175 },
+      sameAs: [
+        'https://www.facebook.com/richvalleyadventures',
+        'https://www.instagram.com/richvalleyadventures',
       ],
     },
     {

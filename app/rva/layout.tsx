@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import RVANav from '@/components/rva/RVANav'
 import RVAFooter from '@/components/rva/RVAFooter'
 
-const RVA_URL = 'https://www.richvalleyadventures.com'
+const RVA_URL = 'https://www.richvalleyadventures.com/rva'
 const RVA_OG_IMAGE = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80'
 
 export const metadata: Metadata = {
@@ -52,19 +52,20 @@ export const metadata: Metadata = {
 
 const localBusinessSchema = {
   '@context': 'https://schema.org',
-  '@type': ['LocalBusiness', 'SportsActivityLocation', 'TouristAttraction'],
+  '@type': ['LocalBusiness', 'TouristInformationCenter'],
   '@id': `${RVA_URL}/#business`,
   name: 'Rich Valley Adventures',
   description:
-    'Rich Valley Adventures has been operating guided outdoor excursions in Aspen, Colorado since 2012. They offer guided adventures including fly fishing, paddle boarding, mountain biking, trail hiking, elevated camping, and scenic Chauffeur Guided Tours in the Roaring Fork Valley.',
+    'Expert-guided fly fishing, hiking, mountain biking, paddle boarding, hunting, and elevated camping in Aspen, Colorado and the Roaring Fork Valley since 2012.',
   url: RVA_URL,
   telephone: '+19704563666',
-  priceRange: '$$',
+  email: 'kit@richvalleyadventures.com',
+  priceRange: '$$$$',
   image: RVA_OG_IMAGE,
   foundingDate: '2012',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Aspen',
+    streetAddress: '',
     addressLocality: 'Aspen',
     addressRegion: 'CO',
     postalCode: '81611',
@@ -79,8 +80,8 @@ const localBusinessSchema = {
     {
       '@type': 'OpeningHoursSpecification',
       dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      opens: '07:00',
-      closes: '20:00',
+      opens: '00:00',
+      closes: '23:59',
     },
   ],
   areaServed: [
