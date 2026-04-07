@@ -6,11 +6,28 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'FAQ | Aspen Alpenglow Limousine — Transportation Questions Answered',
-  description: 'Frequently asked questions about Aspen transportation, airport transfers, car service pricing, and getting to Aspen from Denver, Eagle, and Grand Junction airports.',
+  description:
+    'Frequently asked questions about Aspen transportation, airport transfers, car service pricing, and getting to Aspen from Denver, Eagle, and Grand Junction airports.',
   alternates: { canonical: 'https://aspenalpenglowlimousine.com/alpenglow/faq' },
 }
 
-async function getFaqs() {
+const VEHICLE_ANSWER =
+  'Our fleet includes two late-model Chevrolet Suburbans (up to 7 passengers each) and a Ford Transit Van (up to 14 passengers). All vehicles are equipped with WiFi (Starlink), XM Radio, complimentary water, and Myers ski racks. The Suburbans also feature Yakima roof racks for luggage. All vehicles are professionally chauffeured and meticulously maintained.'
+
+const DEN_COST_ANSWER =
+  'Our Aspen to Denver International Airport (DEN) transfer is $1,475 all-inclusive — no service charge or gratuity added on top. The drive is approximately 3.5–4 hours. We serve Denver (DEN), Eagle/Vail (EGE), Rifle (KRIL), Grand Junction (GJT), and Aspen (ASE) airports.'
+
+const CHARTER_MIN_FAQ = {
+  q: 'Is there a minimum for charter bookings?',
+  a: 'Chartered services require a 4-hour minimum booking. Point-to-point transfers (airport, local routes, ski resort shuttles) have no minimum. All reservations require a credit card to hold. Cancellation policy: 24 hours for standard bookings, 7 days for events.',
+}
+
+const ALL_INCLUSIVE_FAQ = {
+  q: 'Is your pricing all-inclusive?',
+  a: 'Yes — Aspen Alpenglow Limousine pricing is fully all-inclusive. No service charges, no gratuity, no hidden fees. The rate you see on our pricing page is the total price you pay. Winter and summer rates are the same.',
+}
+
+async function getFaqsFromDb(): Promise<{ q: string; a: string }[]> {
   const supabase = await createServerSupabaseClient()
   const { data, error } = await supabase
     .from('faqs')
@@ -24,12 +41,62 @@ async function getFaqs() {
     return []
   }
 
-  return data ?? []
+  return (data ?? []).map((f) => ({ q: f.question, a: f.answer }))
+}
+
+/** Baseline FAQs when CMS has no rows — still applies client answer overrides. */
+const FALLBACK_FAQS: { q: string; a: string }[] = [
+  {
+    q: 'What vehicles does Aspen Alpenglow Limousine use?',
+    a: '',
+  },
+  {
+    q: 'How much does a limo from Aspen to Denver airport cost?',
+    a: '',
+  },
+  {
+    q: 'How far in advance should I book airport transportation?',
+    a: 'We recommend booking airport transfers at least 48–72 hours ahead during peak season. For events and charters, reserve as early as possible.',
+  },
+]
+
+function applyClientContent(faqs: { q: string; a: string }[]) {
+  const rows = faqs.length > 0 ? faqs : FALLBACK_FAQS
+
+  const patched = rows.map(({ q, a }) => {
+    const ql = q.toLowerCase()
+    if (ql.includes('what vehicles') && ql.includes('alpenglow')) return { q, a: VEHICLE_ANSWER }
+    if (ql.includes('denver airport') && (ql.includes('cost') || ql.includes('limo'))) return { q, a: DEN_COST_ANSWER }
+    return { q, a }
+  })
+
+  const alreadyCharter = patched.some((f) => f.q.toLowerCase().includes('minimum for charter'))
+  const alreadyAllIncl = patched.some((f) => f.q.toLowerCase().includes('pricing all-inclusive'))
+
+  const leadIdx = patched.findIndex((f) =>
+    /lead time|how far in advance|advance.*book|book.*advance/i.test(f.q),
+  )
+
+  let out = [...patched]
+  if (!alreadyCharter && !alreadyAllIncl) {
+    const toInsert = [CHARTER_MIN_FAQ, ALL_INCLUSIVE_FAQ]
+    if (leadIdx >= 0) {
+      out = [...out.slice(0, leadIdx + 1), ...toInsert, ...out.slice(leadIdx + 1)]
+    } else {
+      out = [...out, ...toInsert]
+    }
+  } else if (!alreadyCharter) {
+    out = [...out, CHARTER_MIN_FAQ]
+  } else if (!alreadyAllIncl) {
+    out = [...out, ALL_INCLUSIVE_FAQ]
+  }
+
+  return out
 }
 
 export default async function FAQPage() {
-  const faqs = await getFaqs()
-  const FAQS = faqs.map((faq) => ({ q: faq.question, a: faq.answer }))
+  const faqs = applyClientContent(await getFaqsFromDb())
+  const FAQS = faqs.map((faq) => ({ q: faq.q, a: faq.a }))
 
   return (
     <div className="min-h-screen bg-white font-inter">
@@ -49,7 +116,12 @@ export default async function FAQPage() {
             <details key={faq.q} className="group mb-4 border border-alp-pearl rounded-lg">
               <summary className="flex items-center justify-between p-5 cursor-pointer text-alp-navy font-medium hover:bg-alp-pearl/50 transition-colors rounded-lg">
                 <span className="pr-4">{faq.q}</span>
-                <svg className="w-5 h-5 text-alp-gold flex-shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-5 h-5 text-alp-gold flex-shrink-0 group-open:rotate-180 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </summary>
@@ -61,22 +133,37 @@ export default async function FAQPage() {
         <div className="mt-12 text-center bg-alp-pearl rounded-xl p-8">
           <h2 className="font-playfair text-xl text-alp-navy mb-3">Still have questions?</h2>
           <p className="text-sm text-alp-navy/60 mb-5">Call or text us anytime.</p>
-          <a href="tel:+19704563666" className="inline-block bg-alp-gold hover:bg-alp-gold-light text-alp-navy-deep px-8 py-3 rounded-full font-semibold transition-colors">
+          <a
+            href="tel:+19704563666"
+            className="inline-block bg-alp-gold hover:bg-alp-gold-light text-alp-navy-deep px-8 py-3 rounded-full font-semibold transition-colors"
+          >
             970-456-3666
           </a>
+          <p className="mt-6 text-sm text-alp-navy/60">
+            Or{' '}
+            <Link href="/contact" className="text-alp-gold font-semibold hover:underline">
+              contact us online
+            </Link>
+            .
+          </p>
         </div>
       </div>
 
       {FAQS.length > 0 && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'FAQPage',
-          mainEntity: FAQS.map(f => ({
-            '@type': 'Question',
-            name: f.q,
-            acceptedAnswer: { '@type': 'Answer', text: f.a },
-          })),
-        })}} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: FAQS.map((f) => ({
+                '@type': 'Question',
+                name: f.q,
+                acceptedAnswer: { '@type': 'Answer', text: f.a },
+              })),
+            }),
+          }}
+        />
       )}
     </div>
   )
