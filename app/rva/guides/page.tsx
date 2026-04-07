@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
+import { headers } from 'next/headers'
 
 export const dynamic = 'force-dynamic'
 
@@ -24,9 +25,10 @@ type GuideRow = {
 }
 
 async function getGuides(): Promise<GuideRow[]> {
-  const origin =
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+  const h = await headers()
+  const host = h.get('x-forwarded-host') ?? h.get('host') ?? 'localhost:3000'
+  const proto = h.get('x-forwarded-proto') ?? 'http'
+  const origin = `${proto}://${host}`
   try {
     const res = await fetch(`${origin}/api/guides`, { next: { revalidate: 120 } })
     if (!res.ok) return []
