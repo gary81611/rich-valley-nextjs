@@ -6,7 +6,7 @@ import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
 import NewsletterSignup from '@/components/shared/NewsletterSignup'
 import { alpenglowData } from '@/lib/site-data'
 import { createClient } from '@/lib/supabase'
-import type { Service as ServiceType, FleetVehicle, Testimonial, GalleryImage } from '@/lib/types'
+import type { Service as ServiceType, FleetVehicle, Testimonial } from '@/lib/types'
 
 interface GeoBlock {
   id: string
@@ -14,127 +14,6 @@ interface GeoBlock {
   answer: string
   block_type: string
 }
-
-const defaultStats = [
-  { value: '24/7', label: 'Dispatch Available' },
-  { value: '14+', label: 'Years of Service' },
-  { value: '4.9', label: 'Client Rating' },
-]
-
-const defaultWhyChooseUs = [
-  { title: 'Flight Tracking', description: 'We monitor your flight in real-time so your ride is waiting, even if plans change.' },
-  { title: 'Local Knowledge', description: 'Our drivers live here. They know the fastest routes and the valley inside out.' },
-  { title: 'Impeccable Fleet', description: 'Late-model luxury vehicles, professionally detailed before every ride.' },
-  { title: 'White-Glove Service', description: 'Meet-and-greet, luggage handling, complimentary refreshments — every detail covered.' },
-]
-
-const defaultServiceAreas = [
-  { name: 'Aspen', description: 'Downtown, Aspen Mountain, Aspen Highlands' },
-  { name: 'Snowmass Village', description: 'Base Village, Snowmass Ski Area' },
-  { name: 'Basalt & El Jebel', description: 'Mid-valley convenience' },
-  { name: 'Carbondale', description: 'Crystal Valley, Redstone, Marble' },
-  { name: 'Glenwood Springs', description: 'Hot springs, I-70 corridor' },
-  { name: 'Eagle / Vail', description: 'EGE airport, Vail Valley connections' },
-  { name: 'Denver', description: 'Denver International Airport (DEN) transfers' },
-  { name: 'Rifle', description: 'Rifle Falls, I-70 western corridor' },
-]
-
-const defaultDestinations = [
-  { name: 'Garden of the Gods', image: '/images/destinations/garden-of-the-gods.jpg', description: 'Stunning red rock formations in Colorado Springs — a must-see on any Colorado road trip.' },
-  { name: 'Denver Botanic Gardens', image: '/images/destinations/denver-botanic-gardens.jpg', description: 'World-class botanical gardens in the heart of Denver with seasonal exhibits.' },
-  { name: 'Red Rocks Amphitheatre', image: '/images/destinations/red-rocks.jpg', description: 'Iconic open-air concert venue set among dramatic red sandstone formations.' },
-  { name: 'Coors Field', image: '/images/destinations/coors-field.jpg', description: 'Home of the Colorado Rockies — catch a game with luxury transportation.' },
-  { name: 'Pikes Peak', image: '/images/destinations/pikes-peak.jpg', description: "America's Mountain at 14,115 feet — breathtaking views of the Front Range." },
-]
-
-const alpenglowFaqs = [
-  {
-    q: 'How much does a limo from Aspen to Denver airport cost?',
-    a: 'A private luxury transfer from Aspen, Colorado to Denver International Airport (DEN) is approximately 3.5–4 hours each way. Pricing varies based on vehicle, time of day, and group size. Call us at 970-456-3666 for a custom quote. We serve Denver (DEN), Eagle (EGE), and Aspen (ASE) airports.',
-  },
-  {
-    q: 'Do you offer airport pickup at Aspen/Pitkin County Airport (ASE)?',
-    a: 'Yes. We provide meet-and-greet pickup service at Aspen/Pitkin County Airport (ASE). We track your flight in real time and adjust for early arrivals or delays. Our chauffeurs assist with luggage and provide seamless door-to-door service to any destination in Aspen or the Roaring Fork Valley.',
-  },
-  {
-    q: "What's the best way to get from Eagle/Vail airport to Aspen?",
-    a: 'The most comfortable option is a private car service. Eagle County Regional Airport (EGE) is approximately 70 miles from Aspen via I-70 and Highway 82 — about 1.5 to 2 hours depending on conditions. Aspen Alpenglow Limousine offers direct, door-to-door luxury transfers from Eagle airport to any Aspen destination.',
-  },
-  {
-    q: 'How far in advance should I book a limousine in Aspen?',
-    a: 'We recommend booking 48–72 hours in advance for standard transfers. For weddings, corporate events, or peak seasons (ski season December–March and summer July–August), book 2–4 weeks ahead. Last-minute bookings are occasionally available — call 970-456-3666 to check.',
-  },
-  {
-    q: 'Do you offer wedding transportation in Aspen?',
-    a: 'Yes. We specialize in wedding transportation throughout Aspen and Snowmass, Colorado. We provide bridal party transfers, venue logistics, and guest shuttle coordination. Both our Escalade and Sprinter van are available. We work closely with wedding planners to ensure a flawless, elegant experience.',
-  },
-  {
-    q: 'Is Aspen Alpenglow Limousine available 24 hours a day?',
-    a: 'Yes. We operate 24/7/365 — including early-morning departures, late-night arrivals, and overnight transfers to Denver. Call 970-456-3666 at any hour for assistance.',
-  },
-  {
-    q: 'Can you transport groups to ski resorts from Aspen?',
-    a: 'Absolutely. We provide private group transportation to Aspen Mountain, Aspen Highlands, Buttermilk, Snowmass ski resort, and other destinations throughout the Roaring Fork Valley. Our Luxury Sprinter van seats up to 14 passengers — ideal for ski groups.',
-  },
-  {
-    q: 'What vehicles does Aspen Alpenglow Limousine use?',
-    a: 'Our fleet includes a black Executive Cadillac Escalade (up to 6 passengers) and a black Luxury Mercedes Sprinter van (up to 14 passengers). Both feature premium leather interiors, climate control, and complimentary amenities. All vehicles are late-model, meticulously maintained, and professionally chauffeured.',
-  },
-]
-
-const transportationServices = [
-  {
-    title: 'Hourly Limo Service',
-    href: '/alpenglow/services',
-    description: 'Flexible hourly limousine service for any occasion in Aspen and the Roaring Fork Valley.',
-    icon: 'Clock',
-    features: [
-      'Real-time flight tracking',
-      'Meet & greet at pickup',
-      '24/7 dispatch availability',
-      'Easy account setup',
-      'Email confirmations for every booking',
-    ],
-  },
-  {
-    title: 'Corporate Travel & Executive Car Service',
-    href: '/alpenglow/corporate-events',
-    description: 'Professional, discreet transportation for business travelers and corporate events.',
-    icon: 'Briefcase',
-    features: [
-      'Affordable business travel rates',
-      'Competitive corporate pricing',
-      'Licensed & fully insured',
-      'Efficient scheduling & routing',
-      'Hourly services for tours & conferences',
-    ],
-  },
-  {
-    title: 'Airport Transfer',
-    href: '/alpenglow/airport-transfers',
-    description: 'Seamless door-to-door transfers to ASE, EGE, and Denver International airports.',
-    icon: 'Plane',
-    features: [
-      'Real-time flight tracking',
-      'Meet & greet at arrivals',
-      '24/7 dispatch availability',
-      'Easy account setup',
-      'Email confirmations for every trip',
-    ],
-  },
-  {
-    title: 'Wedding Transportation',
-    href: '/alpenglow/wedding-transportation',
-    description: 'Elegant, reliable transportation for your special day in Aspen and Snowmass.',
-    icon: 'Heart',
-    features: [
-      'Personalized itineraries',
-      'Pristine SUVs & Sprinters',
-      'Dedicated coordinators for seamless guest transport',
-      'Wedding packages & group discounts',
-    ],
-  },
-]
 
 const ServiceIcon = ({ icon }: { icon: string }) => {
   const icons: Record<string, React.ReactNode> = {
@@ -150,12 +29,12 @@ export default function AlpenglowPage() {
   const [services, setServices] = useState<{ title: string; slug: string; description: string; features: string[]; icon: string }[]>([])
   const [fleet, setFleet] = useState<{ name: string; image: string; passengers: string; features: string[] }[]>([])
   const [testimonials, setTestimonials] = useState<{ quote: string; name: string; location: string }[]>([])
-  const [stats, setStats] = useState(defaultStats)
-  const [whyChooseUs, setWhyChooseUs] = useState(defaultWhyChooseUs)
-  const [serviceAreas, setServiceAreas] = useState(defaultServiceAreas)
-  const [destinations, setDestinations] = useState(defaultDestinations)
+  const [stats, setStats] = useState<{value: string; label: string}[]>([])
+  const [whyChooseUs, setWhyChooseUs] = useState<{title: string; description: string}[]>([])
+  const [serviceAreas, setServiceAreas] = useState<{name: string; description: string}[]>([])
+  const [destinations, setDestinations] = useState<{name: string; image: string; description: string}[]>([])
   const [geoBlocks, setGeoBlocks] = useState<GeoBlock[]>([])
-  const [faqs, setFaqs] = useState(alpenglowFaqs)
+  const [faqs, setFaqs] = useState<{q: string; a: string}[]>([])
   const [phone, setPhone] = useState(alpenglowData.phone)
   const [phoneHref, setPhoneHref] = useState(alpenglowData.phoneHref)
 
@@ -176,7 +55,7 @@ export default function AlpenglowPage() {
         ])
         if (svcRes.data && svcRes.data.length > 0) {
           setServices(svcRes.data.map((s: ServiceType) => ({
-            title: s.name, slug: s.name.toLowerCase().replace(/\s+/g, '-'), description: s.description, features: [], icon: 'Briefcase',
+            title: s.name, slug: s.slug || s.name.toLowerCase().replace(/\s+/g, '-'), description: s.description, features: Array.isArray(s.features) ? s.features as string[] : [], icon: s.icon || 'Plane',
           })))
         }
         if (fleetRes.data && fleetRes.data.length > 0) {
@@ -193,30 +72,30 @@ export default function AlpenglowPage() {
         if (geoRes.data && geoRes.data.length > 0) {
           setGeoBlocks(geoRes.data)
         }
-        if (faqRes.data && faqRes.data.length > 0) {
+        if (faqRes.data) {
           const mapped = faqRes.data
             .filter((f: { question: string; answer: string }) => f.question && f.answer)
             .map((f: { question: string; answer: string }) => ({ q: f.question, a: f.answer }))
-          if (mapped.length > 0) setFaqs(mapped)
+          setFaqs(mapped)
         }
         if (settingsRes.data?.phone) {
           setPhone(settingsRes.data.phone)
           setPhoneHref(`tel:+1${settingsRes.data.phone.replace(/\D/g, '')}`)
         }
-        if (settingsRes.data?.stats && Array.isArray(settingsRes.data.stats) && settingsRes.data.stats.length > 0) {
+        if (settingsRes.data?.stats && Array.isArray(settingsRes.data.stats)) {
           setStats(settingsRes.data.stats)
         }
-        if (vpRes.data && vpRes.data.length > 0) {
+        if (vpRes.data) {
           setWhyChooseUs(vpRes.data.map((vp: { title: string; description: string }) => ({
             title: vp.title, description: vp.description,
           })))
         }
-        if (saRes.data && saRes.data.length > 0) {
+        if (saRes.data) {
           setServiceAreas(saRes.data.map((sa: { name: string; description: string }) => ({
             name: sa.name, description: sa.description,
           })))
         }
-        if (destRes.data && destRes.data.length > 0) {
+        if (destRes.data) {
           setDestinations(destRes.data.map((d: { name: string; image_url: string; description: string }) => ({
             name: d.name, image: d.image_url || '/images/destinations/garden-of-the-gods.jpg', description: d.description,
           })))
@@ -235,7 +114,7 @@ export default function AlpenglowPage() {
         <div className="absolute inset-0">
           <Image
             src="/images/about/pexels-outdoor.png"
-            alt="Luxury black Escalade limousine on a mountain road in Aspen, Colorado — Aspen Alpenglow Limousine private car service"
+            alt="Luxury private SUV on a mountain road in Aspen, Colorado — Aspen Alpenglow Limousine private car service"
             fill
             className="object-cover"
             priority
@@ -265,6 +144,7 @@ export default function AlpenglowPage() {
           </div>
         </div>
         {/* Stats bar */}
+        {stats.length > 0 && (
         <div className="absolute bottom-0 left-0 right-0 bg-alp-navy/90 backdrop-blur-sm border-t border-white/10">
           <div className="max-w-4xl mx-auto px-6 py-5 grid grid-cols-3 gap-4 text-center">
             {stats.map((stat) => (
@@ -275,9 +155,11 @@ export default function AlpenglowPage() {
             ))}
           </div>
         </div>
+        )}
       </section>
 
       {/* FLEET SHOWCASE */}
+      {fleet.length > 0 && (
       <section id="fleet" className="py-24 bg-alp-navy-deep">
         <div className="max-w-7xl mx-auto px-6">
           <ScrollReveal className="text-center mb-16">
@@ -318,8 +200,10 @@ export default function AlpenglowPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* TRANSPORTATION SERVICES */}
+      {services.length > 0 && (
       <section id="services" className="py-24 bg-alp-pearl">
         <div className="max-w-7xl mx-auto px-6">
           <ScrollReveal className="text-center mb-16">
@@ -329,11 +213,11 @@ export default function AlpenglowPage() {
               Every detail handled. Every journey seamless.
             </p>
             <p className="text-alp-slate text-base max-w-3xl mx-auto mt-6 leading-relaxed border-t border-alp-pearl-dark pt-6">
-              Aspen Alpenglow Limousine has provided distinguished private car and limousine service in Aspen, Colorado since 2012. The company operates a professional fleet of two vehicles — an Executive Cadillac Escalade (6 passengers) and a Luxury Mercedes Sprinter van (14 passengers) — serving Aspen/Pitkin County Airport (ASE), Eagle County Regional Airport (EGE), and Denver International Airport (DEN), as well as all destinations throughout the Roaring Fork Valley.
+              Aspen Alpenglow Limousine operates a professional fleet of three late-model vehicles — two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (14 passengers) — serving Aspen/Pitkin County Airport (ASE), Eagle County Regional Airport (EGE), Rifle/Garfield County Airport (KRIL), Grand Junction Regional Airport (GJT), and Denver International Airport (DEN), as well as all destinations throughout the Roaring Fork Valley.
             </p>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 gap-8">
-            {transportationServices.map((service, i) => (
+            {services.map((service, i) => (
               <ScrollReveal key={service.title} delay={i * 100}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 border border-alp-pearl-dark h-full">
                   <div className="flex items-start gap-5 mb-6">
@@ -345,6 +229,7 @@ export default function AlpenglowPage() {
                       <p className="text-alp-slate text-sm leading-relaxed">{service.description}</p>
                     </div>
                   </div>
+                  {service.features.length > 0 && (
                   <ul className="space-y-2">
                     {service.features.map((feature) => (
                       <li key={feature} className="flex items-center gap-3 text-sm text-gray-700">
@@ -355,7 +240,8 @@ export default function AlpenglowPage() {
                       </li>
                     ))}
                   </ul>
-                  <a href={service.href} className="mt-6 inline-flex items-center gap-2 text-alp-gold font-semibold text-sm hover:text-alp-gold-light transition-colors">
+                  )}
+                  <a href={`/alpenglow/${service.slug}`} className="mt-6 inline-flex items-center gap-2 text-alp-gold font-semibold text-sm hover:text-alp-gold-light transition-colors">
                     Book This Service
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                   </a>
@@ -365,8 +251,10 @@ export default function AlpenglowPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* WHY ALPENGLOW */}
+      {whyChooseUs.length > 0 && (
       <section className="py-24 bg-alp-pearl">
         <div className="max-w-7xl mx-auto px-6">
           <ScrollReveal className="text-center mb-16">
@@ -388,8 +276,10 @@ export default function AlpenglowPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* SERVICE AREAS */}
+      {serviceAreas.length > 0 && (
       <section id="service-areas" className="py-24 bg-alp-pearl-dark">
         <div className="max-w-7xl mx-auto px-6">
           <ScrollReveal className="text-center mb-16">
@@ -416,8 +306,10 @@ export default function AlpenglowPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* TESTIMONIALS */}
+      {testimonials.length > 0 && (
       <section className="py-24 bg-alp-navy">
         <div className="max-w-5xl mx-auto px-6">
           <ScrollReveal className="text-center mb-16">
@@ -440,8 +332,10 @@ export default function AlpenglowPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* POPULAR DESTINATIONS */}
+      {destinations.length > 0 && (
       <section id="destinations" className="py-24 bg-alp-navy-deep">
         <div className="max-w-7xl mx-auto px-6">
           <ScrollReveal className="text-center mb-16">
@@ -473,8 +367,10 @@ export default function AlpenglowPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* FAQ */}
+      {faqs.length > 0 && (
       <section id="faq" className="py-24 bg-alp-pearl" aria-label="Frequently asked questions about Aspen Alpenglow Limousine">
         <div className="max-w-3xl mx-auto px-6">
           <ScrollReveal className="text-center mb-12">
@@ -499,6 +395,7 @@ export default function AlpenglowPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* GEO CONTENT BLOCKS */}
       {geoBlocks.length > 0 && (

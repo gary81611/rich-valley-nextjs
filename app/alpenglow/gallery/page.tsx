@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Gallery | Aspen Alpenglow Limousine',
-  description: 'Browse photos of our luxury fleet, vehicles, and the stunning Colorado destinations we serve. Executive Escalade, Luxury Sprinter, and scenic Roaring Fork Valley views.',
+  description: 'Browse photos of our luxury fleet, vehicles, and the stunning Colorado destinations we serve. Chevrolet Suburban, Ford Transit Van, and scenic Roaring Fork Valley views.',
 }
 
 async function fetchGalleryImages() {

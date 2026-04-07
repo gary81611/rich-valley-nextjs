@@ -29,7 +29,7 @@ export const metadata: Metadata = {
         url: ALP_OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: 'Luxury Escalade limousine service in Aspen, Colorado — Aspen Alpenglow Limousine',
+        alt: 'Luxury private SUV and limousine service in Aspen, Colorado — Aspen Alpenglow Limousine',
       },
     ],
   },
@@ -56,7 +56,7 @@ const localBusinessSchema = {
   '@id': `${ALP_URL}/#business`,
   name: 'Aspen Alpenglow Limousine',
   description:
-    'Aspen Alpenglow Limousine has provided distinguished private car and limousine service in Aspen, Colorado since 2012. They offer airport transfers, hourly charter, corporate travel, wedding transportation, and private group tours throughout the Roaring Fork Valley. The fleet includes a luxury Escalade (6 passengers) and a luxury Sprinter van (14 passengers). Service is available 24 hours a day, 7 days a week.',
+    'Aspen Alpenglow Limousine has provided distinguished private car and limousine service in Aspen, Colorado since 2012. They offer airport transfers, hourly charter, corporate travel, wedding transportation, and private group tours throughout the Roaring Fork Valley. The fleet includes two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (14 passengers). Service is available 24 hours a day, 7 days a week.',
   url: ALP_URL,
   telephone: '+19704563666',
   priceRange: '$$$',
@@ -166,9 +166,9 @@ const vehicleSchemas = [
   {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    name: 'Executive Cadillac Escalade — 6 Passenger Luxury Car Service',
+    name: 'Chevrolet Suburban — 7 Passenger Luxury SUV',
     description:
-      'Luxury Cadillac Escalade with premium leather interior, climate control, entertainment system, and complimentary amenities. Seats up to 6 passengers. Used for airport transfers, private charters, and executive travel in Aspen, Colorado.',
+      'Late-model Chevrolet Suburban with WiFi (Starlink), XM Radio, Yakima roof rack, and Myers ski rack. The fleet includes two Suburbans. Used for airport transfers, private charters, and executive travel in Aspen, Colorado.',
     serviceType: 'Luxury Limousine & Private Car Service',
     provider: {
       '@type': 'LocalBusiness',
@@ -181,15 +181,15 @@ const vehicleSchemas = [
       { '@type': 'City', name: 'Snowmass Village', containedIn: 'Colorado, USA' },
       { '@type': 'City', name: 'Glenwood Springs', containedIn: 'Colorado, USA' },
     ],
-    additionalProperty: { '@type': 'PropertyValue', name: 'Passenger Capacity', value: 6 },
+    additionalProperty: { '@type': 'PropertyValue', name: 'Passenger Capacity', value: 7 },
   },
   {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    name: 'Luxury Mercedes Sprinter Van — 14 Passenger Group Transportation',
+    name: 'Ford Transit Van — 14 Passenger Group Transportation',
     description:
-      'Luxury Mercedes Sprinter van with premium seating, ambient lighting, and entertainment. Seats up to 14 passengers. Ideal for group airport transfers, wedding parties, and corporate events in Aspen and the Roaring Fork Valley.',
-    serviceType: 'Luxury Group Transportation & Sprinter Van Service',
+      'Late-model Ford Transit Van with WiFi (Starlink), XM Radio, and Myers ski rack. Seats up to 14 passengers. Ideal for group airport transfers, wedding parties, and corporate events in Aspen and the Roaring Fork Valley.',
+    serviceType: 'Luxury Group Transportation & Van Service',
     provider: {
       '@type': 'LocalBusiness',
       name: 'Aspen Alpenglow Limousine',
@@ -246,7 +246,7 @@ const faqSchema = {
       name: 'Do you offer wedding transportation in Aspen?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes. Aspen Alpenglow Limousine specializes in wedding transportation throughout Aspen and Snowmass, Colorado. We provide bridal party transfers, venue-to-venue logistics, and guest shuttle coordination. Both our Escalade and Sprinter van are available for weddings. We work closely with wedding planners and venues to ensure a seamless, elegant experience on your special day.',
+        text: 'Yes. Aspen Alpenglow Limousine specializes in wedding transportation throughout Aspen and Snowmass, Colorado. We provide bridal party transfers, venue-to-venue logistics, and guest shuttle coordination. Our Chevrolet Suburbans and Ford Transit Van are available for weddings. We work closely with wedding planners and venues to ensure a seamless, elegant experience on your special day.',
       },
     },
     {
@@ -270,7 +270,7 @@ const faqSchema = {
       name: 'What vehicles does Aspen Alpenglow Limousine use?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Aspen Alpenglow Limousine operates two premium vehicles: a black Executive Cadillac Escalade (up to 6 passengers) and a black Luxury Mercedes Sprinter van (up to 14 passengers). Both vehicles feature premium leather interiors, climate control, and complimentary amenities. All vehicles are late-model, meticulously maintained, and professionally chauffeured.',
+        text: 'Aspen Alpenglow Limousine operates three late-model vehicles: two Chevrolet Suburbans (up to 7 passengers each) and a Ford Transit Van (up to 14 passengers). All vehicles feature WiFi (Starlink), XM Radio, complimentary water, and ski racks. All vehicles are late-model, meticulously maintained, and professionally chauffeured.',
       },
     },
   ],
