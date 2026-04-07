@@ -2,6 +2,8 @@
 
 DROP POLICY IF EXISTS "public_read_guides" ON guides;
 DROP POLICY IF EXISTS "admin_all_guides" ON guides;
+DROP POLICY IF EXISTS "guides_public_read" ON guides;
+DROP POLICY IF EXISTS "guides_authenticated_all" ON guides;
 
 CREATE POLICY "guides_public_read" ON guides FOR SELECT USING (is_active = true);
 
