@@ -1,127 +1,172 @@
 'use client'
-import { useEffect, useState, useCallback, FormEvent } from 'react'
-import { createClient } from '@/lib/supabase'
-import AdminTable, { Column } from '@/components/admin/AdminTable'
-import AdminFormModal from '@/components/admin/AdminFormModal'
-import FormField from '@/components/admin/FormField'
-import DeleteConfirmDialog from '@/components/admin/DeleteConfirmDialog'
-import Toast from '@/components/admin/Toast'
-import EmptyState from '@/components/admin/EmptyState'
 
-interface UsgsStation {
+import { useCallback, useEffect, useState, FormEvent } from 'react'
+import { createClient } from '@/lib/supabase'
+import FormField from '@/components/admin/FormField'
+import Toast from '@/components/admin/Toast'
+
+type ConditionsReport = {
   id: string
+  report_date: string
+  author_name: string | null
+  hatch_report: string | null
+  fly_recommendations: string | null
+  water_clarity: string | null
+  trail_conditions: string | null
+  wildlife_notes: string | null
+  birdwatching_highlights: string | null
+  environmental_alerts: string | null
+  general_notes: string | null
+  published: boolean
   created_at: string
   updated_at: string
-  station_id: string
-  name: string
-  low_threshold: number
-  good_threshold: number
-  high_threshold: number
-  display_order: number
-  is_active: boolean
 }
 
-const emptyStation: Omit<UsgsStation, 'id' | 'created_at' | 'updated_at'> = {
-  station_id: '', name: '', low_threshold: 100, good_threshold: 400, high_threshold: 800, display_order: 0, is_active: true,
+const emptyForm = {
+  report_date: new Date().toISOString().slice(0, 10),
+  author_name: '',
+  hatch_report: '',
+  fly_recommendations: '',
+  water_clarity: '',
+  trail_conditions: '',
+  wildlife_notes: '',
+  birdwatching_highlights: '',
+  environmental_alerts: '',
+  general_notes: '',
 }
 
-export default function ConditionsPage() {
-  const [data, setData] = useState<UsgsStation[]>([])
-  const [loading, setLoading] = useState(true)
-  const [modalOpen, setModalOpen] = useState(false)
-  const [editing, setEditing] = useState<UsgsStation | null>(null)
-  const [form, setForm] = useState(emptyStation)
+export default function ConditionsReportsAdminPage() {
+  const [form, setForm] = useState(emptyForm)
   const [saving, setSaving] = useState(false)
-  const [deleteItem, setDeleteItem] = useState<UsgsStation | null>(null)
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
+  const [recent, setRecent] = useState<ConditionsReport[]>([])
+  const [loading, setLoading] = useState(true)
   const supabase = createClient()
 
-  const fetchData = useCallback(async () => {
-    const { data: rows } = await supabase.from('usgs_stations').select('*').order('display_order')
-    setData(rows || [])
+  const fetchRecent = useCallback(async () => {
+    const { data, error } = await supabase
+      .from('conditions_reports')
+      .select('*')
+      .order('report_date', { ascending: false })
+      .limit(5)
+    if (!error && data) setRecent(data as ConditionsReport[])
     setLoading(false)
   }, [supabase])
 
-  useEffect(() => { fetchData() }, [fetchData])
+  useEffect(() => {
+    fetchRecent()
+  }, [fetchRecent])
 
-  const openAdd = () => { setEditing(null); setForm(emptyStation); setModalOpen(true) }
-  const openEdit = (item: UsgsStation) => {
-    setEditing(item)
-    setForm({ station_id: item.station_id, name: item.name, low_threshold: item.low_threshold, good_threshold: item.good_threshold, high_threshold: item.high_threshold, display_order: item.display_order, is_active: item.is_active })
-    setModalOpen(true)
+  const updateForm = (name: string, value: string | number | boolean) => {
+    setForm((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = async (e: FormEvent) => {
+  const submit = async (e: FormEvent, published: boolean) => {
     e.preventDefault()
     setSaving(true)
-    if (editing) {
-      const { error } = await supabase.from('usgs_stations').update(form).eq('id', editing.id)
-      if (error) setToast({ message: error.message, type: 'error' })
-      else setToast({ message: 'Station updated!', type: 'success' })
+    const res = await fetch('/api/conditions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...form,
+        author_name: form.author_name || null,
+        hatch_report: form.hatch_report || null,
+        fly_recommendations: form.fly_recommendations || null,
+        water_clarity: form.water_clarity || null,
+        trail_conditions: form.trail_conditions || null,
+        wildlife_notes: form.wildlife_notes || null,
+        birdwatching_highlights: form.birdwatching_highlights || null,
+        environmental_alerts: form.environmental_alerts || null,
+        general_notes: form.general_notes || null,
+        published,
+      }),
+    })
+    const body = await res.json().catch(() => ({}))
+    if (!res.ok) {
+      setToast({ message: body.error || 'Save failed', type: 'error' })
     } else {
-      const { error } = await supabase.from('usgs_stations').insert(form)
-      if (error) setToast({ message: error.message, type: 'error' })
-      else setToast({ message: 'Station created!', type: 'success' })
+      setToast({ message: published ? 'Published.' : 'Draft saved.', type: 'success' })
+      setForm(emptyForm)
+      fetchRecent()
     }
     setSaving(false)
-    setModalOpen(false)
-    fetchData()
   }
 
-  const handleDelete = async () => {
-    if (!deleteItem) return
-    const { error } = await supabase.from('usgs_stations').delete().eq('id', deleteItem.id)
-    if (error) setToast({ message: error.message, type: 'error' })
-    else setToast({ message: 'Station deleted.', type: 'success' })
-    setDeleteItem(null)
-    fetchData()
+  const togglePublished = async (row: ConditionsReport) => {
+    const res = await fetch(`/api/conditions/${row.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ published: !row.published }),
+    })
+    const body = await res.json().catch(() => ({}))
+    if (!res.ok) setToast({ message: body.error || 'Update failed', type: 'error' })
+    else {
+      setToast({ message: !row.published ? 'Published.' : 'Unpublished.', type: 'success' })
+      fetchRecent()
+    }
   }
-
-  const toggleActive = async (item: UsgsStation) => {
-    await supabase.from('usgs_stations').update({ is_active: !item.is_active }).eq('id', item.id)
-    fetchData()
-  }
-
-  const updateForm = (name: string, value: string | number | boolean) => setForm((prev) => ({ ...prev, [name]: value }))
-
-  const columns: Column<UsgsStation>[] = [
-    { key: 'name', label: 'Name' },
-    { key: 'station_id', label: 'Station ID' },
-    { key: 'is_active', label: 'Active', render: (item) => item.is_active ? '✓' : '—' },
-    { key: 'display_order', label: 'Order' },
-    { key: 'actions', label: 'Actions' },
-  ]
 
   return (
     <div>
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-slate-900">River Conditions — USGS Stations</h1>
-        <button onClick={openAdd} className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800">
-          Add Station
-        </button>
-      </div>
+      <h1 className="text-2xl font-bold text-slate-900 mb-2">Conditions reports</h1>
+      <p className="text-slate-600 text-sm mb-8">Published reports appear on /rva/conditions and the homepage strip.</p>
 
-      {!loading && data.length === 0 && <EmptyState entity="USGS stations" onAdd={openAdd} addLabel="Add Station" />}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200">
-        {loading ? (
-          <div className="flex justify-center py-12"><div className="w-8 h-8 border-4 border-slate-300 border-t-slate-800 rounded-full animate-spin" /></div>
-        ) : (
-          <AdminTable columns={columns} data={data} onEdit={openEdit} onDelete={setDeleteItem} onToggleActive={toggleActive} />
-        )}
-      </div>
+      <form className="max-w-3xl space-y-4 bg-white rounded-xl border border-slate-200 p-6 mb-10" onSubmit={(e) => e.preventDefault()}>
+        <FormField label="Report date" name="report_date" value={form.report_date} onChange={updateForm} required />
+        <FormField label="Author name" name="author_name" value={form.author_name} onChange={updateForm} />
+        <FormField label="Hatch report" name="hatch_report" type="textarea" value={form.hatch_report} onChange={updateForm} />
+        <FormField label="Fly recommendations" name="fly_recommendations" type="textarea" value={form.fly_recommendations} onChange={updateForm} />
+        <FormField label="Water clarity" name="water_clarity" type="textarea" value={form.water_clarity} onChange={updateForm} />
+        <FormField label="Trail conditions" name="trail_conditions" type="textarea" value={form.trail_conditions} onChange={updateForm} />
+        <FormField label="Wildlife notes" name="wildlife_notes" type="textarea" value={form.wildlife_notes} onChange={updateForm} />
+        <FormField label="Birdwatching highlights" name="birdwatching_highlights" type="textarea" value={form.birdwatching_highlights} onChange={updateForm} />
+        <FormField label="Environmental alerts" name="environmental_alerts" type="textarea" value={form.environmental_alerts} onChange={updateForm} />
+        <FormField label="General notes" name="general_notes" type="textarea" value={form.general_notes} onChange={updateForm} />
 
-      <AdminFormModal isOpen={modalOpen} title={editing ? 'Edit Station' : 'Add Station'} onSubmit={handleSubmit} onClose={() => setModalOpen(false)} loading={saving}>
-        <FormField label="Station ID" name="station_id" value={form.station_id} onChange={updateForm} required placeholder="e.g. 09073300" help="The USGS station identifier. Find stations at waterdata.usgs.gov." preview="Used to fetch real-time flow data" />
-        <FormField label="Name" name="name" value={form.name} onChange={updateForm} required help="A friendly name for this station (e.g., 'Roaring Fork at Glenwood Springs')." preview="Conditions page" />
-        <FormField label="Low Threshold (cfs)" name="low_threshold" type="number" value={form.low_threshold} onChange={updateForm} help="Flow below this value is considered low. Default: 100 cfs." preview="Condition status indicator" />
-        <FormField label="Good Threshold (cfs)" name="good_threshold" type="number" value={form.good_threshold} onChange={updateForm} help="Flow above this value is considered good. Default: 400 cfs." preview="Condition status indicator" />
-        <FormField label="High Threshold (cfs)" name="high_threshold" type="number" value={form.high_threshold} onChange={updateForm} help="Flow above this value is considered high/dangerous. Default: 800 cfs." preview="Condition status indicator" />
-        <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} help="Controls sort order. Lower numbers appear first." preview="Order on conditions page" />
-        <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} help="Turn off to hide from the public site without deleting." />
-      </AdminFormModal>
+        <div className="flex gap-3 pt-4">
+          <button
+            type="button"
+            disabled={saving}
+            onClick={(e) => submit(e, false)}
+            className="px-4 py-2 bg-slate-200 text-slate-900 text-sm font-medium rounded-lg hover:bg-slate-300 disabled:opacity-50"
+          >
+            Save Draft
+          </button>
+          <button
+            type="button"
+            disabled={saving}
+            onClick={(e) => submit(e, true)}
+            className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 disabled:opacity-50"
+          >
+            Publish
+          </button>
+        </div>
+      </form>
 
-      <DeleteConfirmDialog isOpen={!!deleteItem} onConfirm={handleDelete} onCancel={() => setDeleteItem(null)} itemName={deleteItem?.name || 'this station'} />
+      <h2 className="text-lg font-semibold text-slate-900 mb-3">Recent reports (last 5)</h2>
+      {loading ? (
+        <p className="text-slate-500 text-sm">Loading…</p>
+      ) : recent.length === 0 ? (
+        <p className="text-slate-500 text-sm">No reports yet.</p>
+      ) : (
+        <ul className="space-y-2">
+          {recent.map((r) => (
+            <li key={r.id} className="flex flex-wrap items-center justify-between gap-2 bg-white border border-slate-200 rounded-lg px-4 py-3 text-sm">
+              <span>
+                {r.report_date} — {r.published ? <span className="text-green-700 font-medium">Published</span> : <span className="text-slate-500">Draft</span>}
+              </span>
+              <button
+                type="button"
+                onClick={() => togglePublished(r)}
+                className="text-slate-700 underline hover:text-slate-900"
+              >
+                {r.published ? 'Unpublish' : 'Publish'}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }

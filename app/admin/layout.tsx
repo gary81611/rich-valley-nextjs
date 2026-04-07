@@ -59,7 +59,8 @@ const navGroups: NavGroup[] = [
       { name: 'Fishing Reports', href: '/admin/fishing-reports', icon: 'pencil', badge: 'rva' },
       { name: 'Trail Conditions', href: '/admin/trail-conditions', icon: 'compass', badge: 'rva' },
       { name: 'Why Choose Us', href: '/admin/value-propositions', icon: 'star' },
-      { name: 'River Conditions', href: '/admin/conditions', icon: 'chart', badge: 'rva' },
+      { name: 'Conditions Reports', href: '/admin/conditions', icon: 'chart', badge: 'rva' },
+      { name: 'USGS Stations', href: '/admin/usgs-stations', icon: 'chart', badge: 'rva' },
     ],
   },
   {
