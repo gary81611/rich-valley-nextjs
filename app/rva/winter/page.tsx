@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { seasonForWinterAdventure } from '@/lib/rva-winter-seasons'
+
+const AAL_LINK = 'https://aspenalpenglowlimousine.com'
 
 export const dynamic = 'force-dynamic'
 
@@ -85,6 +88,51 @@ export default async function WinterPage() {
         </div>
       </section>
 
+      {/* How it works — shared */}
+      <section className="py-14 bg-white border-b border-rva-sage/20">
+        <div className="max-w-4xl mx-auto px-6">
+          <h2 className="font-playfair text-2xl md:text-3xl text-rva-forest font-bold mb-6 text-center">
+            How winter trips work
+          </h2>
+          <ul className="space-y-3 text-gray-700 leading-relaxed">
+            <li>
+              <strong className="text-rva-forest">Pricing:</strong> Starting at $250 per person
+            </li>
+            <li>
+              <strong className="text-rva-forest">Half-day:</strong> 3–4 hours door-to-door. Includes snacks and drinks.
+            </li>
+            <li>
+              <strong className="text-rva-forest">Full day:</strong> 6–8 hours door-to-door. Includes lunch.
+            </li>
+            <li>
+              <strong className="text-rva-forest">Gear:</strong> All gear provided on every trip
+            </li>
+            <li>
+              <strong className="text-rva-forest">Group sizes:</strong> 1–12 people
+            </li>
+            <li>
+              <strong className="text-rva-forest">Transportation:</strong> All transportation provided by{' '}
+              <a href={AAL_LINK} className="text-rva-copper font-semibold underline hover:text-rva-copper-light">
+                Aspen Alpenglow Limousine
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      {/* Advance booking */}
+      <div className="bg-amber-50 border-y border-amber-200/80">
+        <div className="max-w-4xl mx-auto px-6 py-5 flex gap-4 items-start">
+          <span className="text-amber-700 text-xl" aria-hidden>
+            ⚠
+          </span>
+          <p className="text-sm md:text-base text-amber-950/90 leading-relaxed">
+            <strong>Advance booking required:</strong> Ice fishing, snowshoeing, and cross-country skiing must be booked
+            with a minimum 7-day notice. All other winter activities: 48-hour advance booking recommended.
+          </p>
+        </div>
+      </div>
+
       {/* Winter Adventures */}
       <section className="py-16 bg-rva-cream">
         <div className="max-w-7xl mx-auto px-6 space-y-20">
@@ -108,19 +156,28 @@ export default async function WinterPage() {
                   <span className="bg-rva-forest/10 text-rva-forest text-sm px-4 py-1.5 rounded-full">
                     {adventure.difficulty}
                   </span>
-                  {adventure.season && (
+                  {(seasonForWinterAdventure(adventure.title) || adventure.season) && (
                     <span className="bg-blue-50 text-blue-700 text-sm px-4 py-1.5 rounded-full">
-                      {adventure.season}
+                      {seasonForWinterAdventure(adventure.title) || adventure.season}
                     </span>
                   )}
                 </div>
                 <h2 className="font-playfair text-3xl md:text-4xl text-rva-forest font-bold mb-6">
                   {adventure.title}
                 </h2>
-                <p className="text-gray-700 text-lg leading-relaxed mb-4">
+                <p className="text-gray-700 text-lg leading-relaxed mb-6">
                   {adventure.description}
                 </p>
-                <p className="text-sm text-rva-copper font-medium mb-6">Starting at $250/person · All gear provided · Transport by Aspen Alpenglow Limousine</p>
+                <ul className="text-sm text-gray-700 space-y-2 mb-6 border-l-2 border-rva-copper/40 pl-4">
+                  <li>Starting at $250 per person · Half-day &amp; full-day options (see above)</li>
+                  <li>Groups 1–12 · All gear included</li>
+                  <li>
+                    Transport:{' '}
+                    <a href={AAL_LINK} className="text-rva-copper font-semibold underline hover:text-rva-copper-light">
+                      Aspen Alpenglow Limousine
+                    </a>
+                  </li>
+                </ul>
                 <Link
                   href="/rva/contact"
                   className="bg-rva-copper hover:bg-rva-copper-light text-white px-8 py-3.5 rounded-full font-semibold transition-all hover:shadow-lg inline-block"
@@ -157,7 +214,7 @@ export default async function WinterPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/contact"
+              href="/rva/contact"
               className="bg-rva-copper hover:bg-rva-copper-light text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block"
             >
               Book Now
