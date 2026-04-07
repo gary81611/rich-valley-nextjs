@@ -1,0 +1,28 @@
+---
+description: Vercel CLI deploy — keep uploads small and avoid multi-GB uploads
+alwaysApply: true
+---
+
+# Vercel deploy (CLI)
+
+## Problem
+
+`vercel deploy` uploads the project directory. Local folders such as **`.claude`** can be **multi‑GB** and blow past Vercel’s limits or make deploys extremely slow.
+
+## Requirements
+
+- **Keep `.vercelignore` in the repo** at the project root. It must exclude at least:
+  - `.claude`, `.claire`
+  - `node_modules`, `.next`, `.git`
+  - `.env*.local`, `.vercel`
+- Prefer **`npx vercel deploy --prod --yes --archive=tgz`** when using the CLI (helps with large file counts).
+
+## Default workflow
+
+- **Production from Git:** pushing to `main` (or the connected branch) triggers Vercel; no CLI needed for routine releases.
+- **CLI production:** only when intentionally deploying from a local tree; confirm `.vercelignore` exists before running.
+
+## If deploy fails on upload size or file count
+
+1. Confirm `.vercelignore` excludes `.claude` and other dev-only trees.
+2. Retry with `--archive=tgz`.
