@@ -20,6 +20,18 @@ export default function RVAPage() {
     { value: '4.9', label: 'Average Rating' },
   ])
   const [fishingReport, setFishingReport] = useState<{ title: string; date: string; author: string; preview: string } | null>(null)
+  const [conditionsPreview, setConditionsPreview] = useState<{ teaser: string; author?: string; date?: string } | null>(null)
+  const [conditionsPreviewReady, setConditionsPreviewReady] = useState(false)
+
+  useEffect(() => {
+    fetch('/api/conditions/latest')
+      .then((r) => r.json())
+      .then((body: { report: { teaser: string; author?: string; date?: string } | null }) => {
+        setConditionsPreview(body.report)
+        setConditionsPreviewReady(true)
+      })
+      .catch(() => setConditionsPreviewReady(true))
+  }, [])
 
   useEffect(() => {
     async function fetchSupabaseData() {
@@ -116,6 +128,29 @@ export default function RVAPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Live conditions — informational strip above adventure cards */}
+      <section className="bg-gradient-to-r from-rva-forest via-rva-forest-dark to-rva-forest border-y border-rva-copper/20" aria-label="Live river conditions">
+        <div className="max-w-7xl mx-auto px-6 py-8 md:py-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div className="flex-1 min-w-0">
+            <p className="font-cormorant text-rva-copper-light text-sm tracking-[0.25em] uppercase mb-2">Live River Conditions</p>
+            <p className="text-white/90 text-base md:text-lg leading-relaxed">
+              {!conditionsPreviewReady
+                ? 'Loading latest report…'
+                : conditionsPreview?.teaser
+                  ? conditionsPreview.teaser
+                  : 'Fishing report updated weekly by our guides. Check current conditions →'}
+            </p>
+          </div>
+          <Link
+            href="/rva/conditions"
+            className="inline-flex items-center justify-center gap-2 shrink-0 bg-rva-copper hover:bg-rva-copper-light text-white font-semibold px-6 py-3 rounded-full transition-colors text-sm md:text-base"
+          >
+            View Full Conditions Report
+            <span aria-hidden>→</span>
+          </Link>
         </div>
       </section>
 
