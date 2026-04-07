@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
 import type { Service } from '@/lib/types'
+import { hrefForService } from '@/lib/alpenglow-services'
 
 const iconMap: Record<string, React.ReactNode> = {
   Plane: (
@@ -31,13 +32,6 @@ const iconMap: Record<string, React.ReactNode> = {
   ),
 }
 
-const slugMap: Record<string, string> = {
-  'Airport Transfers': 'airport-transfers',
-  'Hourly Charter': 'hourly-charter',
-  'Corporate Travel': 'corporate-travel',
-  'Wedding Transportation': 'wedding-transportation',
-}
-
 export default function ServicesPage() {
   const [services, setServices] = useState<{ title: string; slug: string; description: string; features: string[]; icon: string }[]>([])
   const [loaded, setLoaded] = useState(false)
@@ -55,9 +49,9 @@ export default function ServicesPage() {
         if (data && data.length > 0) {
           const mapped = data.map((s: Service) => ({
             title: s.name,
-            slug: s.slug || s.name.toLowerCase().replace(/\s+/g, '-'),
+            slug: s.slug ?? '',
             description: s.description,
-            features: Array.isArray(s.features) ? s.features as string[] : [],
+            features: Array.isArray(s.features) ? (s.features as string[]) : [],
             icon: s.icon || 'Plane',
           }))
           setServices(mapped)
@@ -110,12 +104,10 @@ export default function ServicesPage() {
             </div>
           ) : (
             <div className={`grid md:grid-cols-2 gap-8 transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}>
-              {services.map((service) => {
-                const slug = slugMap[service.title] || service.slug || service.title.toLowerCase().replace(/\s+/g, '-')
-                return (
+              {services.map((service) => (
                   <Link
                     key={service.title}
-                    href={`/services/${slug}`}
+                    href={hrefForService({ slug: service.slug, name: service.title })}
                     className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-8 border border-alp-pearl-dark hover:-translate-y-1"
                   >
                     <div className="text-alp-gold mb-5">
@@ -146,8 +138,7 @@ export default function ServicesPage() {
                       </svg>
                     </span>
                   </Link>
-                )
-              })}
+                ))}
             </div>
           )}
         </div>

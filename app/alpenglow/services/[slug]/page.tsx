@@ -2,72 +2,87 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { serviceMatchesPathSlug } from '@/lib/alpenglow-services'
 
 export const dynamic = 'force-dynamic'
 
 type ServiceRow = {
-  id: number
-  slug: string
-  title: string
+  id: string
+  slug: string | null
+  name: string
   description: string
-  long_description: string
-  features: string[]
+  long_description?: string | null
+  features: string[] | unknown
   icon: string
 }
 
 type FleetVehicle = {
-  id: number
+  id: string
   name: string
   capacity: number
   image_url: string
-  features: string[]
+  features: string[] | unknown
+}
+
+async function getServiceByPathSlug(pathSlug: string): Promise<ServiceRow | null> {
+  const supabase = await createServerSupabaseClient()
+
+  const { data: direct } = await supabase
+    .from('services')
+    .select('*')
+    .eq('is_active', true)
+    .eq('slug', pathSlug)
+    .maybeSingle()
+
+  if (direct) return direct as ServiceRow
+
+  const { data: rows } = await supabase.from('services').select('*').eq('is_active', true)
+
+  if (!rows?.length) return null
+  const match = rows.find((r) => serviceMatchesPathSlug(r as ServiceRow, pathSlug))
+  return (match as ServiceRow) ?? null
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
-  const supabase = await createServerSupabaseClient()
-  const { data: service } = await supabase
-    .from('services')
-    .select('title, description')
-    .eq('slug', slug)
-    .single()
-
+  const service = await getServiceByPathSlug(slug)
   if (!service) return { title: 'Service Not Found' }
 
   return {
-    title: `${service.title} | Aspen Alpenglow Limousine`,
+    title: `${service.name} | Aspen Alpenglow Limousine`,
     description: service.description,
   }
 }
 
 export default async function ServiceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const supabase = await createServerSupabaseClient()
-
-  const { data: service } = await supabase
-    .from('services')
-    .select('*')
-    .eq('slug', slug)
-    .single<ServiceRow>()
+  const service = await getServiceByPathSlug(slug)
 
   if (!service) {
     return (
       <div className="min-h-screen bg-alp-pearl font-inter flex items-center justify-center">
         <div className="text-center">
           <h1 className="font-playfair text-3xl font-bold text-alp-navy mb-4">Service Not Found</h1>
-          <Link href="/services" className="text-alp-gold hover:underline">Back to Services</Link>
+          <Link href="/services" className="text-alp-gold hover:underline">
+            Back to Services
+          </Link>
         </div>
       </div>
     )
   }
 
+  const displayTitle = service.name
+  const bodyCopy = (service.long_description || service.description || '').trim()
+  const features = Array.isArray(service.features) ? (service.features as string[]) : []
+
+  const supabase = await createServerSupabaseClient()
   const { data: fleetVehicles } = await supabase
     .from('fleet_vehicles')
     .select('id, name, capacity, image_url, features')
     .eq('is_active', true)
     .order('display_order')
 
-  const vehicles: FleetVehicle[] = fleetVehicles ?? []
+  const vehicles: FleetVehicle[] = (fleetVehicles ?? []) as FleetVehicle[]
 
   return (
     <div className="min-h-screen bg-alp-pearl font-inter">
@@ -75,11 +90,15 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
       <div className="bg-alp-navy-deep">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex text-sm text-alp-pearl/70">
-            <Link href="/" className="hover:text-alp-gold transition-colors">Home</Link>
+            <Link href="/" className="hover:text-alp-gold transition-colors">
+              Home
+            </Link>
             <span className="mx-2">/</span>
-            <Link href="/services" className="hover:text-alp-gold transition-colors">Services</Link>
+            <Link href="/services" className="hover:text-alp-gold transition-colors">
+              Services
+            </Link>
             <span className="mx-2">/</span>
-            <span className="text-alp-gold">{service.title}</span>
+            <span className="text-alp-gold">{displayTitle}</span>
           </nav>
         </div>
       </div>
@@ -87,12 +106,8 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
       {/* Hero */}
       <section className="bg-alp-navy-deep text-white py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            {service.title}
-          </h1>
-          <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl">
-            {service.description}
-          </p>
+          <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">{displayTitle}</h1>
+          <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl">{service.description}</p>
         </div>
       </section>
 
@@ -101,20 +116,20 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
             <div>
-              <h2 className="font-playfair text-3xl font-bold text-alp-navy mb-6">
-                About This Service
-              </h2>
-              <p className="text-alp-slate leading-relaxed text-lg mb-8">
-                {service.long_description}
-              </p>
-              {service.features && service.features.length > 0 && (
+              <h2 className="font-playfair text-3xl font-bold text-alp-navy mb-6">About This Service</h2>
+              <p className="text-alp-slate leading-relaxed text-lg mb-8">{bodyCopy}</p>
+              {features.length > 0 && (
                 <>
                   <h3 className="font-playfair text-xl font-bold text-alp-navy mb-4">What&apos;s Included</h3>
                   <ul className="space-y-3">
-                    {service.features.map((feature) => (
+                    {features.map((feature) => (
                       <li key={feature} className="flex items-start gap-3 text-alp-navy">
                         <svg className="w-5 h-5 text-alp-gold mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
                         </svg>
                         {feature}
                       </li>
@@ -141,9 +156,9 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
                     </div>
                     <h4 className="font-playfair text-xl font-bold text-alp-navy mb-1">{vehicle.name}</h4>
                     <p className="text-alp-gold font-semibold text-sm mb-3">Up to {vehicle.capacity} Passengers</p>
-                    {vehicle.features && vehicle.features.length > 0 && (
+                    {Array.isArray(vehicle.features) && vehicle.features.length > 0 && (
                       <ul className="grid grid-cols-2 gap-1">
-                        {vehicle.features.map((f) => (
+                        {(vehicle.features as string[]).map((f) => (
                           <li key={f} className="text-sm text-alp-slate flex items-center gap-1">
                             <span className="w-1 h-1 bg-alp-gold rounded-full flex-shrink-0" />
                             {f}
@@ -163,7 +178,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
       <section className="bg-alp-navy-deep text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="font-playfair text-3xl sm:text-4xl font-bold mb-4">
-            Book <span className="text-alp-gold">{service.title}</span>
+            Book <span className="text-alp-gold">{displayTitle}</span>
           </h2>
           <p className="text-alp-pearl/80 mb-8 max-w-2xl mx-auto">
             Ready to experience luxury transportation? Contact us today to reserve your ride.

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { slugifyServiceName } from '@/lib/alpenglow-services'
 import { serviceAreaMatchesPathSlug } from '@/lib/alpenglow-service-areas'
 
 export const dynamic = 'force-dynamic'
@@ -128,7 +129,7 @@ export default async function ServiceAreaDetailPage({ params }: { params: Promis
                   {['Airport Transfers', 'Hourly Charter', 'Corporate Travel', 'Wedding Transportation'].map((s) => (
                     <li key={s}>
                       <Link
-                        href={`/services/${s.toLowerCase().replace(/\s+/g, '-')}`}
+                        href={`/services/${slugifyServiceName(s)}`}
                         className="flex items-center gap-2 text-alp-slate hover:text-alp-gold transition-colors text-sm py-1"
                       >
                         <svg className="w-3 h-3 text-alp-gold" fill="currentColor" viewBox="0 0 20 20">

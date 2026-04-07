@@ -6,6 +6,7 @@ import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
 import NewsletterSignup from '@/components/shared/NewsletterSignup'
 import { alpenglowData } from '@/lib/site-data'
 import { createClient } from '@/lib/supabase'
+import { hrefForService } from '@/lib/alpenglow-services'
 import type { Service as ServiceType, FleetVehicle, Testimonial } from '@/lib/types'
 
 interface GeoBlock {
@@ -54,9 +55,15 @@ export default function AlpenglowPage() {
           supabase.from('destinations').select('*').eq('is_active', true).order('display_order'),
         ])
         if (svcRes.data && svcRes.data.length > 0) {
-          setServices(svcRes.data.map((s: ServiceType) => ({
-            title: s.name, slug: s.slug || s.name.toLowerCase().replace(/\s+/g, '-'), description: s.description, features: Array.isArray(s.features) ? s.features as string[] : [], icon: s.icon || 'Plane',
-          })))
+          setServices(
+            svcRes.data.map((s: ServiceType) => ({
+              title: s.name,
+              slug: s.slug ?? '',
+              description: s.description,
+              features: Array.isArray(s.features) ? (s.features as string[]) : [],
+              icon: s.icon || 'Plane',
+            })),
+          )
         }
         if (fleetRes.data && fleetRes.data.length > 0) {
           setFleet(fleetRes.data.map((v: FleetVehicle) => ({
@@ -241,7 +248,7 @@ export default function AlpenglowPage() {
                     ))}
                   </ul>
                   )}
-                  <a href={`/services/${service.slug}`} className="mt-6 inline-flex items-center gap-2 text-alp-gold font-semibold text-sm hover:text-alp-gold-light transition-colors">
+                  <a href={hrefForService({ slug: service.slug, name: service.title })} className="mt-6 inline-flex items-center gap-2 text-alp-gold font-semibold text-sm hover:text-alp-gold-light transition-colors">
                     Book This Service
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                   </a>
