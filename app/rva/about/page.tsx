@@ -100,20 +100,7 @@ export default async function AboutPage() {
                   </p>
                 ))
               ) : (
-                <>
-                  <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                    Kit grew up on the banks of the Roaring Fork River, learning to fly fish before he could
-                    ride a bike. After years guiding across Colorado and the Mountain West, he founded Rich
-                    Valley Adventures in 2012 with a simple idea: share the real Aspen — the hidden trails,
-                    the secret fishing holes, the places only locals know.
-                  </p>
-                  <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                    What started as one guide and a truck full of fly rods has grown into a full-service
-                    adventure company offering seven distinct guided experiences. But the philosophy has
-                    never changed: small groups, expert guides, and trips that feel personal — not
-                    packaged.
-                  </p>
-                </>
+                <p className="text-gray-500 italic">Story coming soon.</p>
               )}
               <p className="text-gray-600 text-base leading-relaxed border-l-4 border-rva-copper/30 pl-4">
                 &ldquo;We don&apos;t just guide trips — we share our home with you. Every river bend,
@@ -156,19 +143,7 @@ export default async function AboutPage() {
               </p>
             ))
           ) : (
-            <>
-              <p className="text-white/80 text-lg leading-relaxed mb-6">
-                Over 14 years, Rich Valley Adventures has grown from a passion project into one of
-                Aspen&apos;s most trusted adventure outfitters. We&apos;ve guided more than 3,000
-                adventures across the Roaring Fork Valley — from quiet fly fishing mornings on Gold Medal
-                waters to multi-day elevated camping experiences under the stars.
-              </p>
-              <p className="text-white/80 text-lg leading-relaxed mb-12">
-                Every year brings new trails to explore, new guests to welcome, and new stories to tell.
-                But our core promise remains the same: when you adventure with us, you&apos;re not a
-                tourist — you&apos;re a guest in our valley.
-              </p>
-            </>
+            <p className="text-white/60 italic">Our story is being written...</p>
           )}
           {stats.length > 0 && (
             <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto mt-6">
@@ -185,57 +160,88 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* Team Section */}
+      {/* Meet Your Guides */}
       <section className="py-24 bg-rva-cream">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="relative order-2 lg:order-1">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3]">
-                <Image
-                  src="/images/about/team-1.jpeg"
-                  alt="The Rich Valley Adventures guide team — local outdoor experts in Aspen, Colorado"
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-rva-forest-dark/40 via-transparent to-transparent" />
-              </div>
-            </div>
-            <div className="order-1 lg:order-2">
-              <p className="font-cormorant text-rva-copper text-lg tracking-widest uppercase mb-4">
-                Our Team
-              </p>
-              <h2 className="font-playfair text-4xl md:text-5xl text-rva-forest font-bold mb-8 leading-tight">
-                Guides Who Grew Up Here
-              </h2>
-              <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                Every Rich Valley guide is a local — born and raised in the Roaring Fork Valley or
-                long-time residents who chose this place as home. They&apos;re wilderness first-aid
-                certified, deeply experienced, and genuinely passionate about sharing the outdoors.
-              </p>
-              <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                Our guides don&apos;t just know the trails — they know the ecology, the history, the
-                weather patterns, and the best spot to catch the sunset. That local knowledge is what
-                turns a good trip into an unforgettable one.
-              </p>
-              <ul className="space-y-3">
-                {(about?.team_characteristics && about.team_characteristics.length > 0
-                  ? about.team_characteristics
-                  : [
-                      'Wilderness First-Aid certified',
-                      'Average 8+ years guiding experience',
-                      'Local naturalists & historians',
-                      'CPR & swift-water rescue trained',
-                    ]
-                ).map((item: string) => (
-                  <li key={item} className="flex items-center gap-3 text-gray-700">
-                    <span className="w-2 h-2 bg-rva-copper rounded-full flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className="text-center max-w-3xl mx-auto mb-14">
+            <p className="font-cormorant text-rva-copper text-lg tracking-widest uppercase mb-4">Our Team</p>
+            <h2 className="font-playfair text-4xl md:text-5xl text-rva-forest font-bold mb-6 leading-tight">
+              Meet Your Guides
+            </h2>
+            <p className="text-gray-700 text-lg leading-relaxed">
+              Local experts who know these mountains and rivers — because they live here year-round.
+            </p>
           </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                name: 'Kit McLendon',
+                title: 'Lead Fly Fishing Guide',
+                tags: ['Hatch reports', 'Fly recommendations', 'Water clarity', 'River observations', 'Trails', 'Boat ramp logistics'],
+                note: 'Primary expert for river conditions reporting',
+              },
+              {
+                name: 'Bart Chandler',
+                title: 'Shooting Guide',
+                tags: ['Sporting clay instruction', 'Hunting guide'],
+              },
+              {
+                name: 'Bobby Regan',
+                title: 'Kids Fishing Guide',
+                tags: ['Introduction to fly fishing', 'Youth instruction', 'Family trips'],
+              },
+              {
+                name: 'Alex Macintyre',
+                title: 'Boat Captain',
+                tags: ['Float trips', 'Gunnison River', 'Colorado River boat operations'],
+              },
+              {
+                name: 'Jason Fagre',
+                title: 'Chef & Hunting Guide',
+                tags: ['Elevated camping chef', 'Hunting guide', 'Field-to-table experiences'],
+              },
+              {
+                name: 'John Mudrey',
+                title: 'Fly Fishing Guide — Dry Fly Specialist',
+                tags: ['Dry fly fishing', 'Nymphing', 'Technical presentation'],
+              },
+            ].map((g) => (
+              <div
+                key={g.name}
+                className="bg-white rounded-2xl border border-rva-sage/20 shadow-sm overflow-hidden flex flex-col"
+              >
+                <div className="aspect-[4/3] bg-gradient-to-br from-rva-cream to-rva-sage/10 flex items-center justify-center px-6">
+                  <p className="text-sm font-medium text-rva-forest/45 tracking-wide text-center">Photo coming soon</p>
+                </div>
+                <div className="p-6 flex flex-col flex-grow">
+                  <h3 className="font-playfair text-xl font-bold text-rva-forest mb-1">{g.name}</h3>
+                  <p className="text-rva-copper text-sm font-semibold mb-4">{g.title}</p>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {g.tags.map((t) => (
+                      <span
+                        key={t}
+                        className="text-xs bg-rva-forest/5 text-rva-forest px-2.5 py-1 rounded-full border border-rva-sage/20"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <span className="inline-flex self-start mt-auto text-xs font-bold uppercase tracking-wider bg-rva-copper/10 text-rva-copper px-2.5 py-1 rounded">
+                    First Aid certified
+                  </span>
+                  {g.note ? (
+                    <p className="text-xs text-gray-500 mt-3 italic border-t border-rva-sage/10 pt-3">{g.note}</p>
+                  ) : null}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-center text-gray-600 text-sm mt-12 max-w-2xl mx-auto leading-relaxed">
+            All Rich Valley Adventures guides hold current First Aid certification and have extensive experience
+            guiding in the Roaring Fork Valley.
+          </p>
         </div>
       </section>
 
