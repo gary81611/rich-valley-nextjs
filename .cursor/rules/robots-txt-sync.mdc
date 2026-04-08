@@ -1,0 +1,13 @@
+---
+description: Keep public/robots.txt in sync whenever app/api/robots or RVA crawl rules change
+alwaysApply: true
+---
+
+# robots.txt sync (Rich Valley Adventures)
+
+Whenever you **edit** `app/api/robots/route.ts`, **RVA** crawl policy, or related SEO rules:
+
+1. **Update `public/robots.txt`** so the RVA `User-agent: *` block matches the API response **line-for-line** (same `Disallow` / `Allow` / `Sitemap` lines). Production serves `/robots.txt` via rewrite to `/api/robots`; the static file is the fallback and must not drift.
+2. **Keep explicit `Allow:` lines** for each major marketing section (conditions, guides, fly fishing, hiking, adventures, paddle boarding, winter, locations, etc.) using **canonical paths** (no `/rva/` prefix). Add new sections here whenever you add important indexable routes.
+3. **Never** put a trailing period or stray character after the `Sitemap:` URL.
+4. If you change redirects or canonical URL strategy, **re-read** this file and robots content together.

@@ -22,10 +22,19 @@ Sitemap: ${sitemapUrl}
     })
   }
 
-  // Keep in sync with public/robots.txt (fallback if rewrite differs). No trailing punctuation on Sitemap URL.
+  // Keep in sync with public/robots.txt — see .cursor/rules/robots-txt-sync.mdc
   const content = `User-agent: *
 Disallow: /rva/
 Allow: /llms.txt
+Allow: /conditions
+Allow: /guides
+Allow: /fly-fishing
+Allow: /hiking
+Allow: /adventures/mountain-biking
+Allow: /paddle-boarding
+Allow: /adventures/elevated-camping
+Allow: /winter
+Allow: /locations
 Allow: /
 
 Sitemap: ${sitemapUrl}

@@ -1,6 +1,15 @@
 User-agent: *
 Disallow: /rva/
 Allow: /llms.txt
+Allow: /conditions
+Allow: /guides
+Allow: /fly-fishing
+Allow: /hiking
+Allow: /adventures/mountain-biking
+Allow: /paddle-boarding
+Allow: /adventures/elevated-camping
+Allow: /winter
+Allow: /locations
 Allow: /
 
 Sitemap: https://www.richvalleyadventures.com/sitemap.xml
