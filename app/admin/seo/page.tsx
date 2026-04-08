@@ -57,11 +57,11 @@ function SchemaTab({ supabase }: { supabase: any }) {
     try {
       // Fetch data from Supabase
       const [adventures, services, fleet, testimonials, faqs] = await Promise.all([
-        supabase.from('adventures').select('title,description,price_from,duration').eq('site_key', 'rva'),
-        supabase.from('services').select('title,description,base_price').eq('site_key', 'alpenglow'),
-        supabase.from('fleet').select('name,description,capacity,vehicle_type').eq('site_key', 'alpenglow'),
-        supabase.from('testimonials').select('author_name,rating,content,site_key').limit(20),
-        supabase.from('faqs').select('question,answer,site_key'),
+        supabase.from('adventures').select('name,description,price,duration').eq('is_active', true),
+        supabase.from('services').select('name,description,price_from').eq('is_active', true),
+        supabase.from('fleet_vehicles').select('name,description,capacity,type').eq('is_active', true),
+        supabase.from('testimonials').select('author,quote,rating,site_key').limit(20),
+        supabase.from('faqs').select('question,answer,site_key').eq('is_active', true),
       ])
 
       const adventureData = adventures.data || []
@@ -83,14 +83,14 @@ function SchemaTab({ supabase }: { supabase: any }) {
           acceptedAnswer: { '@type': 'Answer', text: f.answer },
         }))
 
-        const tripItems = adventureData.map((a: { title: string; description: string; price_from?: number; duration?: string }) => ({
+        const tripItems = adventureData.map((a: { name: string; description: string; price?: number; duration?: string }) => ({
           '@type': 'TouristTrip',
-          name: a.title,
+          name: a.name,
           description: a.description,
-          ...(a.price_from && { offers: { '@type': 'Offer', price: a.price_from, priceCurrency: 'USD' } }),
+          ...(a.price && { offers: { '@type': 'Offer', price: a.price, priceCurrency: 'USD' } }),
           ...(a.duration && { duration: a.duration }),
           touristType: 'Adventure travelers, outdoor enthusiasts',
-          itinerary: { '@type': 'ItemList', name: `${a.title} itinerary` },
+          itinerary: { '@type': 'ItemList', name: `${a.name} itinerary` },
         }))
 
         schema = [
@@ -120,11 +120,11 @@ function SchemaTab({ supabase }: { supabase: any }) {
               },
             }),
             ...(testimonialData.length > 0 && {
-              review: testimonialData.slice(0, 5).map((t: { author_name: string; rating: number; content: string }) => ({
+              review: testimonialData.slice(0, 5).map((t: { author: string; rating: number; quote: string }) => ({
                 '@type': 'Review',
-                author: { '@type': 'Person', name: t.author_name },
+                author: { '@type': 'Person', name: t.author },
                 reviewRating: { '@type': 'Rating', ratingValue: t.rating || 5, bestRating: 5 },
-                reviewBody: t.content,
+                reviewBody: t.quote,
               })),
             }),
             hasMap: 'https://maps.google.com/?q=Aspen,CO',
@@ -139,21 +139,21 @@ function SchemaTab({ supabase }: { supabase: any }) {
         ]
       } else {
         // AAL schema
-        const vehicleItems = fleetData.map((v: { name: string; description: string; capacity?: number; vehicle_type?: string }) => ({
+        const vehicleItems = fleetData.map((v: { name: string; description: string; capacity?: number; type?: string }) => ({
           '@type': 'Product',
           name: v.name,
           description: v.description,
           ...(v.capacity && { additionalProperty: { '@type': 'PropertyValue', name: 'Passenger Capacity', value: v.capacity } }),
-          ...(v.vehicle_type && { category: v.vehicle_type }),
+          ...(v.type && { category: v.type }),
           brand: { '@type': 'Brand', name: 'Aspen Alpenglow Limousine' },
           offers: { '@type': 'Offer', availability: 'https://schema.org/InStock', priceCurrency: 'USD' },
         }))
 
-        const serviceItems = serviceData.map((s: { title: string; description: string; base_price?: number }) => ({
+        const serviceItems = serviceData.map((s: { name: string; description: string; price_from?: number }) => ({
           '@type': 'Service',
-          name: s.title,
+          name: s.name,
           description: s.description,
-          ...(s.base_price && { offers: { '@type': 'Offer', price: s.base_price, priceCurrency: 'USD' } }),
+          ...(s.price_from && { offers: { '@type': 'Offer', price: s.price_from, priceCurrency: 'USD' } }),
           provider: { '@type': 'LocalBusiness', name: 'Aspen Alpenglow Limousine' },
         }))
 
@@ -195,11 +195,11 @@ function SchemaTab({ supabase }: { supabase: any }) {
               },
             }),
             ...(testimonialData.length > 0 && {
-              review: testimonialData.slice(0, 5).map((t: { author_name: string; rating: number; content: string }) => ({
+              review: testimonialData.slice(0, 5).map((t: { author: string; rating: number; quote: string }) => ({
                 '@type': 'Review',
-                author: { '@type': 'Person', name: t.author_name },
+                author: { '@type': 'Person', name: t.author },
                 reviewRating: { '@type': 'Rating', ratingValue: t.rating || 5, bestRating: 5 },
-                reviewBody: t.content,
+                reviewBody: t.quote,
               })),
             }),
           },
