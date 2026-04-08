@@ -6,16 +6,16 @@ import type { BlogPost } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
 
-/** Map legacy /adventures/* paths to canonical /rva/* routes (Related Resources + DB seed). */
+/** Map legacy /adventures/* paths to canonical public routes (Related Resources + DB seed). */
 function normalizeRvaBlogLinkUrl(url: string): string {
   if (!url.startsWith('/')) return url
   const [path, query] = url.split('?', 2)
   const suffix = query != null ? `?${query}` : ''
-  if (path === '/adventures') return `/rva${suffix}`
+  if (path === '/adventures') return '/' + suffix
   if (!path.startsWith('/adventures/')) return url
   const rest = path.slice('/adventures/'.length)
-  if (rest === 'glamping') return `/rva/elevated-camping${suffix}`
-  return `/rva/${rest}${suffix}`
+  if (rest === 'glamping') return `/adventures/elevated-camping${suffix}`
+  return `/${rest}${suffix}`
 }
 
 async function getPost(slug: string): Promise<BlogPost | null> {

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: 'Our Guides | Rich Valley Adventures — Expert Local Guides in Aspen',
   description:
     'Meet the Rich Valley Adventures guide team. First Aid certified experts in fly fishing, hunting, hiking, and outdoor adventures in the Roaring Fork Valley.',
-  alternates: { canonical: 'https://www.richvalleyadventures.com/rva/guides' },
+  alternates: { canonical: 'https://www.richvalleyadventures.com/guides' },
 }
 
 type GuideRow = {
@@ -106,7 +106,7 @@ export default async function GuidesPage() {
               Aspen Alpenglow Limousine
             </a>
           </p>
-          <Link href="/rva/contact" className="inline-block bg-rva-copper hover:bg-rva-copper-light text-white px-8 py-3 rounded-full font-semibold transition-colors">
+          <Link href="/contact" className="inline-block bg-rva-copper hover:bg-rva-copper-light text-white px-8 py-3 rounded-full font-semibold transition-colors">
             Book an Adventure — 970-456-3666
           </Link>
         </div>

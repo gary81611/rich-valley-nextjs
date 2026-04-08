@@ -181,7 +181,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
               <span>{groupSize}</span>
             </div>
             <div className="flex gap-3">
-              <Link href="/rva/contact" className="flex-1 bg-rva-copper hover:bg-rva-copper-light text-white text-center py-3 rounded-full text-sm font-semibold transition-colors">
+              <Link href="/contact" className="flex-1 bg-rva-copper hover:bg-rva-copper-light text-white text-center py-3 rounded-full text-sm font-semibold transition-colors">
                 Request Booking
               </Link>
               <a href="tel:+19704563666" className="flex-1 border-2 border-rva-forest/20 text-rva-forest text-center py-3 rounded-full text-sm font-medium transition-colors hover:border-rva-forest/40">
@@ -267,7 +267,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
                   Get in touch to check availability.
                 </p>
                 <Link
-                  href="/rva/contact"
+                  href="/contact"
                   className="block bg-rva-copper hover:bg-rva-copper-light text-white text-center px-6 py-3.5 rounded-full font-semibold transition-all hover:shadow-lg w-full mb-4"
                 >
                   Request Booking

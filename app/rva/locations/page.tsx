@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Adventure Locations | Rich Valley Adventures — Colorado Outdoor Destinations',
   description: 'Guided adventures across Colorado — Aspen, Basalt, Carbondale, Glenwood Springs, Snowmass, Vail, Telluride, and more. Fly fishing, hiking, hunting throughout the Roaring Fork Valley.',
-  alternates: { canonical: 'https://www.richvalleyadventures.com/rva/locations' },
+  alternates: { canonical: 'https://www.richvalleyadventures.com/locations' },
 }
 
 export default async function LocationsPage() {
@@ -44,7 +44,7 @@ export default async function LocationsPage() {
         ) : (
           <div className="grid md:grid-cols-2 gap-6">
             {locations.map(loc => (
-              <Link key={loc.slug} href={`/rva/locations/${loc.slug}`} className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow group">
+              <Link key={loc.slug} href={`/locations/${loc.slug}`} className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow group">
                 <div className="flex items-start justify-between mb-3">
                   <div>
                     <h2 className="font-playfair text-xl font-semibold text-rva-forest-dark group-hover:text-rva-copper transition-colors">{loc.name}</h2>

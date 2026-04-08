@@ -110,7 +110,7 @@ export default function ConditionsReportsAdminPage() {
     <div>
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
       <h1 className="text-2xl font-bold text-slate-900 mb-2">Conditions reports</h1>
-      <p className="text-slate-600 text-sm mb-8">Published reports appear on /rva/conditions and the homepage strip.</p>
+      <p className="text-slate-600 text-sm mb-8">Published reports appear on /conditions and the homepage strip.</p>
 
       <form className="max-w-3xl space-y-4 bg-white rounded-xl border border-slate-200 p-6 mb-10" onSubmit={(e) => e.preventDefault()}>
         <FormField label="Report date" name="report_date" value={form.report_date} onChange={updateForm} required />

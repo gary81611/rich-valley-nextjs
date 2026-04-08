@@ -2,12 +2,14 @@ import type { Metadata } from 'next'
 import RVANav from '@/components/rva/RVANav'
 import RVAFooter from '@/components/rva/RVAFooter'
 
-const RVA_URL = 'https://www.richvalleyadventures.com/rva'
+const RVA_URL = 'https://www.richvalleyadventures.com'
 const RVA_OG_IMAGE = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80'
 
 export const metadata: Metadata = {
+  metadataBase: new URL(RVA_URL),
   title: 'Rich Valley Adventures | Guided Outdoor Experiences in Aspen, CO',
-  description: 'Guided fly fishing, paddle boarding, mountain biking, hiking, and more in Aspen and the Roaring Fork Valley. Small groups, expert local guides, all gear included. Operating since 2012.',
+  description:
+    'Rich Valley Adventures offers expert-guided fly fishing, hiking, mountain biking, and elevated camping in Aspen, Colorado. Small groups, all gear included. Book your Roaring Fork Valley adventure today.',
   keywords: 'Aspen guided adventures, fly fishing Aspen Colorado, paddle boarding Roaring Fork River, mountain biking Aspen, outdoor guide Aspen Colorado, guided hiking Aspen, adventure tours Roaring Fork Valley, Aspen outdoor activities',
   alternates: {
     canonical: RVA_URL,
@@ -19,7 +21,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Rich Valley Adventures | Guided Outdoor Experiences in Aspen, CO',
-    description: 'Expert-guided fly fishing, paddle boarding, mountain biking & more in the Roaring Fork Valley. Since 2012. Small groups, all gear included.',
+    description:
+      'Expert-guided fly fishing, hiking, mountain biking, and elevated camping in Aspen and the Roaring Fork Valley. Small groups, all gear included.',
     type: 'website',
     locale: 'en_US',
     url: RVA_URL,
@@ -36,7 +39,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Rich Valley Adventures | Guided Outdoor Experiences in Aspen, CO',
-    description: 'Expert-guided fly fishing, paddle boarding, mountain biking & more in the Roaring Fork Valley. Since 2012.',
+    description:
+      'Expert-guided fly fishing, hiking, mountain biking, and elevated camping in Aspen and the Roaring Fork Valley.',
     images: [RVA_OG_IMAGE],
   },
   verification: {
@@ -291,7 +295,7 @@ export default function RVALayout({ children }: { children: React.ReactNode }) {
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
             Call Now
           </a>
-          <a href="/rva/contact" className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold text-white bg-rva-copper">
+          <a href="/contact" className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold text-white bg-rva-copper">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
             Check Availability
           </a>

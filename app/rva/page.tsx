@@ -110,16 +110,13 @@ export default function RVAPage() {
             Aspen · Roaring Fork Valley
           </p>
           <h1 className="font-playfair text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
-            Discover the<br />
-            <span className="text-rva-copper-light italic">Heart of Aspen</span>
+            Guided Outdoor<br />
+            <span className="text-rva-copper-light italic">Adventures</span>
           </h1>
           <p className="text-xl md:text-2xl text-white/85 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
-            Expert-guided fly fishing, mountain biking, paddle boarding, hiking, and more — since 2012.
+            Rich Valley Adventures is Aspen’s outdoor guide company — expert-led fly fishing, hiking, mountain biking, paddle boarding, and elevated camping. Small groups, all gear included — since 2012.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" className="border-2 border-white text-white hover:bg-white hover:text-rva-forest px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
-              Book Transportation
-            </a>
             <a href="#adventures" className="bg-rva-copper hover:bg-rva-copper-light text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block">
               Explore Adventures
             </a>
@@ -127,6 +124,13 @@ export default function RVAPage() {
               Book Your Trip
             </a>
           </div>
+          <p className="mt-10 text-white/70 text-sm md:text-base max-w-xl mx-auto">
+            Need a ride? Ground transportation via our sister company{' '}
+            <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" className="text-rva-copper-light underline hover:text-white transition-colors">
+              Aspen Alpenglow Limousine
+            </a>
+            .
+          </p>
         </div>
         {/* Stats bar */}
         <div className="absolute bottom-0 left-0 right-0 bg-rva-forest/90 backdrop-blur-sm border-t border-white/10">
@@ -155,7 +159,7 @@ export default function RVAPage() {
             </p>
           </div>
           <Link
-            href="/rva/conditions"
+            href="/conditions"
             className="inline-flex items-center justify-center gap-2 shrink-0 bg-rva-copper hover:bg-rva-copper-light text-white font-semibold px-6 py-3 rounded-full transition-colors text-sm md:text-base"
           >
             View Full Conditions Report
@@ -218,7 +222,14 @@ export default function RVAPage() {
                   <div className="p-6 flex flex-col flex-1">
                     <h3 className="font-playfair text-2xl text-rva-copper font-semibold mb-3">{adventure.title}</h3>
                     <p className="text-white/75 text-sm leading-relaxed flex-1">{adventure.description}</p>
-                    <Link href={`/rva/${adventure.slug}`} className="mt-5 text-rva-copper-light text-sm font-semibold hover:text-rva-copper transition-colors flex items-center gap-2">
+                    <Link
+                      href={
+                        adventure.slug === 'elevated-camping' || adventure.slug === 'mountain-biking'
+                          ? `/adventures/${adventure.slug}`
+                          : `/${adventure.slug}`
+                      }
+                      className="mt-5 text-rva-copper-light text-sm font-semibold hover:text-rva-copper transition-colors flex items-center gap-2"
+                    >
                       Learn More
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                     </Link>
@@ -239,7 +250,7 @@ export default function RVAPage() {
             First Aid certified, valley-raised, and passionate about these mountains — meet the people behind your trip.
           </p>
           <Link
-            href="/rva/guides"
+            href="/guides"
             className="inline-flex items-center gap-2 text-rva-copper font-semibold hover:text-rva-copper-light transition-colors text-lg"
           >
             Meet Our Guides
@@ -285,7 +296,7 @@ export default function RVAPage() {
               </p>
               <p className="text-gray-700 leading-relaxed mb-6">{fishingReport.preview}</p>
               <Link
-                href="/rva/conditions"
+                href="/conditions"
                 className="inline-flex items-center gap-2 text-rva-copper font-semibold hover:text-rva-copper-light transition-colors"
               >
                 Read Full Report

@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${loc.name} Adventures | Rich Valley Adventures — Guided Outdoor Experiences`,
     description: (loc.description || '').slice(0, 160),
-    alternates: { canonical: `https://www.richvalleyadventures.com/rva/locations/${slug}` },
+    alternates: { canonical: `https://www.richvalleyadventures.com/locations/${slug}` },
   }
 }
 
@@ -33,7 +33,7 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
     <div className="min-h-screen bg-rva-cream font-inter">
       <div className="bg-rva-forest-dark pt-32 pb-16">
         <div className="max-w-5xl mx-auto px-6">
-          <Link href="/rva/locations" className="text-rva-copper text-sm hover:underline mb-4 inline-block">← All Locations</Link>
+          <Link href="/locations" className="text-rva-copper text-sm hover:underline mb-4 inline-block">← All Locations</Link>
           <h1 className="font-playfair text-4xl md:text-5xl text-white font-light mb-2">{loc.name}</h1>
           <p className="text-white/60 text-lg">{loc.tagline}</p>
           {driveTime && driveTime !== 'Home base' && <p className="text-white/40 text-sm mt-2">{driveTime} from Aspen</p>}
@@ -95,7 +95,7 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
         )}
 
         <div className="text-center">
-          <Link href="/rva/contact" className="inline-block bg-rva-copper hover:bg-rva-copper-light text-white px-8 py-3 rounded-full font-semibold transition-colors">
+          <Link href="/contact" className="inline-block bg-rva-copper hover:bg-rva-copper-light text-white px-8 py-3 rounded-full font-semibold transition-colors">
             Book a {loc.name} Adventure — 970-456-3666
           </Link>
         </div>

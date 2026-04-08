@@ -15,30 +15,25 @@ Allow: /llms.txt
 Sitemap: ${sitemapUrl}
 `
     return new Response(content, {
-      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'public, max-age=300, s-maxage=300',
+      },
     })
   }
 
-  // RVA — disallow legacy indexed paths; explicitly allow key marketing pages
   const content = `User-agent: *
-Disallow: /service-areas/
-Disallow: /service-areas-locations/
+Disallow: /rva/
 Allow: /llms.txt
-Allow: /rva/conditions
-Allow: /rva/guides
-Allow: /rva/fly-fishing
-Allow: /rva/hiking
-Allow: /rva/mountain-biking
-Allow: /rva/paddle-boarding
-Allow: /rva/elevated-camping
-Allow: /rva/winter
-Allow: /rva/locations
 Allow: /
 
 Sitemap: ${sitemapUrl}
 `
 
   return new Response(content, {
-    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Cache-Control': 'public, max-age=300, s-maxage=300',
+    },
   })
 }

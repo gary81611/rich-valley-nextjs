@@ -3,10 +3,10 @@ import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { rvaData } from '@/lib/site-data'
 
-const SERVICE_PAGES = [
+const SERVICE_PAGES: { label: string; slug: string; href?: string }[] = [
   { label: 'Fly Fishing', slug: 'fly-fishing' },
   { label: 'Paddle Boarding', slug: 'paddle-boarding' },
-  { label: 'Mountain Biking', slug: 'mountain-biking' },
+  { label: 'Mountain Biking', slug: 'mountain-biking', href: '/adventures/mountain-biking' },
   { label: 'Hiking', slug: 'hiking' },
   { label: 'Snowshoeing', slug: 'snowshoeing' },
   { label: 'Wine Tours', slug: 'wine-tours' },
@@ -29,7 +29,7 @@ export default function RVANav() {
   return (
     <nav aria-label="Main navigation" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-rva-forest/95 backdrop-blur-md shadow-lg' : 'bg-rva-forest/95 backdrop-blur-md shadow-lg'}`}>
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center">
-        <a href="/rva" className="flex items-center gap-3 flex-shrink-0" aria-label="Rich Valley Adventures — home">
+        <a href="/" className="flex items-center gap-3 flex-shrink-0" aria-label="Rich Valley Adventures — home">
           <Image src={rvaData.logo} alt="Rich Valley Adventures logo" width={160} height={50} className="h-10 md:h-14 w-auto object-contain" unoptimized loading="eager" />
         </a>
         <a href="tel:+19704563666" aria-label="Call Rich Valley Adventures at 970-456-3666" className="ml-3 flex-shrink-0 bg-rva-copper hover:bg-rva-copper-light text-white px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-semibold transition-all hover:shadow-lg">
@@ -48,29 +48,29 @@ export default function RVANav() {
             {adventuresOpen && (
               <div className="absolute top-full left-0 mt-1 w-56 bg-rva-forest rounded-xl shadow-2xl border border-white/10 py-2 z-50">
                 {SERVICE_PAGES.map((page) => (
-                  <a key={page.slug} href={`/rva/${page.slug}`} className="block px-4 py-2 text-white/85 hover:text-rva-copper-light hover:bg-white/5 text-sm transition-colors">
+                  <a key={page.slug} href={page.href ?? `/${page.slug}`} className="block px-4 py-2 text-white/85 hover:text-rva-copper-light hover:bg-white/5 text-sm transition-colors">
                     {page.label}
                   </a>
                 ))}
               </div>
             )}
           </div>
-          <a href="/rva/locations" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+          <a href="/locations" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
             Locations
           </a>
-          <a href="/rva/conditions" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+          <a href="/conditions" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
             Conditions
           </a>
-          <a href="/rva/guides" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+          <a href="/guides" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
             Our Guides
           </a>
-          <a href="/rva#about" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+          <a href="/#about" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
             About
           </a>
-          <a href="/rva#gallery" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+          <a href="/#gallery" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
             Gallery
           </a>
-          <a href="/rva#contact" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
+          <a href="/#contact" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
             Contact
           </a>
           <a href="/blog" className="text-white/90 hover:text-rva-copper-light transition-colors text-sm font-medium tracking-wide">
@@ -96,29 +96,29 @@ export default function RVANav() {
             {mobileAdventuresOpen && (
               <div className="pl-4 space-y-1 border-l border-white/20 ml-2 mt-1">
                 {SERVICE_PAGES.map((page) => (
-                  <a key={page.slug} href={`/rva/${page.slug}`} onClick={() => setMobileMenuOpen(false)} className="block text-white/75 hover:text-rva-copper-light text-sm py-1.5">
+                  <a key={page.slug} href={page.href ?? `/${page.slug}`} onClick={() => setMobileMenuOpen(false)} className="block text-white/75 hover:text-rva-copper-light text-sm py-1.5">
                     {page.label}
                   </a>
                 ))}
               </div>
             )}
           </div>
-          <a href="/rva/locations" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
+          <a href="/locations" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
             Locations
           </a>
-          <a href="/rva/conditions" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
+          <a href="/conditions" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
             Conditions
           </a>
-          <a href="/rva/guides" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
+          <a href="/guides" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
             Our Guides
           </a>
-          <a href="/rva#about" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
+          <a href="/#about" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
             About
           </a>
-          <a href="/rva#gallery" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
+          <a href="/#gallery" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
             Gallery
           </a>
-          <a href="/rva#contact" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
+          <a href="/#contact" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">
             Contact
           </a>
           <a href="/blog" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-rva-copper-light text-sm font-medium py-2">

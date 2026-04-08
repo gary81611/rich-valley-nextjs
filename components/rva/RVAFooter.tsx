@@ -2,12 +2,12 @@ import Image from 'next/image'
 import { rvaData } from '@/lib/site-data'
 
 const FOOTER_ADVENTURES = [
-  { title: 'Fly Fishing', href: '/rva/fly-fishing' },
-  { title: 'Paddle Boarding', href: '/rva/paddle-boarding' },
-  { title: 'Mountain Biking', href: '/rva/mountain-biking' },
-  { title: 'Hiking', href: '/rva/hiking' },
-  { title: 'Elevated Camping', href: '/rva/elevated-camping' },
-  { title: 'Winter Adventures', href: '/rva/winter' },
+  { title: 'Fly Fishing', href: '/fly-fishing' },
+  { title: 'Paddle Boarding', href: '/paddle-boarding' },
+  { title: 'Mountain Biking', href: '/adventures/mountain-biking' },
+  { title: 'Hiking', href: '/hiking' },
+  { title: 'Elevated Camping', href: '/adventures/elevated-camping' },
+  { title: 'Winter Adventures', href: '/winter' },
 ]
 
 export default function RVAFooter() {
@@ -35,9 +35,9 @@ export default function RVAFooter() {
           <div>
             <h4 className="font-playfair text-lg font-semibold mb-5 text-rva-copper">Quick Links</h4>
             <ul className="space-y-2">
-              <li><a href="/rva/conditions" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">River &amp; Trail Conditions</a></li>
-              <li><a href="/rva/guides" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">Meet Our Guides</a></li>
-              <li><a href="/rva/contact" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">Book an Adventure</a></li>
+              <li><a href="/conditions" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">River &amp; Trail Conditions</a></li>
+              <li><a href="/guides" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">Meet Our Guides</a></li>
+              <li><a href="/contact" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">Book an Adventure</a></li>
               <li><a href="/terms" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">Terms & Conditions</a></li>
               <li><a href="/privacy" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">Privacy Policy</a></li>
             </ul>

@@ -179,7 +179,7 @@ export default async function WinterPage() {
                   </li>
                 </ul>
                 <Link
-                  href="/rva/contact"
+                  href="/contact"
                   className="bg-rva-copper hover:bg-rva-copper-light text-white px-8 py-3.5 rounded-full font-semibold transition-all hover:shadow-lg inline-block"
                 >
                   Book Now — 970-456-3666
@@ -214,7 +214,7 @@ export default async function WinterPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/rva/contact"
+              href="/contact"
               className="bg-rva-copper hover:bg-rva-copper-light text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block"
             >
               Book Now

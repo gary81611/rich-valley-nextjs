@@ -19,23 +19,26 @@ export async function GET(request: Request) {
 - Partner transportation (when referenced on site): Aspen Alpenglow Limousine — https://aspenalpenglowlimousine.com
 
 ## Canonical URLs (authoritative)
-https://www.richvalleyadventures.com/rva
-https://www.richvalleyadventures.com/rva/fly-fishing
-https://www.richvalleyadventures.com/rva/hiking
-https://www.richvalleyadventures.com/rva/mountain-biking
-https://www.richvalleyadventures.com/rva/paddle-boarding
-https://www.richvalleyadventures.com/rva/elevated-camping
-https://www.richvalleyadventures.com/rva/winter
-https://www.richvalleyadventures.com/rva/conditions
-https://www.richvalleyadventures.com/rva/guides
-https://www.richvalleyadventures.com/rva/locations
+https://www.richvalleyadventures.com/
+https://www.richvalleyadventures.com/fly-fishing
+https://www.richvalleyadventures.com/hiking
+https://www.richvalleyadventures.com/adventures/mountain-biking
+https://www.richvalleyadventures.com/paddle-boarding
+https://www.richvalleyadventures.com/adventures/elevated-camping
+https://www.richvalleyadventures.com/winter
+https://www.richvalleyadventures.com/conditions
+https://www.richvalleyadventures.com/guides
+https://www.richvalleyadventures.com/locations
+https://www.richvalleyadventures.com/service-areas
 https://www.richvalleyadventures.com/blog
 
 ## Machine-readable index
 Sitemap: https://www.richvalleyadventures.com/sitemap.xml
 
 ## Legacy / non-authoritative (redirected; do not quote as current offerings)
-/service-areas/*
+/rva/*
+/areas/*
+/service-areas-locations/*
 /fleet
 /services (Rich Valley host — redirects)
 `

@@ -63,13 +63,33 @@ export async function middleware(request: NextRequest) {
     site = 'rva'
   }
 
+  /** Indexed legacy URLs used /rva/* — strip prefix so canonical paths are /… (see next.config.js). */
+  if (site === 'rva' && (pathname === '/rva' || pathname === '/rva/' || pathname.startsWith('/rva/'))) {
+    const dest = pathname === '/rva' || pathname === '/rva/' ? '/' : pathname.slice(4) || '/'
+    return NextResponse.redirect(new URL(dest, request.url), 301)
+  }
+
+  /** Valley location guides that overlap service-area landings — canonical is /service-areas/[slug]. */
+  const locationSlugToServiceArea: Record<string, string> = {
+    snowmass: 'snowmass-village',
+  }
+  const locationsMergedToServiceAreas = new Set(['aspen', 'basalt', 'carbondale', 'snowmass', 'glenwood-springs'])
+
+  if (site === 'rva' && pathname.startsWith('/locations/')) {
+    const slug = pathname.slice('/locations/'.length).split('/')[0]
+    if (slug && locationsMergedToServiceAreas.has(slug)) {
+      const target = locationSlugToServiceArea[slug] || slug
+      return NextResponse.redirect(new URL(`/service-areas/${target}`, request.url), 301)
+    }
+  }
+
   // 301 redirects for stale RVA URLs (see also next.config.js redirects)
   if (site === 'rva') {
     if (pathname === '/winter-offerings') {
       return NextResponse.redirect(new URL('/winter', request.url), 301)
     }
     if (pathname === '/horseback-riding') {
-      return NextResponse.redirect(new URL('/rva', request.url), 301)
+      return NextResponse.redirect(new URL('/', request.url), 301)
     }
   }
 

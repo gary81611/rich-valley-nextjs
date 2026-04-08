@@ -57,7 +57,7 @@ Return ONLY a JSON object (no markdown fences) with this exact structure:
   "metaTitle": "SEO page title, max 60 chars, include location",
   "metaDescription": "Compelling meta description, max 155 chars",
   "content": "Full blog post in markdown format (use ## for headings, **bold**, etc.)",
-  "internalLinks": ["Suggested internal link anchor text and URL, e.g. 'Fly Fishing Tours → /rva/fly-fishing'"],
+  "internalLinks": ["Suggested internal link anchor text and URL, e.g. 'Fly Fishing Tours → /fly-fishing'"],
   "faqs": [
     {"q": "Question someone might ask an AI", "a": "Concise factual answer, 30-50 words"},
     {"q": "...", "a": "..."},
