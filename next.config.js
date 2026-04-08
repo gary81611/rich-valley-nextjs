@@ -25,6 +25,14 @@ function rvaRedirects() {
       },
       { source: '/services', destination: '/', permanent: true, has: h },
       { source: '/booking', destination: '/contact', permanent: true, has: h },
+      { source: '/booking/', destination: '/contact', permanent: true, has: h },
+      // Legacy CMS / old marketing URLs (GSC 404 cleanup)
+      { source: '/home', destination: '/', permanent: true, has: h },
+      { source: '/home/', destination: '/', permanent: true, has: h },
+      { source: '/adventure-booking', destination: '/contact', permanent: true, has: h },
+      { source: '/outdoor-adventures', destination: '/adventures', permanent: true, has: h },
+      { source: '/contact-us', destination: '/contact', permanent: true, has: h },
+      { source: '/privacy-policy', destination: '/privacy', permanent: true, has: h },
     )
   }
   return list
