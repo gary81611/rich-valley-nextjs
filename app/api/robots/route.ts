@@ -22,6 +22,7 @@ Sitemap: ${sitemapUrl}
     })
   }
 
+  // Keep in sync with public/robots.txt (fallback if rewrite differs). No trailing punctuation on Sitemap URL.
   const content = `User-agent: *
 Disallow: /rva/
 Allow: /llms.txt

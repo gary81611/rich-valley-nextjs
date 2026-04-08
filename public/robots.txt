@@ -1,5 +1,3 @@
-# Reference copy. Production serves /robots.txt via /api/robots (next.config.js rewrite).
-
 User-agent: *
 Disallow: /rva/
 Allow: /llms.txt
