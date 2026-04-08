@@ -11,3 +11,9 @@ Whenever you **edit** `app/api/robots/route.ts`, **RVA** crawl policy, or relate
 2. **Keep explicit `Allow:` lines** for each major marketing section (conditions, guides, fly fishing, hiking, adventures, paddle boarding, winter, locations, etc.) using **canonical paths** (no `/rva/` prefix). Add new sections here whenever you add important indexable routes.
 3. **Never** put a trailing period or stray character after the `Sitemap:` URL.
 4. If you change redirects or canonical URL strategy, **re-read** this file and robots content together.
+
+## Google Search Console — “blocked” / manual indexing
+
+- **`Disallow: /rva/`** means Google **must not crawl** any path starting with `/rva/`. URL Inspection will show **blocked by robots.txt** for those URLs — **even if** you listed `Allow: /conditions`, because `/rva/conditions` ≠ `/conditions`.
+- For **Request indexing** / live tests, use **canonical URLs** (e.g. `https://www.richvalleyadventures.com/conditions`), not legacy `/rva/...`.
+- The **Indexing API** only supports certain structured-data page types (e.g. job postings); it does not “force” normal pages to index. Day-to-day indexing still relies on sitemaps, internal links, and Google’s queue — manual requests are hints, not guarantees.
