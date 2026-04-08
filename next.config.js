@@ -32,6 +32,7 @@ function rvaRedirects() {
 
 const nextConfig = {
   images: {
+    minimumCacheTTL: 31536000,
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: 'lirp.cdn-website.com' },
