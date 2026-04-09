@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'FAQ | Aspen Alpenglow Limousine — Transportation Questions Answered',
   description:
     'Frequently asked questions about Aspen transportation, airport transfers, car service pricing, and getting to Aspen from Denver, Eagle, and Grand Junction airports.',
-  alternates: { canonical: 'https://aspenalpenglowlimousine.com/alpenglow/faq' },
+  alternates: { canonical: 'https://aspenalpenglowlimousine.com/faq' },
 }
 
 const VEHICLE_ANSWER =

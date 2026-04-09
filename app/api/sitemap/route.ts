@@ -35,6 +35,14 @@ function dedupeByUrl(entries: SitemapEntry[]): SitemapEntry[] {
   return out
 }
 
+function normalizeAalPageSlug(slug: string): string {
+  const s = slug.trim().replace(/^\/+|\/+$/g, '')
+  if (!s) return ''
+  if (s === 'alpenglow') return ''
+  if (s.startsWith('alpenglow/')) return s.slice('alpenglow/'.length)
+  return s
+}
+
 export async function GET(request: Request) {
   const hostname = request.headers.get('host') || ''
   const isAAL = hostname.includes('aspenalpenglow') || hostname.includes('alpenglow')
@@ -45,14 +53,14 @@ export async function GET(request: Request) {
   const staticEntries: SitemapEntry[] = isAAL
     ? [
         { url: AAL_ORIGIN, lastModified, changeFrequency: 'weekly', priority: 1.0 },
-        { url: `${AAL_ORIGIN}/alpenglow/pricing`, lastModified, changeFrequency: 'weekly', priority: 0.95 },
-        { url: `${AAL_ORIGIN}/alpenglow/faq`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
-        { url: `${AAL_ORIGIN}/alpenglow/services`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
-        { url: `${AAL_ORIGIN}/alpenglow/fleet`, lastModified, changeFrequency: 'monthly', priority: 0.85 },
-        { url: `${AAL_ORIGIN}/alpenglow/contact`, lastModified, changeFrequency: 'monthly', priority: 0.85 },
-        { url: `${AAL_ORIGIN}/alpenglow/gallery`, lastModified, changeFrequency: 'monthly', priority: 0.65 },
-        { url: `${AAL_ORIGIN}/alpenglow/destinations`, lastModified, changeFrequency: 'monthly', priority: 0.65 },
-        { url: `${AAL_ORIGIN}/alpenglow/service-areas`, lastModified, changeFrequency: 'monthly', priority: 0.65 },
+        { url: `${AAL_ORIGIN}/pricing`, lastModified, changeFrequency: 'weekly', priority: 0.95 },
+        { url: `${AAL_ORIGIN}/faq`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
+        { url: `${AAL_ORIGIN}/services`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
+        { url: `${AAL_ORIGIN}/fleet`, lastModified, changeFrequency: 'monthly', priority: 0.85 },
+        { url: `${AAL_ORIGIN}/contact`, lastModified, changeFrequency: 'monthly', priority: 0.85 },
+        { url: `${AAL_ORIGIN}/gallery`, lastModified, changeFrequency: 'monthly', priority: 0.65 },
+        { url: `${AAL_ORIGIN}/destinations`, lastModified, changeFrequency: 'monthly', priority: 0.65 },
+        { url: `${AAL_ORIGIN}/service-areas`, lastModified, changeFrequency: 'monthly', priority: 0.65 },
         { url: `${AAL_ORIGIN}/blog`, lastModified, changeFrequency: 'weekly', priority: 0.75 },
         { url: `${AAL_ORIGIN}/terms`, lastModified, changeFrequency: 'yearly', priority: 0.25 },
         { url: `${AAL_ORIGIN}/privacy`, lastModified, changeFrequency: 'yearly', priority: 0.25 },
@@ -136,12 +144,16 @@ export async function GET(request: Request) {
 
     const pageEntries: SitemapEntry[] = (pages || [])
       .filter((page) => !(siteKey === 'rva' && excludedRvaSlugs.has(page.slug)))
-      .map((page) => ({
-        url: isAAL ? `${base}/${page.slug}` : `${base}/${page.slug}`,
-        lastModified: page.updated_at ? new Date(page.updated_at) : lastModified,
-        changeFrequency: 'weekly',
-        priority: 0.85,
-      }))
+      .map((page) => {
+        const normalizedSlug = siteKey === 'alpenglow' ? normalizeAalPageSlug(page.slug) : page.slug
+        const url = normalizedSlug ? `${base}/${normalizedSlug}` : `${base}/`
+        return {
+          url,
+          lastModified: page.updated_at ? new Date(page.updated_at) : lastModified,
+          changeFrequency: 'weekly',
+          priority: 0.85,
+        }
+      })
 
     const merged = dedupeByUrl([...staticEntries, ...blogEntries, ...pageEntries])
 

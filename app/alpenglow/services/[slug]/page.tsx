@@ -49,8 +49,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!service) return { title: 'Service Not Found' }
 
   return {
-    title: `${service.name} | Aspen Alpenglow Limousine`,
+    title: `${service.name} in Aspen, CO | Aspen Alpenglow Limousine`,
     description: service.description,
+    alternates: { canonical: `https://aspenalpenglowlimousine.com/services/${slug}` },
   }
 }
 
@@ -74,6 +75,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   const displayTitle = service.name
   const bodyCopy = (service.long_description || service.description || '').trim()
   const features = Array.isArray(service.features) ? (service.features as string[]) : []
+  const plainDescription = bodyCopy.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
 
   const supabase = await createServerSupabaseClient()
   const { data: fleetVehicles } = await supabase
@@ -199,6 +201,30 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
           </div>
         </div>
       </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: `${displayTitle} in Aspen, Colorado`,
+            serviceType: displayTitle,
+            description: plainDescription || service.description,
+            areaServed: [
+              { '@type': 'City', name: 'Aspen' },
+              { '@type': 'City', name: 'Snowmass Village' },
+              { '@type': 'AdministrativeArea', name: 'Roaring Fork Valley' },
+            ],
+            provider: {
+              '@type': 'LocalBusiness',
+              name: 'Aspen Alpenglow Limousine',
+              url: 'https://aspenalpenglowlimousine.com',
+              telephone: '+19704563666',
+            },
+          }),
+        }}
+      />
     </div>
   )
 }

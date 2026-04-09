@@ -56,10 +56,10 @@ Sitemap: https://www.richvalleyadventures.com/sitemap.xml
 
 ## Canonical URLs (authoritative)
 https://aspenalpenglowlimousine.com/
-https://aspenalpenglowlimousine.com/alpenglow/pricing
-https://aspenalpenglowlimousine.com/alpenglow/faq
-https://aspenalpenglowlimousine.com/alpenglow/services
-https://aspenalpenglowlimousine.com/alpenglow/fleet
+https://aspenalpenglowlimousine.com/pricing
+https://aspenalpenglowlimousine.com/faq
+https://aspenalpenglowlimousine.com/services
+https://aspenalpenglowlimousine.com/fleet
 https://aspenalpenglowlimousine.com/services/airport-transfers
 https://aspenalpenglowlimousine.com/services/corporate-events
 https://aspenalpenglowlimousine.com/services/wedding-transportation

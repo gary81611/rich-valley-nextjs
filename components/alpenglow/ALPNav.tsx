@@ -8,7 +8,7 @@ import { normalizeAalServiceNavHref } from '@/lib/alpenglow-nav'
 
 interface NavItem { label: string; href: string }
 
-/** Links must hit `app/alpenglow/services/[slug]` (`/services/...` on the public host), not the CMS catch-all under `/alpenglow/{slug}`. */
+/** Links must hit `app/services/[slug]` (`/services/...` on the public host), not the CMS catch-all under `/{slug}`. */
 const FALLBACK_SERVICE_PAGES: NavItem[] = [
   { label: 'Airport Transfers', href: '/services/airport-transfers' },
   { label: 'Corporate Events', href: '/services/corporate-events' },
@@ -94,7 +94,7 @@ export default function ALPNav() {
   return (
     <nav aria-label="Main navigation" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'shadow-lg' : 'shadow-lg'}`} style={{ backgroundColor: '#1b2338' }}>
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center">
-        <a href="/alpenglow" className="flex items-center gap-3 flex-shrink-0" aria-label="Aspen Alpenglow Limousine — home">
+        <a href="/" className="flex items-center gap-3 flex-shrink-0" aria-label="Aspen Alpenglow Limousine — home">
           <Image src={alpenglowData.logo} alt="Aspen Alpenglow Limousine logo" width={160} height={50} className="h-10 md:h-14 w-auto object-contain" unoptimized loading="eager" />
         </a>
         <a href={phoneHref} aria-label={`Call Aspen Alpenglow Limousine at ${phone}`} className="ml-3 flex-shrink-0 bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-semibold transition-all hover:shadow-lg">
@@ -121,13 +121,13 @@ export default function ALPNav() {
               </div>
             )}
           </div>
-          <a href="/alpenglow/fleet" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
+          <a href="/fleet" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
             Fleet
           </a>
-          <a href="/alpenglow/destinations" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
+          <a href="/destinations" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
             Destinations
           </a>
-          <a href="/alpenglow/pricing" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
+          <a href="/pricing" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
             Pricing
           </a>
           {/* Service Areas dropdown */}
@@ -150,10 +150,10 @@ export default function ALPNav() {
               </div>
             )}
           </div>
-          <a href="/alpenglow/contact" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
+          <a href="/contact" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
             Contact
           </a>
-          <a href="/alpenglow/faq" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
+          <a href="/faq" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
             FAQ
           </a>
           <a href="/blog" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
@@ -183,13 +183,13 @@ export default function ALPNav() {
               </div>
             )}
           </div>
-          <a href="/alpenglow/fleet" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
+          <a href="/fleet" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
             Fleet
           </a>
-          <a href="/alpenglow/destinations" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
+          <a href="/destinations" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
             Destinations
           </a>
-          <a href="/alpenglow/pricing" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
+          <a href="/pricing" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
             Pricing
           </a>
           <div>
@@ -207,10 +207,10 @@ export default function ALPNav() {
               </div>
             )}
           </div>
-          <a href="/alpenglow/contact" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
+          <a href="/contact" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
             Contact
           </a>
-          <a href="/alpenglow/faq" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
+          <a href="/faq" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
             FAQ
           </a>
           <a href="/blog" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">

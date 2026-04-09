@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
-const pageUrl = 'https://aspenalpenglowlimousine.com/alpenglow/services'
+const pageUrl = 'https://aspenalpenglowlimousine.com/services'
 
 export const metadata: Metadata = {
   title: 'Services | Aspen Alpenglow Limousine — Aspen & Roaring Fork Valley',

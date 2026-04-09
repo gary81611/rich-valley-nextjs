@@ -69,6 +69,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(dest, request.url), 301)
   }
 
+  /** Canonical public URLs on AAL host do not include /alpenglow prefix. */
+  if (site === 'alpenglow' && (pathname === '/alpenglow' || pathname === '/alpenglow/' || pathname.startsWith('/alpenglow/'))) {
+    const dest = pathname === '/alpenglow' || pathname === '/alpenglow/' ? '/' : pathname.slice('/alpenglow'.length) || '/'
+    return NextResponse.redirect(new URL(dest, request.url), 301)
+  }
+
   /** Valley location guides that overlap service-area landings — canonical is /service-areas/[slug]. */
   const locationSlugToServiceArea: Record<string, string> = {
     snowmass: 'snowmass-village',

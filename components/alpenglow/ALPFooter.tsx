@@ -25,8 +25,8 @@ export default function ALPFooter() {
           <div>
             <h4 className="font-playfair text-lg font-semibold mb-5 text-alp-gold">Quick Links</h4>
             <ul className="space-y-2">
-              <li><a href="/alpenglow/contact" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Book Transportation</a></li>
-              <li><a href="/alpenglow/fleet" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Our Fleet</a></li>
+              <li><a href="/contact" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Book Transportation</a></li>
+              <li><a href="/fleet" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Our Fleet</a></li>
               <li><a href="/terms" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Terms & Conditions</a></li>
               <li><a href="/privacy" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Privacy Policy</a></li>
             </ul>

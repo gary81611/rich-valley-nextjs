@@ -67,7 +67,7 @@ export default function AlpenglowPage() {
         }
         if (fleetRes.data && fleetRes.data.length > 0) {
           setFleet(fleetRes.data.map((v: FleetVehicle) => ({
-            name: v.name, image: v.image_url || '/images/alpenglow/escalade.png',
+            name: v.name, image: v.image_url || '/images/escalade.png',
             passengers: `Up to ${v.capacity} Passengers`, features: v.description ? [v.description] : [],
           })))
         }
@@ -142,10 +142,10 @@ export default function AlpenglowPage() {
             Distinguished private car and limousine service — available 24/7 since 2012.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/alpenglow/contact" className="bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block">
+            <a href="/contact" className="bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block">
               Reserve Your Ride
             </a>
-            <a href="/alpenglow/services" className="border-2 border-white text-white hover:bg-white hover:text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
+            <a href="/services" className="border-2 border-white text-white hover:bg-white hover:text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
               Our Services
             </a>
           </div>
@@ -197,7 +197,7 @@ export default function AlpenglowPage() {
                         <span key={f} className="bg-white/5 text-white/70 text-xs px-3 py-1.5 rounded-full border border-white/10">{f}</span>
                       ))}
                     </div>
-                    <a href="/alpenglow/contact" className="inline-block bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-8 py-3 rounded-full font-semibold text-sm transition-all hover:shadow-lg">
+                    <a href="/contact" className="inline-block bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-8 py-3 rounded-full font-semibold text-sm transition-all hover:shadow-lg">
                       Reserve Now
                     </a>
                   </div>

@@ -81,7 +81,7 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Pricing | Aspen Alpenglow Limousine — All-Inclusive Transportation Rates',
   description: 'Transparent, all-inclusive pricing for private car service in Aspen. Airport transfers from ASE, EGE, DEN. Local Roaring Fork Valley routes. No hidden fees.',
-  alternates: { canonical: 'https://aspenalpenglowlimousine.com/alpenglow/pricing' },
+  alternates: { canonical: 'https://aspenalpenglowlimousine.com/pricing' },
   openGraph: {
     title: 'Aspen Alpenglow Limousine Pricing — All-Inclusive Rates',
     description: 'Private car service from $100. Airport transfers, local routes, hourly charter. No hidden service charges.',

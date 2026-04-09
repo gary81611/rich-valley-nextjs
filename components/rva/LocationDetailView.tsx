@@ -88,7 +88,7 @@ export default function LocationDetailView({ loc, backLink }: Props) {
             — luxury SUV or Sprinter with WiFi and Starlink. Door-to-door service included with guided adventures.
           </p>
           <a
-            href="https://aspenalpenglowlimousine.com/alpenglow/pricing"
+            href="https://aspenalpenglowlimousine.com/pricing"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm text-rva-copper hover:underline"
