@@ -64,6 +64,11 @@ export async function GET(request: Request) {
         { url: `${RVA_ORIGIN}/guides`, lastModified, changeFrequency: 'weekly', priority: 0.85 },
         { url: `${RVA_ORIGIN}/locations`, lastModified, changeFrequency: 'weekly', priority: 0.85 },
         { url: `${RVA_ORIGIN}/service-areas`, lastModified, changeFrequency: 'weekly', priority: 0.85 },
+        { url: `${RVA_ORIGIN}/service-areas/aspen-co`, lastModified, changeFrequency: 'weekly', priority: 0.8 },
+        { url: `${RVA_ORIGIN}/service-areas/rifle-co`, lastModified, changeFrequency: 'weekly', priority: 0.7 },
+        { url: `${RVA_ORIGIN}/service-areas/snowmass-village-co`, lastModified, changeFrequency: 'weekly', priority: 0.8 },
+        { url: `${RVA_ORIGIN}/service-areas/basalt-co`, lastModified, changeFrequency: 'weekly', priority: 0.8 },
+        { url: `${RVA_ORIGIN}/service-areas/carbondale-co`, lastModified, changeFrequency: 'weekly', priority: 0.8 },
         { url: `${RVA_ORIGIN}/contact`, lastModified, changeFrequency: 'monthly', priority: 0.9 },
         { url: `${RVA_ORIGIN}/gallery`, lastModified, changeFrequency: 'monthly', priority: 0.75 },
         { url: `${RVA_ORIGIN}/about`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
@@ -117,12 +122,26 @@ export async function GET(request: Request) {
       priority: 0.7,
     }))
 
-    const pageEntries: SitemapEntry[] = (pages || []).map((page) => ({
-      url: isAAL ? `${base}/${page.slug}` : `${base}/${page.slug}`,
-      lastModified: page.updated_at ? new Date(page.updated_at) : lastModified,
-      changeFrequency: 'weekly',
-      priority: 0.85,
-    }))
+    const excludedRvaSlugs = new Set([
+      'service-areas-locations',
+      'transportation',
+      'faq',
+      'areas/aspen',
+      'areas/basalt',
+      'areas/snowmass',
+      'mountain-biking',
+      'paddle-boarding',
+      'snowshoeing',
+    ])
+
+    const pageEntries: SitemapEntry[] = (pages || [])
+      .filter((page) => !(siteKey === 'rva' && excludedRvaSlugs.has(page.slug)))
+      .map((page) => ({
+        url: isAAL ? `${base}/${page.slug}` : `${base}/${page.slug}`,
+        lastModified: page.updated_at ? new Date(page.updated_at) : lastModified,
+        changeFrequency: 'weekly',
+        priority: 0.85,
+      }))
 
     const merged = dedupeByUrl([...staticEntries, ...blogEntries, ...pageEntries])
 

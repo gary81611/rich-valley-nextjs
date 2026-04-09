@@ -16,13 +16,16 @@ function rvaRedirects() {
       { source: '/service-areas/basalt-co', destination: '/service-areas/basalt', permanent: true, has: h },
       { source: '/service-areas/snowmass-village-co', destination: '/service-areas/snowmass-village', permanent: true, has: h },
       { source: '/service-areas/carbondale-co', destination: '/service-areas/carbondale', permanent: true, has: h },
-      { source: '/service-areas/denver-co', destination: '/service-areas/denver', permanent: true, has: h },
+      // Missing city pages route to the service areas index.
+      { source: '/service-areas/rifle-co', destination: '/service-areas', permanent: true, has: h },
+      { source: '/service-areas/denver-co', destination: '/service-areas', permanent: true, has: h },
       {
         source: '/fleet',
         destination: 'https://aspenalpenglowlimousine.com/alpenglow/fleet',
         permanent: true,
         has: h,
       },
+      { source: '/fleet-v3', destination: 'https://aspenalpenglowlimousine.com/alpenglow/fleet', permanent: true, has: h },
       { source: '/services', destination: '/', permanent: true, has: h },
       { source: '/booking', destination: '/contact', permanent: true, has: h },
       { source: '/booking/', destination: '/contact', permanent: true, has: h },
