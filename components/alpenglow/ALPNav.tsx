@@ -130,6 +130,9 @@ export default function ALPNav() {
           <a href="/pricing" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
             Pricing
           </a>
+          <a href="/gallery" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
+            Gallery
+          </a>
           {/* Service Areas dropdown */}
           <div
             className="relative"
@@ -155,6 +158,9 @@ export default function ALPNav() {
           </a>
           <a href="/faq" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
             FAQ
+          </a>
+          <a href="/about" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
+            About
           </a>
           <a href="/blog" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
             Blog
@@ -192,6 +198,9 @@ export default function ALPNav() {
           <a href="/pricing" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
             Pricing
           </a>
+          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
+            Gallery
+          </a>
           <div>
             <button onClick={() => setMobileAreasOpen(!mobileAreasOpen)} className="flex items-center justify-between w-full text-white/90 hover:text-alp-gold-light text-sm font-medium py-2">
               Service Areas
@@ -212,6 +221,9 @@ export default function ALPNav() {
           </a>
           <a href="/faq" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
             FAQ
+          </a>
+          <a href="/about" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
+            About
           </a>
           <a href="/blog" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
             Blog

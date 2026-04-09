@@ -142,8 +142,24 @@ export async function GET(request: Request) {
       'snowshoeing',
     ])
 
+    const excludedAalSlugs = new Set([
+      'areas/aspen',
+      'areas/snowmass',
+      'areas/vail',
+      'alpenglow/about',
+      'alpenglow/pricing',
+      'alpenglow/faq',
+      'alpenglow/services',
+      'alpenglow/fleet',
+      'alpenglow/destinations',
+      'alpenglow/gallery',
+      'alpenglow/contact',
+      'alpenglow/service-areas',
+    ])
+
     const pageEntries: SitemapEntry[] = (pages || [])
       .filter((page) => !(siteKey === 'rva' && excludedRvaSlugs.has(page.slug)))
+      .filter((page) => !(siteKey === 'alpenglow' && excludedAalSlugs.has(page.slug)))
       .map((page) => {
         const normalizedSlug = siteKey === 'alpenglow' ? normalizeAalPageSlug(page.slug) : page.slug
         const url = normalizedSlug ? `${base}/${normalizedSlug}` : `${base}/`

@@ -27,6 +27,9 @@ export default function ALPFooter() {
             <ul className="space-y-2">
               <li><a href="/contact" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Book Transportation</a></li>
               <li><a href="/fleet" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Our Fleet</a></li>
+              <li><a href="/service-areas" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Service Areas</a></li>
+              <li><a href="/about" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">About</a></li>
+              <li><a href="/gallery" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Gallery</a></li>
               <li><a href="/terms" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Terms & Conditions</a></li>
               <li><a href="/privacy" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Privacy Policy</a></li>
             </ul>
