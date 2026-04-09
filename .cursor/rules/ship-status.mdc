@@ -1,0 +1,21 @@
+---
+description: Always state commit/push/deploy status and what the user must do
+alwaysApply: true
+---
+
+# Ship status — no ambiguity
+
+After **any** code or config change that affects production:
+
+1. **End the reply with a short “Ship status” block** that uses **exactly one** of these patterns (pick the true one):
+
+   - **Already shipped:** “Committed `&lt;hash&gt;`, pushed to `origin/main`, Vercel production will deploy from Git (or already deployed). **You: nothing.**”
+   - **Committed only:** “Committed `&lt;hash&gt;` locally. **You: run `git push origin main`** (and wait for Vercel if connected).”
+   - **Uncommitted:** “Changes are **only in your working tree**. **You: review, then `git add` / `git commit` / `git push`.**”
+   - **CLI deploy used:** “Also ran `vercel deploy --prod`. **You: confirm deployment in Vercel dashboard** if aliases/domains are unclear.”
+
+2. **Never** imply something is live without saying whether it was **pushed** and whether **Vercel** (or your host) deploys from that branch.
+
+3. If the user asked to **deploy** and you only **committed**, say clearly: **“Not deployed yet — push required”** (or run the deploy command they use).
+
+4. Separate **what you did** from **what they must do** — use a line starting with **`You:`** for any remaining manual step (GSC, DNS, env vars, etc.).
