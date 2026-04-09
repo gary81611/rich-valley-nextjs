@@ -1,0 +1,35 @@
+---
+description: SEO changes require plan, staged rollout, and verification gate
+alwaysApply: true
+---
+
+# SEO change safety (RVA + AAL)
+
+Use this process for **any** SEO-impacting change (redirects, canonicals, robots, sitemap, metadata, nav/internal links, schema, middleware rewrites):
+
+1. **Plan first (required):** before editing, provide a concise plan that lists:
+   - affected URL patterns
+   - expected status outcomes (200/301/404)
+   - files to change
+   - rollback path
+
+2. **No broad blind rewrites:** do not mass-replace URL prefixes across many files unless a scoped diff review is done first.
+
+3. **Pre-change baseline (required):** capture and summarize:
+   - live status checks for target URLs
+   - live `robots.txt` and `sitemap.xml`
+   - homepage title/description/robots/canonical + response headers
+
+4. **Staged verification gate (required):** after changes but before/after deploy, verify:
+   - canonical host/path behavior
+   - redirects are permanent and intentional
+   - sitemap contains only canonical live URLs
+   - no canonical/noindex regressions on homepage and key pages
+
+5. **Internal-link protection:** when URL structures change, update nav/footer/primary CTAs and at least one contextual link source for impacted pages.
+
+6. **Schema protection:** if changing service/FAQ pages, validate JSON-LD shape and required fields; do not leave partially-migrated schema.
+
+7. **Deploy communication:** state exactly what shipped and what manual actions are required (GSC requests, directory updates, etc.).
+
+8. **Default safety behavior:** for high-risk SEO changes, ship in smaller batches and re-verify live after each batch.
