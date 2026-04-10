@@ -21,11 +21,11 @@ function rvaRedirects() {
       { source: '/service-areas/denver-co', destination: '/service-areas', permanent: true, has: h },
       {
         source: '/fleet',
-        destination: 'https://aspenalpenglowlimousine.com/alpenglow/fleet',
+        destination: 'https://aspenalpenglowlimousine.com/fleet',
         permanent: true,
         has: h,
       },
-      { source: '/fleet-v3', destination: 'https://aspenalpenglowlimousine.com/alpenglow/fleet', permanent: true, has: h },
+      { source: '/fleet-v3', destination: 'https://aspenalpenglowlimousine.com/fleet', permanent: true, has: h },
       { source: '/services', destination: '/', permanent: true, has: h },
       { source: '/booking', destination: '/contact', permanent: true, has: h },
       { source: '/booking/', destination: '/contact', permanent: true, has: h },
@@ -41,6 +41,16 @@ function rvaRedirects() {
   return list
 }
 
+/** Apex → www: single canonical host for RVA (reduces “duplicate / alternate canonical” noise in GSC). */
+function rvaApexToWww() {
+  return {
+    source: '/:path*',
+    destination: 'https://www.richvalleyadventures.com/:path*',
+    permanent: true,
+    has: [{ type: 'host', value: 'richvalleyadventures.com' }],
+  }
+}
+
 const nextConfig = {
   images: {
     minimumCacheTTL: 31536000,
@@ -50,7 +60,7 @@ const nextConfig = {
     ],
   },
   async redirects() {
-    return [...rvaRedirects()]
+    return [rvaApexToWww(), ...rvaRedirects()]
   },
   async rewrites() {
     return {

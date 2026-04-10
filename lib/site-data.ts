@@ -34,7 +34,7 @@ export const alpenglowData = {
   partnerSite: {
     name: 'Rich Valley Adventures',
     description: "Looking for something to do while you're in town? Our sister company offers guided fly fishing, paddle boarding, mountain biking, and more.",
-    url: 'https://richvalleyadventures.com',
+    url: 'https://www.richvalleyadventures.com',
   },
 }
 

@@ -437,7 +437,7 @@ export default function AlpenglowPage() {
               From corporate retreats to private celebrations, we create seamless, tailor-made transportation itineraries that turn logistics into luxury. Every detail is handled — so you can focus on the experience.
             </p>
             <a
-              href="https://richvalleyadventures.com"
+              href="https://www.richvalleyadventures.com"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-alp-navy hover:bg-alp-navy-deep text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-xl hover:-translate-y-0.5"
