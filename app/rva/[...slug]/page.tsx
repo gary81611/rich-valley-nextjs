@@ -104,7 +104,7 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
     })
   }
 
-  if (page.template_type === 'service' || page.template_type === 'faq') {
+  if (page.template_type === 'service') {
     const content = page.content as ServiceContent
     if (content.faqs && content.faqs.length > 0) {
       schemas.push({

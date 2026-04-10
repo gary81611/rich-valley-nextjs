@@ -193,77 +193,6 @@ const localBusinessSchema = {
   },
 }
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'How much does a guided fly fishing trip in Aspen cost?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Guided fly fishing trips with Rich Valley Adventures in Aspen, Colorado typically range from $150–$350 per person depending on trip duration (half-day or full-day) and group size. All gear, licenses, and instruction are included. Contact us at 970-456-3666 for current pricing and availability.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What is included in a Rich Valley Adventures guided trip?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: "All Rich Valley Adventures trips include expert local guides, all necessary gear and equipment, safety briefings, and transportation to the activity location. For fly fishing, this includes rods, reels, waders, boots, and all flies. For mountain biking, bikes and helmets are provided. Groups are kept intentionally small — typically 2–6 guests per guide — for a personalized, high-quality experience.",
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What is the best time of year for fly fishing in the Roaring Fork Valley?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'The best fly fishing in the Roaring Fork Valley near Aspen is typically from late spring through fall (May–October). Peak season runs July through September when the river is lower and clearer. Spring runoff (April–June) can make the river high and murky. Winter fishing is possible on certain Gold Medal stretches but requires specialized cold-water gear.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Do I need experience for paddle boarding in Aspen?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'No prior experience is needed for paddle boarding with Rich Valley Adventures. Our certified guides provide complete instruction for beginners, and we select calm, beginner-friendly waters for first-time paddlers. More experienced guests can explore more challenging routes. All ages and fitness levels are welcome.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'How small are the guided adventure groups at Rich Valley Adventures?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: "Rich Valley Adventures intentionally keeps groups small — typically 2 to 6 guests per guide. We do not run large, impersonal group tours. Private and semi-private bookings are available for families, couples, and corporate groups. This small-group approach is central to the quality and personalization of each adventure.",
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What outdoor adventures are available near Aspen in summer?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Rich Valley Adventures offers guided outdoor experiences near Aspen in summer: guided fly fishing on the Roaring Fork River, stand-up paddle boarding on mountain lakes, mountain biking on singletrack trails, guided trail hiking in the Elk Mountains, scenic private Chauffeur Guided Tours, and elevated camping. All are available May through October.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Where is Rich Valley Adventures located and what areas do you serve?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Rich Valley Adventures is based in Aspen, Colorado (81611) and operates guided outdoor adventures throughout the Roaring Fork Valley, including Aspen, Snowmass Village, Basalt, and Carbondale. The company was founded in 2012 by local outdoor professionals who grew up in the valley.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Is fly fishing legal on the Roaring Fork River near Aspen?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: "Yes. The Roaring Fork River and many of its tributaries near Aspen are designated Gold Medal trout waters and are open to fly fishing with a valid Colorado fishing license. Rich Valley Adventures handles all licensing requirements as part of guided trips — guests do not need to obtain a license separately.",
-      },
-    },
-  ],
-}
-
 export default function RVALayout({ children }: { children: React.ReactNode }) {
   return (
     <>
@@ -278,10 +207,6 @@ export default function RVALayout({ children }: { children: React.ReactNode }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <RVANav />
       <div className="pb-16 md:pb-0">

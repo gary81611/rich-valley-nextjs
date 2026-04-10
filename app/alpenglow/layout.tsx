@@ -6,6 +6,7 @@ const ALP_URL = 'https://aspenalpenglowlimousine.com'
 const ALP_OG_IMAGE = 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1200&q=80'
 
 export const metadata: Metadata = {
+  metadataBase: new URL(ALP_URL),
   title: 'Aspen Alpenglow Limousine | Luxury Transportation in Aspen, CO',
   description: 'Premium private car and limousine service in Aspen, Snowmass, and the Roaring Fork Valley. Airport transfers, hourly charter, corporate travel, wedding transportation. Available 24/7 since 2012.',
   keywords: 'Aspen limo service, Aspen airport transfer, luxury car service Aspen Colorado, private chauffeur Aspen, wedding limo Aspen, Eagle airport to Aspen transportation, Aspen Pitkin County Airport car service, Aspen Snowmass limousine',
@@ -223,77 +224,6 @@ const vehicleSchemas = [
   },
 ]
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'How much does a limo from Aspen to Denver airport cost?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'A private luxury car transfer from Aspen, Colorado to Denver International Airport (DEN) with Aspen Alpenglow Limousine is approximately 3.5 to 4 hours each way. Pricing varies based on vehicle, time of day, and group size. Contact us at 970-456-3666 for a custom quote. We serve the Denver, Eagle (EGE), and Aspen (ASE) airports.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Do you offer airport pickup at Aspen/Pitkin County Airport?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes. Aspen Alpenglow Limousine provides meet-and-greet airport pickup service at Aspen/Pitkin County Airport (ASE). We track your flight in real time and adjust pickup time for early arrivals or delays. Our chauffeurs assist with luggage and ensure a seamless transition to your destination in Aspen or anywhere in the Roaring Fork Valley.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What is the best way to get from Eagle/Vail airport to Aspen?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'The most comfortable way to travel from Eagle County Regional Airport (EGE) to Aspen is by private car service. Eagle airport is approximately 70 miles from Aspen via I-70 and Highway 82 — about 1.5 to 2 hours depending on traffic and road conditions. Aspen Alpenglow Limousine provides direct, door-to-door luxury transfers from Eagle airport to any destination in Aspen or the Roaring Fork Valley.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'How far in advance should I book a limousine in Aspen?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: "We recommend booking at least 48–72 hours in advance for standard transfers. For wedding transportation, corporate events, or peak ski season (December–March) and summer high season (July–August), booking 2–4 weeks in advance is advisable. Last-minute bookings are occasionally possible — call 970-456-3666 to check availability.",
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Do you offer wedding transportation in Aspen?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes. Aspen Alpenglow Limousine specializes in wedding transportation throughout Aspen and Snowmass, Colorado. We provide bridal party transfers, venue-to-venue logistics, and guest shuttle coordination. Our Chevrolet Suburbans and Ford Transit Van are available for weddings. We work closely with wedding planners and venues to ensure a seamless, elegant experience on your special day.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Is Aspen Alpenglow Limousine available 24 hours a day?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes. Aspen Alpenglow Limousine operates 24 hours a day, 7 days a week, 365 days a year. This includes early-morning flights out of Aspen airport, late-night arrivals, and overnight transfers to Denver. Call 970-456-3666 at any hour for assistance.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Can you transport groups to ski resorts from Aspen?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Absolutely. Aspen Alpenglow Limousine provides private group transportation to and from Aspen Mountain, Aspen Highlands, Buttermilk, Snowmass ski resort, and other destinations throughout the Roaring Fork Valley. Our Ford Transit Van seats up to 14 passengers and is perfect for ski groups.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What vehicles does Aspen Alpenglow Limousine use?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Aspen Alpenglow Limousine operates three late-model vehicles: two Chevrolet Suburbans (up to 7 passengers each) and a Ford Transit Van (up to 14 passengers). All vehicles feature WiFi (Starlink), XM Radio, complimentary water, and ski racks. All vehicles are late-model, meticulously maintained, and professionally chauffeured.',
-      },
-    },
-  ],
-}
-
 export default function AlpenglowLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
@@ -316,10 +246,6 @@ export default function AlpenglowLayout({ children }: { children: React.ReactNod
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       ))}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
       <ALPNav />
       <div className="pb-16 md:pb-0">
         {children}
