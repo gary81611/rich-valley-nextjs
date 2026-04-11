@@ -30,7 +30,17 @@ export default function RVANav() {
     <nav aria-label="Main navigation" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-rva-forest/95 backdrop-blur-md shadow-lg' : 'bg-rva-forest/95 backdrop-blur-md shadow-lg'}`}>
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center">
         <a href="/" className="flex items-center gap-3 flex-shrink-0" aria-label="Rich Valley Adventures — home">
-          <Image src={rvaData.logo} alt="Rich Valley Adventures logo" width={160} height={50} className="h-10 md:h-14 w-auto object-contain" unoptimized loading="eager" />
+          <span className="inline-flex items-center rounded-lg bg-white/[0.92] px-2 py-1 shadow-md ring-1 ring-black/10 md:px-2.5 md:py-1.5">
+            <Image
+              src={rvaData.logo}
+              alt="Rich Valley Adventures logo"
+              width={160}
+              height={50}
+              className="h-10 md:h-14 w-auto object-contain drop-shadow-sm"
+              unoptimized
+              loading="eager"
+            />
+          </span>
         </a>
         <a href="tel:+19704563666" aria-label="Call Rich Valley Adventures at 970-456-3666" className="ml-3 flex-shrink-0 bg-rva-copper hover:bg-rva-copper-light text-white px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-semibold transition-all hover:shadow-lg">
           970-456-3666
