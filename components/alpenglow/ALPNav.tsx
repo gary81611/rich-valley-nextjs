@@ -27,6 +27,7 @@ const FALLBACK_AREA_PAGES: NavItem[] = [
   { label: 'Eagle / Vail', href: '/service-areas/eagle-vail' },
   { label: 'Denver', href: '/service-areas/denver' },
   { label: 'Rifle', href: '/service-areas/rifle' },
+  { label: 'Grand Junction', href: '/service-areas/grand-junction' },
 ]
 
 export default function ALPNav() {

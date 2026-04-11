@@ -104,7 +104,7 @@ export async function GET(request: Request) {
   try {
     const supabase = createClient(supabaseUrl, supabaseKey)
 
-    const [{ data: posts }, { data: pages }] = await Promise.all([
+    const [{ data: posts }, { data: pages }, { data: serviceAreas }] = await Promise.all([
       supabase
         .from('blog_posts')
         .select('slug, published_at, updated_at')
@@ -117,6 +117,11 @@ export async function GET(request: Request) {
         .eq('status', 'published')
         .eq('site_id', siteKey)
         .order('slug'),
+      supabase
+        .from('service_areas')
+        .select('slug, updated_at')
+        .eq('site_key', siteKey)
+        .eq('is_active', true),
     ])
 
     const base = isAAL ? AAL_ORIGIN : RVA_ORIGIN
@@ -169,7 +174,19 @@ export async function GET(request: Request) {
         }
       })
 
-    const merged = dedupeByUrl([...staticEntries, ...blogEntries, ...pageEntries])
+    const serviceAreaEntries: SitemapEntry[] = (serviceAreas || [])
+      .filter((row) => typeof row.slug === 'string' && row.slug.trim().length > 0)
+      .map((row) => {
+        const slug = String(row.slug).trim()
+        return {
+          url: `${base}/service-areas/${slug}`,
+          lastModified: row.updated_at ? new Date(row.updated_at) : lastModified,
+          changeFrequency: 'monthly',
+          priority: siteKey === 'alpenglow' ? 0.72 : 0.78,
+        }
+      })
+
+    const merged = dedupeByUrl([...staticEntries, ...blogEntries, ...pageEntries, ...serviceAreaEntries])
 
     return new Response(toXml(merged), {
       headers: {

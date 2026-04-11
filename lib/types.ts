@@ -111,6 +111,12 @@ export interface ServiceArea {
   display_order: number
   site_key: 'rva' | 'alpenglow'
   is_active: boolean
+  /** Optional SERP title; detail pages fall back to a template when empty */
+  meta_title?: string | null
+  /** ~150–160 chars for meta + OG description */
+  meta_description?: string | null
+  /** FAQPage JSON-LD: [{ question, answer }] */
+  faq_schema?: unknown
   created_at: string
   updated_at: string
 }

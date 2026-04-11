@@ -9,8 +9,14 @@ import DeleteConfirmDialog from '@/components/admin/DeleteConfirmDialog'
 import Toast from '@/components/admin/Toast'
 import EmptyState from '@/components/admin/EmptyState'
 
-type ServiceAreaForm = Omit<ServiceArea, 'id' | 'created_at' | 'updated_at' | 'key_destinations'> & {
+type ServiceAreaForm = Omit<
+  ServiceArea,
+  'id' | 'created_at' | 'updated_at' | 'key_destinations' | 'faq_schema' | 'meta_title' | 'meta_description'
+> & {
   key_destinations: string
+  faq_schema: string
+  meta_title: string
+  meta_description: string
 }
 
 const emptyArea: ServiceAreaForm = {
@@ -19,6 +25,9 @@ const emptyArea: ServiceAreaForm = {
   slug: '',
   long_description: '',
   key_destinations: '',
+  meta_title: '',
+  meta_description: '',
+  faq_schema: '[]',
   display_order: 0,
   site_key: 'alpenglow',
   is_active: true,
@@ -65,6 +74,9 @@ export default function ServiceAreasPage() {
       slug: item.slug || '',
       long_description: item.long_description || '',
       key_destinations: destinations,
+      meta_title: item.meta_title || '',
+      meta_description: item.meta_description || '',
+      faq_schema: JSON.stringify(Array.isArray(item.faq_schema) ? item.faq_schema : [], null, 2),
       display_order: item.display_order ?? 0,
       site_key: item.site_key,
       is_active: item.is_active,
@@ -79,12 +91,30 @@ export default function ServiceAreasPage() {
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean)
+
+    let faq_schema: unknown = []
+    try {
+      const raw = form.faq_schema.trim()
+      if (raw) {
+        const parsed = JSON.parse(raw) as unknown
+        if (!Array.isArray(parsed)) throw new Error('FAQs must be a JSON array')
+        faq_schema = parsed
+      }
+    } catch {
+      setToast({ message: 'FAQ schema must be valid JSON array: [{"question":"...","answer":"..."}]', type: 'error' })
+      setSaving(false)
+      return
+    }
+
     const payload = {
       name: form.name,
       description: form.description,
       slug: form.slug,
       long_description: form.long_description,
       key_destinations: keyDestinations,
+      meta_title: (form.meta_title ?? '').trim() || null,
+      meta_description: (form.meta_description ?? '').trim() || null,
+      faq_schema,
       display_order: form.display_order,
       site_key: form.site_key,
       is_active: form.is_active,
@@ -156,6 +186,9 @@ export default function ServiceAreasPage() {
         <FormField label="Description" name="description" type="textarea" value={form.description} onChange={updateForm} help="Brief note — distance from Aspen, service availability." preview="Service areas list" />
         <FormField label="Long Description" name="long_description" type="textarea" value={form.long_description} onChange={updateForm} help="Detailed description for the area detail page." preview="Service area detail page" />
         <FormField label="Key Destinations" name="key_destinations" type="textarea" value={form.key_destinations} onChange={updateForm} help="Comma-separated list of key destinations (e.g., 'Downtown Aspen, The Little Nell, Wheeler Opera House')." preview="Service area detail page" />
+        <FormField label="Meta title (SEO)" name="meta_title" value={form.meta_title ?? ''} onChange={updateForm} help="Optional. Overrides browser title; ~50–60 chars ideal." preview="SERP title" />
+        <FormField label="Meta description (SEO)" name="meta_description" type="textarea" value={form.meta_description ?? ''} onChange={updateForm} help="Optional. ~150–160 chars for Google snippet + social cards." preview="SERP description" />
+        <FormField label="FAQ schema (JSON)" name="faq_schema" type="textarea" value={form.faq_schema} onChange={updateForm} help='JSON array for FAQPage rich results, e.g. [{"question":"...","answer":"..."}]' preview="Structured data" />
         <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} help="Sort order (lower numbers appear first)." />
         <FormField label="Site" name="site_key" type="select" value={form.site_key} onChange={updateForm} options={[{ value: 'rva', label: 'RVA' }, { value: 'alpenglow', label: 'Alpenglow' }]} help="Which brand serves this area." preview="Controls which site shows it" />
         <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} help="Toggle visibility." />

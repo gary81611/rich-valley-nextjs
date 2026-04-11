@@ -9,6 +9,7 @@ export const AAL_SERVICE_AREA_SLUG_MAP: Record<string, string> = {
   'Eagle / Vail': 'eagle-vail',
   Denver: 'denver',
   Rifle: 'rifle',
+  'Grand Junction': 'grand-junction',
 }
 
 export function hrefForServiceArea(area: { name: string; slug: string | null }): string {
