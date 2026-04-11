@@ -19,14 +19,16 @@ export default function RVAFooter() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-4 gap-12 mb-12">
           <div>
-            <Image
-              src={rvaData.logo}
-              alt="Rich Valley Adventures"
-              width={180}
-              height={56}
-              className="h-[3.75rem] w-auto object-contain mb-4 [filter:drop-shadow(0_1px_2px_rgba(0,0,0,0.55))_drop-shadow(0_4px_18px_rgba(0,0,0,0.4))]"
-              unoptimized
-            />
+            <span className="inline-flex items-center justify-center rounded-xl bg-rva-cream px-3.5 py-2.5 shadow-[0_4px_28px_rgba(0,0,0,0.45)] ring-2 ring-rva-copper/40 mb-4">
+              <Image
+                src={rvaData.logo}
+                alt="Rich Valley Adventures"
+                width={220}
+                height={68}
+                className="h-16 w-auto object-contain brightness-[1.08] contrast-[1.12] saturate-[1.06]"
+                unoptimized
+              />
+            </span>
             <p className="text-white/65 text-sm leading-relaxed">{rvaData.description}</p>
           </div>
           <div>

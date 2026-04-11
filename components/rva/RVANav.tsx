@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import Image from 'next/image'
 import { rvaData } from '@/lib/site-data'
 
@@ -14,31 +14,26 @@ const SERVICE_PAGES: { label: string; slug: string; href?: string }[] = [
 ]
 
 export default function RVANav() {
-  const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [adventuresOpen, setAdventuresOpen] = useState(false)
   const [mobileAdventuresOpen, setMobileAdventuresOpen] = useState(false)
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
   return (
-    <nav aria-label="Main navigation" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-rva-forest/95 backdrop-blur-md shadow-lg' : 'bg-rva-forest/95 backdrop-blur-md shadow-lg'}`}>
+    <nav aria-label="Main navigation" className="fixed top-0 left-0 right-0 z-50 border-b border-black/15 bg-rva-forest shadow-lg">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center">
         <a href="/" className="flex items-center gap-3 flex-shrink-0" aria-label="Rich Valley Adventures — home">
-          <Image
-            src={rvaData.logo}
-            alt="Rich Valley Adventures logo"
-            width={180}
-            height={56}
-            className="h-11 w-auto object-contain md:h-[3.75rem] [filter:drop-shadow(0_1px_2px_rgba(0,0,0,0.5))_drop-shadow(0_4px_20px_rgba(0,0,0,0.35))]"
-            unoptimized
-            loading="eager"
-          />
+          <span className="inline-flex items-center justify-center rounded-xl bg-rva-cream px-3 py-2 shadow-[0_4px_24px_rgba(0,0,0,0.35)] ring-2 ring-rva-copper/35 md:px-3.5 md:py-2.5">
+            <Image
+              src={rvaData.logo}
+              alt="Rich Valley Adventures logo"
+              width={220}
+              height={68}
+              className="h-12 w-auto object-contain md:h-16 brightness-[1.08] contrast-[1.12] saturate-[1.06]"
+              unoptimized
+              loading="eager"
+            />
+          </span>
         </a>
         <a href="tel:+19704563666" aria-label="Call Rich Valley Adventures at 970-456-3666" className="ml-3 flex-shrink-0 bg-rva-copper hover:bg-rva-copper-light text-white px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-semibold transition-all hover:shadow-lg">
           970-456-3666
