@@ -346,10 +346,10 @@ export default function AlpenglowHomeClient() {
       <section id="destinations" className="py-24 bg-alp-navy-deep">
         <div className="max-w-7xl mx-auto px-6">
           <ScrollReveal className="text-center mb-16">
-            <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Beyond the Valley</p>
+            <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Day trips & trailheads</p>
             <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold mb-4">Popular Destinations</h2>
             <p className="text-white/60 text-xl max-w-2xl mx-auto">
-              VIP transportation and limousine service to Colorado&apos;s most iconic landmarks.
+              Private rides to Independence Pass, Maroon Bells, Redstone, Marble, Glenwood, and the hikes on your list.
             </p>
           </ScrollReveal>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">

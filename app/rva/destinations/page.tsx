@@ -7,7 +7,8 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Popular Destinations | Rich Valley Adventures',
-  description: 'Explore Colorado\'s top destinations with Rich Valley Adventures — Garden of the Gods, Red Rocks, Pikes Peak, and more. Luxury transportation available through Aspen Alpenglow Limousine.',
+  description:
+    'Aspen-area day trips and trailheads — Independence Pass, the Grottos, Maroon Bells, Redstone, Marble, Glenwood Springs, and popular hikes. Luxury transportation with Aspen Alpenglow Limousine.',
   alternates: {
     canonical: 'https://www.richvalleyadventures.com/destinations',
   },
@@ -22,10 +23,11 @@ export default async function DestinationsPage() {
     .eq('is_active', true)
     .order('display_order')
 
-  const destinations = (destinationsRaw ?? []).map((dest: any) => ({
+  const destinations = (destinationsRaw ?? []).map((dest: { id: string; name: string; description: string; image_url?: string; image?: string }) => ({
+    id: dest.id,
     name: dest.name,
     description: dest.description,
-    image: dest.image_url || dest.image,
+    image: dest.image_url || dest.image || '/images/destinations/garden-of-the-gods.jpg',
   }))
 
   return (
@@ -53,8 +55,8 @@ export default async function DestinationsPage() {
             Popular Destinations
           </h1>
           <p className="text-white/75 text-xl max-w-2xl mx-auto">
-            From mountain peaks to city landmarks, Colorado has something for everyone.
-            Let us help you experience the best the state has to offer.
+            Independence Pass, Maroon Bells, the Crystal River valley, Glenwood Canyon, and the trailheads on your list —
+            we help you explore the Roaring Fork and beyond with comfortable private transportation.
           </p>
         </div>
       </section>
@@ -67,7 +69,7 @@ export default async function DestinationsPage() {
           ) : (
             destinations.map((dest, i) => (
               <div
-                key={dest.name}
+                key={dest.id}
                 className="bg-white rounded-3xl shadow-md overflow-hidden border border-rva-cream-dark"
               >
                 <div className={`grid lg:grid-cols-2 ${i % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''}`}>
@@ -84,9 +86,9 @@ export default async function DestinationsPage() {
                     <h2 className="font-playfair text-2xl sm:text-3xl font-bold text-rva-forest mb-4">
                       {dest.name}
                     </h2>
-                    <p className="text-gray-600 leading-relaxed mb-6">
+                    <div className="text-gray-600 leading-relaxed mb-6 whitespace-pre-line">
                       {dest.description}
-                    </p>
+                    </div>
                     <Link
                       href="/contact"
                       className="inline-flex items-center gap-2 bg-rva-copper hover:bg-rva-copper-light text-white font-bold px-6 py-3 rounded-full transition-colors w-fit"
@@ -111,7 +113,7 @@ export default async function DestinationsPage() {
             Have a Destination in Mind?
           </h2>
           <p className="text-white/75 text-lg mb-8 max-w-2xl mx-auto">
-            We can arrange scenic tours and luxury transportation to any Colorado destination.
+            We can arrange scenic tours, trailhead drop-offs, and full-day loops across the central mountains.
             Contact us for a custom itinerary.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

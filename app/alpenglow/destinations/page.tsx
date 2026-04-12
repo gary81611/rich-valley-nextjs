@@ -6,13 +6,14 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Colorado Day Trips & Tours | Aspen Alpenglow Limousine',
+  title: 'Aspen Day Trips & Trailheads | Aspen Alpenglow Limousine',
   description:
-    'Chauffeured luxury SUV & van service from Aspen to Red Rocks, Garden of the Gods, Pikes Peak, Denver venues & more. Custom itineraries, group-friendly, 24/7 quotes.',
+    'Private SUV and van service from Aspen and Snowmass to Independence Pass, the Grottos, Maroon Bells, Redstone, Marble, Glenwood Springs, and popular trailheads. Custom quotes.',
   alternates: { canonical: 'https://aspenalpenglowlimousine.com/destinations' },
   openGraph: {
-    title: 'Colorado Day Trips & Tours | Aspen Alpenglow Limousine',
-    description: 'Private car service from the Roaring Fork Valley to Colorado’s most iconic landmarks.',
+    title: 'Aspen Day Trips & Trailheads | Aspen Alpenglow Limousine',
+    description:
+      'Chauffeured rides to Independence Pass, Maroon Bells, hiking trailheads, Redstone, Marble, and regional highlights.',
     url: 'https://aspenalpenglowlimousine.com/destinations',
     type: 'website',
   },
@@ -45,9 +46,9 @@ export default async function DestinationsPage() {
   const itemListSchema = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'Aspen Alpenglow Limousine — popular Colorado destinations',
+    name: 'Aspen Alpenglow Limousine — Roaring Fork day trips and trailheads',
     description:
-      'Luxury chauffeured transportation from Aspen and the Roaring Fork Valley to signature Colorado landmarks and metro Denver experiences.',
+      'Luxury chauffeured transportation from Aspen and the Roaring Fork Valley to Independence Pass, Maroon Bells, Crystal River valley towns, Glenwood Springs, and popular hiking trailheads.',
     numberOfItems: destinations.length,
     itemListElement: destinations.map((d, i) => ({
       '@type': 'ListItem',
@@ -59,7 +60,7 @@ export default async function DestinationsPage() {
   const serviceSchema = {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    name: 'Chauffeured Colorado destination tours from Aspen',
+    name: 'Chauffeured Aspen-area day trips and trailhead transfers',
     serviceType: 'Luxury ground transportation & private tours',
     url: 'https://aspenalpenglowlimousine.com/destinations',
     provider: {
@@ -95,8 +96,9 @@ export default async function DestinationsPage() {
             Popular <span className="text-alp-gold">Destinations</span>
           </h1>
           <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl mx-auto">
-            From mountain peaks to city landmarks, we provide luxury transportation to Colorado&apos;s
-            most celebrated destinations. Sit back, relax, and enjoy the ride.
+            Independence Pass, the Grottos, Maroon Bells, Redstone, Marble, Glenwood, and the trailheads
+            you read about online — we plan the drive so you focus on the views, not parking or shuttle
+            logistics.
           </p>
         </div>
       </section>
@@ -104,35 +106,31 @@ export default async function DestinationsPage() {
       <section className="bg-alp-pearl py-16 sm:py-20 border-b border-alp-pearl-dark">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="font-playfair text-3xl sm:text-4xl text-alp-navy font-bold mb-6">
-            Why book a private car for Colorado day trips?
+            Why book a private car for Aspen-area outings?
           </h2>
           <div className="space-y-5 text-alp-slate text-lg leading-relaxed">
             <p>
-              Aspen and Snowmass are an ideal home base — but some of Colorado&apos;s most memorable experiences sit
-              beyond the Roaring Fork Valley: sunrise concerts at Red Rocks, Garden of the Gods at golden hour, a
-              Rockies game at Coors Field, or a slow loop through Denver Botanic Gardens before dinner in LoDo. The
-              drive itself can be half the adventure when you are not white-knuckling I-70 in a rental after a long
-              travel week.
+              Trailhead parking fills early, Maroon Bells requires shuttle coordination, and passes such as Independence
+              close in bad weather — a dedicated driver keeps your group together, carries the gear, and adjusts when the
+              plan shifts. The same goes for scenic days out to Redstone, Marble, or Glenwood Springs when you would
+              rather not trade off who stays sober for the canyon drive home.
             </p>
             <p>
-              Aspen Alpenglow Limousine plans these days as true door-to-door itineraries. Your chauffeur stages at
-              your lodging with a Suburban or Transit van configured for your group, handles parking and load zones at
-              crowded venues, and adjusts timing when Front Range weather or event traffic shifts the plan. Many guests
-              pair a destination day with a simple airport strategy — we often coordinate DEN or EGE arrivals into a
-              multi-stop Colorado week; see our{' '}
+              Aspen Alpenglow Limousine stages at your lodging with a Suburban or Transit van sized for your party,
+              knows load zones and seasonal road rules, and quotes wait time realistically for hikes and hot springs.
+              Many guests pair local day trips with airport service — see our{' '}
               <a href="/airport-transfers" className="text-alp-gold font-semibold hover:underline">
                 airport transfer service
               </a>{' '}
-              and regional route guide for{' '}
+              and regional notes for{' '}
               <a href="/areas/vail" className="text-alp-gold font-semibold hover:underline">
                 Aspen–Vail moves
               </a>
               .
             </p>
             <p>
-              Every itinerary is quoted individually based on mileage, vehicle choice, wait time at venues, and season.
-              Share your must-see list — we will recommend realistic pacing so you enjoy the day instead of watching the
-              clock. For more travel ideas, browse our{' '}
+              Every itinerary is priced from mileage, vehicle, hours on site, and season. Share your trail or town list —
+              we will help you pace the day. For more ideas, browse our{' '}
               <a href="/blog" className="text-alp-gold font-semibold hover:underline">
                 transportation blog
               </a>
@@ -169,9 +167,9 @@ export default async function DestinationsPage() {
                     <h2 className="font-playfair text-2xl sm:text-3xl font-bold text-alp-navy mb-4">
                       {dest.name}
                     </h2>
-                    <p className="text-alp-slate leading-relaxed mb-6">
+                    <div className="text-alp-slate leading-relaxed mb-6 whitespace-pre-line">
                       {dest.description}
-                    </p>
+                    </div>
                     <Link
                       href="/contact"
                       className="inline-flex items-center gap-2 bg-alp-gold text-alp-navy font-bold px-6 py-3 rounded-full hover:bg-alp-gold-light transition-colors w-fit"
