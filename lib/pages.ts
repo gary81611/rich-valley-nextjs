@@ -4,10 +4,21 @@ export type TemplateType = 'service' | 'location' | 'faq' | 'landing'
 export type PageStatus = 'draft' | 'published'
 export type SiteId = 'rva' | 'alpenglow'
 
+export interface PopularHike {
+  name: string
+  description: string
+  /** e.g. "3.6 mi round trip" */
+  mileage: string
+  /** e.g. "2–4 hours" — typical moving time for an average hiker */
+  duration: string
+}
+
 export interface ServiceContent {
   hero_title: string
   hero_subtitle?: string
   intro: string
+  /** Optional reference list (e.g. guided hiking page) */
+  popular_hikes?: PopularHike[]
   h2_sections?: { title: string; content: string }[]
   features?: { title: string; description: string }[]
   faqs?: { question: string; answer: string }[]

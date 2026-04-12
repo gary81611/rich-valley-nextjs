@@ -106,6 +106,21 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
 
   if (page.template_type === 'service') {
     const content = page.content as ServiceContent
+    if (content.popular_hikes && content.popular_hikes.length > 0) {
+      schemas.push({
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: 'Popular hikes near Aspen, Colorado',
+        description: 'Reference hikes and typical mileage and duration; guided trips are customized.',
+        numberOfItems: content.popular_hikes.length,
+        itemListElement: content.popular_hikes.map((h, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: h.name,
+          description: `${h.mileage}; typical time ${h.duration}. ${h.description}`,
+        })),
+      })
+    }
     if (content.faqs && content.faqs.length > 0) {
       schemas.push({
         '@context': 'https://schema.org',

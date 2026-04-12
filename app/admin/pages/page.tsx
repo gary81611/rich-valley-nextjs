@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase'
-import type { CmsPage, TemplateType, PageStatus, SiteId } from '@/lib/pages'
+import type { CmsPage, TemplateType, PageStatus, SiteId, PopularHike } from '@/lib/pages'
 
 type EditingPage = Pick<CmsPage, 'title' | 'slug' | 'meta_title' | 'meta_description' | 'template_type' | 'status' | 'site_id'>
 type ContentFaq = { question: string; answer: string; category?: string }
@@ -144,6 +144,69 @@ function H2SectionEditor({ sections, onChange }: { sections: H2Section[]; onChan
   )
 }
 
+function PopularHikeEditor({ hikes, onChange }: { hikes: PopularHike[]; onChange: (h: PopularHike[]) => void }) {
+  const add = () => onChange([...hikes, { name: '', description: '', mileage: '', duration: '' }])
+  const remove = (i: number) => onChange(hikes.filter((_, idx) => idx !== i))
+  const update = (i: number, field: keyof PopularHike, val: string) => {
+    onChange(hikes.map((h, idx) => (idx === i ? { ...h, [field]: val } : h)))
+  }
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Popular hikes (service pages)</span>
+        <button type="button" onClick={add} className="text-xs px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200">
+          + Add hike
+        </button>
+      </div>
+      {hikes.length === 0 && (
+        <p className="text-xs text-slate-400 italic">Optional list rendered between intro and features on the public site.</p>
+      )}
+      {hikes.map((h, i) => (
+        <div key={i} className="border border-slate-200 rounded-lg p-3 space-y-2 bg-slate-50">
+          <div className="flex gap-2 items-start">
+            <span className="text-xs font-bold text-slate-400 mt-2 w-4 shrink-0">{i + 1}</span>
+            <div className="flex-1 space-y-2">
+              <input
+                type="text"
+                value={h.name}
+                onChange={e => update(i, 'name', e.target.value)}
+                placeholder="Trail name"
+                className="w-full border border-slate-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <input
+                  type="text"
+                  value={h.mileage}
+                  onChange={e => update(i, 'mileage', e.target.value)}
+                  placeholder="Mileage (e.g. 3.6 mi RT)"
+                  className="w-full border border-slate-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+                />
+                <input
+                  type="text"
+                  value={h.duration}
+                  onChange={e => update(i, 'duration', e.target.value)}
+                  placeholder="Typical time (e.g. 2–4 hours)"
+                  className="w-full border border-slate-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400"
+                />
+              </div>
+              <textarea
+                value={h.description}
+                onChange={e => update(i, 'description', e.target.value)}
+                placeholder="Short description"
+                rows={2}
+                className="w-full border border-slate-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 resize-y"
+              />
+            </div>
+            <button type="button" onClick={() => remove(i)} className="mt-1.5 text-red-400 hover:text-red-600 text-lg leading-none" title="Remove">
+              ×
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function FeatureEditor({ features, onChange }: { features: Feature[]; onChange: (f: Feature[]) => void }) {
   const add = () => onChange([...features, { title: '', description: '' }])
   const remove = (i: number) => onChange(features.filter((_, idx) => idx !== i))
@@ -197,6 +260,7 @@ function ContentEditor({ editing, setEditing }: { editing: Partial<CmsPage>; set
   const faqs: ContentFaq[] = (content.faqs as ContentFaq[]) || []
   const h2Sections: H2Section[] = (content.h2_sections as H2Section[]) || []
   const features: Feature[] = (content.features as Feature[]) || []
+  const popularHikes: PopularHike[] = (content.popular_hikes as PopularHike[]) || []
 
   const templateType = editing.template_type || 'service'
 
@@ -267,6 +331,13 @@ function ContentEditor({ editing, setEditing }: { editing: Partial<CmsPage>; set
             />
           </div>
         ) : null}
+
+        {/* Popular hikes — service only (optional structured list) */}
+        {templateType === 'service' && (
+          <div className="mb-5">
+            <PopularHikeEditor hikes={popularHikes} onChange={val => updateContent('popular_hikes', val)} />
+          </div>
+        )}
 
         {/* H2 sections — service only */}
         {templateType === 'service' && (

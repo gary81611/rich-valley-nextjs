@@ -36,6 +36,47 @@ export default function ServicePageTemplate({ site, title, content, relatedLinks
         </div>
       </section>
 
+      {/* Popular hikes — optional structured list */}
+      {content.popular_hikes && content.popular_hikes.length > 0 && (
+        <section className={`py-14 px-6 ${rva ? 'bg-white' : 'bg-white'}`}>
+          <div className="max-w-5xl mx-auto">
+            <h2 className={`font-playfair text-3xl font-bold mb-3 text-center ${rva ? 'text-rva-forest' : 'text-alp-navy'}`}>
+              {content.popular_hikes.length} popular hikes near Aspen
+            </h2>
+            <p className={`text-center text-sm md:text-base mb-10 max-w-2xl mx-auto ${rva ? 'text-rva-forest/75' : 'text-alp-navy/70'}`}>
+              Mileage and times are typical round trips for an average pace; your guide will match routes to conditions, permits, and your group. Strenuous and high-alpine hikes require fitness and acclimation.
+            </p>
+            <div className="space-y-4">
+              {content.popular_hikes.map((hike, i) => (
+                <article
+                  key={`${hike.name}-${i}`}
+                  className={`rounded-xl border p-5 md:p-6 ${rva ? 'border-rva-sage/30 bg-rva-cream/60' : 'border-alp-slate/20 bg-alp-pearl'}`}
+                >
+                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 md:gap-6">
+                    <h3 className={`font-playfair text-lg md:text-xl font-bold ${rva ? 'text-rva-forest' : 'text-alp-navy'}`}>
+                      {i + 1}. {hike.name}
+                    </h3>
+                    <dl className="flex flex-wrap gap-x-6 gap-y-1 text-sm shrink-0 md:text-right">
+                      <div>
+                        <dt className={`inline font-semibold ${rva ? 'text-rva-forest' : 'text-alp-navy'}`}>Distance: </dt>
+                        <dd className="inline opacity-85">{hike.mileage}</dd>
+                      </div>
+                      <div>
+                        <dt className={`inline font-semibold ${rva ? 'text-rva-forest' : 'text-alp-navy'}`}>Typical time: </dt>
+                        <dd className="inline opacity-85">{hike.duration}</dd>
+                      </div>
+                    </dl>
+                  </div>
+                  <p className={`mt-3 text-sm md:text-base leading-relaxed ${rva ? 'text-rva-forest/85' : 'text-alp-navy/80'}`}>
+                    {hike.description}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Features */}
       {content.features && content.features.length > 0 && (
         <section className={`py-14 px-6 ${rva ? 'bg-white' : 'bg-white'}`}>

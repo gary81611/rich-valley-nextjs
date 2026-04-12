@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { CmsPage } from './pages'
+import { rvaHikingPageContent } from './rva-hiking-page-seed'
 
 type PageSeed = Omit<CmsPage, 'id' | 'created_at' | 'updated_at'>
 
@@ -145,43 +146,14 @@ const rvaPages: PageSeed[] = [
     slug: 'hiking',
     title: 'Guided Hiking Tours in Aspen & Maroon Bells',
     meta_title: 'Guided Hiking Tours Aspen CO | Maroon Bells Hikes | Rich Valley Adventures',
-    meta_description: 'Guided hiking tours in Aspen, Colorado. Maroon Bells, Cathedral Lake, Crater Lake, Conundrum Hot Springs, and more. Expert local guides for all fitness levels.',
+    meta_description:
+      'Guided hiking in Aspen: 25 popular trails including Maroon Lake, Crater Lake, Cathedral Lake, Independence Pass, Conundrum, and more — mileage, times, and packing FAQs.',
     template_type: 'service',
     status: 'published',
     published_at: new Date().toISOString(),
     og_image: null,
     schema_markup: null,
-    content: {
-      hero_title: 'Guided Hiking Tours in Aspen & Maroon Bells',
-      hero_subtitle: 'Discover Colorado\'s Most Iconic Alpine Terrain with Local Experts',
-      intro: `Aspen, Colorado sits at the doorstep of some of the most spectacular wilderness hiking in North America. The Elk Mountains surrounding the Roaring Fork Valley include five 14,000-foot peaks, the iconic Maroon Bells — the most photographed mountains in Colorado — and hundreds of miles of trails through wildflower meadows, alpine lakes, and ancient aspen groves.\n\nRich Valley Adventures offers small-group guided hiking tours for all fitness levels and interests. Whether you want a gentle walk through golden aspen groves in the fall, a wildflower ramble to Cathedral Lake in July, or a challenging ascent toward the Elk Mountain high country, our guides build your hike around your goals and abilities.\n\nEvery guided hike includes navigation, safety management, interpretive naturalist commentary about the local ecosystem and history, and the peace of mind that comes from hiking with someone who has done your route dozens of times. We keep groups small — typically 2–8 people — so every hiker gets personal attention and the trail experience they came for.`,
-      h2_sections: [
-        {
-          title: 'Maroon Bells — Aspen\'s Crown Jewel',
-          content: `The Maroon Bells Wilderness encompasses 181,000 acres of high alpine terrain just 12 miles from downtown Aspen. The two iconic peaks — Maroon Peak (14,156 ft) and North Maroon Peak (14,014 ft) — rise above Maroon Lake in a scene that has graced more Colorado calendar covers than any other.\n\nOur Maroon Bells guided hikes explore several of the area\'s most spectacular trails: the Crater Lake trail (3.6 miles round trip, suitable for most fitness levels), the Buckskin Pass approach (9 miles round trip, moderate-strenuous), and the West Maroon Pass trail that connects into Gothic and Crested Butte for multi-day epic options. We time our starts to beat the summer crowds and often have the trails nearly to ourselves in the golden morning light.`,
-        },
-        {
-          title: 'Cathedral Lake & Upper Pearl Basin',
-          content: `Cathedral Lake sits at 11,866 feet above the Roaring Fork Valley, reached by a 5.5-mile round-trip trail that climbs steeply through spruce-fir forest before opening into one of the most magical high basins in Colorado. The turquoise lake reflects the red and white cliffs of Cathedral Peak and the surrounding summits of the Elk Range.\n\nThe trail to Cathedral Lake ranks among Aspen\'s most rewarding day hikes — challenging enough to feel earned, but accessible to fit hikers of any age. In mid-July, the upper basin is carpeted in Colorado columbine, Indian paintbrush, and glacier lilies. Our guides bring the natural history to life with knowledge about the geology, flora, and wildlife of this exceptional ecosystem.`,
-        },
-      ],
-      features: [
-        { title: 'Expert Local Guides', description: 'Our guides have hiked these trails hundreds of times and bring deep knowledge of the local ecosystem, geology, and history.' },
-        { title: 'All Fitness Levels', description: 'From gentle valley walks to challenging high-alpine routes — we match the hike to your abilities and aspirations.' },
-        { title: 'Small Groups (Max 8)', description: 'Intimate group sizes ensure a personal experience and the flexibility to adjust pace and distance on the fly.' },
-        { title: 'Naturalist Commentary', description: 'Learn about wildflower identification, Colorado geology, local wildlife, and Aspen\'s fascinating history.' },
-        { title: 'Safety First', description: 'All guides carry first-aid kits, emergency communication devices, and are wilderness first responder certified.' },
-        { title: 'Iconic Wildflower Season', description: 'Mid-July through early August brings Colorado\'s famous wildflower bloom — one of the world\'s great natural spectacles.' },
-      ],
-      faqs: [
-        { question: 'What fitness level is required for your guided hikes?', answer: 'We offer hikes across the full spectrum — from easy 2-mile strolls to strenuous 10+ mile alpine routes. We always discuss your fitness level and hiking experience before recommending a route, and our guides set a pace that works for everyone in the group.' },
-        { question: 'When is the best time to hike near Aspen?', answer: 'June through September is ideal. July and early August offer peak wildflower displays. September brings the famous golden aspen fall color — one of the great natural events in the Rockies. Snowshoe hikes are available November through March for winter enthusiasts.' },
-        { question: 'Do I need hiking boots?', answer: 'Sturdy hiking boots or trail shoes with ankle support are strongly recommended for most routes. Avoid cotton socks — wool or synthetic moisture-wicking socks prevent blisters. Bring extra layers; Aspen\'s high-altitude weather changes quickly.' },
-        { question: 'Are altitude effects something to worry about?', answer: 'Aspen sits at 7,908 feet elevation — most hikes reach 10,000–12,000 feet or higher. Altitude affects people differently. We always recommend spending 1–2 days acclimating in Aspen before strenuous hikes, staying hydrated, and eating well. Our guides are trained to recognize altitude illness symptoms.' },
-      ],
-      cta_phone: '(970) 456-3666',
-      cta_text: 'Book a Guided Hiking Tour',
-    },
+    content: rvaHikingPageContent,
   },
   {
     site_id: 'rva',
