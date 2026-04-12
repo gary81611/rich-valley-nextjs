@@ -110,6 +110,18 @@ function parseBlogJson(raw: string): BlogOutput {
   )
 }
 
+const MAX_BLOG_TOPIC_LENGTH = 400
+
+/** Single-line, bounded topic for prompts — avoids broken instructions from quotes/newlines. */
+function normalizeBlogTopic(raw: string): string {
+  if (!raw) return ''
+  return raw
+    .replace(/\u200b|\uFEFF/g, '')
+    .trim()
+    .replace(/\s+/g, ' ')
+    .slice(0, MAX_BLOG_TOPIC_LENGTH)
+}
+
 function slugify(str: string): string {
   return str
     .toLowerCase()
@@ -230,10 +242,16 @@ export default function BlogGeneratorPage() {
     setFaqMessage('')
   }
 
+  /** Custom text overrides preset keyword whenever it has non-whitespace content. */
   const activeTopic = customTopic.trim() || selectedKeyword
+  const topicIsCustom = Boolean(customTopic.trim())
 
   const handleGenerate = async () => {
-    if (!activeTopic) return
+    const resolvedTopic = normalizeBlogTopic(topicIsCustom ? customTopic : selectedKeyword)
+    if (!resolvedTopic) {
+      setError('Enter a custom topic or select a keyword.')
+      return
+    }
     setGenerating(true)
     setError('')
     setOutput(null)
@@ -246,7 +264,7 @@ export default function BlogGeneratorPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          prompt: `Write a blog post targeting this keyword/topic: "${activeTopic}"\n\nBusiness: ${brandLabel}`,
+          prompt: `Write a blog post targeting this keyword/topic: ${JSON.stringify(resolvedTopic)}\n\nBusiness: ${brandLabel}`,
           type: 'free_form',
           brand: selectedBrand,
           system_prompt_override: BLOG_SYSTEM_PROMPT,
@@ -383,7 +401,7 @@ export default function BlogGeneratorPage() {
                     key={kw}
                     onClick={() => handleKeywordClick(kw, 'rva')}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border ${
-                      selectedKeyword === kw && selectedBrand === 'rva'
+                      selectedKeyword === kw && selectedBrand === 'rva' && !customTopic.trim()
                         ? 'bg-green-600 text-white border-green-600'
                         : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-green-50 hover:border-green-300 hover:text-green-800'
                     }`}
@@ -408,7 +426,7 @@ export default function BlogGeneratorPage() {
                     key={kw}
                     onClick={() => handleKeywordClick(kw, 'alpenglow')}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border ${
-                      selectedKeyword === kw && selectedBrand === 'alpenglow'
+                      selectedKeyword === kw && selectedBrand === 'alpenglow' && !customTopic.trim()
                         ? 'bg-amber-500 text-white border-amber-500'
                         : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-amber-50 hover:border-amber-300 hover:text-amber-800'
                     }`}
@@ -422,14 +440,17 @@ export default function BlogGeneratorPage() {
 
           {/* Custom topic input */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
-            <h2 className="text-sm font-semibold text-slate-900 mb-3">Or enter a custom topic</h2>
+            <h2 className="text-sm font-semibold text-slate-900 mb-1">Or enter a custom topic</h2>
+            <p className="text-xs text-slate-500 mb-3">
+              Any non-empty text here <span className="font-medium text-slate-700">overrides</span> a selected keyword. Clear the field to use the keyword again.
+            </p>
             <div className="flex gap-2 mb-3">
               <input
                 type="text"
                 value={customTopic}
+                maxLength={MAX_BLOG_TOPIC_LENGTH}
                 onChange={(e) => {
                   setCustomTopic(e.target.value)
-                  setSelectedKeyword('')
                   setOutput(null)
                   setError('')
                   resetPublishState()
@@ -463,7 +484,14 @@ export default function BlogGeneratorPage() {
             {activeTopic && (
               <div className="mb-3 text-xs text-slate-600 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
                 <span className="font-medium">Topic:</span> {activeTopic}{' '}
-                <span className={`ml-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${
+                <span
+                  className={`ml-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${
+                    topicIsCustom ? 'bg-slate-200 text-slate-800' : 'bg-white text-slate-600 border border-slate-200'
+                  }`}
+                >
+                  {topicIsCustom ? 'Custom' : 'Preset'}
+                </span>{' '}
+                <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${
                   selectedBrand === 'rva' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
                 }`}>
                   {selectedBrand === 'rva' ? 'RVA' : 'AAL'}
