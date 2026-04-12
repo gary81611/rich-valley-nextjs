@@ -2,9 +2,10 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Our Fleet | Aspen Alpenglow Limousine',
+  title: 'Luxury Fleet | Suburban SUVs & Transit Van | Alpenglow',
   description:
-    'Our fleet: two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (14 passengers). Starlink WiFi, ski racks, professionally chauffeured mountain service.',
+    'Chevrolet Suburban SUVs (7 pax each) & 14-passenger Ford Transit Van — Starlink WiFi, ski racks, Aspen & Snowmass chauffeur service. View amenities & book.',
+  alternates: { canonical: 'https://aspenalpenglowlimousine.com/fleet' },
 }
 
 const VEHICLES = [

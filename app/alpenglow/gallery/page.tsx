@@ -6,8 +6,10 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Gallery | Aspen Alpenglow Limousine',
-  description: 'Browse photos of our luxury fleet, vehicles, and the stunning Colorado destinations we serve. Chevrolet Suburban, Ford Transit Van, and scenic Roaring Fork Valley views.',
+  title: 'Photo Gallery | Aspen Alpenglow Limousine Fleet & Valley',
+  description:
+    'Photos of our Aspen limo fleet — Chevy Suburbans, Ford Transit Van, ski racks & interiors — plus Colorado landscapes we serve across the Roaring Fork Valley.',
+  alternates: { canonical: 'https://aspenalpenglowlimousine.com/gallery' },
 }
 
 async function fetchGalleryImages() {
@@ -87,7 +89,11 @@ export default async function GalleryPage() {
                     <div className={`relative ${aspectClass}`}>
                       <Image
                         src={img.src}
-                        alt={img.alt}
+                        alt={
+                          img.alt?.trim()
+                            ? `${img.alt} — Aspen Alpenglow Limousine luxury transportation gallery`
+                            : `Aspen Alpenglow Limousine fleet or Colorado destination photo ${i + 1}`
+                        }
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-700"
                         unoptimized

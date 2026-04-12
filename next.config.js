@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const rvaHosts = ['www.richvalleyadventures.com', 'richvalleyadventures.com']
+const aalHosts = ['www.aspenalpenglowlimousine.com', 'aspenalpenglowlimousine.com']
 
 function rvaRedirects() {
   const list = []
@@ -40,6 +41,21 @@ function rvaRedirects() {
   return list
 }
 
+/** Canonical CMS landing for airport content; `/services/airport-transfers` duplicates the same topic. */
+function aalRedirects() {
+  const list = []
+  for (const host of aalHosts) {
+    const h = [{ type: 'host', value: host }]
+    list.push({
+      source: '/services/airport-transfers',
+      destination: '/airport-transfers',
+      permanent: true,
+      has: h,
+    })
+  }
+  return list
+}
+
 /** Apex → www: single canonical host for RVA (reduces “duplicate / alternate canonical” noise in GSC). */
 function rvaApexToWww() {
   return {
@@ -59,7 +75,7 @@ const nextConfig = {
     ],
   },
   async redirects() {
-    return [rvaApexToWww(), ...rvaRedirects()]
+    return [rvaApexToWww(), ...rvaRedirects(), ...aalRedirects()]
   },
   async rewrites() {
     return {

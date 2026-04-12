@@ -7,8 +7,17 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'About | Aspen Alpenglow Limousine',
-  description: 'Since 2012, Aspen Alpenglow Limousine has provided distinguished private car and limousine service throughout Aspen, Snowmass, and the Roaring Fork Valley. Learn about our story, fleet, and team.',
+  title: 'About Aspen Alpenglow Limousine | Aspen Limo Since 2012',
+  description:
+    'Roaring Fork Valley private car & limo service since 2012 — our story, chauffeur standards, luxury Suburban & Transit fleet, values, and how we run ASE, EGE & DEN airport transfers.',
+  alternates: { canonical: 'https://aspenalpenglowlimousine.com/about' },
+  openGraph: {
+    title: 'About Aspen Alpenglow Limousine | Aspen Limo Since 2012',
+    description:
+      'Meet the Aspen-based team behind distinguished airport transfers, ski-day shuttles, weddings, and corporate transport.',
+    url: 'https://aspenalpenglowlimousine.com/about',
+    type: 'website',
+  },
 }
 
 const defaultStats = [
@@ -61,7 +70,41 @@ export default async function AboutPage() {
     // Use defaults on error
   }
 
+  const aboutJsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'AboutPage',
+        '@id': 'https://aspenalpenglowlimousine.com/about#aboutpage',
+        url: 'https://aspenalpenglowlimousine.com/about',
+        name: 'About Aspen Alpenglow Limousine',
+        description:
+          'Luxury private transportation in Aspen and the Roaring Fork Valley since 2012 — airport transfers, events, ski shuttles, and corporate travel.',
+        isPartOf: { '@type': 'WebSite', url: 'https://aspenalpenglowlimousine.com', name: 'Aspen Alpenglow Limousine' },
+      },
+      {
+        '@type': 'LocalBusiness',
+        '@id': 'https://aspenalpenglowlimousine.com/#business',
+        name: 'Aspen Alpenglow Limousine',
+        url: 'https://aspenalpenglowlimousine.com',
+        telephone: '+19704563666',
+        priceRange: '$$$',
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Aspen',
+          addressRegion: 'CO',
+          postalCode: '81611',
+          addressCountry: 'US',
+        },
+        areaServed: ['Aspen', 'Snowmass Village', 'Roaring Fork Valley', 'Eagle County', 'Denver metro connections'],
+        foundingDate: '2012',
+      },
+    ],
+  }
+
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutJsonLd) }} />
     <div className="min-h-screen bg-alp-pearl font-inter">
       {/* Breadcrumb */}
       <div className="bg-alp-navy-deep">
@@ -122,6 +165,13 @@ export default async function AboutPage() {
                 about anticipating every need, knowing the valley inside and out, and making every
                 ride feel effortless. From 4 a.m. airport pickups to midnight event returns, our
                 commitment never wavers.
+              </p>
+              <p className="text-alp-slate text-lg leading-relaxed mb-6">
+                Over the years we have coordinated thousands of ASE, EGE, and DEN arrivals, ski-week
+                shuttles for multi-generational families, corporate retreats with complex multi-hotel
+                logistics, and wedding weekends where timing is everything. That volume taught us
+                something simple: the best service is calm, precise, and kind — especially when
+                weather, flights, or mountain traffic refuse to cooperate.
               </p>
               <p className="text-alp-slate text-base leading-relaxed border-l-4 border-alp-gold/30 pl-4">
                 &ldquo;Our clients don&apos;t just book a ride — they book peace of mind.
@@ -260,6 +310,79 @@ export default async function AboutPage() {
         </div>
       </section>
 
+      {/* Values */}
+      <section className="py-24 bg-alp-pearl-dark">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <p className="text-alp-gold text-sm tracking-widest uppercase mb-3 font-semibold">How we work</p>
+            <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold">Values &amp; service standards</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-10">
+            <div className="bg-white rounded-2xl p-8 border border-alp-pearl-dark shadow-sm">
+              <h3 className="font-playfair text-xl font-bold text-alp-navy mb-3">Safety first, always</h3>
+              <p className="text-alp-slate leading-relaxed text-sm">
+                Winter traction, canyon closures, and high-altitude fatigue are not abstract concepts here — they are
+                Tuesday afternoon. We maintain vehicles for mountain duty, adjust routes when CDOT conditions change,
+                and never rush a guest to save minutes on a snowy pass.
+              </p>
+            </div>
+            <div className="bg-white rounded-2xl p-8 border border-alp-pearl-dark shadow-sm">
+              <h3 className="font-playfair text-xl font-bold text-alp-navy mb-3">Discretion &amp; reliability</h3>
+              <p className="text-alp-slate leading-relaxed text-sm">
+                Aspen is a small town with a global guest list. Our team respects privacy, honors NDAs where required,
+                and shows up when we say we will — with flight tracking on every airport job and proactive dispatch if
+                plans shift.
+              </p>
+            </div>
+            <div className="bg-white rounded-2xl p-8 border border-alp-pearl-dark shadow-sm">
+              <h3 className="font-playfair text-xl font-bold text-alp-navy mb-3">Hospitality mindset</h3>
+              <p className="text-alp-slate leading-relaxed text-sm">
+                A transfer is often the first and last impression of a trip. We treat luggage, kids, elderly guests,
+                and jet-lagged travelers with patience — the way we would want our own family treated after a long day
+                of travel.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Internal links — transportation planning */}
+      <section className="py-20 bg-white">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="font-playfair text-3xl md:text-4xl text-alp-navy font-bold mb-4">Plan your transportation</h2>
+          <p className="text-alp-slate text-lg leading-relaxed mb-8">
+            Explore dedicated guides for airports, regional routes, Colorado day trips, and travel stories from our team.
+          </p>
+          <ul className="text-left max-w-xl mx-auto space-y-3 text-alp-navy">
+            <li>
+              <Link href="/airport-transfers" className="text-alp-gold font-semibold hover:underline">
+                Private airport transfers — ASE, EGE &amp; Denver (DEN)
+              </Link>
+            </li>
+            <li>
+              <Link href="/areas/snowmass" className="text-alp-gold font-semibold hover:underline">
+                Snowmass Village limo service &amp; Aspen dinner transfers
+              </Link>
+            </li>
+            <li>
+              <Link href="/areas/vail" className="text-alp-gold font-semibold hover:underline">
+                Aspen ↔ Vail / Beaver Creek private car service
+              </Link>
+            </li>
+            <li>
+              <Link href="/destinations" className="text-alp-gold font-semibold hover:underline">
+                Chauffeured Colorado destinations — Red Rocks, Garden of the Gods &amp; more
+              </Link>
+            </li>
+            <li>
+              <Link href="/blog" className="text-alp-gold font-semibold hover:underline">
+                Blog — ski-season travel tips, airport guides, and event logistics
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </section>
+
       {/* Sister Company */}
       <section className="py-16 bg-alp-pearl">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -298,5 +421,6 @@ export default async function AboutPage() {
         </div>
       </section>
     </div>
+    </>
   )
 }

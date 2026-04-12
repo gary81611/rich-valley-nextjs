@@ -1,14 +1,17 @@
+import Link from 'next/link'
 import type { ServiceContent, SiteId } from '@/lib/pages'
 
 interface Props {
   site: SiteId
   title: string
   content: ServiceContent
+  /** Optional contextual internal links (AAL SEO). */
+  relatedLinks?: { href: string; label: string }[]
 }
 
 const isRva = (site: SiteId) => site === 'rva'
 
-export default function ServicePageTemplate({ site, title, content }: Props) {
+export default function ServicePageTemplate({ site, title, content, relatedLinks }: Props) {
   const rva = isRva(site)
   const phone = content.cta_phone || (rva ? '(970) 456-3666' : '(970) 456-3666')
 
@@ -71,6 +74,25 @@ export default function ServicePageTemplate({ site, title, content }: Props) {
                 ))}
               </div>
             ))}
+          </div>
+        </section>
+      )}
+
+      {!rva && relatedLinks && relatedLinks.length > 0 && (
+        <section className="py-14 px-6 bg-alp-pearl border-y border-alp-pearl-dark">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="font-playfair text-2xl md:text-3xl font-bold mb-6 text-alp-navy">
+              Explore related services &amp; routes
+            </h2>
+            <ul className="space-y-3">
+              {relatedLinks.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="text-alp-gold font-medium hover:text-alp-navy underline-offset-2 hover:underline">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
       )}

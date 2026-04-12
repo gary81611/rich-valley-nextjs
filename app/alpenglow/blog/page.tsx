@@ -6,11 +6,13 @@ import type { BlogPost } from '@/lib/types'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Blog | Aspen Alpenglow Limousine — Luxury Transportation Tips & Guides',
-  description: 'Insider guides on Aspen transportation, airport transfers, ski season travel tips, and luxury car service advice from Aspen Alpenglow Limousine.',
+  title: 'Travel Blog | Aspen Limo, Airport & Ski Transfer Tips',
+  description:
+    'Aspen Alpenglow Limousine blog — ASE & EGE airport guides, ski-season I-70 tips, corporate retreat transport, wine tours, and luxury car service in Colorado.',
+  alternates: { canonical: 'https://aspenalpenglowlimousine.com/blog' },
   openGraph: {
-    title: 'Blog | Aspen Alpenglow Limousine',
-    description: 'Luxury transportation guides and Aspen travel tips.',
+    title: 'Travel Blog | Aspen Limo, Airport & Ski Transfer Tips',
+    description: 'Guides for Aspen airport transfers, mountain driving, and chauffeured Colorado travel.',
     type: 'website',
     url: 'https://aspenalpenglowlimousine.com/blog',
   },

@@ -10,7 +10,7 @@ interface NavItem { label: string; href: string }
 
 /** Links must hit `app/services/[slug]` (`/services/...` on the public host), not the CMS catch-all under `/{slug}`. */
 const FALLBACK_SERVICE_PAGES: NavItem[] = [
-  { label: 'Airport Transfers', href: '/services/airport-transfers' },
+  { label: 'Airport Transfers', href: '/airport-transfers' },
   { label: 'Corporate Events', href: '/services/corporate-events' },
   { label: 'Wedding Transportation', href: '/services/wedding-transportation' },
   { label: 'Ski Resort Transfers', href: '/services/ski-resort-transfers' },

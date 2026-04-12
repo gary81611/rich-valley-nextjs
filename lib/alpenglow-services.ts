@@ -7,6 +7,7 @@ export function slugifyServiceName(name: string): string {
 
 export function hrefForService(service: { slug: string | null; name: string }): string {
   const seg = (service.slug && service.slug.trim()) || slugifyServiceName(service.name)
+  if (seg === 'airport-transfers') return '/airport-transfers'
   return `/services/${seg}`
 }
 

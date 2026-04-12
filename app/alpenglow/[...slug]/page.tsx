@@ -87,11 +87,28 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
     schemas.push({
       '@context': 'https://schema.org',
       '@type': 'LocalBusiness',
-      '@id': `${baseUrl}/#business`,
+      '@id': `${pageUrl}#local`,
       name: 'Aspen Alpenglow Limousine',
       description: page.meta_description || undefined,
       url: pageUrl,
+      telephone: '+19704563666',
+      priceRange: '$$$',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Aspen',
+        addressRegion: 'CO',
+        postalCode: '81611',
+        addressCountry: 'US',
+      },
       areaServed: { '@type': 'Place', name: content.area_description },
+      makesOffer: {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: page.title,
+          url: pageUrl,
+        },
+      },
     })
   }
 
@@ -147,10 +164,30 @@ export default async function CmsPage({ params }: Props) {
       ))}
 
       {page.template_type === 'service' && (
-        <ServicePageTemplate site="alpenglow" title={page.title} content={page.content as ServiceContent} />
+        <ServicePageTemplate
+          site="alpenglow"
+          title={page.title}
+          content={page.content as ServiceContent}
+          relatedLinks={
+            slugStr === 'airport-transfers'
+              ? [
+                  { href: '/areas/snowmass', label: 'Snowmass Village pickups & Aspen transfers' },
+                  { href: '/areas/vail', label: 'Aspen ↔ Vail / Beaver Creek private car service' },
+                  { href: '/destinations', label: 'Chauffeured Colorado day trips & Front Range venues' },
+                  { href: '/fleet', label: 'Our Suburban & Transit van fleet for airport arrivals' },
+                  { href: '/blog/airport-transfer-guide-aspen-pitkin-county-airport', label: 'ASE airport transfer guide (blog)' },
+                ]
+              : undefined
+          }
+        />
       )}
       {page.template_type === 'location' && (
-        <LocationPageTemplate site="alpenglow" title={page.title} content={page.content as LocationContent} />
+        <LocationPageTemplate
+          site="alpenglow"
+          title={page.title}
+          content={page.content as LocationContent}
+          pageSlug={slugStr}
+        />
       )}
       {page.template_type === 'faq' && (
         <FaqPageTemplate site="alpenglow" title={page.title} content={page.content as FaqContent} />

@@ -30,6 +30,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = await getPost(slug)
   if (!post) return { title: 'Post Not Found | Aspen Alpenglow Limousine' }
 
+  const canonical = `https://aspenalpenglowlimousine.com/blog/${post.slug}`
+
   return {
     title: post.meta_title || post.title,
     description: post.meta_description || undefined,
@@ -37,10 +39,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: post.meta_title || post.title,
       description: post.meta_description || undefined,
       type: 'article',
-      url: `https://aspenalpenglowlimousine.com/blog/${post.slug}`,
+      url: canonical,
       publishedTime: post.published_at || undefined,
+      modifiedTime: post.updated_at || undefined,
     },
-    alternates: { canonical: `https://aspenalpenglowlimousine.com/blog/${post.slug}` },
+    alternates: { canonical },
   }
 }
 
@@ -112,22 +115,72 @@ function renderMarkdown(content: string): React.ReactNode {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
+/** Merged with Supabase `internal_links` for crawl paths to money pages. */
+const AAL_BLOG_RELATED: Record<string, { text: string; url: string }[]> = {
+  'best-ski-resorts-near-aspen-getting-there-in-style': [
+    { text: 'Aspen ↔ Vail private transfers', url: '/areas/vail' },
+    { text: 'Snowmass Village car service', url: '/areas/snowmass' },
+    { text: 'Ski resort & mountain shuttles', url: '/services/ski-resort-transfers' },
+  ],
+  'corporate-retreat-transportation-aspen': [
+    { text: 'Corporate & executive transportation', url: '/services/corporate-events' },
+    { text: 'Fleet — Suburbans & 14-passenger van', url: '/fleet' },
+    { text: 'Request a group quote', url: '/contact' },
+  ],
+  'aspen-wine-tours-guide-to-local-tastings': [
+    { text: 'Wine tours & private chauffeured tastings', url: '/services/wine-tours' },
+    { text: 'Colorado day-trip destinations', url: '/destinations' },
+    { text: 'Book a custom itinerary', url: '/contact' },
+  ],
+  'airport-transfer-guide-aspen-pitkin-county-airport': [
+    { text: 'Book private ASE, EGE & DEN transfers', url: '/airport-transfers' },
+    { text: 'Our fleet for airport arrivals', url: '/fleet' },
+    { text: 'Snowmass pickup & Aspen runs', url: '/areas/snowmass' },
+  ],
+  'aspen-airport-transportation-guide': [
+    { text: 'Reserve airport car service', url: '/airport-transfers' },
+    { text: 'Service areas & regional routes', url: '/service-areas' },
+  ],
+}
+
+function mergeRelatedLinks(
+  slug: string,
+  fromDb: { text: string; url: string }[],
+): { text: string; url: string }[] {
+  const map = new Map<string, { text: string; url: string }>()
+  for (const l of [...(AAL_BLOG_RELATED[slug] || []), ...fromDb]) {
+    map.set(l.url, l)
+  }
+  return Array.from(map.values())
+}
+
 export default async function AlpenglowBlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const post = await getPost(slug)
   if (!post) notFound()
 
+  const relatedLinks = mergeRelatedLinks(post.slug, post.internal_links)
+
   const articleSchema = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: post.title,
-    description: post.meta_description,
+    '@type': 'BlogPosting',
+    headline: post.meta_title || post.title,
+    description: post.meta_description || undefined,
     datePublished: post.published_at,
-    dateModified: post.updated_at,
+    dateModified: post.updated_at || post.published_at,
+    author: {
+      '@type': 'Organization',
+      name: 'Aspen Alpenglow Limousine',
+      url: 'https://aspenalpenglowlimousine.com',
+    },
     publisher: {
       '@type': 'Organization',
       name: 'Aspen Alpenglow Limousine',
       url: 'https://aspenalpenglowlimousine.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://aspenalpenglowlimousine.com/images/logos/alpenglow-logo.png',
+      },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
@@ -171,11 +224,22 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
       {/* Article header */}
       <div className="bg-alp-navy-deep pb-16 pt-10 px-6">
         <div className="max-w-3xl mx-auto text-center text-white">
-          {post.published_at && (
-            <p className="text-alp-gold text-sm font-medium mb-4">
-              {new Date(post.published_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-            </p>
-          )}
+          <div className="text-alp-gold text-sm font-medium mb-4 space-y-1">
+            {post.published_at && (
+              <p>
+                Published{' '}
+                {new Date(post.published_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              </p>
+            )}
+            {post.updated_at &&
+              post.published_at &&
+              new Date(post.updated_at).getTime() > new Date(post.published_at).getTime() && (
+                <p className="text-white/50 text-xs font-normal">
+                  Updated{' '}
+                  {new Date(post.updated_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                </p>
+              )}
+          </div>
           <h1 className="font-playfair text-3xl md:text-5xl font-bold leading-tight mb-6">
             {post.title}
           </h1>
@@ -227,11 +291,11 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
           {/* Sidebar */}
           <aside className="space-y-6">
             {/* Internal links — Related Resources */}
-            {post.internal_links.length > 0 && (
+            {relatedLinks.length > 0 && (
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-alp-pearl-dark">
                 <h3 className="font-playfair text-lg font-bold text-alp-navy mb-4">Related Resources</h3>
                 <ul className="space-y-2">
-                  {post.internal_links.map((link, i) => (
+                  {relatedLinks.map((link, i) => (
                     <li key={i}>
                       <Link
                         href={link.url}

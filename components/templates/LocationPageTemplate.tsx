@@ -1,14 +1,26 @@
+import Link from 'next/link'
 import type { LocationContent, SiteId } from '@/lib/pages'
 
 interface Props {
   site: SiteId
   title: string
   content: LocationContent
+  /** Public path without host, e.g. `areas/vail` — used for contextual internal links (AAL). */
+  pageSlug?: string
 }
 
 const isRva = (site: SiteId) => site === 'rva'
 
-export default function LocationPageTemplate({ site, title, content }: Props) {
+const AAL_LOCATION_CROSS_LINKS: { href: string; label: string }[] = [
+  { href: '/airport-transfers', label: 'Private airport transfers (ASE, EGE & DEN)' },
+  { href: '/destinations', label: 'Chauffeured day trips & Colorado destinations' },
+  { href: '/areas/snowmass', label: 'Snowmass Village private car service' },
+  { href: '/areas/vail', label: 'Aspen ↔ Vail & Eagle County transfers' },
+  { href: '/blog', label: 'Transportation guides & travel tips' },
+  { href: '/contact', label: 'Request a quote' },
+]
+
+export default function LocationPageTemplate({ site, title, content, pageSlug }: Props) {
   const rva = isRva(site)
   const phone = content.cta_phone || (rva ? '(970) 456-3666' : '(970) 456-3666')
 
@@ -71,6 +83,32 @@ export default function LocationPageTemplate({ site, title, content }: Props) {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+      )}
+
+      {/* AAL internal discovery */}
+      {!rva && pageSlug && (
+        <section className="py-14 px-6 bg-white border-y border-alp-pearl-dark">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="font-playfair text-2xl md:text-3xl font-bold mb-6 text-alp-navy">
+              Related routes & resources
+            </h2>
+            <ul className="space-y-3">
+              {AAL_LOCATION_CROSS_LINKS.filter((l) => {
+                const path = l.href.replace(/^\//, '')
+                return path !== pageSlug
+              }).map((l) => (
+                <li key={l.href}>
+                  <Link
+                    href={l.href}
+                    className="text-alp-gold font-medium hover:text-alp-navy underline-offset-2 hover:underline"
+                  >
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
       )}

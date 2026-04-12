@@ -46,6 +46,7 @@ async function seed() {
       const { meta, body: rawBody } = parseBlogMarkdownFile(raw)
 
       const title = meta.title?.trim() || slug.replace(/-/g, ' ')
+      const meta_title = meta.meta_title?.trim() || title
       const meta_description = meta.description?.trim() || ''
       if (!rawBody) {
         console.warn(`SKIP empty body: ${site_key}/${slug}`)
@@ -59,18 +60,23 @@ async function seed() {
         continue
       }
 
+      const published_at = publishedAtFromDate(meta.date)
+      const updated_at = meta.updated?.trim()
+        ? publishedAtFromDate(meta.updated)
+        : published_at
+
       const row = {
         site_key,
         slug,
         title,
-        meta_title: title,
+        meta_title,
         meta_description,
         content,
         internal_links: [] as { text: string; url: string }[],
         faqs: parsedFaqs,
         status: 'published' as const,
-        published_at: publishedAtFromDate(meta.date),
-        updated_at: new Date().toISOString(),
+        published_at,
+        updated_at,
       }
 
       const { error } = await supabase.from('blog_posts').upsert(row, {

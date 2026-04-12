@@ -34,5 +34,7 @@ export function normalizeAalServiceNavHref(href: string): string {
   const seg = segments[0]
   if (!seg || RESERVED_SINGLE_SEGMENTS.has(seg)) return href
 
+  if (seg === 'airport-transfers') return '/airport-transfers'
+
   return `/services/${seg}`
 }

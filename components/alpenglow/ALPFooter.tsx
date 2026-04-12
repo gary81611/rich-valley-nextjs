@@ -16,7 +16,7 @@ export default function ALPFooter() {
           <div>
             <h4 className="font-playfair text-lg font-semibold mb-5 text-alp-gold">Services</h4>
             <ul className="space-y-2">
-              <li><a href="/services/airport-transfers" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Airport Transfers</a></li>
+              <li><a href="/airport-transfers" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Airport Transfers</a></li>
               <li><a href="/services/corporate-events" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Corporate Events</a></li>
               <li><a href="/services/wedding-transportation" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Wedding Transportation</a></li>
               <li><a href="/services/ski-resort-transfers" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Ski Resort Transfers</a></li>
@@ -26,6 +26,8 @@ export default function ALPFooter() {
             <h4 className="font-playfair text-lg font-semibold mb-5 text-alp-gold">Quick Links</h4>
             <ul className="space-y-2">
               <li><a href="/contact" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Book Transportation</a></li>
+              <li><a href="/destinations" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Colorado Destinations</a></li>
+              <li><a href="/blog" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Blog &amp; Guides</a></li>
               <li><a href="/fleet" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Our Fleet</a></li>
               <li><a href="/service-areas" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Service Areas</a></li>
               <li><a href="/about" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">About</a></li>
