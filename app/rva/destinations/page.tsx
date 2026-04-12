@@ -8,6 +8,9 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Popular Destinations | Rich Valley Adventures',
   description: 'Explore Colorado\'s top destinations with Rich Valley Adventures — Garden of the Gods, Red Rocks, Pikes Peak, and more. Luxury transportation available through Aspen Alpenglow Limousine.',
+  alternates: {
+    canonical: 'https://www.richvalleyadventures.com/destinations',
+  },
 }
 
 export default async function DestinationsPage() {

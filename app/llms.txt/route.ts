@@ -24,7 +24,7 @@ https://www.richvalleyadventures.com/fly-fishing
 https://www.richvalleyadventures.com/hiking
 https://www.richvalleyadventures.com/adventures/mountain-biking
 https://www.richvalleyadventures.com/paddle-boarding
-https://www.richvalleyadventures.com/adventures/elevated-camping
+https://www.richvalleyadventures.com/elevated-camping
 https://www.richvalleyadventures.com/winter
 https://www.richvalleyadventures.com/conditions
 https://www.richvalleyadventures.com/guides

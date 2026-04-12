@@ -8,6 +8,9 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Services | Rich Valley Adventures',
   description: 'Guided outdoor adventures and luxury transportation in Aspen and the Roaring Fork Valley. Fly fishing, hiking, mountain biking, scenic tours, and more from Rich Valley Adventures.',
+  alternates: {
+    canonical: 'https://www.richvalleyadventures.com/services',
+  },
 }
 
 export default async function ServicesPage() {

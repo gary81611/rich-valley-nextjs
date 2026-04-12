@@ -56,7 +56,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const adventure = await getAdventure(slug)
   if (!adventure) {
-    return { title: 'Adventure Not Found | Rich Valley Adventures' }
+    return {
+      title: 'Adventure Not Found | Rich Valley Adventures',
+      alternates: {
+        canonical: `https://www.richvalleyadventures.com/adventures/${slug}`,
+      },
+      robots: { index: false, follow: true },
+    }
   }
   const adventureSlug = slugify(adventure.name)
   return {

@@ -43,6 +43,70 @@ function normalizeAalPageSlug(slug: string): string {
   return s
 }
 
+/** CMS rows that mirror app routes — omit so sitemap lists one URL per page. */
+const RVA_SITEMAP_OMIT_CMS_SLUGS = new Set([
+  'contact-us',
+  'privacy-policy',
+  'outdoor-adventures',
+  'adventure-booking',
+  'booking',
+  'fleet-v3',
+  'fleet',
+  'home',
+  'winter-offerings',
+  'horseback-riding',
+  'rva',
+  'mountain-biking',
+  'elevated-camping',
+  'service-areas',
+  'service-areas-locations',
+  'transportation',
+  'faq',
+  'areas/aspen',
+  'areas/basalt',
+  'areas/snowmass',
+  'fly-fishing',
+  'guides',
+  'locations',
+  'conditions',
+  'blog',
+  'about',
+  'contact',
+  'gallery',
+  'winter',
+  'destinations',
+  'services',
+  'terms',
+  'privacy',
+])
+
+function normalizeRvaCmsSlug(slug: string): string {
+  return slug.trim().replace(/^\/+/, '').replace(/\/+$/, '')
+}
+
+function shouldOmitRvaCmsPageSlug(slug: string): boolean {
+  const s = normalizeRvaCmsSlug(slug)
+  if (!s) return true
+  if (s.startsWith('areas/')) return true
+  if (s.startsWith('service-areas-locations/')) return true
+  if (s.startsWith('service-areas/')) return true
+  return RVA_SITEMAP_OMIT_CMS_SLUGS.has(s)
+}
+
+/** DB service_area.slug may use legacy `-co` — map to the URL that returns 200 without a redirect. */
+function canonicalRvaServiceAreaSlug(raw: string): string | null {
+  const slug = String(raw).trim()
+  const coMap: Record<string, string> = {
+    'aspen-co': 'aspen',
+    'basalt-co': 'basalt',
+    'snowmass-village-co': 'snowmass-village',
+    'carbondale-co': 'carbondale',
+  }
+  if (slug in coMap) return coMap[slug]
+  if (slug === 'rifle-co' || slug === 'denver-co') return null
+  return slug
+}
+
 export async function GET(request: Request) {
   const hostname = request.headers.get('host') || ''
   const isAAL = hostname.includes('aspenalpenglow') || hostname.includes('alpenglow')
@@ -68,6 +132,8 @@ export async function GET(request: Request) {
     : [
         { url: `${RVA_ORIGIN}/`, lastModified, changeFrequency: 'weekly', priority: 1.0 },
         { url: `${RVA_ORIGIN}/fly-fishing`, lastModified, changeFrequency: 'weekly', priority: 0.95 },
+        { url: `${RVA_ORIGIN}/hiking`, lastModified, changeFrequency: 'weekly', priority: 0.88 },
+        { url: `${RVA_ORIGIN}/paddle-boarding`, lastModified, changeFrequency: 'weekly', priority: 0.88 },
         { url: `${RVA_ORIGIN}/conditions`, lastModified, changeFrequency: 'daily', priority: 0.9 },
         { url: `${RVA_ORIGIN}/guides`, lastModified, changeFrequency: 'weekly', priority: 0.85 },
         { url: `${RVA_ORIGIN}/locations`, lastModified, changeFrequency: 'weekly', priority: 0.85 },
@@ -81,8 +147,10 @@ export async function GET(request: Request) {
         { url: `${RVA_ORIGIN}/gallery`, lastModified, changeFrequency: 'monthly', priority: 0.75 },
         { url: `${RVA_ORIGIN}/about`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
         { url: `${RVA_ORIGIN}/winter`, lastModified, changeFrequency: 'monthly', priority: 0.75 },
-        { url: `${RVA_ORIGIN}/adventures/elevated-camping`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
+        { url: `${RVA_ORIGIN}/elevated-camping`, lastModified, changeFrequency: 'monthly', priority: 0.85 },
+        { url: `${RVA_ORIGIN}/adventures/mountain-biking`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
         { url: `${RVA_ORIGIN}/adventures`, lastModified, changeFrequency: 'weekly', priority: 0.8 },
+        { url: `${RVA_ORIGIN}/services`, lastModified, changeFrequency: 'weekly', priority: 0.82 },
         { url: `${RVA_ORIGIN}/destinations`, lastModified, changeFrequency: 'monthly', priority: 0.65 },
         { url: `${RVA_ORIGIN}/blog`, lastModified, changeFrequency: 'weekly', priority: 0.8 },
         { url: `${RVA_ORIGIN}/terms`, lastModified, changeFrequency: 'yearly', priority: 0.25 },
@@ -133,18 +201,6 @@ export async function GET(request: Request) {
       priority: 0.7,
     }))
 
-    const excludedRvaSlugs = new Set([
-      'service-areas-locations',
-      'transportation',
-      'faq',
-      'areas/aspen',
-      'areas/basalt',
-      'areas/snowmass',
-      'mountain-biking',
-      'paddle-boarding',
-      'snowshoeing',
-    ])
-
     const excludedAalSlugs = new Set([
       'areas/aspen',
       'areas/snowmass',
@@ -161,10 +217,11 @@ export async function GET(request: Request) {
     ])
 
     const pageEntries: SitemapEntry[] = (pages || [])
-      .filter((page) => !(siteKey === 'rva' && excludedRvaSlugs.has(page.slug)))
       .filter((page) => !(siteKey === 'alpenglow' && excludedAalSlugs.has(page.slug)))
+      .filter((page) => !(siteKey === 'rva' && shouldOmitRvaCmsPageSlug(page.slug)))
       .map((page) => {
-        const normalizedSlug = siteKey === 'alpenglow' ? normalizeAalPageSlug(page.slug) : page.slug
+        const normalizedSlug =
+          siteKey === 'alpenglow' ? normalizeAalPageSlug(page.slug) : normalizeRvaCmsSlug(page.slug)
         const url = normalizedSlug ? `${base}/${normalizedSlug}` : `${base}/`
         return {
           url,
@@ -176,14 +233,18 @@ export async function GET(request: Request) {
 
     const serviceAreaEntries: SitemapEntry[] = (serviceAreas || [])
       .filter((row) => typeof row.slug === 'string' && row.slug.trim().length > 0)
-      .map((row) => {
-        const slug = String(row.slug).trim()
-        return {
-          url: `${base}/service-areas/${slug}`,
-          lastModified: row.updated_at ? new Date(row.updated_at) : lastModified,
-          changeFrequency: 'monthly',
-          priority: siteKey === 'alpenglow' ? 0.72 : 0.78,
-        }
+      .flatMap((row) => {
+        const mapped = siteKey === 'rva' ? canonicalRvaServiceAreaSlug(String(row.slug)) : String(row.slug).trim()
+        if (siteKey === 'rva' && mapped === null) return []
+        const slug = siteKey === 'rva' ? mapped! : String(row.slug).trim()
+        return [
+          {
+            url: `${base}/service-areas/${slug}`,
+            lastModified: row.updated_at ? new Date(row.updated_at) : lastModified,
+            changeFrequency: 'monthly',
+            priority: siteKey === 'alpenglow' ? 0.72 : 0.78,
+          },
+        ]
       })
 
     const merged = dedupeByUrl([...staticEntries, ...blogEntries, ...pageEntries, ...serviceAreaEntries])

@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: 'Fleet | Rich Valley Adventures',
   description:
     'Our sister company Aspen Alpenglow Limousine provides luxury transportation in Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (14 passengers) for Chauffeur Guided Tours and Excursions and transfers.',
+  alternates: {
+    canonical: 'https://aspenalpenglowlimousine.com/fleet',
+  },
 }
 
 async function getFleetVehicles() {

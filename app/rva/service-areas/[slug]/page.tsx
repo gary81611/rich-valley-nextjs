@@ -65,7 +65,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     }
   }
 
-  return { title: 'Service area | Rich Valley Adventures', robots: { index: true, follow: true } }
+  return {
+    title: 'Service area | Rich Valley Adventures',
+    alternates: { canonical: `${BASE}/service-areas/${slug}` },
+    robots: { index: false, follow: true },
+  }
 }
 
 export default async function RvaServiceAreaDetailPage({ params }: { params: Promise<{ slug: string }> }) {

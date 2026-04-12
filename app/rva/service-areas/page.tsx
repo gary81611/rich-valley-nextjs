@@ -8,6 +8,9 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Service Areas | Rich Valley Adventures',
   description: 'Rich Valley Adventures serves the entire Roaring Fork Valley — Aspen, Snowmass, Basalt, Carbondale, Glenwood Springs, and beyond. Guided outdoor adventures across Colorado.',
+  alternates: {
+    canonical: 'https://www.richvalleyadventures.com/service-areas',
+  },
 }
 
 export default async function ServiceAreasPage() {

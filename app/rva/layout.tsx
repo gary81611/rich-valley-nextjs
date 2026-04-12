@@ -11,9 +11,6 @@ export const metadata: Metadata = {
   description:
     'Rich Valley Adventures offers expert-guided fly fishing, hiking, mountain biking, and elevated camping in Aspen, Colorado. Small groups, all gear included. Book your Roaring Fork Valley adventure today.',
   keywords: 'Aspen guided adventures, fly fishing Aspen Colorado, paddle boarding Roaring Fork River, mountain biking Aspen, outdoor guide Aspen Colorado, guided hiking Aspen, adventure tours Roaring Fork Valley, Aspen outdoor activities',
-  alternates: {
-    canonical: RVA_URL,
-  },
   robots: {
     index: true,
     follow: true,

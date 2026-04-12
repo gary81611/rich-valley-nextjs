@@ -14,7 +14,7 @@ function normalizeRvaBlogLinkUrl(url: string): string {
   if (path === '/adventures') return '/' + suffix
   if (!path.startsWith('/adventures/')) return url
   const rest = path.slice('/adventures/'.length)
-  if (rest === 'glamping') return `/adventures/elevated-camping${suffix}`
+  if (rest === 'glamping') return `/elevated-camping${suffix}`
   return `/${rest}${suffix}`
 }
 

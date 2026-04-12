@@ -6,7 +6,7 @@ const FOOTER_ADVENTURES = [
   { title: 'Paddle Boarding', href: '/paddle-boarding' },
   { title: 'Mountain Biking', href: '/adventures/mountain-biking' },
   { title: 'Hiking', href: '/hiking' },
-  { title: 'Elevated Camping', href: '/adventures/elevated-camping' },
+  { title: 'Elevated Camping', href: '/elevated-camping' },
   { title: 'Winter Adventures', href: '/winter' },
 ]
 
@@ -46,6 +46,8 @@ export default function RVAFooter() {
             <ul className="space-y-2">
               <li><a href="/conditions" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">River &amp; Trail Conditions</a></li>
               <li><a href="/guides" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">Meet Our Guides</a></li>
+              <li><a href="/service-areas" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">Service Areas</a></li>
+              <li><a href="/locations" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">Location Guides</a></li>
               <li><a href="/contact" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">Book an Adventure</a></li>
               <li><a href="/terms" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">Terms & Conditions</a></li>
               <li><a href="/privacy" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">Privacy Policy</a></li>

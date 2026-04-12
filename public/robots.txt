@@ -7,9 +7,16 @@ Allow: /fly-fishing
 Allow: /hiking
 Allow: /adventures/mountain-biking
 Allow: /paddle-boarding
-Allow: /adventures/elevated-camping
+Allow: /elevated-camping
 Allow: /winter
 Allow: /locations
+Allow: /service-areas
+Allow: /contact
+Allow: /adventures
+Allow: /about
+Allow: /blog
+Allow: /privacy
+Allow: /services
 Allow: /
 
 Sitemap: https://www.richvalleyadventures.com/sitemap.xml

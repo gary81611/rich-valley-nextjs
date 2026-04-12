@@ -6,8 +6,8 @@ function rvaRedirects() {
   for (const host of rvaHosts) {
     const h = [{ type: 'host', value: host }]
     list.push(
-      // Duplicate adventure URLs (canonical: /adventures/[slug])
-      { source: '/elevated-camping', destination: '/adventures/elevated-camping', permanent: true, has: h },
+      // Elevated camping: rich landing at /elevated-camping (adventure slug URL redirects here)
+      { source: '/adventures/elevated-camping', destination: '/elevated-camping', permanent: true, has: h },
       { source: '/mountain-biking', destination: '/adventures/mountain-biking', permanent: true, has: h },
       // Legacy indexed patterns → canonical /service-areas/[slug]
       { source: '/areas/:path*', destination: '/service-areas/:path*', permanent: true, has: h },
@@ -26,7 +26,6 @@ function rvaRedirects() {
         has: h,
       },
       { source: '/fleet-v3', destination: 'https://aspenalpenglowlimousine.com/fleet', permanent: true, has: h },
-      { source: '/services', destination: '/', permanent: true, has: h },
       { source: '/booking', destination: '/contact', permanent: true, has: h },
       { source: '/booking/', destination: '/contact', permanent: true, has: h },
       // Legacy CMS / old marketing URLs (GSC 404 cleanup)
