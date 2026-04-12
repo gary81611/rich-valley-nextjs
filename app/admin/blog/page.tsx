@@ -52,7 +52,7 @@ Naturally weave in references to specific local landmarks and places: Maroon Bel
 
 The content should naturally answer questions someone might ask an AI assistant (ChatGPT, Perplexity, Google AI Overview). Include specific details that build trust: years in operation (since 2012), small group sizes (RVA: 2-6 guests), vehicle types (AAL: Cadillac Escalade, Mercedes Sprinter), phone number (970-456-3666).
 
-Return ONLY a JSON object (no markdown fences) with this exact structure:
+Return ONLY a JSON object (no markdown fences) with this exact structure. Every string value must be valid JSON: escape internal double quotes as \\" and newlines inside strings as \\n — do not paste raw line breaks inside a JSON string value.
 {
   "metaTitle": "SEO page title, max 60 chars, include location",
   "metaDescription": "Compelling meta description, max 155 chars",
@@ -64,6 +64,51 @@ Return ONLY a JSON object (no markdown fences) with this exact structure:
     {"q": "...", "a": "..."}
   ]
 }`
+
+function stripJsonMarkdownFence(raw: string): string {
+  let s = raw.trim()
+  if (!s.startsWith('```')) return s
+  s = s.replace(/^```(?:json)?\s*\n?/i, '')
+  const end = s.lastIndexOf('```')
+  if (end !== -1) s = s.slice(0, end)
+  return s.trim()
+}
+
+function parseBlogJson(raw: string): BlogOutput {
+  const cleaned = stripJsonMarkdownFence(raw)
+  try {
+    const parsed = JSON.parse(cleaned) as BlogOutput
+    if (
+      typeof parsed.metaTitle === 'string' &&
+      typeof parsed.metaDescription === 'string' &&
+      typeof parsed.content === 'string' &&
+      Array.isArray(parsed.internalLinks) &&
+      Array.isArray(parsed.faqs)
+    ) {
+      return parsed
+    }
+  } catch {
+    // fall through
+  }
+
+  const start = cleaned.indexOf('{')
+  const end = cleaned.lastIndexOf('}')
+  if (start !== -1 && end > start) {
+    try {
+      const parsed = JSON.parse(cleaned.slice(start, end + 1)) as BlogOutput
+      if (typeof parsed.content === 'string' && typeof parsed.metaTitle === 'string') {
+        return parsed
+      }
+    } catch {
+      // fall through
+    }
+  }
+
+  throw new Error(
+    'Could not parse AI response as JSON. If the topic produced a very long post, try again or shorten the ask. ' +
+      'If this persists, the model may have returned invalid JSON (unescaped quotes in the article body).',
+  )
+}
 
 function slugify(str: string): string {
   return str
@@ -205,16 +250,14 @@ export default function BlogGeneratorPage() {
           type: 'free_form',
           brand: selectedBrand,
           system_prompt_override: BLOG_SYSTEM_PROMPT,
+          max_tokens: 8192,
         }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Generation failed')
 
-      let raw = data.result?.trim() || ''
-      if (raw.startsWith('```')) {
-        raw = raw.replace(/^```(?:json)?\s*\n?/, '').replace(/\n?```\s*$/, '')
-      }
-      const parsed: BlogOutput = JSON.parse(raw)
+      const raw = data.result?.trim() || ''
+      const parsed: BlogOutput = parseBlogJson(raw)
       setOutput(parsed)
       setSlugValue(slugify(parsed.metaTitle))
     } catch (err) {

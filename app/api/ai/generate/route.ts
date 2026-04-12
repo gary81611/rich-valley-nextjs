@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { prompt, type, brand, system_prompt_override } = await request.json()
+    const { prompt, type, brand, system_prompt_override, max_tokens } = await request.json()
     if (!prompt) {
       return NextResponse.json({ error: 'Prompt is required' }, { status: 400 })
     }
@@ -71,7 +71,12 @@ export async function POST(request: NextRequest) {
     const context = brand && brandContext[brand] ? `\n\nBusiness context:\n${brandContext[brand]}` : ''
     const enrichedPrompt = `${prompt}${context}`
 
-    const result = await generateWithAI(enrichedPrompt, systemPrompt)
+    let maxTokens: number | undefined
+    if (typeof max_tokens === 'number' && Number.isFinite(max_tokens)) {
+      maxTokens = Math.min(Math.max(Math.floor(max_tokens), 256), 12000)
+    }
+
+    const result = await generateWithAI(enrichedPrompt, systemPrompt, { maxTokens })
     return NextResponse.json({ result, type })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'AI generation failed'

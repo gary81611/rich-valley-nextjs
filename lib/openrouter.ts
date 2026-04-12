@@ -1,8 +1,25 @@
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions'
 
-export async function generateWithAI(prompt: string, systemPrompt?: string): Promise<string> {
+const DEFAULT_MAX_TOKENS = 2000
+const ABSOLUTE_MAX_TOKENS = 12000
+
+export type GenerateWithAIOptions = {
+  /** Output token budget; capped at ABSOLUTE_MAX_TOKENS. Use higher values for long JSON (e.g. blog posts). */
+  maxTokens?: number
+}
+
+export async function generateWithAI(
+  prompt: string,
+  systemPrompt?: string,
+  options?: GenerateWithAIOptions,
+): Promise<string> {
   const apiKey = process.env.OPENROUTER_API_KEY
   if (!apiKey) throw new Error('AI is not set up yet. Ask your developer to add the OPENROUTER_API_KEY in Vercel environment variables.')
+
+  const maxTokens = Math.min(
+    Math.max(options?.maxTokens ?? DEFAULT_MAX_TOKENS, 256),
+    ABSOLUTE_MAX_TOKENS,
+  )
 
   const response = await fetch(OPENROUTER_API_URL, {
     method: 'POST',
@@ -18,7 +35,7 @@ export async function generateWithAI(prompt: string, systemPrompt?: string): Pro
         ...(systemPrompt ? [{ role: 'system' as const, content: systemPrompt }] : []),
         { role: 'user' as const, content: prompt },
       ],
-      max_tokens: 2000,
+      max_tokens: maxTokens,
     }),
   })
 
