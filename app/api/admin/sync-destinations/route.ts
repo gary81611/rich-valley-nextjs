@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { seedPages } from '@/lib/seed-pages'
+import { syncAlpenglowDestinations } from '@/lib/sync-alpenglow-destinations'
 
-export async function POST(request: Request) {
+export async function POST() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
@@ -10,20 +10,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Supabase not configured' }, { status: 500 })
   }
 
-  let sync = false
-  try {
-    const body = await request.json().catch(() => ({}))
-    sync = Boolean(body?.sync)
-  } catch {
-    sync = false
-  }
-
   try {
     const supabase = createClient(supabaseUrl, supabaseKey)
-    const results = await seedPages(supabase, { sync })
-    return NextResponse.json({ success: true, results, sync })
+    const message = await syncAlpenglowDestinations(supabase)
+    const ok = !message.includes('ERROR')
+    return NextResponse.json({ success: ok, message })
   } catch (err) {
-    console.error('seed-pages error:', err)
+    console.error('sync-destinations error:', err)
     return NextResponse.json({ error: String(err) }, { status: 500 })
   }
 }

@@ -838,15 +838,39 @@ const aalPages: PageSeed[] = [
 
 export const allSeedPages: PageSeed[] = [...rvaPages, ...aalPages]
 
-export async function seedPages(supabase: SupabaseClient): Promise<string[]> {
+/** Overwrite or insert every row in `allSeedPages` by (site_id, slug). Use from Admin after code changes. */
+export async function syncPagesFromSeed(supabase: SupabaseClient): Promise<string> {
+  const { error, data } = await supabase
+    .from('pages')
+    .upsert(allSeedPages, { onConflict: 'site_id,slug' })
+    .select('id')
+
+  if (error) {
+    console.error('syncPagesFromSeed error:', error)
+    return `Pages sync: ERROR — ${error.message}`
+  }
+  return `Pages: synced ${data?.length ?? allSeedPages.length} rows (upsert site_id+slug)`
+}
+
+/**
+ * @param options.sync — If true, upserts all seed pages (updates existing DB rows from repo). If false / omitted and the table already has rows, no-op for pages.
+ */
+export async function seedPages(supabase: SupabaseClient, options?: { sync?: boolean }): Promise<string[]> {
   const results: string[] = []
+
+  if (options?.sync) {
+    results.push(await syncPagesFromSeed(supabase))
+    // Navigation is not re-seeded on sync (avoid duplicates / manual edits)
+    results.push('Navigation: unchanged (sync mode)')
+    return results
+  }
 
   const { count } = await supabase
     .from('pages')
     .select('id', { count: 'exact', head: true })
 
   if (count && count > 0) {
-    results.push(`Pages: skipped (${count} already exist)`)
+    results.push(`Pages: skipped (${count} already exist — use Admin “Sync pages from code” to update)`)
     return results
   }
 

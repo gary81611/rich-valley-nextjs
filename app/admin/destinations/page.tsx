@@ -33,6 +33,7 @@ export default function DestinationsPage() {
   const [saving, setSaving] = useState(false)
   const [deleteItem, setDeleteItem] = useState<Destination | null>(null)
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
+  const [syncing, setSyncing] = useState(false)
   const supabase = createClient()
 
   const fetchData = useCallback(async () => {
@@ -81,6 +82,24 @@ export default function DestinationsPage() {
     fetchData()
   }
 
+  const handleSyncFromCode = async () => {
+    if (!confirm('Replace stock Alpenglow destinations from the latest deploy? Custom alpenglow rows whose slug is not in the stock list will be removed.')) return
+    setSyncing(true)
+    try {
+      const res = await fetch('/api/admin/sync-destinations', { method: 'POST' })
+      const json = await res.json()
+      if (json.success) {
+        setToast({ message: json.message || 'Synced', type: 'success' })
+        fetchData()
+      } else {
+        setToast({ message: json.error || json.message || 'Sync failed', type: 'error' })
+      }
+    } catch (e) {
+      setToast({ message: String(e), type: 'error' })
+    }
+    setSyncing(false)
+  }
+
   const autoSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 
   const updateForm = (name: string, value: string | number | boolean) => {
@@ -104,11 +123,26 @@ export default function DestinationsPage() {
   return (
     <div>
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-slate-900">Destinations</h1>
-        <button onClick={openAdd} className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800">
-          Add Destination
-        </button>
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">Destinations</h1>
+          <p className="text-sm text-slate-500 mt-1 max-w-xl">
+            Listing for /destinations. Use “Sync stock” after a deploy to match the repo (removes old Alpenglow-only slugs such as Garden of the Gods).
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={handleSyncFromCode}
+            disabled={syncing}
+            className="px-3 py-2 bg-amber-600 text-white text-sm font-medium rounded-lg hover:bg-amber-700 disabled:opacity-50"
+          >
+            {syncing ? 'Syncing…' : 'Sync stock destinations'}
+          </button>
+          <button type="button" onClick={openAdd} className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800">
+            Add Destination
+          </button>
+        </div>
       </div>
 
       {!loading && data.length === 0 && <EmptyState entity="destinations" onAdd={openAdd} addLabel="Add Destination" />}

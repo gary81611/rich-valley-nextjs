@@ -482,10 +482,21 @@ export default function AdminPagesPage() {
   const handleSeed = async () => {
     setSeeding(true)
     try {
-      const res = await fetch('/api/admin/seed-pages', { method: 'POST' })
+      const res = await fetch('/api/admin/seed-pages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sync: true }),
+      })
       const json = await res.json()
-      if (json.success) { showToast(json.results.join(' | ')); load() }
-      else showToast(json.error || 'Seed failed', false)
+      const msg = json.results?.join(' | ') || json.message || json.error || 'Done'
+      const hasErr = typeof msg === 'string' && msg.includes('ERROR')
+      if (json.success && !hasErr) {
+        showToast(msg)
+        load()
+      } else {
+        showToast(msg, false)
+        if (json.success) load()
+      }
     } catch (e) {
       showToast(`Error: ${e}`, false)
     }
@@ -510,15 +521,18 @@ export default function AdminPagesPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">CMS Pages</h1>
-          <p className="text-sm text-slate-500 mt-0.5">Dynamic pages served from the database</p>
+          <p className="text-sm text-slate-500 mt-0.5">
+            Dynamic pages from the database. “Sync” upserts every page defined in repo seed (updates /hiking, etc.); custom slugs not in seed are left alone.
+          </p>
         </div>
         <div className="flex gap-2">
           <button
+            type="button"
             onClick={handleSeed}
             disabled={seeding}
             className="px-3 py-2 text-sm bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50 transition-colors"
           >
-            {seeding ? 'Seeding…' : 'Seed Pages'}
+            {seeding ? 'Syncing…' : 'Sync pages from code'}
           </button>
           <button
             onClick={() => setEditing({ ...blank })}
