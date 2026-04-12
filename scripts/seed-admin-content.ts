@@ -99,6 +99,60 @@ async function seed() {
     { title: 'All-inclusive pricing — no hidden service charges or gratuity added', display_order: 8 },
   ])
 
+  // Popular destinations (AAL homepage + /destinations on AAL & RVA)
+  await seedIfEmpty('destinations', [
+    {
+      name: 'Garden of the Gods',
+      slug: 'garden-of-the-gods',
+      description:
+        'Dramatic red rock formations near Colorado Springs — ideal for a full-day outing with door-to-door chauffeured service from the valley.',
+      image_url: '/images/destinations/garden-of-the-gods.jpg',
+      site_key: 'alpenglow',
+      display_order: 1,
+      is_active: true,
+    },
+    {
+      name: 'Denver Botanic Gardens',
+      slug: 'denver-botanic-gardens',
+      description:
+        'World-class gardens and seasonal exhibits — we handle the drive so your group arrives relaxed and on time.',
+      image_url: '/images/destinations/denver-botanic-gardens.jpg',
+      site_key: 'alpenglow',
+      display_order: 2,
+      is_active: true,
+    },
+    {
+      name: 'Red Rocks Amphitheatre',
+      slug: 'red-rocks-amphitheatre',
+      description:
+        'Iconic natural amphitheater and concert venue — private car service for shows, events, and scenic visits.',
+      image_url: '/images/destinations/red-rocks.jpg',
+      site_key: 'alpenglow',
+      display_order: 3,
+      is_active: true,
+    },
+    {
+      name: 'Coors Field',
+      slug: 'coors-field',
+      description:
+        'Home of the Colorado Rockies — stress-free game-day and event transportation with pickup and return on your schedule.',
+      image_url: '/images/destinations/coors-field.jpg',
+      site_key: 'alpenglow',
+      display_order: 4,
+      is_active: true,
+    },
+    {
+      name: 'Pikes Peak',
+      slug: 'pikes-peak',
+      description:
+        'America’s Mountain and the summit highway — comfortable long-distance travel for a memorable Front Range day trip.',
+      image_url: '/images/destinations/pikes-peak.jpg',
+      site_key: 'alpenglow',
+      display_order: 5,
+      is_active: true,
+    },
+  ])
+
   console.log('\nDone! Run the migration SQL first if you see errors.')
 }
 

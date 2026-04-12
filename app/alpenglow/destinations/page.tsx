@@ -14,7 +14,7 @@ async function getDestinations() {
   const supabase = await createServerSupabaseClient()
   const { data, error } = await supabase
     .from('destinations')
-    .select('id, name, image, description')
+    .select('id, name, image_url, description')
     .eq('is_active', true)
     .order('display_order', { ascending: true })
 
@@ -23,7 +23,12 @@ async function getDestinations() {
     return []
   }
 
-  return data ?? []
+  return (data ?? []).map((row) => ({
+    id: row.id,
+    name: row.name,
+    description: row.description,
+    image: row.image_url || '/images/destinations/garden-of-the-gods.jpg',
+  }))
 }
 
 export default async function DestinationsPage() {
