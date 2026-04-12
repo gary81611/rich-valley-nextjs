@@ -158,7 +158,7 @@ export default function DestinationsPage() {
         <FormField label="Name" name="name" value={form.name} onChange={updateForm} required help="The destination name (e.g., 'Aspen')." preview="Destination cards, page title" />
         <FormField label="Slug" name="slug" value={form.slug} onChange={updateForm} required help="URL-friendly identifier. Auto-generated from name." preview="URL path: /destinations/[slug]" />
         <FormField label="Description" name="description" type="textarea" value={form.description} onChange={updateForm} help="Detailed description of this destination." preview="Destination detail page" />
-        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} help="The main image for this destination." preview="Card thumbnail + detail page hero" />
+        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} uploadFolder="destinations" help="Upload or paste a URL for the destination card image." preview="Card thumbnail + detail page hero" />
         <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} help="Controls sort order. Lower numbers appear first." preview="Order of cards" />
         <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} help="Turn off to hide from the public site without deleting." />
       </AdminFormModal>

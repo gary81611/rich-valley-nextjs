@@ -139,7 +139,7 @@ export default function ServicesPage() {
         <FormField label="Features" name="features_text" type="textarea" value={form.features_text} onChange={updateForm} help="Comma-separated list of features (e.g., 'Flight tracking, Complimentary wait time')." preview="Feature bullets on service cards" />
         <FormField label="Icon" name="icon" value={form.icon} onChange={updateForm} help="Icon name (e.g., 'Plane', 'Clock', 'Briefcase', 'Heart')." preview="Service card icon" />
         <FormField label="Price From" name="price_from" type="number" value={form.price_from} onChange={updateForm} help="Starting price. Displayed as 'From $X' on the public site." preview="Service cards" />
-        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} help="Main photo for this service package." preview="Service card image" />
+        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} uploadFolder="services" help="Upload or paste a URL for this service card." preview="Service card image" />
         <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} help="Sort position. Lower numbers appear first." preview="Order of service cards" />
         <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} help="Toggle visibility on the Alpenglow site." />
       </AdminFormModal>

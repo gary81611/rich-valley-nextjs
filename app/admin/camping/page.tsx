@@ -121,7 +121,7 @@ export default function CampingPage() {
         <FormField label="Price Note" name="price_note" value={form.price_note} onChange={updateForm} placeholder="e.g. per person" help="Additional pricing context (e.g., 'per person', 'per night')." preview="Below price on cards" />
         <FormField label="Duration" name="duration" value={form.duration} onChange={updateForm} placeholder="e.g. 2 nights" help="How long is this camping package?" preview="Package cards" />
         <FormField label="Capacity" name="capacity" value={form.capacity} onChange={updateForm} placeholder="e.g. Up to 6 guests" help="Maximum number of guests." preview="Package detail page" />
-        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} help="The main photo for this camping package." preview="Card thumbnail + detail page hero" />
+        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} uploadFolder="camping" help="Upload or paste a URL for this camping package." preview="Card thumbnail + detail page hero" />
         <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} help="Controls sort order. Lower numbers appear first." preview="Order of cards" />
         <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} help="Turn off to hide from the public site without deleting." />
       </AdminFormModal>

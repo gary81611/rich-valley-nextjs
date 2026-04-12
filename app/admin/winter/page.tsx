@@ -122,7 +122,7 @@ export default function WinterAdventuresPage() {
         <FormField label="Difficulty" name="difficulty" value={form.difficulty} onChange={updateForm} placeholder="e.g. Moderate" help="Skill level required for this adventure." preview="Adventure cards" />
         <FormField label="Season Start" name="season_start" value={form.season_start} onChange={updateForm} placeholder="e.g. November" help="When does this adventure become available?" preview="Availability info" />
         <FormField label="Season End" name="season_end" value={form.season_end} onChange={updateForm} placeholder="e.g. April" help="When does this adventure season end?" preview="Availability info" />
-        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} help="The main photo for this winter adventure." preview="Card thumbnail + detail page hero" />
+        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} uploadFolder="winter" help="Upload or paste a URL for this winter offering." preview="Card thumbnail + detail page hero" />
         <FormField label="Price From" name="price_from" type="number" value={form.price_from} onChange={updateForm} help="Starting price in dollars. Use 0 if pricing varies." preview="Adventure cards" />
         <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} help="Controls sort order. Lower numbers appear first." preview="Order of cards" />
         <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} help="Turn off to hide from the public site without deleting." />

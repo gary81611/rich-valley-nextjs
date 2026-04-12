@@ -181,7 +181,7 @@ export default function AdventuresPage() {
           { value: 'easy', label: 'Easy' }, { value: 'moderate', label: 'Moderate' },
           { value: 'challenging', label: 'Challenging' }, { value: 'expert', label: 'Expert' },
         ]} help="Skill level required. Helps customers decide if this adventure is right for them." preview="Adventure cards" />
-        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} help="The main photo for this adventure. Used on the card and detail page hero." preview="Card thumbnail + detail page hero" />
+        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} uploadFolder="adventures" help="Upload or paste a URL for the adventure hero and cards." preview="Card thumbnail + detail page hero" />
         <FormField label="What's Included" name="whats_included" type="textarea" value={form.whats_included} onChange={updateForm} help="Comma-separated list of included items (e.g., 'Expert guide, All equipment, Snacks and water')." preview="Adventure detail page" />
         <FormField label="Highlights" name="highlights" type="textarea" value={form.highlights} onChange={updateForm} help="Comma-separated list of highlights (e.g., 'Gold Medal trout waters, Private access, Photography')." preview="Adventure detail page" />
         <FormField label="Best For" name="best_for" value={form.best_for} onChange={updateForm} help="Who is this best for? (e.g., 'Serious anglers and beginners alike')." preview="Adventure detail page" />

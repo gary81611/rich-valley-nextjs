@@ -197,7 +197,7 @@ export default function LocationsPage() {
         <FormField label="Tagline" name="tagline" value={form.tagline} onChange={updateForm} help="A short tagline for this location." preview="Location cards" />
         <FormField label="Description" name="description" type="textarea" value={form.description} onChange={updateForm} help="Detailed description of what this location offers." preview="Location detail page" />
         <FormField label="Drive Time" name="drive_time" value={form.drive_time} onChange={updateForm} placeholder="e.g. 2.5 hours from Denver" help="How long to drive from a major city." preview="Location cards" />
-        <FormField label="Hero Image URL" name="hero_image_url" value={form.hero_image_url} onChange={updateForm} help="The main hero image for this location." preview="Location detail page hero" />
+        <FormField label="Hero Image URL" name="hero_image_url" value={form.hero_image_url} onChange={updateForm} uploadFolder="locations" help="Upload or paste a URL for the location hero image." preview="Location detail page hero" />
         <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} help="Controls sort order. Lower numbers appear first." preview="Order of cards" />
         <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} help="Turn off to hide from the public site without deleting." />
 

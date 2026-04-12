@@ -123,7 +123,7 @@ export default function GalleryPage() {
       )}
 
       <AdminFormModal isOpen={modalOpen} title={editing ? 'Edit Image' : 'Add Image'} onSubmit={handleSubmit} onClose={() => setModalOpen(false)} loading={saving}>
-        <FormField label="Image URL" name="url" value={form.url} onChange={updateForm} required help="Path to the image file (e.g., /images/gallery/fishing-01.jpg)." preview="/gallery page masonry grid" />
+        <FormField label="Image URL" name="url" value={form.url} onChange={updateForm} required uploadFolder="gallery" help="Upload or paste a URL (local path like /images/... also works)." preview="/gallery page masonry grid" />
         <FormField label="Alt Text" name="alt_text" value={form.alt_text} onChange={updateForm} help="Describe the image for accessibility and SEO. Google reads this." preview="Screen readers + Google Image search" />
         <FormField label="Caption" name="caption" value={form.caption} onChange={updateForm} help="Optional text shown when a visitor clicks to enlarge the photo." preview="Lightbox overlay" />
         <FormField label="Site" name="site_key" type="select" value={form.site_key} onChange={updateForm} options={[

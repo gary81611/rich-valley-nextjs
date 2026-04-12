@@ -98,7 +98,7 @@ export default function FleetPage() {
         <FormField label="Type" name="type" value={form.type} onChange={updateForm} placeholder="e.g. SUV, Van" help="Vehicle category: SUV, Van, Sedan, Limousine, etc." preview="Fleet cards + Google schema" />
         <FormField label="Capacity" name="capacity" type="number" value={form.capacity} onChange={updateForm} help="Maximum number of passengers." preview="Fleet cards" />
         <FormField label="Description" name="description" type="textarea" value={form.description} onChange={updateForm} help="Key features and amenities — leather seats, WiFi, climate control, etc." preview="Fleet detail view" />
-        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} help="Photo of this vehicle." preview="Fleet showcase" />
+        <FormField label="Image URL" name="image_url" value={form.image_url} onChange={updateForm} uploadFolder="fleet" help="Upload or paste a URL for this vehicle photo." preview="Fleet showcase" />
         <FormField label="Active" name="is_active" type="checkbox" value={form.is_active} onChange={updateForm} help="Toggle visibility on the Alpenglow site." />
       </AdminFormModal>
       <DeleteConfirmDialog isOpen={!!deleteItem} onConfirm={handleDelete} onCancel={() => setDeleteItem(null)} itemName={deleteItem?.name || 'this vehicle'} />

@@ -1,5 +1,6 @@
 'use client'
 import Image from 'next/image'
+import AdminImageUpload from '@/components/admin/AdminImageUpload'
 
 interface FormFieldProps {
   label: string
@@ -13,9 +14,24 @@ interface FormFieldProps {
   help?: string
   preview?: string
   maxLength?: number
+  /** When set, shows “Upload image” (Supabase Storage `site-media` bucket). User can still paste a URL. */
+  uploadFolder?: string
 }
 
-export default function FormField({ label, name, type = 'text', value, onChange, required, options, placeholder, help, preview, maxLength }: FormFieldProps) {
+export default function FormField({
+  label,
+  name,
+  type = 'text',
+  value,
+  onChange,
+  required,
+  options,
+  placeholder,
+  help,
+  preview,
+  maxLength,
+  uploadFolder,
+}: FormFieldProps) {
   const baseClass = 'w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent'
   const strValue = typeof value === 'string' ? value : ''
   const showCharCount = maxLength && typeof value === 'string'
@@ -39,8 +55,15 @@ export default function FormField({ label, name, type = 'text', value, onChange,
   }
 
   // Show image preview for URL fields that look like image paths
-  const isImageField = name.includes('image') || name === 'url' || name === 'logo_url'
+  const isImageField =
+    name.includes('image') ||
+    name === 'url' ||
+    name === 'logo_url' ||
+    name === 'photo_url' ||
+    name === 'og_image_url' ||
+    name === 'hero_image_url'
   const showImagePreview = isImageField && typeof value === 'string' && value.length > 0
+  const showUpload = Boolean(uploadFolder) && type !== 'select' && type !== 'number'
 
   return (
     <div className="space-y-1">
@@ -48,6 +71,16 @@ export default function FormField({ label, name, type = 'text', value, onChange,
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       {help && <p className="text-xs text-slate-400">{help}</p>}
+      {showUpload && typeof value === 'string' && uploadFolder && (
+        <div className="mt-1.5 mb-1">
+          <AdminImageUpload
+            folder={uploadFolder}
+            value={value}
+            onUrlChange={(url) => onChange(name, url)}
+          />
+          <p className="text-[11px] text-slate-400 mt-1">Or paste an external URL below.</p>
+        </div>
+      )}
       {type === 'textarea' ? (
         <textarea
           value={value as string}

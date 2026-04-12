@@ -66,13 +66,29 @@ function rvaApexToWww() {
   }
 }
 
+function supabaseProjectHost() {
+  const u = process.env.NEXT_PUBLIC_SUPABASE_URL
+  if (!u || typeof u !== 'string' || !u.startsWith('http')) return null
+  try {
+    return new URL(u).hostname
+  } catch {
+    return null
+  }
+}
+
+const imageRemotePatterns = [
+  { protocol: 'https', hostname: 'images.unsplash.com' },
+  { protocol: 'https', hostname: 'lirp.cdn-website.com' },
+]
+const supabaseHost = supabaseProjectHost()
+if (supabaseHost) {
+  imageRemotePatterns.push({ protocol: 'https', hostname: supabaseHost })
+}
+
 const nextConfig = {
   images: {
     minimumCacheTTL: 31536000,
-    remotePatterns: [
-      { protocol: 'https', hostname: 'images.unsplash.com' },
-      { protocol: 'https', hostname: 'lirp.cdn-website.com' },
-    ],
+    remotePatterns: imageRemotePatterns,
   },
   async redirects() {
     return [rvaApexToWww(), ...rvaRedirects(), ...aalRedirects()]

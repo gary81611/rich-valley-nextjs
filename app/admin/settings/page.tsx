@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback, FormEvent } from 'react'
 import { createClient } from '@/lib/supabase'
 import type { SiteSettings } from '@/lib/types'
 import Toast from '@/components/admin/Toast'
+import AdminImageUpload from '@/components/admin/AdminImageUpload'
 import { rvaData, alpenglowData } from '@/lib/site-data'
 
 const defaultSettings: Record<'rva' | 'alpenglow', Omit<SiteSettings, 'id' | 'created_at' | 'updated_at'>> = {
@@ -218,6 +219,14 @@ export default function SettingsPage() {
           </div>
           <div className="sm:col-span-2">
             <label className="block text-sm font-medium text-slate-700 mb-1">Logo URL</label>
+            <div className="mb-1.5">
+              <AdminImageUpload
+                folder="branding"
+                value={currentSettings?.logo_url || ''}
+                onUrlChange={(u) => updateField('logo_url', u)}
+              />
+            </div>
+            <p className="text-[11px] text-slate-400 mb-1">Or paste a URL.</p>
             <input type="text" value={currentSettings?.logo_url || ''} onChange={(e) => updateField('logo_url', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-500" />
           </div>
         </div>

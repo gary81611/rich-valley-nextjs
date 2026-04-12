@@ -114,7 +114,7 @@ export default function GuidesPage() {
       <AdminFormModal isOpen={modalOpen} title={editing ? 'Edit Guide' : 'Add Guide'} onSubmit={handleSubmit} onClose={() => setModalOpen(false)} loading={saving}>
         <FormField label="Name" name="name" value={form.name} onChange={updateForm} required help="The guide's full name." preview="Guide cards, about section" />
         <FormField label="Title" name="title" value={form.title} onChange={updateForm} required help="Their role or specialty (e.g., 'Lead Fishing Guide')." preview="Guide cards" />
-        <FormField label="Photo URL" name="photo_url" value={form.photo_url} onChange={updateForm} help="URL to the guide's headshot or action photo." preview="Guide cards" />
+        <FormField label="Photo URL" name="photo_url" value={form.photo_url} onChange={updateForm} uploadFolder="guides" help="Upload a headshot or paste a URL (e.g. Unsplash or Supabase)." preview="Guide cards" />
         <FormField label="Bio" name="bio" type="textarea" value={form.bio} onChange={updateForm} help="A short biography about the guide's experience and background." preview="Guide detail section" />
         <FormField label="Years of Experience" name="years_experience" type="number" value={form.years_experience} onChange={updateForm} help="How many years of guiding experience." preview="Guide cards" />
         <FormField label="Display Order" name="display_order" type="number" value={form.display_order} onChange={updateForm} help="Controls sort order. Lower numbers appear first." preview="Order of cards" />
