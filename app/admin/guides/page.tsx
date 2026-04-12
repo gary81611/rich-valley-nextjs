@@ -47,7 +47,7 @@ export default function GuidesPage() {
   const openAdd = () => { setEditing(null); setForm(emptyGuide); setModalOpen(true) }
   const openEdit = (item: Guide) => {
     setEditing(item)
-    setForm({ name: item.name, title: item.title, photo_url: item.photo_url, bio: item.bio, years_experience: item.years_experience, display_order: item.display_order, is_active: item.is_active })
+    setForm({ name: item.name, title: item.title, photo_url: item.photo_url ?? '', bio: item.bio, years_experience: item.years_experience, display_order: item.display_order, is_active: item.is_active })
     setModalOpen(true)
   }
 

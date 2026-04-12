@@ -62,7 +62,7 @@ export default function FormField({
     name === 'photo_url' ||
     name === 'og_image_url' ||
     name === 'hero_image_url'
-  const showImagePreview = isImageField && typeof value === 'string' && value.length > 0
+  const showImagePreview = isImageField && strValue.length > 0
   const showUpload = Boolean(uploadFolder) && type !== 'select' && type !== 'number'
 
   return (
@@ -71,11 +71,11 @@ export default function FormField({
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       {help && <p className="text-xs text-slate-400">{help}</p>}
-      {showUpload && typeof value === 'string' && uploadFolder && (
+      {showUpload && uploadFolder && (
         <div className="mt-1.5 mb-1">
           <AdminImageUpload
             folder={uploadFolder}
-            value={value}
+            value={strValue}
             onUrlChange={(url) => onChange(name, url)}
           />
           <p className="text-[11px] text-slate-400 mt-1">Or paste an external URL below.</p>
@@ -83,7 +83,7 @@ export default function FormField({
       )}
       {type === 'textarea' ? (
         <textarea
-          value={value as string}
+          value={strValue}
           onChange={(e) => onChange(name, e.target.value)}
           required={required}
           placeholder={placeholder}
@@ -92,7 +92,7 @@ export default function FormField({
         />
       ) : type === 'select' ? (
         <select
-          value={value as string}
+          value={typeof value === 'string' ? value : ''}
           onChange={(e) => onChange(name, e.target.value)}
           required={required}
           className={baseClass}
@@ -104,7 +104,7 @@ export default function FormField({
       ) : (
         <input
           type={type}
-          value={type === 'number' ? (value as number) : (value as string)}
+          value={type === 'number' ? (value as number) : strValue}
           onChange={(e) => onChange(name, type === 'number' ? parseFloat(e.target.value) || 0 : e.target.value)}
           required={required}
           placeholder={placeholder}
@@ -124,7 +124,7 @@ export default function FormField({
       </div>
       {showImagePreview && (
         <div className="mt-1.5 relative w-20 h-20 rounded-lg overflow-hidden border border-slate-200 bg-slate-50">
-          <Image src={value as string} alt="Preview" fill className="object-contain" unoptimized />
+          <Image src={strValue} alt="Preview" fill className="object-contain" unoptimized />
         </div>
       )}
     </div>
