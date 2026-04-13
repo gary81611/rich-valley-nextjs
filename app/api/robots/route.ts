@@ -1,3 +1,5 @@
+import { resolveSiteKeyFromHost } from '@/lib/site-from-host'
+
 const robotsHeaders = {
   'Content-Type': 'text/plain; charset=utf-8',
   'Cache-Control': 'public, max-age=300, s-maxage=300',
@@ -5,8 +7,7 @@ const robotsHeaders = {
 
 export async function GET(request: Request) {
   const hostname = request.headers.get('host') || ''
-  const isAAL =
-    hostname.includes('aspenalpenglow') || hostname.includes('alpenglow')
+  const isAAL = resolveSiteKeyFromHost(hostname) === 'alpenglow'
 
   const sitemapUrl = isAAL
     ? 'https://aspenalpenglowlimousine.com/sitemap.xml'

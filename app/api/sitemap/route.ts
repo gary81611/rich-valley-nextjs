@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import { resolveSiteKeyFromHost } from '@/lib/site-from-host'
 
 const RVA_ORIGIN = 'https://www.richvalleyadventures.com'
 const AAL_ORIGIN = 'https://aspenalpenglowlimousine.com'
@@ -107,10 +108,20 @@ function canonicalRvaServiceAreaSlug(raw: string): string | null {
   return slug
 }
 
+function sitemapResponse(body: string, mode: 'dynamic' | 'fallback'): Response {
+  return new Response(body, {
+    headers: {
+      'Content-Type': 'application/xml',
+      'Cache-Control': 'public, max-age=3600',
+      'X-Sitemap-Mode': mode,
+    },
+  })
+}
+
 export async function GET(request: Request) {
   const hostname = request.headers.get('host') || ''
-  const isAAL = hostname.includes('aspenalpenglow') || hostname.includes('alpenglow')
-  const siteKey = isAAL ? 'alpenglow' : 'rva'
+  const siteKey = resolveSiteKeyFromHost(hostname)
+  const isAAL = siteKey === 'alpenglow'
   const lastModified = new Date()
 
   /** Paths must match real routes + metadata canonicals (SEO/AEO). */
@@ -162,15 +173,11 @@ export async function GET(request: Request) {
       ]
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const supabaseKey =
+    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!supabaseUrl || !supabaseKey || !supabaseUrl.startsWith('http')) {
-    return new Response(toXml(staticEntries), {
-      headers: {
-        'Content-Type': 'application/xml',
-        'Cache-Control': 'public, max-age=3600',
-      },
-    })
+    return sitemapResponse(toXml(staticEntries), 'fallback')
   }
 
   try {
@@ -250,18 +257,13 @@ export async function GET(request: Request) {
 
     const merged = dedupeByUrl([...staticEntries, ...blogEntries, ...pageEntries, ...serviceAreaEntries])
 
-    return new Response(toXml(merged), {
-      headers: {
-        'Content-Type': 'application/xml',
-        'Cache-Control': 'public, max-age=3600',
-      },
+    return sitemapResponse(toXml(merged), 'dynamic')
+  } catch (err) {
+    console.error('[sitemap] Dynamic generation failed; serving static fallback.', {
+      hostname,
+      siteKey,
+      error: err instanceof Error ? err.message : String(err),
     })
-  } catch {
-    return new Response(toXml(staticEntries), {
-      headers: {
-        'Content-Type': 'application/xml',
-        'Cache-Control': 'public, max-age=3600',
-      },
-    })
+    return sitemapResponse(toXml(staticEntries), 'fallback')
   }
 }
