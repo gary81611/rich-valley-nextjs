@@ -1,3 +1,8 @@
+/**
+ * Host-aware sitemap (RVA vs AAL). Rewritten from /sitemap.xml in next.config.js.
+ * Prefers SUPABASE_SERVICE_ROLE_KEY on the server; sets X-Sitemap-Mode: dynamic | fallback.
+ * Every Supabase query must filter by site_key / site_id from resolveSiteKeyFromHost.
+ */
 import { createClient } from '@supabase/supabase-js'
 import { resolveSiteKeyFromHost } from '@/lib/site-from-host'
 

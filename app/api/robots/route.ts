@@ -1,3 +1,4 @@
+/** Host-aware robots.txt. Rewritten from /robots.txt; keep in sync with public/robots.txt for RVA. */
 import { resolveSiteKeyFromHost } from '@/lib/site-from-host'
 
 const robotsHeaders = {

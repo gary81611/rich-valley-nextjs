@@ -95,8 +95,8 @@ const nextConfig = {
   },
   async rewrites() {
     return {
-      // beforeFiles runs before filesystem routes (including sitemap.ts / robots.ts)
-      // so the request-aware API handlers take precedence over the static metadata files.
+      // beforeFiles runs before filesystem routes so /sitemap.xml and /robots.txt hit the API routes.
+      // (There is no app/sitemap.ts; sitemap is generated in app/api/sitemap/route.ts.)
       beforeFiles: [
         { source: '/sitemap.xml', destination: '/api/sitemap' },
         { source: '/robots.txt', destination: '/api/robots' },
