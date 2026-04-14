@@ -1,14 +1,17 @@
 /** Align with middleware host hints: brand selection for request-aware routes (sitemap, robots). */
 export type SiteKey = 'rva' | 'alpenglow'
 
+const AAL_HOSTS = new Set(['aspenalpenglowlimousine.com', 'www.aspenalpenglowlimousine.com'])
+const RVA_HOSTS = new Set(['richvalleyadventures.com', 'www.richvalleyadventures.com'])
+
 export function isAalHost(hostname: string): boolean {
-  const h = hostname.trim().toLowerCase()
-  return h.includes('aspenalpenglow') || h.includes('alpenglow')
+  const h = hostname.trim().toLowerCase().split(':')[0]
+  return AAL_HOSTS.has(h)
 }
 
 export function isRvaHost(hostname: string): boolean {
-  const h = hostname.trim().toLowerCase()
-  return h.includes('richvalley') || h.includes('rva')
+  const h = hostname.trim().toLowerCase().split(':')[0]
+  return RVA_HOSTS.has(h)
 }
 
 /**
@@ -16,7 +19,7 @@ export function isRvaHost(hostname: string): boolean {
  * clearly AAL or RVA (e.g. preview URLs).
  */
 export function resolveSiteKeyFromHost(hostname: string): SiteKey {
-  const h = hostname.trim()
+  const h = hostname.trim().toLowerCase().split(':')[0]
   if (isAalHost(h)) return 'alpenglow'
   if (isRvaHost(h)) return 'rva'
   console.warn('[site-from-host] Unknown Host header; defaulting site to rva:', h || '(empty)')

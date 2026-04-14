@@ -7,6 +7,7 @@ import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
 import { createClient } from '@/lib/supabase'
 import type { Adventure, Testimonial, GalleryImage } from '@/lib/types'
 import { isBookableAdventureName } from '@/lib/rva-adventure-filters'
+import { seoAlt } from '@/lib/seo/alt-text'
 
 export default function RVAHomeClient() {
   const [adventures, setAdventures] = useState<Array<{ title: string; slug: string; description: string; image: string; duration: string; difficulty: string; season: string }>>([])
@@ -96,7 +97,12 @@ export default function RVAHomeClient() {
         <div className="absolute inset-0">
           <Image
             src="/images/about/hero.jpg"
-            alt="Panoramic view of the Rocky Mountains and Roaring Fork Valley near Aspen, Colorado — home of Rich Valley Adventures guided outdoor experiences"
+            alt={seoAlt({
+              subject: 'Panoramic view of the Rocky Mountains and Roaring Fork Valley',
+              location: 'Aspen, Colorado',
+              context: 'guided outdoor experiences',
+              brand: 'Rich Valley Adventures',
+            })}
             fill
             className="object-cover object-bottom"
             priority
@@ -109,11 +115,11 @@ export default function RVAHomeClient() {
           <p className="font-cormorant text-xl md:text-2xl text-rva-sage tracking-[0.3em] uppercase mb-6">
             Aspen · Roaring Fork Valley
           </p>
-          <h1 className="font-playfair text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
-            Guided Outdoor<br />
-            <span className="text-rva-copper-light italic">Adventures</span>
+          <h1 className="rva-speak-hero font-playfair text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
+            Guided Outdoor Adventures in Aspen, CO{' '}
+            <span className="text-rva-copper-light italic">&amp; the Roaring Fork Valley</span>
           </h1>
-          <p className="text-xl md:text-2xl text-white/85 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="rva-speak-hero-intro text-xl md:text-2xl text-white/85 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
             Rich Valley Adventures is Aspen’s outdoor guide company — expert-led fly fishing, hiking, mountain biking, paddle boarding, and elevated camping. Small groups, all gear included — since 2012.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -174,7 +180,7 @@ export default function RVAHomeClient() {
           <ScrollReveal className="text-center mb-10">
             <p className="font-cormorant text-rva-copper-light text-lg tracking-widest uppercase mb-4">What We Offer</p>
             <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold mb-6">Our Adventures</h2>
-            <p className="text-white/70 text-xl max-w-2xl mx-auto">
+            <p className="rva-speak-services-intro text-white/70 text-xl max-w-2xl mx-auto">
               Seven ways to experience the Roaring Fork Valley — each one expertly guided, fully equipped, and unforgettable.
             </p>
             <div className="flex justify-center gap-3 mt-6">
@@ -205,7 +211,12 @@ export default function RVAHomeClient() {
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
                       src={adventure.image}
-                      alt={`${adventure.title} — expert-guided outdoor adventure in Aspen and the Roaring Fork Valley, Colorado`}
+                      alt={seoAlt({
+                        subject: adventure.title,
+                        location: 'Aspen and the Roaring Fork Valley, Colorado',
+                        context: 'expert-guided outdoor adventure',
+                        brand: 'Rich Valley Adventures',
+                      })}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
                       loading="eager"
@@ -350,7 +361,12 @@ export default function RVAHomeClient() {
                 <div className="relative aspect-square rounded-xl overflow-hidden">
                   <Image
                     src={img}
-                    alt={`Rich Valley Adventures guided outdoor experiences in Aspen, Colorado — gallery photo ${i + 1}`}
+                    alt={seoAlt({
+                      subject: `Gallery photo ${i + 1}`,
+                      location: 'Aspen, Colorado',
+                      context: 'guided outdoor experience',
+                      brand: 'Rich Valley Adventures',
+                    })}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                     loading="eager"

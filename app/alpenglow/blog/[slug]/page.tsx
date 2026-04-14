@@ -161,11 +161,18 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
 
   const relatedLinks = mergeRelatedLinks(post.slug, post.internal_links)
 
+  const defaultArticleImage = 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1200&q=80'
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.meta_title || post.title,
     description: post.meta_description || undefined,
+    image: {
+      '@type': 'ImageObject',
+      url: defaultArticleImage,
+      width: 1200,
+      height: 630,
+    },
     datePublished: post.published_at,
     dateModified: post.updated_at || post.published_at,
     author: {
@@ -180,12 +187,27 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
       logo: {
         '@type': 'ImageObject',
         url: 'https://aspenalpenglowlimousine.com/images/logos/alpenglow-logo.png',
+        width: 300,
+        height: 60,
       },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': `https://aspenalpenglowlimousine.com/blog/${post.slug}`,
     },
+    about: {
+      '@type': 'Thing',
+      name: 'Luxury private transportation in Aspen, Colorado',
+    },
+    keywords: [
+      post.meta_title || post.title,
+      'Aspen Colorado',
+      'private car service',
+      'limousine',
+      'airport transportation',
+    ]
+      .join(', ')
+      .slice(0, 500),
   }
 
   const faqSchema = post.faqs.length > 0

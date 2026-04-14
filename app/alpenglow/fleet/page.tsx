@@ -41,9 +41,59 @@ const VEHICLES = [
   },
 ] as const
 
+const fleetJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Aspen Alpenglow Limousine Fleet',
+  description: 'Luxury vehicle fleet serving Aspen, Snowmass, and the Roaring Fork Valley',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      item: {
+        '@type': 'Vehicle',
+        name: 'Chevrolet Suburban',
+        vehicleModelDate: '2026',
+        numberOfDoors: 4,
+        seatingCapacity: 7,
+        vehicleInteriorColor: 'Black',
+        color: 'Black',
+        description:
+          'Full-size luxury SUV seating up to 7 passengers with ample luggage space. Ideal for airport transfers, corporate travel, and small groups. WiFi, ski racks, professionally chauffeured.',
+        offers: {
+          '@type': 'Offer',
+          priceCurrency: 'USD',
+          availability: 'https://schema.org/InStock',
+        },
+      },
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      item: {
+        '@type': 'Vehicle',
+        name: 'Ford Transit Van',
+        vehicleModelDate: '2025',
+        numberOfDoors: 4,
+        seatingCapacity: 14,
+        vehicleInteriorColor: 'Black',
+        color: 'Black',
+        description:
+          '14-passenger Ford Transit Van for larger groups, corporate retreats, wedding parties, and ski group transfers. Spacious interior, WiFi, ski racks.',
+        offers: {
+          '@type': 'Offer',
+          priceCurrency: 'USD',
+          availability: 'https://schema.org/InStock',
+        },
+      },
+    },
+  ],
+}
+
 export default function FleetPage() {
   return (
     <div className="min-h-screen bg-alp-pearl font-inter">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(fleetJsonLd) }} />
       <div className="bg-alp-navy-deep">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex text-sm text-alp-pearl/70">

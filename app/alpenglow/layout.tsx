@@ -69,6 +69,7 @@ const localBusinessSchema = {
     'Distinguished private car and limousine service in Aspen, Colorado. Airport transfers, wedding transportation, corporate travel, and ski resort shuttles. Available 24/7 since 2012.',
   url: ALP_URL,
   telephone: '+19704563666',
+  email: 'kit@richvalleyadventures.com',
   priceRange: '$$$$',
   image: ALP_OG_IMAGE,
   logo: {
@@ -126,7 +127,28 @@ const localBusinessSchema = {
   sameAs: [
     'https://www.facebook.com/aspenalpenglow',
     'https://www.instagram.com/aspenalpenglow',
+    'https://www.richvalleyadventures.com',
   ],
+  parentOrganization: {
+    '@type': 'LocalBusiness',
+    name: 'Rich Valley Adventures',
+    url: 'https://www.richvalleyadventures.com',
+    telephone: '+19704563666',
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+1-970-456-3666',
+    contactType: 'Reservations',
+    email: 'kit@richvalleyadventures.com',
+    areaServed: 'US',
+    availableLanguage: 'English',
+    hoursAvailable: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      opens: '07:00',
+      closes: '20:00',
+    },
+  },
   aggregateRating: {
     '@type': 'AggregateRating',
     ratingValue: '4.9',

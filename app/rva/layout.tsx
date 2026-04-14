@@ -116,10 +116,29 @@ const localBusinessSchema = {
     'https://www.tripadvisor.com/richvalleyadventures',
     'https://aspenalpenglowlimousine.com',
   ],
-  parentOrganization: {
-    '@type': 'Organization',
-    name: 'Rich Valley Adventures & Aspen Alpenglow Limousine',
-    url: 'https://www.richvalleyadventures.com',
+  brand: {
+    '@type': 'Brand',
+    name: 'Rich Valley Adventures',
+  },
+  subOrganization: {
+    '@type': 'LocalBusiness',
+    name: 'Aspen Alpenglow Limousine',
+    url: 'https://aspenalpenglowlimousine.com',
+    telephone: '+19704563666',
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+1-970-456-3666',
+    contactType: 'Reservations',
+    email: 'kit@richvalleyadventures.com',
+    areaServed: 'US',
+    availableLanguage: 'English',
+    hoursAvailable: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      opens: '07:00',
+      closes: '20:00',
+    },
   },
   aggregateRating: {
     '@type': 'AggregateRating',

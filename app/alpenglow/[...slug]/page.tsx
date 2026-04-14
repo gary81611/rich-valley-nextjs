@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getPageBySlug, getAllPublishedPages } from '@/lib/pages'
 import type { ServiceContent, LocationContent, FaqContent, LandingContent } from '@/lib/pages'
+import { canonicalUrl, normalizePath } from '@/lib/seo/canonical'
 import ServicePageTemplate from '@/components/templates/ServicePageTemplate'
 import LocationPageTemplate from '@/components/templates/LocationPageTemplate'
 import FaqPageTemplate from '@/components/templates/FaqPageTemplate'
@@ -27,8 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: 'Page Not Found | Aspen Alpenglow Limousine' }
   }
 
-  const baseUrl = 'https://aspenalpenglowlimousine.com'
-  const pageUrl = `${baseUrl}/${slugStr}`
+  const pageUrl = canonicalUrl('alpenglow', `/${slugStr}`)
 
   return {
     title: page.meta_title || page.title,
@@ -49,21 +49,30 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
   if (!page) return null
 
   const baseUrl = 'https://aspenalpenglowlimousine.com'
-  const pageUrl = `${baseUrl}/${page.slug}`
+  const pageUrl = canonicalUrl('alpenglow', normalizePath(`/${page.slug}`))
+
+  const breadcrumbItems =
+    page.template_type === 'service'
+      ? [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: baseUrl },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: `${baseUrl}/services` },
+          { '@type': 'ListItem', position: 3, name: page.title, item: pageUrl },
+        ]
+      : [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: baseUrl },
+          { '@type': 'ListItem', position: 2, name: page.title, item: pageUrl },
+        ]
 
   const breadcrumb = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: baseUrl },
-      { '@type': 'ListItem', position: 2, name: page.title, item: pageUrl },
-    ],
+    itemListElement: breadcrumbItems,
   }
 
   const schemas: Record<string, unknown>[] = [breadcrumb]
 
   if (page.template_type === 'service') {
-    schemas.push({
+    const serviceSchema: Record<string, unknown> = {
       '@context': 'https://schema.org',
       '@type': 'Service',
       name: page.title,
@@ -72,14 +81,54 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
       provider: {
         '@type': 'LocalBusiness',
         name: 'Aspen Alpenglow Limousine',
+        url: baseUrl,
         telephone: '+19704563666',
         address: { '@type': 'PostalAddress', addressLocality: 'Aspen', addressRegion: 'CO', addressCountry: 'US' },
       },
       areaServed: [
-        { '@type': 'City', name: 'Aspen', containedIn: 'Colorado, USA' },
-        { '@type': 'City', name: 'Snowmass Village', containedIn: 'Colorado, USA' },
+        { '@type': 'City', name: 'Aspen', addressRegion: 'CO' },
+        { '@type': 'City', name: 'Snowmass Village', addressRegion: 'CO' },
       ],
-    })
+    }
+
+    if (page.slug === 'airport-transfers') {
+      serviceSchema.serviceType = 'Airport Transportation'
+      serviceSchema.areaServed = [
+        { '@type': 'City', name: 'Aspen', addressRegion: 'CO' },
+        { '@type': 'City', name: 'Snowmass Village', addressRegion: 'CO' },
+        { '@type': 'City', name: 'Basalt', addressRegion: 'CO' },
+        { '@type': 'City', name: 'Carbondale', addressRegion: 'CO' },
+        { '@type': 'City', name: 'Glenwood Springs', addressRegion: 'CO' },
+        { '@type': 'City', name: 'Vail', addressRegion: 'CO' },
+        { '@type': 'City', name: 'Denver', addressRegion: 'CO' },
+      ]
+      serviceSchema.availableChannel = {
+        '@type': 'ServiceChannel',
+        servicePhone: '+1-970-456-3666',
+        serviceUrl: pageUrl,
+        availableLanguage: 'English',
+        hoursAvailable: {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+          opens: '00:00',
+          closes: '23:59',
+        },
+      }
+      serviceSchema.offers = {
+        '@type': 'Offer',
+        priceCurrency: 'USD',
+        description:
+          'Private luxury airport transfers to/from ASE, EGE, and DEN. Flight tracking included. No surcharges for delays.',
+        availability: 'https://schema.org/InStock',
+        seller: {
+          '@type': 'Organization',
+          name: 'Aspen Alpenglow Limousine',
+          url: baseUrl,
+        },
+      }
+    }
+
+    schemas.push(serviceSchema)
   }
 
   if (page.template_type === 'location') {

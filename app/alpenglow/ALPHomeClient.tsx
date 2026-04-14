@@ -8,6 +8,7 @@ import { alpenglowData } from '@/lib/site-data'
 import { createClient } from '@/lib/supabase'
 import { hrefForService } from '@/lib/alpenglow-services'
 import type { Service as ServiceType, FleetVehicle, Testimonial } from '@/lib/types'
+import { seoAlt } from '@/lib/seo/alt-text'
 
 interface GeoBlock {
   id: string
@@ -121,7 +122,12 @@ export default function AlpenglowHomeClient() {
         <div className="absolute inset-0">
           <Image
             src="/images/about/pexels-outdoor.png"
-            alt="Luxury private SUV on a mountain road in Aspen, Colorado — Aspen Alpenglow Limousine private car service"
+            alt={seoAlt({
+              subject: 'Luxury private SUV on a mountain road',
+              location: 'Aspen, Colorado',
+              context: 'private car service',
+              brand: 'Aspen Alpenglow Limousine',
+            })}
             fill
             className="object-cover"
             priority
@@ -134,11 +140,11 @@ export default function AlpenglowHomeClient() {
           <p className="font-cormorant text-xl md:text-2xl text-alp-gold tracking-[0.3em] uppercase mb-6">
             Aspen · Snowmass · Roaring Fork Valley
           </p>
-          <h1 className="font-playfair text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
+          <h1 className="alp-speak-hero font-playfair text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
             Luxury Transportation<br />
             <span className="text-alp-gold-light italic">in the Roaring <span className="whitespace-nowrap"><span style={{ letterSpacing: '-0.04em' }}>F</span>ork Valley</span></span>
           </h1>
-          <p className="text-xl md:text-2xl text-white/85 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="alp-speak-intro text-xl md:text-2xl text-white/85 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
             Distinguished private car and limousine service — available 24/7 since 2012.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -180,7 +186,12 @@ export default function AlpenglowHomeClient() {
                   <div className="relative aspect-[16/9] bg-alp-navy-deep/50 flex items-center justify-center p-6">
                     <Image
                       src={vehicle.image}
-                      alt={`${vehicle.name} — luxury vehicle in the Aspen Alpenglow Limousine fleet, serving Aspen and the Roaring Fork Valley`}
+                      alt={seoAlt({
+                        subject: vehicle.name,
+                        location: 'Aspen and the Roaring Fork Valley, Colorado',
+                        context: 'luxury fleet vehicle',
+                        brand: 'Aspen Alpenglow Limousine',
+                      })}
                       fill
                       className="object-contain p-8"
                       loading="eager"
@@ -219,7 +230,7 @@ export default function AlpenglowHomeClient() {
             <p className="text-alp-slate text-xl max-w-2xl mx-auto">
               Every detail handled. Every journey seamless.
             </p>
-            <p className="text-alp-slate text-base max-w-3xl mx-auto mt-6 leading-relaxed border-t border-alp-pearl-dark pt-6">
+            <p className="alp-speak-services-overview text-alp-slate text-base max-w-3xl mx-auto mt-6 leading-relaxed border-t border-alp-pearl-dark pt-6">
               Aspen Alpenglow Limousine operates a professional fleet of three late-model vehicles — two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (14 passengers) — serving Aspen/Pitkin County Airport (ASE), Eagle County Regional Airport (EGE), Rifle/Garfield County Airport (KRIL), Grand Junction Regional Airport (GJT), and Denver International Airport (DEN), as well as all destinations throughout the Roaring Fork Valley.
             </p>
           </ScrollReveal>
@@ -358,7 +369,12 @@ export default function AlpenglowHomeClient() {
                 <div className="relative aspect-[3/4] rounded-xl overflow-hidden">
                   <Image
                     src={dest.image}
-                    alt={`${dest.name}, Colorado — a popular destination served by Aspen Alpenglow Limousine private car service`}
+                    alt={seoAlt({
+                      subject: dest.name,
+                      location: 'Colorado',
+                      context: 'private car service destination',
+                      brand: 'Aspen Alpenglow Limousine',
+                    })}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                     loading="eager"

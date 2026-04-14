@@ -73,6 +73,84 @@ export default function FlyFishingPage() {
       },
       areaServed: { '@type': 'City', name: 'Aspen', containedInPlace: { '@type': 'State', name: 'Colorado' } },
     },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'HowTo',
+      name: 'How to Book a Guided Fly Fishing Trip in Aspen, CO',
+      description:
+        'Book a guided fly fishing trip with Rich Valley Adventures on Gold Medal waters including the Roaring Fork River. All skill levels welcome. Equipment provided.',
+      totalTime: 'PT4H',
+      estimatedCost: {
+        '@type': 'MonetaryAmount',
+        currency: 'USD',
+        value: '150-350',
+      },
+      step: [
+        {
+          '@type': 'HowToStep',
+          name: 'Choose your trip type',
+          text: 'Select a half-day (4 hours) or full-day (8 hours) guided fly fishing trip. Choose from the Roaring Fork River, Frying Pan River, or Crystal River.',
+        },
+        {
+          '@type': 'HowToStep',
+          name: 'Select your date and group size',
+          text: 'Rich Valley Adventures runs small groups of 2–6 guests. Book in advance, especially for summer weekends.',
+        },
+        {
+          '@type': 'HowToStep',
+          name: 'Submit your booking request',
+          text: 'Use the booking form at richvalleyadventures.com/contact or call 970-456-3666. No prior fly fishing experience required.',
+        },
+        {
+          '@type': 'HowToStep',
+          name: 'Prepare for your trip',
+          text: 'All rods, reels, flies, waders, and boots are included. Bring sunscreen, layers, and snacks. A Colorado fishing license is required — your guide can help you obtain one.',
+        },
+      ],
+      supply: [
+        { '@type': 'HowToSupply', name: 'Colorado Fishing License' },
+        { '@type': 'HowToSupply', name: 'Sunscreen and layers' },
+      ],
+      tool: [
+        { '@type': 'HowToTool', name: 'Fly rod (provided)' },
+        { '@type': 'HowToTool', name: 'Waders and wading boots (provided)' },
+        { '@type': 'HowToTool', name: 'Flies and tackle (provided)' },
+      ],
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'SportsActivityLocation',
+      name: 'Rich Valley Adventures — Guided Fly Fishing',
+      description:
+        'Expert-guided fly fishing on the Gold Medal Roaring Fork River, Frying Pan River, and Crystal River near Aspen, Colorado.',
+      url: pageUrl,
+      telephone: '+19704563666',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Aspen',
+        addressLocality: 'Aspen',
+        addressRegion: 'CO',
+        postalCode: '81611',
+        addressCountry: 'US',
+      },
+      geo: { '@type': 'GeoCoordinates', latitude: 39.1911, longitude: -106.8175 },
+      openingHoursSpecification: [
+        {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+          opens: '07:00',
+          closes: '18:00',
+        },
+      ],
+      priceRange: '$150–$350 per person',
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: '4.9',
+        reviewCount: '200',
+        bestRating: '5',
+        worstRating: '1',
+      },
+    },
   ]
 
   if (faqs.length > 0) {

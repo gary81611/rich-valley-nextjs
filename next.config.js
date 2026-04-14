@@ -9,6 +9,12 @@ function rvaRedirects() {
     list.push(
       // Elevated camping: rich landing at /elevated-camping (adventure slug URL redirects here)
       { source: '/adventures/elevated-camping', destination: '/elevated-camping', permanent: true, has: h },
+      { source: '/adventures/fly-fishing', destination: '/fly-fishing', permanent: true, has: h },
+      { source: '/adventures/hiking', destination: '/hiking', permanent: true, has: h },
+      { source: '/adventures/paddle-boarding', destination: '/paddle-boarding', permanent: true, has: h },
+      { source: '/adventures/hunting', destination: '/hunting', permanent: true, has: h },
+      { source: '/adventures/winter-adventures', destination: '/winter', permanent: true, has: h },
+      { source: '/adventures/glamping', destination: '/elevated-camping', permanent: true, has: h },
       { source: '/mountain-biking', destination: '/adventures/mountain-biking', permanent: true, has: h },
       // Legacy indexed patterns → canonical /service-areas/[slug]
       { source: '/areas/:path*', destination: '/service-areas/:path*', permanent: true, has: h },
@@ -33,7 +39,7 @@ function rvaRedirects() {
       { source: '/home', destination: '/', permanent: true, has: h },
       { source: '/home/', destination: '/', permanent: true, has: h },
       { source: '/adventure-booking', destination: '/contact', permanent: true, has: h },
-      { source: '/outdoor-adventures', destination: '/adventures', permanent: true, has: h },
+      { source: '/outdoor-adventures', destination: '/', permanent: true, has: h },
       { source: '/contact-us', destination: '/contact', permanent: true, has: h },
       { source: '/privacy-policy', destination: '/privacy', permanent: true, has: h },
     )

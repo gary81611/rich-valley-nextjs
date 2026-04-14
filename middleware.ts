@@ -1,6 +1,22 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
+import { normalizeRvaLegacyPath } from '@/lib/seo/legacy-routes'
+
+const RVA_HOSTS = new Set(['www.richvalleyadventures.com', 'richvalleyadventures.com'])
+const AAL_HOSTS = new Set(['www.aspenalpenglowlimousine.com', 'aspenalpenglowlimousine.com'])
+
+function toSafeRedirectPath(path: string): string {
+  if (!path.startsWith('/')) return '/'
+  const [rawPath, query] = path.split('?', 2)
+  const cleaned = rawPath.replace(/\\/g, '/').replace(/\/{2,}/g, '/')
+  const safePath = cleaned.startsWith('/') ? cleaned : `/${cleaned}`
+  const normalized = safePath === '' ? '/' : safePath
+  if (normalized.startsWith('//')) return '/'
+  if (normalized.includes('..')) return '/'
+  if (normalized.includes('://')) return '/'
+  return query ? `${normalized}?${query}` : normalized
+}
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone()
@@ -59,24 +75,27 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
-  const hostname = request.headers.get('host') || ''
+  const hostname = (request.headers.get('host') || '').trim().toLowerCase().split(':')[0]
   let site: 'rva' | 'alpenglow' = 'rva'
 
-  if (hostname.includes('aspenalpenglow') || hostname.includes('alpenglow')) {
+  if (AAL_HOSTS.has(hostname)) {
     site = 'alpenglow'
-  } else if (hostname.includes('richvalley') || hostname.includes('rva')) {
+  } else if (RVA_HOSTS.has(hostname)) {
     site = 'rva'
   }
 
   /** Indexed legacy URLs used /rva/* — strip prefix so canonical paths are /… (see next.config.js). */
   if (site === 'rva' && (pathname === '/rva' || pathname === '/rva/' || pathname.startsWith('/rva/'))) {
-    const dest = pathname === '/rva' || pathname === '/rva/' ? '/' : pathname.slice(4) || '/'
+    const dest = pathname === '/rva' || pathname === '/rva/' ? '/' : toSafeRedirectPath(pathname.slice(4) || '/')
     return NextResponse.redirect(new URL(dest, request.url), 301)
   }
 
   /** Canonical public URLs on AAL host do not include /alpenglow prefix. */
   if (site === 'alpenglow' && (pathname === '/alpenglow' || pathname === '/alpenglow/' || pathname.startsWith('/alpenglow/'))) {
-    const dest = pathname === '/alpenglow' || pathname === '/alpenglow/' ? '/' : pathname.slice('/alpenglow'.length) || '/'
+    const dest =
+      pathname === '/alpenglow' || pathname === '/alpenglow/'
+        ? '/'
+        : toSafeRedirectPath(pathname.slice('/alpenglow'.length) || '/')
     return NextResponse.redirect(new URL(dest, request.url), 301)
   }
 
@@ -96,6 +115,12 @@ export async function middleware(request: NextRequest) {
 
   // 301 redirects for stale RVA URLs (see also next.config.js redirects)
   if (site === 'rva') {
+    if (pathname === '/adventures' || pathname.startsWith('/adventures/')) {
+      const normalized = toSafeRedirectPath(normalizeRvaLegacyPath(pathname))
+      if (normalized !== pathname) {
+        return NextResponse.redirect(new URL(normalized, request.url), 301)
+      }
+    }
     if (pathname === '/winter-offerings') {
       return NextResponse.redirect(new URL('/winter', request.url), 301)
     }

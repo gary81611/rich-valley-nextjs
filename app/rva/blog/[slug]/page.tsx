@@ -2,21 +2,11 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { canonicalUrl } from '@/lib/seo/canonical'
+import { normalizeRvaLegacyPath } from '@/lib/seo/legacy-routes'
 import type { BlogPost } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
-
-/** Map legacy /adventures/* paths to canonical public routes (Related Resources + DB seed). */
-function normalizeRvaBlogLinkUrl(url: string): string {
-  if (!url.startsWith('/')) return url
-  const [path, query] = url.split('?', 2)
-  const suffix = query != null ? `?${query}` : ''
-  if (path === '/adventures') return '/' + suffix
-  if (!path.startsWith('/adventures/')) return url
-  const rest = path.slice('/adventures/'.length)
-  if (rest === 'glamping') return `/elevated-camping${suffix}`
-  return `/${rest}${suffix}`
-}
 
 async function getPost(slug: string): Promise<BlogPost | null> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -49,10 +39,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: post.meta_title || post.title,
       description: post.meta_description || undefined,
       type: 'article',
-      url: `https://www.richvalleyadventures.com/blog/${post.slug}`,
+      url: canonicalUrl('rva', `/blog/${post.slug}`),
       publishedTime: post.published_at || undefined,
     },
-    alternates: { canonical: `https://www.richvalleyadventures.com/blog/${post.slug}` },
+    alternates: { canonical: canonicalUrl('rva', `/blog/${post.slug}`) },
   }
 }
 
@@ -129,21 +119,50 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
   const post = await getPost(slug)
   if (!post) notFound()
 
+  const articleUrl = canonicalUrl('rva', `/blog/${post.slug}`)
+  const publisherLogoUrl = 'https://www.richvalleyadventures.com/images/logos/rva-logo.png'
+  const defaultArticleImage = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80'
+  const description =
+    post.meta_description ||
+    (post.content ? post.content.replace(/\s+/g, ' ').trim().slice(0, 200) : '') ||
+    post.title
+
   const articleSchema = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': 'BlogPosting',
     headline: post.title,
-    description: post.meta_description,
-    datePublished: post.published_at,
-    dateModified: post.updated_at,
+    description,
+    image: {
+      '@type': 'ImageObject',
+      url: defaultArticleImage,
+      width: 1200,
+      height: 630,
+    },
+    author: {
+      '@type': 'Organization',
+      name: 'Rich Valley Adventures',
+      url: 'https://www.richvalleyadventures.com/guides',
+    },
     publisher: {
       '@type': 'Organization',
       name: 'Rich Valley Adventures',
       url: 'https://www.richvalleyadventures.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: publisherLogoUrl,
+        width: 300,
+        height: 60,
+      },
     },
+    datePublished: post.published_at,
+    dateModified: post.updated_at || post.published_at,
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://www.richvalleyadventures.com/blog/${post.slug}`,
+      '@id': articleUrl,
+    },
+    about: {
+      '@type': 'Thing',
+      name: 'Outdoor adventures and guided experiences in Aspen, Colorado',
     },
   }
 
@@ -246,7 +265,7 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
                   {post.internal_links.map((link, i) => (
                     <li key={i}>
                       <Link
-                        href={normalizeRvaBlogLinkUrl(link.url)}
+                        href={normalizeRvaLegacyPath(link.url)}
                         className="flex items-center gap-2 text-sm text-rva-copper hover:text-rva-forest font-medium transition-colors group"
                       >
                         <svg className="w-4 h-4 flex-shrink-0 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">

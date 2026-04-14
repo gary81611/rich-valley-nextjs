@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { seoAlt } from '@/lib/seo/alt-text'
 
 export const dynamic = 'force-dynamic'
 
@@ -81,7 +82,12 @@ export default async function FleetPage() {
                   <div className="relative h-72 sm:h-96 lg:h-auto min-h-[280px] bg-rva-forest-dark">
                     <Image
                       src={vehicle.image}
-                      alt={`${vehicle.name} — luxury vehicle from Aspen Alpenglow Limousine`}
+                      alt={seoAlt({
+                        subject: vehicle.name,
+                        location: 'Aspen, Colorado',
+                        context: 'luxury transportation vehicle',
+                        brand: 'Aspen Alpenglow Limousine',
+                      })}
                       fill
                       className="object-cover"
                       unoptimized

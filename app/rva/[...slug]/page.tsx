@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getPageBySlug, getAllPublishedPages } from '@/lib/pages'
 import type { ServiceContent, LocationContent, FaqContent, LandingContent } from '@/lib/pages'
+import { canonicalUrl, normalizePath } from '@/lib/seo/canonical'
 import ServicePageTemplate from '@/components/templates/ServicePageTemplate'
 import LocationPageTemplate from '@/components/templates/LocationPageTemplate'
 import FaqPageTemplate from '@/components/templates/FaqPageTemplate'
@@ -27,8 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: 'Page Not Found | Rich Valley Adventures' }
   }
 
-  const baseUrl = 'https://www.richvalleyadventures.com'
-  const pageUrl = `${baseUrl}/${slugStr}`
+  const pageUrl = canonicalUrl('rva', `/${slugStr}`)
 
   return {
     title: page.meta_title || page.title,
@@ -49,7 +49,7 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
   if (!page) return null
 
   const baseUrl = 'https://www.richvalleyadventures.com'
-  const pageUrl = `${baseUrl}/${page.slug}`
+  const pageUrl = canonicalUrl('rva', normalizePath(`/${page.slug}`))
 
   const breadcrumb = {
     '@context': 'https://schema.org',
