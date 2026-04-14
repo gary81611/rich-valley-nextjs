@@ -23,7 +23,18 @@ Configure Supabase and other secrets in **`.env.local`** (not committed). Minimu
 | `npm run build`   | Production build     |
 | `npm run start`   | Run production build |
 | `npm run lint`    | ESLint               |
+| `npm run seo:audit:sitemap` | Live sitemap health audit (status/canonical/noindex) |
 
 ## SEO notes
 
 Production serves **`/sitemap.xml`** and **`/robots.txt`** through **`app/api/sitemap`** and **`app/api/robots`** via rewrites in `next.config.js` (not static-only). See **`CLAUDE.md`** for the full critical-file list and conventions.
+
+## SEO regression checks
+
+Before merging SEO-impacting changes (redirects, sitemap, robots, canonicals), run:
+
+```bash
+npm run seo:audit:sitemap
+```
+
+This script fails when sitemap URLs are non-200 on first hop/final hop, contain `noindex`, or have a canonical that points elsewhere.

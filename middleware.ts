@@ -6,6 +6,11 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone()
   const pathname = url.pathname
 
+  // Guard legacy homepage aliases so /home and /home/ always collapse to /.
+  if (pathname === '/home' || pathname === '/home/') {
+    return NextResponse.redirect(new URL('/', request.url), 301)
+  }
+
   // Refresh Supabase session on every request (only if configured)
   let response = NextResponse.next({
     request: { headers: request.headers },

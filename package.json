@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seo:audit:sitemap": "node scripts/seo-sitemap-audit.mjs"
   },
   "dependencies": {
     "@google-analytics/data": "^5.2.1",

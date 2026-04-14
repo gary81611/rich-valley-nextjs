@@ -1,5 +1,6 @@
 User-agent: *
 Disallow: /rva/
+Allow: /rva/winter
 Allow: /llms.txt
 Allow: /conditions
 Allow: /guides

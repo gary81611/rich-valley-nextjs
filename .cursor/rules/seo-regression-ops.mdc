@@ -1,0 +1,43 @@
+# SEO regression operations (RVA)
+
+Use this workflow for any route, sitemap, robots, canonical, redirect, or metadata change.
+
+## Pre-merge gate (required)
+
+1. Run `npm run seo:audit:sitemap` for production origin and ensure zero issues.
+2. Verify changed URLs:
+ - first-hop status is intentional (200 for canonical pages, 301/308 for legacy aliases)
+ - destination returns 200
+ - canonical is self-referencing on canonical pages
+3. If a URL is redirected, remove it from sitemap and keep only final canonical destination.
+4. Check for internal links to legacy aliases (`/home`, `/service-areas-locations/*`, etc.) and replace with canonical URLs.
+
+## Post-merge checks (within 48 hours)
+
+1. Inspect changed URLs in Google Search Console URL Inspection.
+2. Re-fetch `https://www.richvalleyadventures.com/sitemap.xml` and confirm only canonical URLs are present.
+3. Confirm `robots.txt` still allows indexable sections and sitemap line is correct.
+4. Record what changed, what was validated, and open issues.
+
+## Weekly SEO health check
+
+Track and compare week-over-week:
+
+- Indexed pages count
+- Not indexed pages count
+- Newly appeared issue types
+- Regressed issue types that were previously resolved
+
+If not-indexed count increases week-over-week, pause new route/page additions until regression cause is identified and fixed.
+
+## Marketing/content gate for new pages
+
+Do not add new URLs to sitemap until all are true:
+
+- at least 400 words of meaningful page copy
+- unique title and meta description
+- one clear H1
+- schema markup present where applicable
+- at least 2 internal links from existing indexed pages
+
+Keep slug stable after publish. If changed, create a permanent redirect from old URL to new URL.
