@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server'
+import { resolveSiteKeyFromHost } from '@/lib/site-from-host'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET(request: Request) {
   const host = request.headers.get('host') || ''
-  const isAlpenglow = host.includes('alpenglow') || host.includes('aspenalpenglow')
+  const isAlpenglow = resolveSiteKeyFromHost(host) === 'alpenglow'
 
   const rvaText = `# Rich Valley Adventures — Aspen, CO
 # Guided outdoor adventures since 2012
@@ -61,9 +62,14 @@ https://aspenalpenglowlimousine.com/faq
 https://aspenalpenglowlimousine.com/services
 https://aspenalpenglowlimousine.com/fleet
 https://aspenalpenglowlimousine.com/airport-transfers
-https://aspenalpenglowlimousine.com/services/corporate-events
-https://aspenalpenglowlimousine.com/services/wedding-transportation
+https://aspenalpenglowlimousine.com/corporate-events
+https://aspenalpenglowlimousine.com/wedding-transportation
+https://aspenalpenglowlimousine.com/wine-tours
+https://aspenalpenglowlimousine.com/night-out
 https://aspenalpenglowlimousine.com/services/ski-resort-transfers
+https://aspenalpenglowlimousine.com/areas/aspen
+https://aspenalpenglowlimousine.com/areas/snowmass
+https://aspenalpenglowlimousine.com/areas/vail
 https://aspenalpenglowlimousine.com/blog
 
 ## Machine-readable index

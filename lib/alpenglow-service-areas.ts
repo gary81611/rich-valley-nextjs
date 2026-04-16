@@ -12,16 +12,24 @@ export const AAL_SERVICE_AREA_SLUG_MAP: Record<string, string> = {
   'Grand Junction': 'grand-junction',
 }
 
+const AAL_CMS_AREA_PATHS: Record<string, string> = {
+  aspen: '/areas/aspen',
+  snowmass: '/areas/snowmass',
+  'snowmass-village': '/areas/snowmass',
+  vail: '/areas/vail',
+  'eagle-vail': '/areas/vail',
+}
+
 export function hrefForServiceArea(area: { name: string; slug: string | null }): string {
   const fromDb = area.slug?.trim()
-  if (fromDb) return `/service-areas/${fromDb}`
+  if (fromDb) return AAL_CMS_AREA_PATHS[fromDb] || `/service-areas/${fromDb}`
   const fromMap = AAL_SERVICE_AREA_SLUG_MAP[area.name]
-  if (fromMap) return `/service-areas/${fromMap}`
+  if (fromMap) return AAL_CMS_AREA_PATHS[fromMap] || `/service-areas/${fromMap}`
   const generated = area.name
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '')
-  return `/service-areas/${generated}`
+  return AAL_CMS_AREA_PATHS[generated] || `/service-areas/${generated}`
 }
 
 /** Resolve a path slug to the same row the listing page would link to. */

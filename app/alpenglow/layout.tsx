@@ -127,14 +127,7 @@ const localBusinessSchema = {
   sameAs: [
     'https://www.facebook.com/aspenalpenglow',
     'https://www.instagram.com/aspenalpenglow',
-    'https://www.richvalleyadventures.com',
   ],
-  parentOrganization: {
-    '@type': 'LocalBusiness',
-    name: 'Rich Valley Adventures',
-    url: 'https://www.richvalleyadventures.com',
-    telephone: '+19704563666',
-  },
   contactPoint: {
     '@type': 'ContactPoint',
     telephone: '+1-970-456-3666',

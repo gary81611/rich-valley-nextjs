@@ -1,6 +1,7 @@
 /**
  * Nav / DB often store a top-level slug like `/airport-transfers` (CMS-style).
- * The Supabase-backed service detail route is `/services/[slug]`.
+ * Some AAL money pages are canonical as top-level CMS pages, while others still live under
+ * the Supabase-backed `/services/[slug]` route.
  * Paths that already include `/services/` or `/service-areas/` are left unchanged.
  */
 const RESERVED_SINGLE_SEGMENTS = new Set([
@@ -15,6 +16,14 @@ const RESERVED_SINGLE_SEGMENTS = new Set([
   'services',
   'service-areas',
   'alpenglow',
+])
+
+const CANONICAL_CMS_SERVICE_SLUGS = new Set([
+  'airport-transfers',
+  'corporate-events',
+  'wedding-transportation',
+  'night-out',
+  'wine-tours',
 ])
 
 export function normalizeAalServiceNavHref(href: string): string {
@@ -34,7 +43,7 @@ export function normalizeAalServiceNavHref(href: string): string {
   const seg = segments[0]
   if (!seg || RESERVED_SINGLE_SEGMENTS.has(seg)) return href
 
-  if (seg === 'airport-transfers') return '/airport-transfers'
+  if (CANONICAL_CMS_SERVICE_SLUGS.has(seg)) return `/${seg}`
 
   return `/services/${seg}`
 }

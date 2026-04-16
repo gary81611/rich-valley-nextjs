@@ -28,8 +28,7 @@ Sitemap: ${sitemapUrl}
 
   // Keep in sync with public/robots.txt — see .cursor/rules/robots-txt-sync.mdc
   const content = `User-agent: *
-Disallow: /rva/
-Allow: /rva/winter
+Allow: /
 Allow: /llms.txt
 Allow: /conditions
 Allow: /guides
@@ -47,7 +46,6 @@ Allow: /about
 Allow: /blog
 Allow: /privacy
 Allow: /services
-Allow: /
 
 Sitemap: ${sitemapUrl}
 `

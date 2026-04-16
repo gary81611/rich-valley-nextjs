@@ -123,12 +123,12 @@ const AAL_BLOG_RELATED: Record<string, { text: string; url: string }[]> = {
     { text: 'Ski resort & mountain shuttles', url: '/services/ski-resort-transfers' },
   ],
   'corporate-retreat-transportation-aspen': [
-    { text: 'Corporate & executive transportation', url: '/services/corporate-events' },
+    { text: 'Corporate & executive transportation', url: '/corporate-events' },
     { text: 'Fleet — Suburbans & 14-passenger van', url: '/fleet' },
     { text: 'Request a group quote', url: '/contact' },
   ],
   'aspen-wine-tours-guide-to-local-tastings': [
-    { text: 'Wine tours & private chauffeured tastings', url: '/services/wine-tours' },
+    { text: 'Wine tours & private chauffeured tastings', url: '/wine-tours' },
     { text: 'Colorado day-trip destinations', url: '/destinations' },
     { text: 'Book a custom itinerary', url: '/contact' },
   ],

@@ -1,6 +1,5 @@
 User-agent: *
-Disallow: /rva/
-Allow: /rva/winter
+Allow: /
 Allow: /llms.txt
 Allow: /conditions
 Allow: /guides
@@ -18,6 +17,5 @@ Allow: /about
 Allow: /blog
 Allow: /privacy
 Allow: /services
-Allow: /
 
 Sitemap: https://www.richvalleyadventures.com/sitemap.xml

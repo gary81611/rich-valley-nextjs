@@ -20,13 +20,13 @@ const sections = [
   {
     id: 'corporate-events',
     title: 'Corporate & Executive Travel',
-    href: '/services/corporate-events',
+    href: '/corporate-events',
     body: `Discreet, professional transportation for business travelers, corporate retreats, and executive transfers across Aspen and Snowmass. We understand confidentiality, tight schedules, and the need for a calm cabin between meetings. Corporate billing is available for approved accounts, and every driver is an experienced mountain operator — not a generic city driver guessing at snow-packed passes. All vehicles are equipped with Starlink WiFi so you can stay productive between venues, hotels, and the airport.`,
   },
   {
     id: 'wedding-transportation',
     title: 'Wedding Transportation',
-    href: '/services/wedding-transportation',
+    href: '/wedding-transportation',
     body: `Your wedding day deserves transportation that is punctual, elegant, and invisible when it needs to be. We coordinate bridal party transfers, venue shuttles, and guest movement throughout Aspen and Snowmass so nobody is stranded at the wrong property. Our team has extensive experience with premier venues including The Little Nell, Hotel Jerome, Aspen Meadows, Limelight, and Snowmass base-area properties. Both our Chevrolet Suburban SUVs and Ford Transit Van are available depending on group size — the Transit comfortably moves parties up to fourteen with room for gowns, flowers, and celebration gear.`,
   },
   {

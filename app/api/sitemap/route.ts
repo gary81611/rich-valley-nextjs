@@ -142,6 +142,11 @@ export async function GET(request: Request) {
         { url: `${AAL_ORIGIN}/destinations`, lastModified, changeFrequency: 'monthly', priority: 0.72 },
         { url: `${AAL_ORIGIN}/about`, lastModified, changeFrequency: 'monthly', priority: 0.82 },
         { url: `${AAL_ORIGIN}/airport-transfers`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
+        { url: `${AAL_ORIGIN}/corporate-events`, lastModified, changeFrequency: 'weekly', priority: 0.86 },
+        { url: `${AAL_ORIGIN}/wedding-transportation`, lastModified, changeFrequency: 'weekly', priority: 0.86 },
+        { url: `${AAL_ORIGIN}/wine-tours`, lastModified, changeFrequency: 'monthly', priority: 0.72 },
+        { url: `${AAL_ORIGIN}/night-out`, lastModified, changeFrequency: 'monthly', priority: 0.72 },
+        { url: `${AAL_ORIGIN}/areas/aspen`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
         { url: `${AAL_ORIGIN}/areas/snowmass`, lastModified, changeFrequency: 'monthly', priority: 0.78 },
         { url: `${AAL_ORIGIN}/areas/vail`, lastModified, changeFrequency: 'monthly', priority: 0.78 },
         { url: `${AAL_ORIGIN}/service-areas`, lastModified, changeFrequency: 'monthly', priority: 0.65 },
@@ -244,21 +249,27 @@ export async function GET(request: Request) {
         }
       })
 
-    const serviceAreaEntries: SitemapEntry[] = (serviceAreas || [])
-      .filter((row) => typeof row.slug === 'string' && row.slug.trim().length > 0)
-      .flatMap((row) => {
-        const mapped = siteKey === 'rva' ? canonicalRvaServiceAreaSlug(String(row.slug)) : String(row.slug).trim()
-        if (siteKey === 'rva' && mapped === null) return []
-        const slug = siteKey === 'rva' ? mapped! : String(row.slug).trim()
-        return [
-          {
-            url: `${base}/service-areas/${slug}`,
-            lastModified: row.updated_at ? new Date(row.updated_at) : lastModified,
-            changeFrequency: 'monthly',
-            priority: siteKey === 'alpenglow' ? 0.72 : 0.78,
-          },
-        ]
-      })
+    /**
+     * AAL area detail pages are currently canonical under `/areas/*` from the CMS-backed catch-all,
+     * while `/service-areas/*` is just the hub page family. Emitting AAL detail URLs here creates
+     * non-200s / duplicate clusters, so only RVA uses `service_areas` detail rows in the sitemap.
+     */
+    const serviceAreaEntries: SitemapEntry[] = siteKey === 'rva'
+      ? (serviceAreas || [])
+          .filter((row) => typeof row.slug === 'string' && row.slug.trim().length > 0)
+          .flatMap((row) => {
+            const mapped = canonicalRvaServiceAreaSlug(String(row.slug))
+            if (mapped === null) return []
+            return [
+              {
+                url: `${base}/service-areas/${mapped}`,
+                lastModified: row.updated_at ? new Date(row.updated_at) : lastModified,
+                changeFrequency: 'monthly',
+                priority: 0.78,
+              },
+            ]
+          })
+      : []
 
     const merged = dedupeByUrl([...staticEntries, ...blogEntries, ...pageEntries, ...serviceAreaEntries])
 

@@ -11,20 +11,20 @@ interface NavItem { label: string; href: string }
 /** Links must hit `app/services/[slug]` (`/services/...` on the public host), not the CMS catch-all under `/{slug}`. */
 const FALLBACK_SERVICE_PAGES: NavItem[] = [
   { label: 'Airport Transfers', href: '/airport-transfers' },
-  { label: 'Corporate Events', href: '/services/corporate-events' },
-  { label: 'Wedding Transportation', href: '/services/wedding-transportation' },
+  { label: 'Corporate Events', href: '/corporate-events' },
+  { label: 'Wedding Transportation', href: '/wedding-transportation' },
   { label: 'Ski Resort Transfers', href: '/services/ski-resort-transfers' },
-  { label: 'Wine Tours', href: '/services/wine-tours' },
-  { label: 'Night Out', href: '/services/night-out' },
+  { label: 'Wine Tours', href: '/wine-tours' },
+  { label: 'Night Out', href: '/night-out' },
 ]
 
 const FALLBACK_AREA_PAGES: NavItem[] = [
-  { label: 'Aspen', href: '/service-areas/aspen' },
-  { label: 'Snowmass Village', href: '/service-areas/snowmass-village' },
+  { label: 'Aspen', href: '/areas/aspen' },
+  { label: 'Snowmass Village', href: '/areas/snowmass' },
   { label: 'Basalt', href: '/service-areas/basalt' },
   { label: 'Carbondale', href: '/service-areas/carbondale' },
   { label: 'Glenwood Springs', href: '/service-areas/glenwood-springs' },
-  { label: 'Eagle / Vail', href: '/service-areas/eagle-vail' },
+  { label: 'Eagle / Vail', href: '/areas/vail' },
   { label: 'Denver', href: '/service-areas/denver' },
   { label: 'Rifle', href: '/service-areas/rifle' },
   { label: 'Grand Junction', href: '/service-areas/grand-junction' },

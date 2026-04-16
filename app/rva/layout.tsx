@@ -114,17 +114,10 @@ const localBusinessSchema = {
     'https://www.facebook.com/richvalleyadventures',
     'https://www.instagram.com/richvalleyadventures',
     'https://www.tripadvisor.com/richvalleyadventures',
-    'https://aspenalpenglowlimousine.com',
   ],
   brand: {
     '@type': 'Brand',
     name: 'Rich Valley Adventures',
-  },
-  subOrganization: {
-    '@type': 'LocalBusiness',
-    name: 'Aspen Alpenglow Limousine',
-    url: 'https://aspenalpenglowlimousine.com',
-    telephone: '+19704563666',
   },
   contactPoint: {
     '@type': 'ContactPoint',
