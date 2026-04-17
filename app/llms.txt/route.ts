@@ -61,6 +61,8 @@ https://aspenalpenglowlimousine.com/pricing
 https://aspenalpenglowlimousine.com/faq
 https://aspenalpenglowlimousine.com/services
 https://aspenalpenglowlimousine.com/fleet
+https://aspenalpenglowlimousine.com/reservations
+https://aspenalpenglowlimousine.com/contact
 https://aspenalpenglowlimousine.com/airport-transfers
 https://aspenalpenglowlimousine.com/corporate-events
 https://aspenalpenglowlimousine.com/wedding-transportation

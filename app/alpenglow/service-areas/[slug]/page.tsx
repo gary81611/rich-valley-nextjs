@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { slugifyServiceName } from '@/lib/alpenglow-services'
 import { serviceAreaMatchesPathSlug } from '@/lib/alpenglow-service-areas'
+import { alpenglowData } from '@/lib/site-data'
 
 export const dynamic = 'force-dynamic'
 
@@ -248,7 +249,7 @@ export default async function ServiceAreaDetailPage({ params }: { params: Promis
                   Available 24/7. Airport transfers, hourly charter, and point-to-point service.
                 </p>
                 <Link
-                  href="/contact"
+                  href={alpenglowData.onlineReservationsPath}
                   className="block bg-alp-gold text-alp-navy font-bold px-6 py-3 rounded-full hover:bg-alp-gold-light transition-colors text-center mb-3"
                 >
                   Book Online

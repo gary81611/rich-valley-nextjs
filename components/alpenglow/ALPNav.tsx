@@ -131,6 +131,9 @@ export default function ALPNav() {
           <a href="/pricing" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
             Pricing
           </a>
+          <a href="/reservations" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
+            Reservations
+          </a>
           <a href="/gallery" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
             Gallery
           </a>
@@ -198,6 +201,9 @@ export default function ALPNav() {
           </a>
           <a href="/pricing" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
             Pricing
+          </a>
+          <a href="/reservations" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
+            Reservations
           </a>
           <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
             Gallery

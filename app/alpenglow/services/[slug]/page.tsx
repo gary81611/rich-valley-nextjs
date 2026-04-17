@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { serviceMatchesPathSlug } from '@/lib/alpenglow-services'
+import { alpenglowData } from '@/lib/site-data'
 
 export const dynamic = 'force-dynamic'
 
@@ -187,7 +188,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/contact"
+              href={alpenglowData.onlineReservationsPath}
               className="inline-block bg-alp-gold text-alp-navy font-bold px-8 py-3 rounded-full hover:bg-alp-gold-light transition-colors"
             >
               Book Now

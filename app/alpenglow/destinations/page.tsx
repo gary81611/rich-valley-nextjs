@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { alpenglowData } from '@/lib/site-data'
 
 export const dynamic = 'force-dynamic'
 
@@ -171,7 +172,7 @@ export default async function DestinationsPage() {
                       {dest.description}
                     </div>
                     <Link
-                      href="/contact"
+                      href={alpenglowData.onlineReservationsPath}
                       className="inline-flex items-center gap-2 bg-alp-gold text-alp-navy font-bold px-6 py-3 rounded-full hover:bg-alp-gold-light transition-colors w-fit"
                     >
                       Book a Ride

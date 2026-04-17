@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { alpenglowData } from '@/lib/site-data'
 
 type DbPricingRoute = {
   route_name: string
@@ -306,10 +308,18 @@ export default async function PricingPage() {
         {/* CTA */}
         <div className="text-center bg-alp-navy rounded-xl p-10">
           <h2 className="font-playfair text-2xl text-white mb-3">Ready to Book?</h2>
-          <p className="text-white/60 mb-6">Call or text to reserve your ride.</p>
-          <a href="tel:+19704563666" className="inline-block bg-alp-gold hover:bg-alp-gold-light text-alp-navy-deep px-8 py-3 rounded-full font-semibold transition-colors">
-            Call 970-456-3666
-          </a>
+          <p className="text-white/60 mb-6">Book online, or call or text to reserve your ride.</p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+            <Link
+              href={alpenglowData.onlineReservationsPath}
+              className="inline-block bg-alp-gold hover:bg-alp-gold-light text-alp-navy-deep px-8 py-3 rounded-full font-semibold transition-colors"
+            >
+              Book online
+            </Link>
+            <a href="tel:+19704563666" className="inline-block border-2 border-alp-gold text-alp-gold hover:bg-alp-gold hover:text-alp-navy-deep px-8 py-3 rounded-full font-semibold transition-colors">
+              Call 970-456-3666
+            </a>
+          </div>
         </div>
       </div>
 

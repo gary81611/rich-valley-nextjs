@@ -137,6 +137,7 @@ export async function GET(request: Request) {
         { url: `${AAL_ORIGIN}/faq`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
         { url: `${AAL_ORIGIN}/services`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
         { url: `${AAL_ORIGIN}/fleet`, lastModified, changeFrequency: 'monthly', priority: 0.85 },
+        { url: `${AAL_ORIGIN}/reservations`, lastModified, changeFrequency: 'weekly', priority: 0.92 },
         { url: `${AAL_ORIGIN}/contact`, lastModified, changeFrequency: 'monthly', priority: 0.85 },
         { url: `${AAL_ORIGIN}/gallery`, lastModified, changeFrequency: 'monthly', priority: 0.65 },
         { url: `${AAL_ORIGIN}/destinations`, lastModified, changeFrequency: 'monthly', priority: 0.72 },

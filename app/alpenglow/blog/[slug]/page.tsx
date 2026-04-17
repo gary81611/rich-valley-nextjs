@@ -130,7 +130,7 @@ const AAL_BLOG_RELATED: Record<string, { text: string; url: string }[]> = {
   'aspen-wine-tours-guide-to-local-tastings': [
     { text: 'Wine tours & private chauffeured tastings', url: '/wine-tours' },
     { text: 'Colorado day-trip destinations', url: '/destinations' },
-    { text: 'Book a custom itinerary', url: '/contact' },
+    { text: 'Book a custom itinerary', url: '/reservations' },
   ],
   'airport-transfer-guide-aspen-pitkin-county-airport': [
     { text: 'Book private ASE, EGE & DEN transfers', url: '/airport-transfers' },

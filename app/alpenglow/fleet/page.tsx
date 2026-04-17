@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { alpenglowData } from '@/lib/site-data'
 
 export const metadata: Metadata = {
   title: 'Luxury Fleet | Suburban SUVs & Transit Van | Alpenglow',
@@ -159,10 +160,10 @@ export default function FleetPage() {
             Reserve your vehicle or get a custom quote for your group.
           </p>
           <Link
-            href="/contact"
+            href={alpenglowData.onlineReservationsPath}
             className="inline-block bg-alp-gold text-alp-navy font-bold px-8 py-3 rounded-full hover:bg-alp-gold-light transition-colors"
           >
-            Contact &amp; booking
+            Book online
           </Link>
           <p className="mt-6">
             <a

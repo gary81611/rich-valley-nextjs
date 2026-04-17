@@ -2,6 +2,11 @@ export const PHONE = '970-456-3666'
 export const PHONE_HREF = 'tel:+19704563666'
 export const LOCATION = 'Aspen, Colorado'
 
+/** Google Business Profile — Rich Valley Adventures (for schema + review CTA). */
+export const RVA_GOOGLE_PLACE_ID = 'ChIJkcn5KdQ7QIcR50T745YsSmg'
+export const RVA_GOOGLE_REVIEW_URL = 'https://g.page/r/CedE--OWLEpoEAE/review'
+export const RVA_GOOGLE_MAPS_PLACE_URL = `https://www.google.com/maps?place_id=${encodeURIComponent(RVA_GOOGLE_PLACE_ID)}`
+
 export const rvaData = {
   name: 'Rich Valley Adventures',
   tagline: 'Discover the Heart of Aspen',
@@ -9,6 +14,9 @@ export const rvaData = {
   phone: PHONE, phoneHref: PHONE_HREF, location: LOCATION,
   logo: '/images/logos/rva-logo.png',
   email: 'kit@richvalleyadventures.com',
+  googlePlaceId: RVA_GOOGLE_PLACE_ID,
+  googleMapsPlaceUrl: RVA_GOOGLE_MAPS_PLACE_URL,
+  googleReviewUrl: RVA_GOOGLE_REVIEW_URL,
   social: {
     facebook: 'https://www.facebook.com/richvalleyadventures',
     instagram: 'https://www.instagram.com/richvalleyadventures',
@@ -25,6 +33,8 @@ export const alpenglowData = {
   tagline: 'Luxury Transportation in the Roaring Fork Valley',
   description: 'Since 2012, Aspen Alpenglow Limousine has provided distinguished private car and limousine service throughout Aspen, Snowmass, and the Roaring Fork Valley. Available 24/7.',
   phone: PHONE, phoneHref: PHONE_HREF, location: LOCATION,
+  /** Limo Anywhere embed lives here; primary “book” CTAs should point to this path. */
+  onlineReservationsPath: '/reservations',
   logo: '/images/logos/alpenglow-logo.png',
   email: 'kit@richvalleyadventures.com',
   social: {

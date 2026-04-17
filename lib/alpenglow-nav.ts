@@ -9,6 +9,7 @@ const RESERVED_SINGLE_SEGMENTS = new Set([
   'fleet',
   'faq',
   'contact',
+  'reservations',
   'about',
   'pricing',
   'destinations',

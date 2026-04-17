@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import RVANav from '@/components/rva/RVANav'
 import RVAFooter from '@/components/rva/RVAFooter'
+import { rvaData } from '@/lib/site-data'
 
 const RVA_URL = 'https://www.richvalleyadventures.com'
 const RVA_OG_IMAGE = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80'
@@ -114,7 +115,15 @@ const localBusinessSchema = {
     'https://www.facebook.com/richvalleyadventures',
     'https://www.instagram.com/richvalleyadventures',
     'https://www.tripadvisor.com/richvalleyadventures',
+    rvaData.googleMapsPlaceUrl,
+    rvaData.googleReviewUrl,
   ],
+  hasMap: rvaData.googleMapsPlaceUrl,
+  identifier: {
+    '@type': 'PropertyValue',
+    name: 'Google Place ID',
+    value: rvaData.googlePlaceId,
+  },
   brand: {
     '@type': 'Brand',
     name: 'Rich Valley Adventures',

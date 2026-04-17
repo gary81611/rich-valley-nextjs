@@ -49,6 +49,16 @@ export default function RVAFooter() {
               <li><a href="/service-areas" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">Service Areas</a></li>
               <li><a href="/locations" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">Location Guides</a></li>
               <li><a href="/contact" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">Book an Adventure</a></li>
+              <li>
+                <a
+                  href={rvaData.googleReviewUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/65 hover:text-rva-copper-light text-sm transition-colors"
+                >
+                  Review us on Google
+                </a>
+              </li>
               <li><a href="/terms" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">Terms & Conditions</a></li>
               <li><a href="/privacy" className="text-white/65 hover:text-rva-copper-light text-sm transition-colors">Privacy Policy</a></li>
             </ul>

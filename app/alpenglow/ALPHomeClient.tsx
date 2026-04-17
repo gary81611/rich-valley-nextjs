@@ -148,7 +148,7 @@ export default function AlpenglowHomeClient() {
             Distinguished private car and limousine service — available 24/7 since 2012.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact" className="bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block">
+            <a href={alpenglowData.onlineReservationsPath} className="bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block">
               Reserve Your Ride
             </a>
             <a href="/services" className="border-2 border-white text-white hover:bg-white hover:text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
@@ -208,7 +208,7 @@ export default function AlpenglowHomeClient() {
                         <span key={f} className="bg-white/5 text-white/70 text-xs px-3 py-1.5 rounded-full border border-white/10">{f}</span>
                       ))}
                     </div>
-                    <a href="/contact" className="inline-block bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-8 py-3 rounded-full font-semibold text-sm transition-all hover:shadow-lg">
+                    <a href={alpenglowData.onlineReservationsPath} className="inline-block bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-8 py-3 rounded-full font-semibold text-sm transition-all hover:shadow-lg">
                       Reserve Now
                     </a>
                   </div>
@@ -492,7 +492,12 @@ export default function AlpenglowHomeClient() {
           <ScrollReveal className="text-center mb-12">
             <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Reserve Your Journey</p>
             <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-4">Book Your Ride</h2>
-            <p className="text-alp-slate text-lg">Request a quote and we&apos;ll respond promptly with availability and pricing.</p>
+            <p className="text-alp-slate text-lg">
+              <a href={alpenglowData.onlineReservationsPath} className="text-alp-gold font-semibold hover:underline">
+                Book online
+              </a>{' '}
+              for standard trips, or request a quote below and we&apos;ll respond with availability and pricing.
+            </p>
           </ScrollReveal>
           <ScrollReveal delay={200}>
             <div className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border border-alp-pearl-dark">
