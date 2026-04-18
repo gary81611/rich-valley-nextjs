@@ -23,7 +23,7 @@ export default function ReservationsPage() {
         </nav>
         <h1 className="text-3xl sm:text-4xl font-serif text-alp-gold mb-4">Online Reservations</h1>
         <p className="text-white/80 mb-8 leading-relaxed">
-          Book your ride in a few steps. The booking widget loads below so you can complete your reservation without leaving this site. For general questions or custom itineraries, visit{' '}
+          Book your ride in a few steps. For general questions or custom itineraries, visit{' '}
           <Link href="/contact" className="text-alp-gold hover:text-alp-gold-light underline">
             Contact
           </Link>
