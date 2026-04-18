@@ -1,4 +1,6 @@
-# BRAND.md — Rich Valley Adventures & Aspen Alpenglow Limousine
+# Rich Valley Adventures & Aspen Alpenglow Limousine — brand authority
+
+**File:** `RVS_AAL_Brand.MD` (repository root)
 
 **Source:** Website review research (April 2026), synthesized from richvalleyadventures.com and aspenalpenglowlimousine.com.  
 **Owner:** Kit McLendon (public contact: kit@richvalleyadventures.com). Update this file when positioning, audience, or SEO/AEO strategy changes.  
@@ -42,7 +44,7 @@ Items flagged **⚠** require owner input before they are treated as published b
 
 ### One file vs two
 - Research recommends **two separate brand documents** (e.g. BRAND-RVA / BRAND-AAL) because categories, audiences, and tones differ; shared preamble can cover ownership, phone, founding year, cross-referrals.  
-- This **BRAND.md** holds both until split is approved.
+- This document holds both until split is approved.
 
 ### How each brand describes the other
 - **Approved term in use:** “sister company.”  
@@ -216,7 +218,7 @@ Airport transfers (ASE, EGE, DEN, KAPA, KRIL, GJT per site); hourly private char
 
 ## 12. Housekeeping
 
-- **BRAND.md owner:** Kit McLendon (inferred from public email and founder role).  
+- **Brand document owner:** Kit McLendon (inferred from public email and founder role).  
 - **Versioning:** On first publication use e.g. `v1.0 — [date] — Initial draft from website review`; bump when owner approves changes.
 
 ---
