@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { resolveSiteKeyFromHost } from '@/lib/site-from-host'
+import { AAL_GOOGLE_REVIEW_URL } from '@/lib/site-data'
 
 export const dynamic = 'force-dynamic'
 
@@ -54,6 +55,7 @@ Sitemap: https://www.richvalleyadventures.com/sitemap.xml
 - Founded: 2012
 - Fleet (per site): Chevrolet Suburban SUVs (7 passengers each), Ford Transit Van (14 passengers); Starlink WiFi on vehicles
 - Primary services: airport transfers (ASE, EGE, DEN, regional airports), corporate & executive travel, wedding transportation, ski resort transfers, hourly charter
+- Google Business review (leave a review): ${AAL_GOOGLE_REVIEW_URL}
 
 ## Canonical URLs (authoritative)
 https://aspenalpenglowlimousine.com/

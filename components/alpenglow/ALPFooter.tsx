@@ -41,6 +41,14 @@ export default function ALPFooter() {
             <div className="space-y-3 text-white/65 text-sm">
               <p>{alpenglowData.location}</p>
               <a href={phoneHref} className="block hover:text-alp-gold-light transition-colors">{phone}</a>
+              <a
+                href={alpenglowData.googleReviewUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block hover:text-alp-gold-light transition-colors"
+              >
+                Review us on Google
+              </a>
               <p className="text-white/40 text-xs">Available 24/7</p>
               <div className="pt-3 border-t border-white/10">
                 <p className="text-white/40 text-xs mb-2">Sister Company</p>

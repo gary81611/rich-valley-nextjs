@@ -128,6 +128,7 @@ const localBusinessSchema = {
   sameAs: [
     'https://www.facebook.com/aspenalpenglow',
     'https://www.instagram.com/aspenalpenglow',
+    alpenglowData.googleReviewUrl,
   ],
   contactPoint: {
     '@type': 'ContactPoint',

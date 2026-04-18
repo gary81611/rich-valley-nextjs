@@ -7,6 +7,9 @@ export const RVA_GOOGLE_PLACE_ID = 'ChIJkcn5KdQ7QIcR50T745YsSmg'
 export const RVA_GOOGLE_REVIEW_URL = 'https://g.page/r/CedE--OWLEpoEAE/review'
 export const RVA_GOOGLE_MAPS_PLACE_URL = `https://www.google.com/maps?place_id=${encodeURIComponent(RVA_GOOGLE_PLACE_ID)}`
 
+/** Google Business Profile — Aspen Alpenglow Limousine (review CTA + schema). */
+export const AAL_GOOGLE_REVIEW_URL = 'https://g.page/r/CS88SVJVK_0KEBM/review'
+
 export const rvaData = {
   name: 'Rich Valley Adventures',
   tagline: 'Discover the Heart of Aspen',
@@ -35,6 +38,7 @@ export const alpenglowData = {
   phone: PHONE, phoneHref: PHONE_HREF, location: LOCATION,
   /** Limo Anywhere embed lives here; primary “book” CTAs should point to this path. */
   onlineReservationsPath: '/reservations',
+  googleReviewUrl: AAL_GOOGLE_REVIEW_URL,
   logo: '/images/logos/alpenglow-logo.png',
   email: 'kit@richvalleyadventures.com',
   social: {
