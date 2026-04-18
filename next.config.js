@@ -18,7 +18,7 @@ function rvaRedirects() {
       { source: '/mountain-biking', destination: '/adventures/mountain-biking', permanent: true, has: h },
       // Legacy indexed patterns → canonical /service-areas/[slug]
       { source: '/areas/:path*', destination: '/service-areas/:path*', permanent: true, has: h },
-      { source: '/service-areas-locations/:path*', destination: '/service-areas/:path*', permanent: true, has: h },
+      // `/service-areas-locations/*` → single-hop 301 to final URLs in middleware (avoid /service-areas/*-co chains).
       { source: '/service-areas/aspen-co', destination: '/service-areas/aspen', permanent: true, has: h },
       { source: '/service-areas/basalt-co', destination: '/service-areas/basalt', permanent: true, has: h },
       { source: '/service-areas/snowmass-village-co', destination: '/service-areas/snowmass-village', permanent: true, has: h },
@@ -32,16 +32,11 @@ function rvaRedirects() {
         permanent: true,
         has: h,
       },
-      { source: '/fleet-v3', destination: 'https://aspenalpenglowlimousine.com/fleet', permanent: true, has: h },
-      { source: '/booking', destination: '/contact', permanent: true, has: h },
-      { source: '/booking/', destination: '/contact', permanent: true, has: h },
+      // `/booking`, `/fleet-v3`, `/adventure-booking`, `/outdoor-adventures`, `/contact-us`, `/privacy-policy`:
+      // single-hop 301 in middleware (runs before rewrite; avoids chains).
       // Legacy CMS / old marketing URLs (GSC 404 cleanup)
       { source: '/home', destination: '/', permanent: true, has: h },
       { source: '/home/', destination: '/', permanent: true, has: h },
-      { source: '/adventure-booking', destination: '/contact', permanent: true, has: h },
-      { source: '/outdoor-adventures', destination: '/', permanent: true, has: h },
-      { source: '/contact-us', destination: '/contact', permanent: true, has: h },
-      { source: '/privacy-policy', destination: '/privacy', permanent: true, has: h },
     )
   }
   return list

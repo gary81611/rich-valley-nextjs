@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
-import { normalizeRvaLegacyPath } from '@/lib/seo/legacy-routes'
+import { resolveRvaLegacySingleHop } from '@/lib/seo/legacy-routes'
 
 const RVA_HOSTS = new Set(['www.richvalleyadventures.com', 'richvalleyadventures.com'])
 const AAL_HOSTS = new Set(['www.aspenalpenglowlimousine.com', 'aspenalpenglowlimousine.com'])
@@ -18,16 +18,98 @@ function toSafeRedirectPath(path: string): string {
   return query ? `${normalized}?${query}` : normalized
 }
 
+function applyRvaSeoRedirect(baseUrl: string, pathname: string, search: string): NextResponse | null {
+  const hop = resolveRvaLegacySingleHop(pathname, search)
+  if (!hop) return null
+  if (hop.kind === 'external') {
+    return NextResponse.redirect(hop.url, 301)
+  }
+  return NextResponse.redirect(new URL(hop.path, baseUrl), 301)
+}
+
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone()
   const pathname = url.pathname
+  const search = url.search
 
-  // Guard legacy homepage aliases so /home and /home/ always collapse to /.
+  if (
+    pathname.startsWith('/api') ||
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/images') ||
+    pathname.includes('.')
+  ) {
+    return NextResponse.next()
+  }
+
+  const hostname = (request.headers.get('host') || '').trim().toLowerCase().split(':')[0]
+  const isRvaHost = RVA_HOSTS.has(hostname)
+  const isAalHost = AAL_HOSTS.has(hostname)
+
   if (pathname === '/home' || pathname === '/home/') {
     return NextResponse.redirect(new URL('/', request.url), 301)
   }
 
-  // Refresh Supabase session on every request (only if configured)
+  /** `/rva` and `/rva/*` → public path in one hop (including nested legacy URLs). */
+  if (isRvaHost && (pathname === '/rva' || pathname === '/rva/' || pathname.startsWith('/rva/'))) {
+    const dest =
+      pathname === '/rva' || pathname === '/rva/' ? '/' : toSafeRedirectPath(pathname.slice(4) || '/')
+    const [destPathPart, destQuery] = dest.split('?', 2)
+    const raw = destPathPart || '/'
+    const pathOnly = raw.length > 1 && raw.endsWith('/') ? raw.slice(0, -1) : raw
+    const mergedSearch = destQuery != null ? `?${destQuery}` : search
+    const nested = applyRvaSeoRedirect(request.url, pathOnly, mergedSearch)
+    if (nested) return nested
+    return NextResponse.redirect(new URL(pathOnly + mergedSearch, request.url), 301)
+  }
+
+  /** AAL host: drop `/alpenglow` prefix in one hop (trim trailing slash on destination). */
+  if (isAalHost && (pathname === '/alpenglow' || pathname === '/alpenglow/' || pathname.startsWith('/alpenglow/'))) {
+    const rawDest =
+      pathname === '/alpenglow' || pathname === '/alpenglow/'
+        ? '/'
+        : toSafeRedirectPath(pathname.slice('/alpenglow'.length) || '/')
+    const [dp, dq] = rawDest.split('?', 2)
+    let pathPart = dp || '/'
+    if (pathPart.length > 1 && pathPart.endsWith('/')) {
+      pathPart = pathPart.slice(0, -1)
+    }
+    const qs = dq != null ? `?${dq}` : search
+    return NextResponse.redirect(new URL(pathPart + qs, request.url), 301)
+  }
+
+  /** Canonical: no trailing slash (except `/`). */
+  if (pathname.length > 1 && pathname.endsWith('/')) {
+    const out = request.nextUrl.clone()
+    out.pathname = pathname.replace(/\/+$/, '') || '/'
+    return NextResponse.redirect(out, 301)
+  }
+
+  /** RVA: legacy paths that must 301 before `/rva` rewrite (single hop). */
+  if (isRvaHost) {
+    const direct = applyRvaSeoRedirect(request.url, pathname, search)
+    if (direct) return direct
+  }
+
+  let site: 'rva' | 'alpenglow' = 'rva'
+  if (isAalHost) {
+    site = 'alpenglow'
+  } else if (isRvaHost) {
+    site = 'rva'
+  }
+
+  const locationSlugToServiceArea: Record<string, string> = {
+    snowmass: 'snowmass-village',
+  }
+  const locationsMergedToServiceAreas = new Set(['aspen', 'basalt', 'carbondale', 'snowmass', 'glenwood-springs'])
+
+  if (site === 'rva' && pathname.startsWith('/locations/')) {
+    const slug = pathname.slice('/locations/'.length).split('/')[0]
+    if (slug && locationsMergedToServiceAreas.has(slug)) {
+      const target = locationSlugToServiceArea[slug] || slug
+      return NextResponse.redirect(new URL(`/service-areas/${target}`, request.url), 301)
+    }
+  }
+
   let response = NextResponse.next({
     request: { headers: request.headers },
   })
@@ -43,14 +125,12 @@ export async function middleware(request: NextRequest) {
             return request.cookies.getAll()
           },
           setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value }) =>
-              request.cookies.set(name, value)
-            )
+            cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
             response = NextResponse.next({
               request: { headers: request.headers },
             })
             cookiesToSet.forEach(({ name, value, options }) =>
-              response.cookies.set(name, value, options)
+              response.cookies.set(name, value, options),
             )
           },
         },
@@ -61,72 +141,12 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (pathname.startsWith('/api') || pathname.startsWith('/_next') || pathname.startsWith('/images') || pathname.includes('.')) {
-    return response
-  }
-
-  // Skip admin routes — let them pass through
   if (pathname.startsWith('/admin')) {
     return response
   }
 
-  // Skip shared routes — terms, privacy (these are not brand-specific)
   if (pathname === '/terms' || pathname === '/privacy') {
     return response
-  }
-
-  const hostname = (request.headers.get('host') || '').trim().toLowerCase().split(':')[0]
-  let site: 'rva' | 'alpenglow' = 'rva'
-
-  if (AAL_HOSTS.has(hostname)) {
-    site = 'alpenglow'
-  } else if (RVA_HOSTS.has(hostname)) {
-    site = 'rva'
-  }
-
-  /** Indexed legacy URLs used /rva/* — strip prefix so canonical paths are /… (see next.config.js). */
-  if (site === 'rva' && (pathname === '/rva' || pathname === '/rva/' || pathname.startsWith('/rva/'))) {
-    const dest = pathname === '/rva' || pathname === '/rva/' ? '/' : toSafeRedirectPath(pathname.slice(4) || '/')
-    return NextResponse.redirect(new URL(dest, request.url), 301)
-  }
-
-  /** Canonical public URLs on AAL host do not include /alpenglow prefix. */
-  if (site === 'alpenglow' && (pathname === '/alpenglow' || pathname === '/alpenglow/' || pathname.startsWith('/alpenglow/'))) {
-    const dest =
-      pathname === '/alpenglow' || pathname === '/alpenglow/'
-        ? '/'
-        : toSafeRedirectPath(pathname.slice('/alpenglow'.length) || '/')
-    return NextResponse.redirect(new URL(dest, request.url), 301)
-  }
-
-  /** Valley location guides that overlap service-area landings — canonical is /service-areas/[slug]. */
-  const locationSlugToServiceArea: Record<string, string> = {
-    snowmass: 'snowmass-village',
-  }
-  const locationsMergedToServiceAreas = new Set(['aspen', 'basalt', 'carbondale', 'snowmass', 'glenwood-springs'])
-
-  if (site === 'rva' && pathname.startsWith('/locations/')) {
-    const slug = pathname.slice('/locations/'.length).split('/')[0]
-    if (slug && locationsMergedToServiceAreas.has(slug)) {
-      const target = locationSlugToServiceArea[slug] || slug
-      return NextResponse.redirect(new URL(`/service-areas/${target}`, request.url), 301)
-    }
-  }
-
-  // 301 redirects for stale RVA URLs (see also next.config.js redirects)
-  if (site === 'rva') {
-    if (pathname === '/adventures' || pathname.startsWith('/adventures/')) {
-      const normalized = toSafeRedirectPath(normalizeRvaLegacyPath(pathname))
-      if (normalized !== pathname) {
-        return NextResponse.redirect(new URL(normalized, request.url), 301)
-      }
-    }
-    if (pathname === '/winter-offerings') {
-      return NextResponse.redirect(new URL('/winter', request.url), 301)
-    }
-    if (pathname === '/horseback-riding') {
-      return NextResponse.redirect(new URL('/', request.url), 301)
-    }
   }
 
   const siteParam = url.searchParams.get('site')
