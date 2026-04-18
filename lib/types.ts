@@ -173,6 +173,8 @@ export interface BlogPost {
   status: 'draft' | 'scheduled' | 'published'
   scheduled_for: string | null
   published_at: string | null
+  /** When true with status=draft, RVA blog post URL redirects to /blog index. */
+  seo_bulk_demoted?: boolean
   created_at: string
   updated_at: string
 }

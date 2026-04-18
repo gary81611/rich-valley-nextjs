@@ -119,6 +119,28 @@ export default function ServicePageTemplate({ site, title, content, relatedLinks
         </section>
       )}
 
+      {rva && relatedLinks && relatedLinks.length > 0 && (
+        <section className="py-14 px-6 bg-rva-cream border-y border-rva-cream-dark">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="font-playfair text-2xl md:text-3xl font-bold mb-6 text-rva-forest">
+              Planning guides &amp; local intel
+            </h2>
+            <ul className="space-y-3">
+              {relatedLinks.map((l) => (
+                <li key={l.href}>
+                  <Link
+                    href={l.href}
+                    className="text-rva-copper font-medium hover:text-rva-forest underline-offset-2 hover:underline"
+                  >
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
       {!rva && relatedLinks && relatedLinks.length > 0 && (
         <section className="py-14 px-6 bg-alp-pearl border-y border-alp-pearl-dark">
           <div className="max-w-3xl mx-auto">

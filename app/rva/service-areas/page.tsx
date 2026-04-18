@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { rvaData } from '@/lib/site-data'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { RVA_GLOBAL_PILLAR_BLOG_LINKS } from '@/lib/rva-blog-pillars'
 
 export const dynamic = 'force-dynamic'
 
@@ -57,6 +58,32 @@ export default async function ServiceAreasPage() {
             {rvaData.name} operates throughout the Roaring Fork Valley and beyond.
             From Aspen to Denver, the mountains are our backyard.
           </p>
+        </div>
+      </section>
+
+      <section className="py-10 bg-white border-b border-rva-cream-dark">
+        <div className="max-w-4xl mx-auto px-6 text-center text-sm text-rva-forest/85">
+          <p className="font-playfair text-lg font-bold text-rva-forest mb-3">Trip planning guides</p>
+          <p className="leading-relaxed mb-4">
+            Fly fishing, hiking, and family summer trips — start here, then{' '}
+            <Link href="/adventures" className="text-rva-copper font-medium hover:underline">
+              browse adventures
+            </Link>{' '}
+            or{' '}
+            <Link href="/contact" className="text-rva-copper font-medium hover:underline">
+              contact us to book
+            </Link>
+            .
+          </p>
+          <ul className="space-y-2 text-left max-w-xl mx-auto">
+            {RVA_GLOBAL_PILLAR_BLOG_LINKS.map((l) => (
+              <li key={l.href}>
+                <Link href={l.href} className="text-rva-copper font-medium hover:underline">
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
 
   const { data, error } = await supabase
     .from('blog_posts')
-    .update({ status: 'published', published_at: now })
+    .update({ status: 'published', published_at: now, seo_bulk_demoted: false })
     .eq('status', 'scheduled')
     .lte('scheduled_for', now)
     .select('id, site_key, slug, title')

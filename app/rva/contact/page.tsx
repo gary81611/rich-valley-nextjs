@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { PHONE, PHONE_HREF, LOCATION } from '@/lib/site-data'
 import InquiryForm from '@/components/shared/InquiryForm'
+import { RVA_GLOBAL_PILLAR_BLOG_LINKS } from '@/lib/rva-blog-pillars'
 
 export const metadata: Metadata = {
   title: 'Contact Rich Valley Adventures | Book Your Aspen Adventure',
@@ -79,6 +80,34 @@ export default function ContactPage() {
                   {PHONE}
                 </a>
                 <p className="text-gray-500 text-sm mt-2">Available 7 days a week, 7am - 8pm MT</p>
+              </div>
+
+              {/* Planning guides */}
+              <div className="bg-white rounded-2xl p-8 shadow-sm">
+                <h3 className="font-playfair text-xl text-rva-forest font-semibold mb-4">
+                  Planning guides
+                </h3>
+                <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+                  Fly fishing, hiking, and family summer ideas in Aspen &amp; the Roaring Fork Valley.
+                </p>
+                <ul className="space-y-2 text-sm">
+                  {RVA_GLOBAL_PILLAR_BLOG_LINKS.map((l) => (
+                    <li key={l.href}>
+                      <Link href={l.href} className="text-rva-copper font-medium hover:underline">
+                        {l.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-gray-500 text-xs mt-4">
+                  <Link href="/adventures" className="text-rva-copper hover:underline font-medium">
+                    Browse adventures
+                  </Link>
+                  {' · '}
+                  <Link href="/service-areas" className="text-rva-copper hover:underline font-medium">
+                    Service areas
+                  </Link>
+                </p>
               </div>
 
               {/* Location */}

@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
 
     const supabase = await createServerSupabaseClient()
 
+    const st = status || 'draft'
     const payload: Record<string, unknown> = {
       site_key,
       slug,
@@ -32,9 +33,10 @@ export async function POST(request: NextRequest) {
       content: content || null,
       internal_links: internal_links || [],
       faqs: faqs || [],
-      status: status || 'draft',
-      scheduled_for: status === 'scheduled' ? scheduled_for : null,
-      published_at: status === 'published' ? new Date().toISOString() : null,
+      status: st,
+      scheduled_for: st === 'scheduled' ? scheduled_for : null,
+      published_at: st === 'published' ? new Date().toISOString() : null,
+      ...(st === 'published' ? { seo_bulk_demoted: false } : {}),
     }
 
     const { data, error } = await supabase

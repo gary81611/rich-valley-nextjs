@@ -4,6 +4,7 @@ import {
   flyFishingPageTitle,
   flyFishingServiceContent,
 } from '@/lib/rva-fly-fishing-content'
+import { rvaServicePageRelatedBlogLinks } from '@/lib/rva-blog-pillars'
 
 const pageUrl = 'https://www.richvalleyadventures.com/fly-fishing'
 
@@ -175,7 +176,12 @@ export default function FlyFishingPage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       ))}
-      <ServicePageTemplate site="rva" title={flyFishingPageTitle} content={content} />
+      <ServicePageTemplate
+        site="rva"
+        title={flyFishingPageTitle}
+        content={content}
+        relatedLinks={rvaServicePageRelatedBlogLinks('fly-fishing')}
+      />
     </>
   )
 }

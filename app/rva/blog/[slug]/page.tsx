@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { canonicalUrl } from '@/lib/seo/canonical'
 import { normalizeRvaLegacyPath } from '@/lib/seo/legacy-routes'
+import { mergeRvaBlogSidebarLinks } from '@/lib/rva-blog-pillars'
+import { rvaBlogSlugShouldRedirectToBlogIndex } from '@/lib/rva-blog-seo-redirect'
 import type { BlogPost } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
@@ -29,6 +31,9 @@ async function getPost(slug: string): Promise<BlogPost | null> {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
+  if (await rvaBlogSlugShouldRedirectToBlogIndex(slug)) {
+    permanentRedirect('/blog')
+  }
   const post = await getPost(slug)
   if (!post) return { title: 'Post Not Found | Rich Valley Adventures' }
 
@@ -116,8 +121,13 @@ function renderMarkdown(content: string): React.ReactNode {
 
 export default async function RVABlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
+  if (await rvaBlogSlugShouldRedirectToBlogIndex(slug)) {
+    permanentRedirect('/blog')
+  }
   const post = await getPost(slug)
   if (!post) notFound()
+
+  const sidebarLinks = mergeRvaBlogSidebarLinks(post.slug, post.internal_links ?? [])
 
   const articleUrl = canonicalUrl('rva', `/blog/${post.slug}`)
   const publisherLogoUrl = 'https://www.richvalleyadventures.com/images/logos/rva-logo.png'
@@ -257,12 +267,12 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
 
           {/* Sidebar */}
           <aside className="space-y-6">
-            {/* Internal links — Related Resources */}
-            {post.internal_links.length > 0 && (
+            {/* Internal links — Related Resources (+ pillar deep links) */}
+            {sidebarLinks.length > 0 && (
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-rva-cream-dark">
                 <h3 className="font-playfair text-lg font-bold text-rva-forest mb-4">Related Resources</h3>
                 <ul className="space-y-2">
-                  {post.internal_links.map((link, i) => (
+                  {sidebarLinks.map((link, i) => (
                     <li key={i}>
                       <Link
                         href={normalizeRvaLegacyPath(link.url)}
@@ -286,12 +296,20 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
                 Expert-guided adventures in Aspen since 2012. Small groups, all gear included.
               </p>
               <p className="text-rva-copper-light font-semibold text-lg mb-4">970-456-3666</p>
-              <Link
-                href="/"
-                className="block text-center px-4 py-2.5 bg-rva-copper text-white text-sm font-semibold rounded-xl hover:bg-rva-copper-light transition-colors"
-              >
-                View All Adventures
-              </Link>
+              <div className="flex flex-col gap-2">
+                <Link
+                  href="/adventures"
+                  className="block text-center px-4 py-2.5 bg-rva-copper text-white text-sm font-semibold rounded-xl hover:bg-rva-copper-light transition-colors"
+                >
+                  Browse guided adventures
+                </Link>
+                <Link
+                  href="/contact"
+                  className="block text-center px-4 py-2.5 bg-white/10 text-white text-sm font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/20"
+                >
+                  Contact us to book
+                </Link>
+              </div>
             </div>
           </aside>
         </div>

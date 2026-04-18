@@ -7,6 +7,7 @@ import ServicePageTemplate from '@/components/templates/ServicePageTemplate'
 import LocationPageTemplate from '@/components/templates/LocationPageTemplate'
 import FaqPageTemplate from '@/components/templates/FaqPageTemplate'
 import LandingPageTemplate from '@/components/templates/LandingPageTemplate'
+import { rvaServicePageRelatedBlogLinks } from '@/lib/rva-blog-pillars'
 
 export const revalidate = 30
 
@@ -158,7 +159,12 @@ export default async function CmsPage({ params }: Props) {
       ))}
 
       {page.template_type === 'service' && (
-        <ServicePageTemplate site="rva" title={page.title} content={page.content as ServiceContent} />
+        <ServicePageTemplate
+          site="rva"
+          title={page.title}
+          content={page.content as ServiceContent}
+          relatedLinks={rvaServicePageRelatedBlogLinks(slugStr)}
+        />
       )}
       {page.template_type === 'location' && (
         <LocationPageTemplate site="rva" title={page.title} content={page.content as LocationContent} />

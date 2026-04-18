@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
 import type { Adventure } from '@/lib/types'
 import { isBookableAdventureName, slugFromAdventureName } from '@/lib/rva-adventure-filters'
+import { RVA_GLOBAL_PILLAR_BLOG_LINKS } from '@/lib/rva-blog-pillars'
 
 type Season = 'all' | 'summer' | 'winter' | 'year-round'
 
@@ -99,6 +100,30 @@ export default function AdventuresPage() {
             Seven ways to experience the Roaring Fork Valley — each one expertly guided, fully
             equipped, and unforgettable.
           </p>
+        </div>
+      </section>
+
+      <section className="py-6 bg-white border-b border-rva-cream-dark">
+        <div className="max-w-4xl mx-auto px-6 text-center text-sm text-rva-forest/85">
+          <span className="font-semibold text-rva-forest">Planning guides: </span>
+          {RVA_GLOBAL_PILLAR_BLOG_LINKS.map((l, i) => (
+            <span key={l.href}>
+              {i > 0 ? ' · ' : null}
+              <Link href={l.href} className="text-rva-copper font-medium hover:underline">
+                {i === 0 ? 'Fly fishing' : i === 1 ? 'Hiking' : 'Families'}
+              </Link>
+            </span>
+          ))}
+          <span className="hidden sm:inline">
+            {' · '}
+            <Link href="/service-areas" className="text-rva-copper font-medium hover:underline">
+              Where we guide
+            </Link>
+            {' · '}
+            <Link href="/contact" className="text-rva-copper font-medium hover:underline">
+              Book
+            </Link>
+          </span>
         </div>
       </section>
 

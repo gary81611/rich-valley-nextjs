@@ -6,6 +6,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { createClient } from '@supabase/supabase-js'
 import { parseBlogMarkdownFile, splitMarkdownBodyAndFaqs } from '../lib/parse-blog-markdown'
+import { isRvaPillarBlogSlug } from '../lib/rva-blog-pillars'
 
 const ROOT = path.join(__dirname, '..')
 
@@ -65,6 +66,9 @@ async function seed() {
         ? publishedAtFromDate(meta.updated)
         : published_at
 
+      const rvaPillar = site_key === 'rva' && isRvaPillarBlogSlug(slug)
+      const rvaDemotedSeed = site_key === 'rva' && !rvaPillar
+
       const row = {
         site_key,
         slug,
@@ -74,9 +78,10 @@ async function seed() {
         content,
         internal_links: [] as { text: string; url: string }[],
         faqs: parsedFaqs,
-        status: 'published' as const,
-        published_at,
+        status: rvaDemotedSeed ? ('draft' as const) : ('published' as const),
+        published_at: rvaDemotedSeed ? null : published_at,
         updated_at,
+        seo_bulk_demoted: rvaDemotedSeed,
       }
 
       const { error } = await supabase.from('blog_posts').upsert(row, {

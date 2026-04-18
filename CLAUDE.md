@@ -1,6 +1,6 @@
 # CLAUDE.md — Rich Valley Next.js
 
-**Doc revision:** 2026-04-14
+**Doc revision:** 2026-04-17
 
 ## Stack
 
@@ -20,6 +20,7 @@ Do not edit without explicit human instruction:
 - **`/sitemap.xml`** — `next.config.js` rewrites to **`app/api/sitemap/route.ts`**. Brand is chosen from the `Host` header via **`lib/site-from-host.ts`** (align with `middleware.ts` host heuristics). Server prefers **`SUPABASE_SERVICE_ROLE_KEY`**, then anon key; all DB queries must keep **`.eq('site_key'|site_id', siteKey)`**. Responses set **`X-Sitemap-Mode: dynamic`** or **`fallback`** (errors / missing env → static URL list only). **Do not add `app/sitemap.ts`** without revisiting rewrites and GSC.
 - **`/robots.txt`** — Rewritten to **`app/api/robots/route.ts`**. Keep body in sync with **`public/robots.txt`** (see `.cursor/rules/robots-txt-sync.mdc`).
 - **`middleware.ts`** — Brand detection, `/rva` prefix redirect, internal rewrites to `/{site}/…`, Supabase session refresh.
+- **RVA blog bulk demotion** — `blog_posts.seo_bulk_demoted` (with `status = 'draft'`) marks URLs that **`app/rva/blog/[slug]/page.tsx`** permanently redirects to **`/blog`** via **`lib/rva-blog-seo-redirect.ts`** (service role). Pillar slugs live in **`lib/rva-blog-pillars.ts`**. Publishing via **`app/api/blog/save`** or **`app/api/blog/publish-scheduled`** clears the flag.
 
 ## Critical files registry (extend when adding SEO/auth-critical code)
 
@@ -29,6 +30,7 @@ Do not edit without explicit human instruction:
 - `app/api/sitemap/route.ts`
 - `app/api/robots/route.ts`
 - `public/robots.txt`
+- `lib/rva-blog-pillars.ts`, `lib/rva-blog-seo-redirect.ts` — RVA pillar posts + demoted-draft redirects
 
 ## Environment variables (names only)
 

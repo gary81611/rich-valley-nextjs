@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { RVA_GLOBAL_PILLAR_BLOG_LINKS } from '@/lib/rva-blog-pillars'
 import type { BlogPost } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
@@ -69,6 +70,37 @@ export default async function RVABlogPage() {
         </div>
       </div>
 
+      {/* Money pages + pillar cross-links */}
+      <section className="py-8 bg-white border-b border-rva-cream-dark">
+        <div className="max-w-4xl mx-auto px-6 text-center text-sm text-rva-forest/85 leading-relaxed">
+          <p className="mb-3">
+            <span className="font-semibold text-rva-forest">Book &amp; plan: </span>
+            <Link href="/adventures" className="text-rva-copper hover:underline font-medium">
+              Guided adventures
+            </Link>
+            {' · '}
+            <Link href="/contact" className="text-rva-copper hover:underline font-medium">
+              Contact &amp; booking
+            </Link>
+            {' · '}
+            <Link href="/service-areas" className="text-rva-copper hover:underline font-medium">
+              Service areas
+            </Link>
+          </p>
+          <p>
+            <span className="font-semibold text-rva-forest">Deep dives: </span>
+            {RVA_GLOBAL_PILLAR_BLOG_LINKS.map((l, i) => (
+              <span key={l.href}>
+                {i > 0 ? ' · ' : null}
+                <Link href={l.href} className="text-rva-copper hover:underline font-medium">
+                  {l.label}
+                </Link>
+              </span>
+            ))}
+          </p>
+        </div>
+      </section>
+
       {/* Posts grid */}
       <main className="max-w-5xl mx-auto px-6 py-16">
         {posts.length === 0 ? (
@@ -116,12 +148,20 @@ export default async function RVABlogPage() {
             Book a guided fly fishing, hiking, or biking experience with Rich Valley Adventures.
             Small groups, expert guides, all gear included.
           </p>
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-rva-copper text-white font-semibold rounded-full hover:bg-rva-copper-light transition-colors"
-          >
-            View All Adventures
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/adventures"
+              className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-rva-copper text-white font-semibold rounded-full hover:bg-rva-copper-light transition-colors"
+            >
+              Browse adventures
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-white/10 text-white font-semibold rounded-full border border-white/30 hover:bg-white/20 transition-colors"
+            >
+              Contact us
+            </Link>
+          </div>
         </div>
       </div>
     </div>
