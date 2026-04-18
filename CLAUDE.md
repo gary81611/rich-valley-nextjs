@@ -13,7 +13,7 @@
 Do not edit without explicit human instruction:
 
 - `.env`, `.env*.local` — secrets; agents must not read or write
-- `DESIGN.md`, `RVS_AAL_Brand.MD` — design and content authority (human-owned)
+- `DESIGN.md`, `RVA_AAL_Brand.MD` — design and content authority (human-owned)
 
 ## SEO / request-aware public routes
 

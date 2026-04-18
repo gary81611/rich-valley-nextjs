@@ -1,6 +1,6 @@
 # Rich Valley Adventures & Aspen Alpenglow Limousine — brand authority
 
-**File:** `RVS_AAL_Brand.MD` (repository root)
+**File:** `RVA_AAL_Brand.MD` (repository root)
 
 **Source:** Website review research (April 2026), synthesized from richvalleyadventures.com and aspenalpenglowlimousine.com.  
 **Owner:** Kit McLendon (public contact: kit@richvalleyadventures.com). Update this file when positioning, audience, or SEO/AEO strategy changes.  
