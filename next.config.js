@@ -88,6 +88,16 @@ function rvaApexToWww() {
   }
 }
 
+/** Canonical host for AAL: redirect www -> apex permanently. */
+function aalWwwToApex() {
+  return {
+    source: '/:path*',
+    destination: 'https://aspenalpenglowlimousine.com/:path*',
+    permanent: true,
+    has: [{ type: 'host', value: 'www.aspenalpenglowlimousine.com' }],
+  }
+}
+
 function supabaseProjectHost() {
   const u = process.env.NEXT_PUBLIC_SUPABASE_URL
   if (!u || typeof u !== 'string' || !u.startsWith('http')) return null
@@ -113,7 +123,7 @@ const nextConfig = {
     remotePatterns: imageRemotePatterns,
   },
   async redirects() {
-    return [rvaApexToWww(), ...rvaRedirects(), ...aalRedirects()]
+    return [rvaApexToWww(), aalWwwToApex(), ...rvaRedirects(), ...aalRedirects()]
   },
   async rewrites() {
     return {

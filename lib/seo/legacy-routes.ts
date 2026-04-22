@@ -66,7 +66,6 @@ export function normalizeRvaLegacyPath(url: string): string {
   const [path, query] = url.split('?', 2)
   const suffix = query != null ? `?${query}` : ''
 
-  if (path === '/adventures') return `/${suffix}`
   if (!path.startsWith('/adventures/')) return url
 
   const rest = path.slice('/adventures/'.length)
