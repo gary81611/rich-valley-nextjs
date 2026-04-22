@@ -136,6 +136,12 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
     post.meta_description ||
     (post.content ? post.content.replace(/\s+/g, ' ').trim().slice(0, 200) : '') ||
     post.title
+  const sanitizedFaqs = (post.faqs ?? [])
+    .map((f) => ({
+      question: typeof f.question === 'string' ? f.question.trim() : '',
+      answer: typeof f.answer === 'string' ? f.answer.trim() : '',
+    }))
+    .filter((f) => f.question.length > 0 && f.answer.length > 0)
 
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -176,11 +182,11 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
     },
   }
 
-  const faqSchema = post.faqs.length > 0
+  const faqSchema = sanitizedFaqs.length > 0
     ? {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
-        mainEntity: post.faqs.map(f => ({
+        mainEntity: sanitizedFaqs.map(f => ({
           '@type': 'Question',
           name: f.question,
           acceptedAnswer: { '@type': 'Answer', text: f.answer },
@@ -243,13 +249,13 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
             {post.content ? renderMarkdown(post.content) : <p className="text-slate-400">Content coming soon.</p>}
 
             {/* FAQs inline in article */}
-            {post.faqs.length > 0 && (
+            {sanitizedFaqs.length > 0 && (
               <div className="mt-12 pt-8 border-t border-rva-cream-dark">
                 <h2 className="font-playfair text-2xl font-bold text-rva-forest mb-6">
                   Frequently Asked Questions
                 </h2>
                 <div className="space-y-4">
-                  {post.faqs.map((faq, i) => (
+                  {sanitizedFaqs.map((faq, i) => (
                     <details key={i} className="group bg-rva-cream rounded-xl p-5">
                       <summary className="flex items-center justify-between cursor-pointer font-semibold text-rva-forest list-none">
                         <span>{faq.question}</span>

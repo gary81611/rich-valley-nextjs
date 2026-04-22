@@ -26,6 +26,13 @@ function rvaRedirects() {
       // Missing city pages route to the service areas index.
       { source: '/service-areas/rifle-co', destination: '/service-areas', permanent: true, has: h },
       { source: '/service-areas/denver-co', destination: '/service-areas', permanent: true, has: h },
+      // Legacy blog slug consolidated to current canonical post.
+      {
+        source: '/blog/best-fly-fishing-guide-aspen-rich-valley-adventures',
+        destination: '/blog/fly-fishing-aspen-roaring-fork-valley',
+        permanent: true,
+        has: h,
+      },
       {
         source: '/fleet',
         destination: 'https://aspenalpenglowlimousine.com/fleet',
@@ -47,12 +54,26 @@ function aalRedirects() {
   const list = []
   for (const host of aalHosts) {
     const h = [{ type: 'host', value: host }]
-    list.push({
-      source: '/services/airport-transfers',
-      destination: '/airport-transfers',
-      permanent: true,
-      has: h,
-    })
+    list.push(
+      {
+        source: '/services/airport-transfers',
+        destination: '/airport-transfers',
+        permanent: true,
+        has: h,
+      },
+      {
+        source: '/wedding-transportation',
+        destination: '/weddings',
+        permanent: true,
+        has: h,
+      },
+      {
+        source: '/corporate-events',
+        destination: '/corporate',
+        permanent: true,
+        has: h,
+      },
+    )
   }
   return list
 }

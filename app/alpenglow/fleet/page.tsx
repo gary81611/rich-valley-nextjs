@@ -173,6 +173,20 @@ export default function FleetPage() {
               Or call 970-456-3666
             </a>
           </p>
+          <p className="mt-4 text-sm text-alp-pearl/75">
+            Planning a specific trip?{' '}
+            <Link href="/weddings" className="text-alp-gold hover:text-alp-gold-light font-semibold">
+              Wedding transportation
+            </Link>{' '}
+            ·{' '}
+            <Link href="/corporate" className="text-alp-gold hover:text-alp-gold-light font-semibold">
+              Corporate transportation
+            </Link>{' '}
+            ·{' '}
+            <Link href="/airport-transfers" className="text-alp-gold hover:text-alp-gold-light font-semibold">
+              Airport transfers
+            </Link>
+          </p>
         </div>
       </section>
     </div>

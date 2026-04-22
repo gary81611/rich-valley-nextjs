@@ -19,15 +19,15 @@ const sections = [
     body: `Aspen Alpenglow Limousine offers all-inclusive, door-to-door private car service from ASE, EGE, DEN, KAPA (Centennial), KRIL (Rifle), and GJT (Grand Junction). We monitor flights in real time, meet you at arrivals with a warm greeting, and include thirty minutes of complimentary wait time on airport pickups so you are never rushed after baggage claim. Whether you are landing after a long haul or connecting from a regional flight, your chauffeur handles luggage and navigation while you relax. Service is available twenty-four hours a day, every day of the year — early Aspen departures and late-night Denver arrivals are our specialty.`,
   },
   {
-    id: 'corporate-events',
+    id: 'corporate',
     title: 'Corporate & Executive Travel',
-    href: '/corporate-events',
+    href: '/corporate',
     body: `Discreet, professional transportation for business travelers, corporate retreats, and executive transfers across Aspen and Snowmass. We understand confidentiality, tight schedules, and the need for a calm cabin between meetings. Corporate billing is available for approved accounts, and every driver is an experienced mountain operator — not a generic city driver guessing at snow-packed passes. All vehicles are equipped with Starlink WiFi so you can stay productive between venues, hotels, and the airport.`,
   },
   {
-    id: 'wedding-transportation',
+    id: 'weddings',
     title: 'Wedding Transportation',
-    href: '/wedding-transportation',
+    href: '/weddings',
     body: `Your wedding day deserves transportation that is punctual, elegant, and invisible when it needs to be. We coordinate bridal party transfers, venue shuttles, and guest movement throughout Aspen and Snowmass so nobody is stranded at the wrong property. Our team has extensive experience with premier venues including The Little Nell, Hotel Jerome, Aspen Meadows, Limelight, and Snowmass base-area properties. Both our Chevrolet Suburban SUVs and Ford Transit Van are available depending on group size — the Transit comfortably moves parties up to fourteen with room for gowns, flowers, and celebration gear.`,
   },
   {

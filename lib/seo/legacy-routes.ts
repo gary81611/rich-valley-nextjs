@@ -33,7 +33,7 @@ export function resolveRvaLegacySingleHop(pathname: string, search: string): Rva
   const legacy: Record<string, string> = {
     '/booking': '/contact',
     '/winter-offerings': '/winter',
-    '/outdoor-adventures': '/',
+    '/outdoor-adventures': '/adventures',
     '/adventure-booking': '/contact',
     '/contact-us': '/contact',
     '/privacy-policy': '/privacy',
