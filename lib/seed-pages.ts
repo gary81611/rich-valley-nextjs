@@ -452,7 +452,7 @@ const aalPages: PageSeed[] = [
   },
   {
     site_id: 'alpenglow',
-    slug: 'wedding-transportation',
+    slug: 'weddings',
     title: 'Wedding Transportation in Aspen, Colorado',
     meta_title: 'Wedding Limo Service Aspen CO | Bridal Transportation | Aspen Alpenglow',
     meta_description: 'Luxury wedding transportation in Aspen, Colorado. Bridal party transfers, venue shuttles, and wedding day coordination with the Roaring Fork Valley\'s premier limo service.',
@@ -495,7 +495,7 @@ const aalPages: PageSeed[] = [
   },
   {
     site_id: 'alpenglow',
-    slug: 'corporate-events',
+    slug: 'corporate',
     title: 'Corporate Event Transportation in Aspen',
     meta_title: 'Corporate Transportation Aspen CO | Executive Limo Service | Aspen Alpenglow',
     meta_description: 'Professional corporate transportation in Aspen, Colorado. Executive airport transfers, team event shuttles, board meeting transport, and corporate retreat logistics.',
@@ -909,8 +909,8 @@ export async function seedPages(supabase: SupabaseClient, options?: { sync?: boo
       { site_id: 'alpenglow', label: 'Services', href: '/services', position: 0, parent_id: null, is_visible: true },
       { site_id: 'alpenglow', label: 'Airport Transfers', href: '/airport-transfers', position: 1, parent_id: null, is_visible: true },
       { site_id: 'alpenglow', label: 'Ski Resort Transfers', href: '/ski-resort-transfers', position: 2, parent_id: null, is_visible: true },
-      { site_id: 'alpenglow', label: 'Wedding Transportation', href: '/wedding-transportation', position: 3, parent_id: null, is_visible: true },
-      { site_id: 'alpenglow', label: 'Corporate Events', href: '/corporate-events', position: 4, parent_id: null, is_visible: true },
+      { site_id: 'alpenglow', label: 'Wedding Transportation', href: '/weddings', position: 3, parent_id: null, is_visible: true },
+      { site_id: 'alpenglow', label: 'Corporate Transportation', href: '/corporate', position: 4, parent_id: null, is_visible: true },
       { site_id: 'alpenglow', label: 'Night Out', href: '/night-out', position: 5, parent_id: null, is_visible: true },
       { site_id: 'alpenglow', label: 'Wine Tours', href: '/wine-tours', position: 6, parent_id: null, is_visible: true },
       { site_id: 'alpenglow', label: 'Fleet', href: '/fleet', position: 7, parent_id: null, is_visible: true },

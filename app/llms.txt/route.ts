@@ -66,8 +66,8 @@ https://aspenalpenglowlimousine.com/fleet
 https://aspenalpenglowlimousine.com/reservations
 https://aspenalpenglowlimousine.com/contact
 https://aspenalpenglowlimousine.com/airport-transfers
-https://aspenalpenglowlimousine.com/corporate-events
-https://aspenalpenglowlimousine.com/wedding-transportation
+https://aspenalpenglowlimousine.com/corporate
+https://aspenalpenglowlimousine.com/weddings
 https://aspenalpenglowlimousine.com/wine-tours
 https://aspenalpenglowlimousine.com/night-out
 https://aspenalpenglowlimousine.com/services/ski-resort-transfers
@@ -78,6 +78,10 @@ https://aspenalpenglowlimousine.com/blog
 
 ## Machine-readable index
 Sitemap: https://aspenalpenglowlimousine.com/sitemap.xml
+
+## Legacy / non-authoritative (redirected; do not quote as current offerings)
+/corporate-events
+/wedding-transportation
 `
 
   const text = isAlpenglow ? aalText : rvaText

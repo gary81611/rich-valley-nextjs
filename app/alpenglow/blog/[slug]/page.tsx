@@ -123,7 +123,7 @@ const AAL_BLOG_RELATED: Record<string, { text: string; url: string }[]> = {
     { text: 'Ski resort & mountain shuttles', url: '/services/ski-resort-transfers' },
   ],
   'corporate-retreat-transportation-aspen': [
-    { text: 'Corporate & executive transportation', url: '/corporate-events' },
+    { text: 'Corporate & executive transportation', url: '/corporate' },
     { text: 'Fleet — Suburbans & 14-passenger van', url: '/fleet' },
     { text: 'Request a group quote', url: '/contact' },
   ],

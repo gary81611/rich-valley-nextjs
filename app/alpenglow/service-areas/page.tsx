@@ -8,6 +8,7 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Service Areas | Aspen Alpenglow Limousine',
   description: 'Aspen Alpenglow Limousine proudly serves the entire Roaring Fork Valley and beyond — from Aspen to Denver.',
+  alternates: { canonical: 'https://aspenalpenglowlimousine.com/service-areas' },
 }
 
 type ServiceArea = {

@@ -21,11 +21,16 @@ const RESERVED_SINGLE_SEGMENTS = new Set([
 
 const CANONICAL_CMS_SERVICE_SLUGS = new Set([
   'airport-transfers',
-  'corporate-events',
-  'wedding-transportation',
+  'corporate',
+  'weddings',
   'night-out',
   'wine-tours',
 ])
+
+const LEGACY_TO_CANONICAL_SLUG: Record<string, string> = {
+  'corporate-events': 'corporate',
+  'wedding-transportation': 'weddings',
+}
 
 export function normalizeAalServiceNavHref(href: string): string {
   const u = href.trim()
@@ -44,6 +49,7 @@ export function normalizeAalServiceNavHref(href: string): string {
   const seg = segments[0]
   if (!seg || RESERVED_SINGLE_SEGMENTS.has(seg)) return href
 
+  if (LEGACY_TO_CANONICAL_SLUG[seg]) return `/${LEGACY_TO_CANONICAL_SLUG[seg]}`
   if (CANONICAL_CMS_SERVICE_SLUGS.has(seg)) return `/${seg}`
 
   return `/services/${seg}`
