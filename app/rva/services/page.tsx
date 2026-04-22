@@ -6,8 +6,9 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Services | Rich Valley Adventures',
-  description: 'Guided outdoor adventures and luxury transportation in Aspen and the Roaring Fork Valley. Fly fishing, hiking, mountain biking, scenic tours, and more from Rich Valley Adventures.',
+  title: 'Guided Adventure Trips in Aspen, Colorado | Rich Valley Adventures',
+  description:
+    'Browse all guided outdoor experiences — fly fishing, hiking, rafting, paddle boarding, and glamping — offered by Rich Valley Adventures in the Aspen area.',
   alternates: {
     canonical: 'https://www.richvalleyadventures.com/services',
   },

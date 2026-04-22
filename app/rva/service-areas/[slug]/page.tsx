@@ -41,6 +41,15 @@ async function getLocationForServiceAreaSlug(pathSlug: string) {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
+  if (slug === 'aspen') {
+    return {
+      title: 'Guided Outdoor Adventures in Aspen, CO | Rich Valley Adventures',
+      description:
+        'Book guided fly fishing, hiking, paddleboarding, and elevated camping in Aspen, CO. Local expert guides, small groups. Reserve your Aspen adventure today.',
+      alternates: { canonical: `${BASE}/service-areas/aspen` },
+      robots: { index: true, follow: true },
+    }
+  }
   const area = await getArea(slug)
   if (area) {
     const desc = (area.description || area.long_description || '')
