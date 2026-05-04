@@ -14,3 +14,12 @@ export function normalizePath(path: string): string {
 export function canonicalUrl(site: SeoSiteKey, path: string): string {
   return `${siteOrigin(site)}${normalizePath(path)}`
 }
+
+/** Absolute URL for OG / JSON-LD when DB may store site-relative paths. */
+export function absolutePublicImageUrl(site: SeoSiteKey, url: string | null | undefined): string | undefined {
+  const u = typeof url === 'string' ? url.trim() : ''
+  if (!u) return undefined
+  if (u.startsWith('https://') || u.startsWith('http://')) return u
+  const path = u.startsWith('/') ? u : `/${u}`
+  return `${siteOrigin(site)}${path}`
+}

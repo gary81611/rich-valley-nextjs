@@ -167,6 +167,8 @@ export interface BlogPost {
   title: string
   meta_title: string | null
   meta_description: string | null
+  /** Cover image for blog index cards, article hero, and social previews */
+  featured_image_url?: string | null
   content: string | null
   internal_links: { text: string; url: string }[]
   faqs: { question: string; answer: string }[]

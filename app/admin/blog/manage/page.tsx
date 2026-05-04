@@ -1,9 +1,11 @@
 'use client'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, FormEvent } from 'react'
 import { createClient } from '@/lib/supabase'
 import type { BlogPost } from '@/lib/types'
 import Toast from '@/components/admin/Toast'
 import DeleteConfirmDialog from '@/components/admin/DeleteConfirmDialog'
+import AdminFormModal from '@/components/admin/AdminFormModal'
+import FormField from '@/components/admin/FormField'
 
 const STATUS_LABELS: Record<BlogPost['status'], string> = {
   draft: 'Draft',
@@ -30,6 +32,9 @@ export default function BlogManagePage() {
   const [deleteItem, setDeleteItem] = useState<BlogPost | null>(null)
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
   const [togglingId, setTogglingId] = useState<string | null>(null)
+  const [coverEditPost, setCoverEditPost] = useState<BlogPost | null>(null)
+  const [coverImageUrl, setCoverImageUrl] = useState('')
+  const [coverSaving, setCoverSaving] = useState(false)
 
   const supabase = createClient()
 
@@ -74,6 +79,7 @@ export default function BlogManagePage() {
       .update({
         status: newStatus,
         published_at: newStatus === 'published' ? new Date().toISOString() : null,
+        ...(newStatus === 'published' ? { seo_bulk_demoted: false } : {}),
       })
       .eq('id', post.id)
 
@@ -91,6 +97,34 @@ export default function BlogManagePage() {
       ? `https://richvalleyadventures.com/blog/${post.slug}`
       : `https://aspenalpenglowlimousine.com/blog/${post.slug}`
 
+  const openCoverEdit = (post: BlogPost) => {
+    setCoverEditPost(post)
+    setCoverImageUrl(post.featured_image_url?.trim() || '')
+  }
+
+  const handleCoverSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    if (!coverEditPost) return
+    setCoverSaving(true)
+    const trimmed = coverImageUrl.trim()
+    const { error } = await supabase
+      .from('blog_posts')
+      .update({ featured_image_url: trimmed || null })
+      .eq('id', coverEditPost.id)
+    setCoverSaving(false)
+    if (error) {
+      setToast({ message: error.message, type: 'error' })
+      return
+    }
+    setToast({ message: 'Cover photo updated.', type: 'success' })
+    setCoverEditPost(null)
+    fetchPosts()
+  }
+
+  const updateCoverField = (name: string, value: string | number | boolean) => {
+    if (name === 'featured_image_url') setCoverImageUrl(typeof value === 'string' ? value : String(value))
+  }
+
   return (
     <div>
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
@@ -100,6 +134,25 @@ export default function BlogManagePage() {
         onCancel={() => setDeleteItem(null)}
         itemName={deleteItem ? `"${deleteItem.title}"` : 'this post'}
       />
+
+      <AdminFormModal
+        isOpen={!!coverEditPost}
+        title={coverEditPost ? `Cover photo — ${coverEditPost.title}` : 'Cover photo'}
+        onSubmit={handleCoverSubmit}
+        onClose={() => setCoverEditPost(null)}
+        loading={coverSaving}
+      >
+        {coverEditPost && (
+          <FormField
+            label="Cover photo URL"
+            name="featured_image_url"
+            value={coverImageUrl}
+            onChange={updateCoverField}
+            help="Upload or paste an image URL. Clear the field to remove the cover image."
+            uploadFolder={`blog/${coverEditPost.site_key}`}
+          />
+        )}
+      </AdminFormModal>
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
@@ -189,6 +242,16 @@ export default function BlogManagePage() {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-2">
+                        <button
+                          type="button"
+                          onClick={() => openCoverEdit(post)}
+                          className="p-1.5 text-slate-400 hover:text-violet-600 transition-colors"
+                          title="Cover photo"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                        </button>
                         {/* View link (published only) */}
                         {post.status === 'published' && (
                           <a

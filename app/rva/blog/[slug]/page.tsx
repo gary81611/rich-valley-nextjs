@@ -1,11 +1,13 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound, permanentRedirect } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
-import { canonicalUrl } from '@/lib/seo/canonical'
+import { absolutePublicImageUrl, canonicalUrl } from '@/lib/seo/canonical'
 import { normalizeRvaLegacyPath } from '@/lib/seo/legacy-routes'
 import { mergeRvaBlogSidebarLinks } from '@/lib/rva-blog-pillars'
 import { rvaBlogSlugShouldRedirectToBlogIndex } from '@/lib/rva-blog-seo-redirect'
+import { seoAlt } from '@/lib/seo/alt-text'
 import type { BlogPost } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
@@ -37,6 +39,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = await getPost(slug)
   if (!post) return { title: 'Post Not Found | Rich Valley Adventures' }
 
+  const ogImage = absolutePublicImageUrl('rva', post.featured_image_url)
+
   return {
     title: post.meta_title || post.title,
     description: post.meta_description || undefined,
@@ -46,7 +50,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       type: 'article',
       url: canonicalUrl('rva', `/blog/${post.slug}`),
       publishedTime: post.published_at || undefined,
+      ...(ogImage ? { images: [{ url: ogImage }] } : {}),
     },
+    ...(ogImage
+      ? { twitter: { card: 'summary_large_image' as const, images: [ogImage] } }
+      : {}),
     alternates: { canonical: canonicalUrl('rva', `/blog/${post.slug}`) },
   }
 }
@@ -129,9 +137,12 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
 
   const sidebarLinks = mergeRvaBlogSidebarLinks(post.slug, post.internal_links ?? [])
 
+  const coverImageAbsolute = absolutePublicImageUrl('rva', post.featured_image_url)
+
   const articleUrl = canonicalUrl('rva', `/blog/${post.slug}`)
   const publisherLogoUrl = 'https://www.richvalleyadventures.com/images/logos/rva-logo.png'
   const defaultArticleImage = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80'
+  const heroImageUrl = coverImageAbsolute || defaultArticleImage
   const description =
     post.meta_description ||
     (post.content ? post.content.replace(/\s+/g, ' ').trim().slice(0, 200) : '') ||
@@ -150,7 +161,7 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
     description,
     image: {
       '@type': 'ImageObject',
-      url: defaultArticleImage,
+      url: heroImageUrl,
       width: 1200,
       height: 630,
     },
@@ -237,6 +248,23 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
             </svg>
             Rich Valley Adventures
           </div>
+          {coverImageAbsolute && (
+            <div className="relative mt-10 max-w-4xl mx-auto aspect-[2/1] rounded-xl overflow-hidden shadow-xl border border-white/10">
+              <Image
+                src={coverImageAbsolute}
+                alt={seoAlt({
+                  subject: post.title,
+                  location: 'Aspen and Roaring Fork Valley',
+                  context: 'blog article',
+                  brand: 'Rich Valley Adventures',
+                })}
+                fill
+                className="object-cover"
+                sizes="(max-width: 896px) 100vw, 896px"
+                priority
+              />
+            </div>
+          )}
         </div>
       </div>
 

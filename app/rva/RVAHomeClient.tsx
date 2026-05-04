@@ -21,7 +21,13 @@ export default function RVAHomeClient() {
     { value: '3,000+', label: 'Adventures Led' },
     { value: '4.9', label: 'Average Rating' },
   ])
-  const [fishingReport, setFishingReport] = useState<{ title: string; date: string; author: string; preview: string } | null>(null)
+  const [fishingReport, setFishingReport] = useState<{
+    title: string
+    date: string
+    author: string
+    preview: string
+    imageUrl: string | null
+  } | null>(null)
   const [conditionsPreview, setConditionsPreview] = useState<{ teaser: string; author?: string; date?: string } | null>(null)
   const [conditionsPreviewReady, setConditionsPreviewReady] = useState(false)
 
@@ -43,7 +49,13 @@ export default function RVAHomeClient() {
         supabase.from('testimonials').select('*').eq('is_active', true).eq('site_key', 'rva'),
         supabase.from('gallery_images').select('*').eq('is_active', true).eq('site_key', 'rva').order('display_order'),
         supabase.from('site_settings').select('phone, settings').eq('site_key', 'rva').single(),
-        supabase.from('fishing_reports').select('title, date, content, guides(name)').eq('is_published', true).order('date', { ascending: false }).limit(1).single(),
+        supabase
+          .from('fishing_reports')
+          .select('title, published_at, created_at, content, featured_image_url, guides(name)')
+          .eq('is_published', true)
+          .order('published_at', { ascending: false })
+          .limit(1)
+          .single(),
       ])
       if (advRes.data && advRes.data.length > 0) {
         setAdventures(
@@ -84,6 +96,7 @@ export default function RVAHomeClient() {
           date: r.published_at || r.created_at,
           author: guideName || 'Staff',
           preview: r.content?.length > 200 ? r.content.slice(0, 200) + '...' : r.content || '',
+          imageUrl: typeof r.featured_image_url === 'string' && r.featured_image_url.trim() ? r.featured_image_url.trim() : null,
         })
       }
     }
@@ -303,6 +316,22 @@ export default function RVAHomeClient() {
           </ScrollReveal>
           <ScrollReveal delay={100}>
             <div className="bg-white rounded-2xl p-8 md:p-10 shadow-sm border border-rva-cream-dark">
+              {fishingReport.imageUrl && (
+                <div className="relative w-full aspect-[21/9] rounded-xl overflow-hidden mb-6 bg-rva-cream-dark">
+                  <Image
+                    src={fishingReport.imageUrl}
+                    alt={seoAlt({
+                      subject: fishingReport.title,
+                      location: 'Roaring Fork Valley, Colorado',
+                      context: 'weekly fishing conditions',
+                      brand: 'Rich Valley Adventures',
+                    })}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 42rem"
+                  />
+                </div>
+              )}
               <h3 className="font-playfair text-2xl text-rva-forest font-semibold mb-2">{fishingReport.title}</h3>
               <p className="text-rva-copper text-sm mb-4">
                 {new Date(fishingReport.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} · {fishingReport.author}

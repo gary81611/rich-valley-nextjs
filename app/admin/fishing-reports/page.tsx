@@ -26,6 +26,7 @@ interface FishingReport {
   water_clarity: string
   is_published: boolean
   published_at: string | null
+  featured_image_url?: string | null
   guides?: { name: string }
 }
 
@@ -39,6 +40,7 @@ const emptyReport: Omit<FishingReport, 'id' | 'created_at' | 'updated_at' | 'gui
   water_clarity: '',
   is_published: false,
   published_at: null,
+  featured_image_url: '',
 }
 
 export default function FishingReportsPage() {
@@ -78,6 +80,7 @@ export default function FishingReportsPage() {
       water_clarity: item.water_clarity,
       is_published: item.is_published,
       published_at: item.published_at,
+      featured_image_url: item.featured_image_url ?? '',
     })
     setModalOpen(true)
   }
@@ -169,6 +172,15 @@ export default function FishingReportsPage() {
         <FormField label="Hatch Info" name="hatch_info" type="textarea" value={form.hatch_info} onChange={updateForm} help="Current hatch activity and insect observations." preview="Report detail page" />
         <FormField label="Fly Recommendations" name="fly_recommendations" type="textarea" value={form.fly_recommendations} onChange={updateForm} help="Recommended fly patterns for current conditions." preview="Report detail page" />
         <FormField label="Water Clarity" name="water_clarity" value={form.water_clarity} onChange={updateForm} help="Current water clarity (e.g. 'Clear', 'Slightly stained', 'Off-color')." preview="Report detail page" />
+        <FormField
+          label="Photo"
+          name="featured_image_url"
+          value={form.featured_image_url ?? ''}
+          onChange={updateForm}
+          help="Optional image for the homepage fishing strip and conditions context."
+          preview="RVA homepage + conditions"
+          uploadFolder="fishing-reports"
+        />
         <FormField label="Published" name="is_published" type="checkbox" value={form.is_published} onChange={updateForm} help="Publish to the public site. Published date is auto-set when toggled on." />
       </AdminFormModal>
 

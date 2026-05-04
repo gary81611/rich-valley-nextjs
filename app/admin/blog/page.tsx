@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { useBrand } from '../contexts/BrandContext'
 import { createClient } from '@/lib/supabase'
+import FormField from '@/components/admin/FormField'
 
 interface BlogOutput {
   metaTitle: string
@@ -215,6 +216,7 @@ export default function BlogGeneratorPage() {
   const [publishMessage, setPublishMessage] = useState('')
   const [showScheduleForm, setShowScheduleForm] = useState(false)
   const [scheduledFor, setScheduledFor] = useState('')
+  const [featuredImageUrl, setFeaturedImageUrl] = useState('')
 
   // FAQ selection state
   const [selectedFaqIndexes, setSelectedFaqIndexes] = useState<Set<number>>(new Set())
@@ -240,6 +242,7 @@ export default function BlogGeneratorPage() {
     setScheduledFor('')
     setSelectedFaqIndexes(new Set())
     setFaqMessage('')
+    setFeaturedImageUrl('')
   }
 
   /** Custom text overrides preset keyword whenever it has non-whitespace content. */
@@ -308,6 +311,7 @@ export default function BlogGeneratorPage() {
           title: output.metaTitle,
           meta_title: output.metaTitle,
           meta_description: output.metaDescription,
+          featured_image_url: featuredImageUrl.trim() || null,
           content: output.content,
           internal_links: parsedLinks,
           faqs: parsedFaqs,
@@ -684,6 +688,16 @@ export default function BlogGeneratorPage() {
               {/* ── PUBLISH SECTION ── */}
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
                 <h3 className="text-sm font-semibold text-slate-900 mb-4">Publish to Blog</h3>
+
+                <FormField
+                  label="Cover photo"
+                  name="featured_image_url"
+                  value={featuredImageUrl}
+                  onChange={(_, v) => setFeaturedImageUrl(typeof v === 'string' ? v : String(v))}
+                  help="Optional hero image for the blog index, post header, and social previews. Upload or paste a URL."
+                  preview="Blog listing + post + Open Graph"
+                  uploadFolder={`blog/${selectedBrand}`}
+                />
 
                 {/* Slug editor */}
                 <div className="mb-4">

@@ -41,9 +41,9 @@ export async function GET() {
 
     const { data: fr } = await supabase
       .from('fishing_reports')
-      .select('title, content, date, published_at, guides(name)')
+      .select('title, content, published_at, created_at, featured_image_url, guides(name)')
       .eq('is_published', true)
-      .order('date', { ascending: false })
+      .order('published_at', { ascending: false })
       .limit(1)
       .maybeSingle()
 
@@ -53,11 +53,16 @@ export async function GET() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const g = (fr as any).guides
       const authorName = Array.isArray(g) ? g[0]?.name : g?.name
+      const img =
+        typeof fr.featured_image_url === 'string' && fr.featured_image_url.trim()
+          ? fr.featured_image_url.trim()
+          : undefined
       return NextResponse.json({
         report: {
           teaser: teaser || fr.title,
           author: authorName || undefined,
-          date: fr.published_at || fr.date,
+          date: fr.published_at || fr.created_at,
+          imageUrl: img,
         },
       })
     }

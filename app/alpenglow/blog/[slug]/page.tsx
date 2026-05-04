@@ -1,7 +1,10 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { absolutePublicImageUrl } from '@/lib/seo/canonical'
+import { seoAlt } from '@/lib/seo/alt-text'
 import type { BlogPost } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
@@ -31,6 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!post) return { title: 'Post Not Found | Aspen Alpenglow Limousine' }
 
   const canonical = `https://aspenalpenglowlimousine.com/blog/${post.slug}`
+  const ogImage = absolutePublicImageUrl('alpenglow', post.featured_image_url)
 
   return {
     title: post.meta_title || post.title,
@@ -42,7 +46,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       url: canonical,
       publishedTime: post.published_at || undefined,
       modifiedTime: post.updated_at || undefined,
+      ...(ogImage ? { images: [{ url: ogImage }] } : {}),
     },
+    ...(ogImage
+      ? { twitter: { card: 'summary_large_image' as const, images: [ogImage] } }
+      : {}),
     alternates: { canonical },
   }
 }
@@ -162,6 +170,8 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
   const relatedLinks = mergeRelatedLinks(post.slug, post.internal_links)
 
   const defaultArticleImage = 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1200&q=80'
+  const coverImageAbsolute = absolutePublicImageUrl('alpenglow', post.featured_image_url)
+  const schemaImageUrl = coverImageAbsolute || defaultArticleImage
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -169,7 +179,7 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
     description: post.meta_description || undefined,
     image: {
       '@type': 'ImageObject',
-      url: defaultArticleImage,
+      url: schemaImageUrl,
       width: 1200,
       height: 630,
     },
@@ -276,6 +286,23 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
             </svg>
             Aspen Alpenglow Limousine
           </div>
+          {coverImageAbsolute && (
+            <div className="relative mt-10 max-w-4xl mx-auto aspect-[2/1] rounded-xl overflow-hidden shadow-xl border border-white/10">
+              <Image
+                src={coverImageAbsolute}
+                alt={seoAlt({
+                  subject: post.title,
+                  location: 'Aspen, Colorado',
+                  context: 'travel and transportation blog',
+                  brand: 'Aspen Alpenglow Limousine',
+                })}
+                fill
+                className="object-cover"
+                sizes="(max-width: 896px) 100vw, 896px"
+                priority
+              />
+            </div>
+          )}
         </div>
       </div>
 

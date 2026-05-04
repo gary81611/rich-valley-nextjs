@@ -10,6 +10,7 @@ export async function POST(request: NextRequest) {
       title,
       meta_title,
       meta_description,
+      featured_image_url,
       content,
       internal_links,
       faqs,
@@ -30,6 +31,10 @@ export async function POST(request: NextRequest) {
       title,
       meta_title: meta_title || null,
       meta_description: meta_description || null,
+      featured_image_url:
+        typeof featured_image_url === 'string' && featured_image_url.trim()
+          ? featured_image_url.trim()
+          : null,
       content: content || null,
       internal_links: internal_links || [],
       faqs: faqs || [],

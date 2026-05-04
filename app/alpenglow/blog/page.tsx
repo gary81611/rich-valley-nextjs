@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { absolutePublicImageUrl } from '@/lib/seo/canonical'
+import { seoAlt } from '@/lib/seo/alt-text'
 import type { BlogPost } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
@@ -76,9 +79,27 @@ export default async function AlpenglowBlogPage() {
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map((post) => (
+            {posts.map((post) => {
+              const cardImg = absolutePublicImageUrl('alpenglow', post.featured_image_url)
+              return (
               <article key={post.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-alp-pearl-dark hover:shadow-md transition-shadow group">
                 <Link href={`/blog/${post.slug}`}>
+                  {cardImg && (
+                    <div className="relative aspect-[16/10] w-full bg-alp-pearl-dark">
+                      <Image
+                        src={cardImg}
+                        alt={seoAlt({
+                          subject: post.title,
+                          location: 'Aspen, Colorado',
+                          context: 'travel blog',
+                          brand: 'Aspen Alpenglow Limousine',
+                        })}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 360px"
+                      />
+                    </div>
+                  )}
                   <div className="p-6">
                     <div className="text-xs text-alp-gold font-semibold uppercase tracking-wide mb-2">
                       {post.published_at
@@ -102,7 +123,8 @@ export default async function AlpenglowBlogPage() {
                   </div>
                 </Link>
               </article>
-            ))}
+              )
+            })}
           </div>
         )}
       </main>
