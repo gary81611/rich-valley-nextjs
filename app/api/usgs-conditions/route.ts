@@ -1,5 +1,11 @@
 import { NextResponse } from 'next/server'
 
+// Without this, Next.js statically caches the GET response at build time and
+// the "live" flow rates never update. USGS publishes new instantaneous values
+// roughly every 15 minutes, so we still keep a short in-memory cache.
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 const SITES = '09073300,09073400,09076300,09081000,09085000,09075400'
 const SITE_NAMES: Record<string, string> = {
   '09073300': 'Roaring Fork above Difficult Creek (Aspen)',
@@ -10,9 +16,8 @@ const SITE_NAMES: Record<string, string> = {
   '09075400': 'Frying Pan River near Ruedi',
 }
 
-// Cache for 1 hour
 let cache: { data: any; timestamp: number } | null = null
-const CACHE_TTL = 60 * 60 * 1000
+const CACHE_TTL = 5 * 60 * 1000
 
 export async function GET() {
   if (cache && Date.now() - cache.timestamp < CACHE_TTL) {
@@ -21,7 +26,7 @@ export async function GET() {
 
   try {
     const url = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${SITES}&parameterCd=00060,00010&siteStatus=active`
-    const res = await fetch(url, { signal: AbortSignal.timeout(10000) })
+    const res = await fetch(url, { signal: AbortSignal.timeout(10000), cache: 'no-store' })
     if (!res.ok) throw new Error(`USGS API returned ${res.status}`)
 
     const json = await res.json()
