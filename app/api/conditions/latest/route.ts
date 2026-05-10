@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 
+// Default GET route handlers are statically cached at build time, which would
+// freeze the homepage "latest report" strip at whatever was published on the
+// last deploy. Force per-request execution so newly published reports show up.
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 function buildTeaser(row: {
   hatch_report?: string | null
   fly_recommendations?: string | null
