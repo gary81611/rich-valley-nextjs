@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     images: [ALP_OG_IMAGE],
   },
   verification: {
-    google: 'REPLACE_WITH_AAL_GSC_VERIFICATION_CODE',
+    google: 'xZU80Fp2QsHL03QMSVl-lqt1m8Mh6ZbY2yl8Gy1iXTc',
   },
   other: {
     'geo.region': 'US-CO',
