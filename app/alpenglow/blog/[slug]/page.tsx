@@ -232,10 +232,21 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
       }
     : null
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://aspenalpenglowlimousine.com' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://aspenalpenglowlimousine.com/blog' },
+      { '@type': 'ListItem', position: 3, name: post.title, item: `https://aspenalpenglowlimousine.com/blog/${post.slug}` },
+    ],
+  }
+
   return (
     <div className="min-h-screen bg-alp-pearl font-inter">
       {/* JSON-LD */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {faqSchema && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       )}
