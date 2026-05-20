@@ -23,6 +23,8 @@ export const rvaData = {
   social: {
     facebook: 'https://www.facebook.com/richvalleyadventures',
     instagram: 'https://www.instagram.com/richvalleyadventures',
+    // Kit's personal guide account — linked in the footer, not in business sameAs schema.
+    instagramGuide: 'https://www.instagram.com/kit_rvaspen',
   },
   partnerSite: {
     name: 'Aspen Alpenglow Limousine',
@@ -43,7 +45,7 @@ export const alpenglowData = {
   email: 'kit@richvalleyadventures.com',
   social: {
     facebook: 'https://www.facebook.com/aspenalpenglow',
-    instagram: 'https://www.instagram.com/aspenalpenglow',
+    instagram: 'https://www.instagram.com/aspenalpenglowlimo',
   },
   partnerSite: {
     name: 'Rich Valley Adventures',
