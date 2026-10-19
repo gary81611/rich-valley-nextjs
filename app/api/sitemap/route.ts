@@ -161,6 +161,7 @@ export async function GET(request: Request) {
     : [
         { url: `${RVA_ORIGIN}/`, lastModified, changeFrequency: 'weekly', priority: 1.0 },
         { url: `${RVA_ORIGIN}/fly-fishing`, lastModified, changeFrequency: 'weekly', priority: 0.95 },
+        { url: `${RVA_ORIGIN}/private-ranch-fishing`, lastModified, changeFrequency: 'weekly', priority: 0.95 },
         { url: `${RVA_ORIGIN}/hiking`, lastModified, changeFrequency: 'weekly', priority: 0.88 },
         { url: `${RVA_ORIGIN}/paddle-boarding`, lastModified, changeFrequency: 'weekly', priority: 0.88 },
         { url: `${RVA_ORIGIN}/conditions`, lastModified, changeFrequency: 'daily', priority: 0.9 },

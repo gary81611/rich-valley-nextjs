@@ -8,6 +8,13 @@ export const KIDS_FAMILY_FISHING =
 export const YEAR_ROUND_FISHING =
   'Guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady.'
 
+/** Append the ranch landing link when copy already names Spring Creek Ranch. */
+export function withPrivateRanchFishingLink(text: string, inline = false): string {
+  if (!text || !/spring creek ranch/i.test(text) || text.includes('/private-ranch-fishing')) return text
+  const link = '[Private ranch fishing at Spring Creek Ranch](/private-ranch-fishing)'
+  return inline ? `${text.trimEnd()} ${link}` : `${text.trimEnd()}\n\n${link}`
+}
+
 /** Append the alpine-springs fact where copy still frames fishing as a summer-only season. */
 export function withYearRoundFishingNote(text: string): string {
   if (!text || !/fish/i.test(text) || /alpine springs/i.test(text)) return text
@@ -64,6 +71,10 @@ The Frying Pan demands technical precision: long leaders, small flies, and delic
     {
       title: 'Private Ranch and Picnic — Spring Creek Ranch, Carbondale',
       content: `Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+). Includes ponds, creeks and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat and brook trout from 12 to 30 inches.`,
+      link: {
+        href: '/private-ranch-fishing',
+        label: 'Private ranch fishing at Spring Creek Ranch',
+      },
     },
     {
       title: 'Gunnison River — Big Water, Trophy Trout',

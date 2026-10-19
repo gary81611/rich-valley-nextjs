@@ -24,6 +24,7 @@ export function rvaPillarBlogExtraInternalLinks(slug: string): { text: string; u
 
   if (slug === 'fly-fishing-aspen-roaring-fork-valley') {
     return [
+      { text: 'Private ranch fishing at Spring Creek Ranch', url: '/private-ranch-fishing' },
       { text: 'Guided fly fishing trips', url: '/fly-fishing' },
       adventures,
       areas,
@@ -40,6 +41,7 @@ export function rvaPillarBlogExtraInternalLinks(slug: string): { text: string; u
   }
   return [
     { text: 'Paddleboard rental from $100', url: '/paddle-boarding' },
+    { text: 'Private ranch family fishing at Spring Creek Ranch', url: '/private-ranch-fishing' },
     { text: 'Guided fly fishing for families', url: '/fly-fishing' },
     adventures,
     areas,

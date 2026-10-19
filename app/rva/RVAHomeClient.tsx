@@ -19,7 +19,7 @@ const FEATURED_TRIPS = [
   },
   {
     title: 'Private ranch family fishing and picnic lunch',
-    href: '/fly-fishing',
+    href: '/private-ranch-fishing',
     detail:
       'Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+).',
   },
@@ -185,6 +185,41 @@ export default function RVAHomeClient() {
         </div>
       </section>
 
+      <section aria-label="Private ranch fishing" className="bg-rva-cream border-b border-rva-copper/20">
+        <div className="max-w-7xl mx-auto px-6 py-10 md:py-14 grid md:grid-cols-2 gap-8 items-center">
+          <div className="relative aspect-[16/10] rounded-2xl overflow-hidden shadow-lg">
+            <Image
+              src="/images/adventures/fishing-catch.jpeg"
+              alt={seoAlt({
+                subject: 'Angler with a trout',
+                location: 'Roaring Fork Valley, Colorado',
+                context: 'private ranch fly fishing at Spring Creek Ranch',
+                brand: 'Rich Valley Adventures',
+              })}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              unoptimized
+            />
+          </div>
+          <div>
+            <p className="font-cormorant text-rva-copper text-sm tracking-[0.25em] uppercase mb-3">Signature trip</p>
+            <h2 className="font-playfair text-3xl md:text-4xl text-rva-forest font-bold mb-4 leading-tight">
+              The original private ranch fishing experience in the valley
+            </h2>
+            <p className="text-rva-forest/80 text-base md:text-lg leading-relaxed mb-6">
+              Spring Creek Ranch in Carbondale is a famous historic ranch owned by the same family since the late 1800s. The private ranch and picnic package is from $800 per adult and $250 per child (ages 3+), on ponds, creeks, and a private section of the Roaring Fork River.
+            </p>
+            <Link
+              href="/private-ranch-fishing"
+              className="inline-flex items-center justify-center bg-rva-copper hover:bg-rva-copper-light text-white font-semibold px-6 py-3 rounded-full transition-colors"
+            >
+              Private ranch fishing
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Live conditions — informational strip above adventure cards */}
       <section className="bg-gradient-to-r from-rva-forest via-rva-forest-dark to-rva-forest border-y border-rva-copper/20" aria-label="Live river conditions">
         <div className="max-w-7xl mx-auto px-6 py-8 md:py-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
@@ -220,9 +255,14 @@ export default function RVAHomeClient() {
             <div className="mt-8 max-w-3xl mx-auto text-left bg-rva-cream text-rva-forest rounded-2xl p-6 md:p-8">
               <h3 className="font-playfair text-2xl md:text-3xl font-bold mb-3">Kids &amp; Family Fishing</h3>
               <p className="text-base md:text-lg leading-relaxed">{KIDS_FAMILY_FISHING}</p>
-              <Link href="/fly-fishing" className="mt-4 inline-flex text-rva-copper font-semibold hover:text-rva-copper-light">
-                Fly fishing trips
-              </Link>
+              <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+                <Link href="/fly-fishing" className="inline-flex text-rva-copper font-semibold hover:text-rva-copper-light">
+                  Fly fishing trips
+                </Link>
+                <Link href="/private-ranch-fishing" className="inline-flex text-rva-copper font-semibold hover:text-rva-copper-light">
+                  Private ranch fishing
+                </Link>
+              </div>
             </div>
             <ol className="mt-8 grid md:grid-cols-3 gap-6 text-left">
               {FEATURED_TRIPS.map((trip, index) => (

@@ -19,7 +19,7 @@ export interface ServiceContent {
   intro: string
   /** Optional reference list (e.g. guided hiking page) */
   popular_hikes?: PopularHike[]
-  h2_sections?: { title: string; content: string }[]
+  h2_sections?: { title: string; content: string; link?: { href: string; label: string } }[]
   features?: { title: string; description: string }[]
   faqs?: { question: string; answer: string }[]
   cta_phone?: string

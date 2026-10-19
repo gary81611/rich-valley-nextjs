@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import type { ServiceContent, SiteId } from '@/lib/pages'
 
@@ -7,19 +8,57 @@ interface Props {
   content: ServiceContent
   /** Optional contextual internal links (AAL SEO). */
   relatedLinks?: { href: string; label: string }[]
+  /** Existing public image. Omitted pages keep the text hero. */
+  heroImage?: string
+  heroImageAlt?: string
+  /** Booking form path, including a service query when the form can preselect it. */
+  bookingHref?: string
+  bookingLabel?: string
 }
 
 const isRva = (site: SiteId) => site === 'rva'
 
-export default function ServicePageTemplate({ site, title, content, relatedLinks }: Props) {
+export default function ServicePageTemplate({
+  site,
+  title,
+  content,
+  relatedLinks,
+  heroImage,
+  heroImageAlt,
+  bookingHref,
+  bookingLabel,
+}: Props) {
   const rva = isRva(site)
   const phone = content.cta_phone || (rva ? '(970) 456-3666' : '(970) 456-3666')
+  const linkClass = rva
+    ? 'text-rva-copper font-semibold hover:text-rva-forest'
+    : 'text-alp-gold font-semibold hover:text-alp-navy'
 
   return (
     <div className={rva ? 'font-inter text-rva-forest' : 'font-inter text-alp-navy'}>
       {/* Hero */}
-      <section className={`py-20 px-6 text-center ${rva ? 'bg-rva-forest text-rva-cream' : 'bg-alp-navy text-alp-pearl'}`}>
-        <div className="max-w-3xl mx-auto">
+      <section
+        className={`relative text-center ${
+          heroImage
+            ? 'min-h-[28rem] flex items-end text-rva-cream'
+            : `py-20 px-6 ${rva ? 'bg-rva-forest text-rva-cream' : 'bg-alp-navy text-alp-pearl'}`
+        }`}
+      >
+        {heroImage && (
+          <>
+            <Image
+              src={heroImage}
+              alt={heroImageAlt || title}
+              fill
+              priority
+              unoptimized
+              className="object-cover"
+              sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-rva-forest-dark/55 via-rva-forest-dark/45 to-rva-forest-dark/80" />
+          </>
+        )}
+        <div className={`max-w-3xl mx-auto ${heroImage ? 'relative z-10 px-6 py-20' : ''}`}>
           <h1 className="font-playfair text-4xl md:text-5xl font-bold mb-4 leading-tight">{title}</h1>
           {content.hero_subtitle && (
             <p className="text-lg md:text-xl opacity-80 mt-2">{content.hero_subtitle}</p>
@@ -113,6 +152,13 @@ export default function ServicePageTemplate({ site, title, content, relatedLinks
                 {s.content.split('\n\n').map((para, j) => (
                   <p key={j} className="text-base leading-relaxed mb-4 last:mb-0 opacity-85">{para}</p>
                 ))}
+                {s.link && (
+                  <p className="mt-4">
+                    <Link href={s.link.href} className={linkClass}>
+                      {s.link.label}
+                    </Link>
+                  </p>
+                )}
               </div>
             ))}
           </div>
@@ -188,16 +234,38 @@ export default function ServicePageTemplate({ site, title, content, relatedLinks
       <section className={`py-16 px-6 text-center ${rva ? 'bg-rva-copper text-white' : 'bg-alp-gold text-alp-navy-deep'}`}>
         <div className="max-w-xl mx-auto">
           <h2 className="font-playfair text-3xl font-bold mb-4">{content.cta_text || 'Ready to Book?'}</h2>
-          <p className="mb-8 opacity-90">Call us to check availability and reserve your spot.</p>
-          <a
-            href={`tel:${phone.replace(/\D/g, '')}`}
-            className={`inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 ${rva ? 'bg-white text-rva-forest' : 'bg-alp-navy text-white'}`}
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-            </svg>
-            {phone}
-          </a>
+          <p className="mb-8 opacity-90">
+            {bookingHref
+              ? 'Send a booking request, or call to check availability and reserve your spot.'
+              : 'Call us to check availability and reserve your spot.'}
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            {bookingHref && (
+              <Link
+                href={bookingHref}
+                className={`inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 ${rva ? 'bg-white text-rva-forest' : 'bg-alp-navy text-white'}`}
+              >
+                {bookingLabel || 'Book online'}
+              </Link>
+            )}
+            <a
+              href={`tel:${phone.replace(/\D/g, '')}`}
+              className={`inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 ${
+                bookingHref
+                  ? rva
+                    ? 'border-2 border-white text-white'
+                    : 'border-2 border-alp-navy text-alp-navy-deep'
+                  : rva
+                    ? 'bg-white text-rva-forest'
+                    : 'bg-alp-navy text-white'
+              }`}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+              {phone}
+            </a>
+          </div>
         </div>
       </section>
     </div>

@@ -38,6 +38,10 @@ const rvaPages: PageSeed[] = [
         {
           title: 'Private Ranch and Picnic — Spring Creek Ranch, Carbondale',
           content: `Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+). Includes ponds, creeks and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat and brook trout from 12 to 30 inches.`,
+          link: {
+            href: '/private-ranch-fishing',
+            label: 'Private ranch fishing at Spring Creek Ranch',
+          },
         },
       ],
       features: [

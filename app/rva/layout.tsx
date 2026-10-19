@@ -164,6 +164,19 @@ const localBusinessSchema = {
       },
       {
         '@type': 'Offer',
+        price: '800',
+        priceCurrency: 'USD',
+        url: 'https://www.richvalleyadventures.com/private-ranch-fishing',
+        itemOffered: {
+          '@type': 'TouristTrip',
+          name: 'Private Ranch Fishing at Spring Creek Ranch, Carbondale',
+          url: 'https://www.richvalleyadventures.com/private-ranch-fishing',
+          description:
+            'Private ranch and picnic package at Spring Creek Ranch, Carbondale, CO: from $800 per adult and $250 per child (ages 3+). Ponds, creeks, and a private section of the Roaring Fork River.',
+        },
+      },
+      {
+        '@type': 'Offer',
         itemOffered: {
           '@type': 'SportsActivityLocation',
           name: 'Paddleboard Rental — Aspen, CO',

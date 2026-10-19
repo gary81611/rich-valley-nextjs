@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 const RVA_SERVICES = [
   { id: 'fly-fishing', label: 'Fly Fishing', icon: '🎣' },
+  { id: 'private-ranch-fishing', label: 'Private Ranch Fishing', icon: '🎣' },
   { id: 'mountain-biking', label: 'Mountain Biking', icon: '🚵' },
   { id: 'hiking', label: 'Hiking & Backpacking', icon: '🥾' },
   { id: 'horseback', label: 'Horseback Riding', icon: '🐎' },
@@ -25,11 +26,15 @@ const GROUP_SIZES = ['1-2', '3-4', '5-6', '7+']
 
 interface Props {
   brand: 'rva' | 'alpenglow'
+  /** Matches a service id, for example private-ranch-fishing from /contact?service= */
+  initialServiceId?: string
 }
 
-export default function InquiryForm({ brand }: Props) {
-  const [step, setStep] = useState(1)
-  const [service, setService] = useState('')
+export default function InquiryForm({ brand, initialServiceId }: Props) {
+  const services = brand === 'rva' ? RVA_SERVICES : AAL_SERVICES
+  const preset = services.find((s) => s.id === initialServiceId)
+  const [step, setStep] = useState(preset ? 2 : 1)
+  const [service, setService] = useState(preset?.label ?? '')
   const [date, setDate] = useState('')
   const [groupSize, setGroupSize] = useState('')
   const [name, setName] = useState('')
@@ -38,7 +43,6 @@ export default function InquiryForm({ brand }: Props) {
   const [details, setDetails] = useState('')
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
 
-  const services = brand === 'rva' ? RVA_SERVICES : AAL_SERVICES
   const accent = brand === 'rva' ? 'bg-rva-copper hover:bg-rva-copper-light' : 'bg-alp-gold hover:bg-alp-gold-light'
   const accentText = brand === 'rva' ? 'text-rva-copper' : 'text-alp-gold'
   const accentBorder = brand === 'rva' ? 'border-rva-copper' : 'border-alp-gold'

@@ -9,7 +9,7 @@ import { mergeRvaBlogSidebarLinks } from '@/lib/rva-blog-pillars'
 import { rvaBlogSlugShouldRedirectToBlogIndex } from '@/lib/rva-blog-seo-redirect'
 import { seoAlt } from '@/lib/seo/alt-text'
 import type { BlogPost } from '@/lib/types'
-import { withYearRoundFishingNote } from '@/lib/rva-fly-fishing-content'
+import { withPrivateRanchFishingLink, withYearRoundFishingNote } from '@/lib/rva-fly-fishing-content'
 import { blogImageSrcForNext, isBlogPostPubliclyVisible } from '@/lib/blog-visibility'
 
 export const dynamic = 'force-dynamic'
@@ -151,6 +151,12 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
   if (!post) notFound()
 
   const sidebarLinks = mergeRvaBlogSidebarLinks(post.slug, post.internal_links ?? [])
+  const ranchMention = /spring creek ranch/i.test(
+    [post.content, ...(post.faqs ?? []).flatMap((f) => [f.question, f.answer])].filter(Boolean).join('\n'),
+  )
+  if (ranchMention && !sidebarLinks.some((l) => l.url.includes('/private-ranch-fishing'))) {
+    sidebarLinks.unshift({ text: 'Private ranch fishing at Spring Creek Ranch', url: '/private-ranch-fishing' })
+  }
 
   const coverImageAbsolute = absolutePublicImageUrl('rva', post.featured_image_url)
   const coverImageSrc = blogImageSrcForNext(post.featured_image_url)
@@ -163,11 +169,13 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
     post.meta_description ||
     (post.content ? post.content.replace(/\s+/g, ' ').trim().slice(0, 200) : '') ||
     post.title
-  const articleBody = post.content ? withYearRoundFishingNote(post.content) : ''
+  const articleBody = post.content
+    ? withPrivateRanchFishingLink(withYearRoundFishingNote(post.content))
+    : ''
   const sanitizedFaqs = (post.faqs ?? [])
     .map((f) => ({
       question: typeof f.question === 'string' ? f.question.trim() : '',
-      answer: typeof f.answer === 'string' ? withYearRoundFishingNote(f.answer.trim()) : '',
+      answer: typeof f.answer === 'string' ? withPrivateRanchFishingLink(withYearRoundFishingNote(f.answer.trim()), true) : '',
     }))
     .filter((f) => f.question.length > 0 && f.answer.length > 0)
 

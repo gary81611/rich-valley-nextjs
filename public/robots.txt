@@ -4,6 +4,7 @@ Allow: /llms.txt
 Allow: /conditions
 Allow: /guides
 Allow: /fly-fishing
+Allow: /private-ranch-fishing
 Allow: /hiking
 Allow: /adventures/mountain-biking
 Allow: /paddle-boarding

@@ -20,7 +20,7 @@ export async function GET(request: Request) {
 - Primary services: guided fly fishing, hiking, mountain biking, elevated camping, winter adventures, hunting-related experiences
 - Paddleboarding: rental from $100, not a guided trip
 - Full-day float trip: from $1,400 for 2 people (1 boat, 1 captain). Additional adults $375 each, kids $175. An 8-12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up.
-- Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+)
+- Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+). Page: https://www.richvalleyadventures.com/private-ranch-fishing
 - Kids & family fishing: kids ages 3 and up can fish. Waders are available for all children 3 and up, and adult sizes go up to size 15 feet. Kids on the full-day float are $175. At the Spring Creek Ranch private ranch and picnic, kids are $250 each (ages 3+). Guests and grandparents with limited mobility can be hosted at the ranch ponds.
 - Year-round fishing: guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady.
 - Featured trips, in order: (1) full-day float trip, (2) private ranch family fishing and picnic lunch, (3) group hiking (includes transportation and picnic lunch)
@@ -31,6 +31,7 @@ export async function GET(request: Request) {
 ## Canonical URLs (authoritative)
 https://www.richvalleyadventures.com/
 https://www.richvalleyadventures.com/fly-fishing
+https://www.richvalleyadventures.com/private-ranch-fishing
 https://www.richvalleyadventures.com/hiking
 https://www.richvalleyadventures.com/adventures/mountain-biking
 https://www.richvalleyadventures.com/paddle-boarding

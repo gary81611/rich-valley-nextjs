@@ -4,6 +4,8 @@ import { PHONE, PHONE_HREF, LOCATION } from '@/lib/site-data'
 import InquiryForm from '@/components/shared/InquiryForm'
 import { RVA_GLOBAL_PILLAR_BLOG_LINKS } from '@/lib/rva-blog-pillars'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Contact Rich Valley Adventures | Book Your Aspen Adventure',
   description:
@@ -20,7 +22,13 @@ export const metadata: Metadata = {
   },
 }
 
-export default function ContactPage() {
+export default function ContactPage({
+  searchParams,
+}: {
+  searchParams?: { service?: string | string[] }
+}) {
+  const serviceParam = searchParams?.service
+  const initialServiceId = Array.isArray(serviceParam) ? serviceParam[0] : serviceParam
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
       {/* Breadcrumb */}
@@ -62,7 +70,7 @@ export default function ContactPage() {
                 <h2 className="font-playfair text-2xl text-rva-forest font-bold mb-6">
                   Send Us a Message
                 </h2>
-                <InquiryForm brand="rva" />
+                <InquiryForm brand="rva" initialServiceId={initialServiceId} />
               </div>
             </div>
 
@@ -140,7 +148,10 @@ export default function ContactPage() {
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="w-1.5 h-1.5 bg-rva-copper rounded-full mt-2 flex-shrink-0" />
-                    Full-day float from $1,400 for 2 people. Spring Creek Ranch picnic from $800 per adult
+                    Full-day float from $1,400 for 2 people.{' '}
+                    <Link href="/private-ranch-fishing" className="text-rva-copper-light underline">
+                      Spring Creek Ranch picnic from $800 per adult
+                    </Link>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="w-1.5 h-1.5 bg-rva-copper rounded-full mt-2 flex-shrink-0" />
