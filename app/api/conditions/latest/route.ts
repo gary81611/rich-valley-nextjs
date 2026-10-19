@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { loadFishingReportFeed } from '@/lib/fishing-report-feed'
 
 // Default GET route handlers are statically cached at build time, which would
 // freeze the homepage "latest report" strip at whatever was published on the
@@ -19,7 +20,7 @@ function buildTeaser(row: {
   return raw.length > 220 ? `${raw.slice(0, 220)}…` : raw
 }
 
-/** Latest published conditions for homepage strip; falls back to fishing_reports. */
+/** Latest published conditions for the homepage strip; falls back to the merged fishing-report feed. */
 export async function GET() {
   try {
     const supabase = await createServerSupabaseClient()
@@ -45,30 +46,15 @@ export async function GET() {
       })
     }
 
-    const { data: fr } = await supabase
-      .from('fishing_reports')
-      .select('title, content, published_at, created_at, featured_image_url, guides(name)')
-      .eq('is_published', true)
-      .order('published_at', { ascending: false })
-      .limit(1)
-      .maybeSingle()
-
-    if (fr) {
-      const content = typeof fr.content === 'string' ? fr.content : ''
-      const teaser = content.length > 220 ? `${content.slice(0, 220)}…` : content
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const g = (fr as any).guides
-      const authorName = Array.isArray(g) ? g[0]?.name : g?.name
-      const img =
-        typeof fr.featured_image_url === 'string' && fr.featured_image_url.trim()
-          ? fr.featured_image_url.trim()
-          : undefined
+    const [item] = await loadFishingReportFeed(1)
+    if (item) {
+      const teaser = item.body.length > 220 ? `${item.body.slice(0, 220)}…` : item.body
       return NextResponse.json({
         report: {
-          teaser: teaser || fr.title,
-          author: authorName || undefined,
-          date: fr.published_at || fr.created_at,
-          imageUrl: img,
+          teaser: teaser || item.title,
+          ...(item.reporter_display ? { author: item.reporter_display } : {}),
+          date: item.date,
+          ...(item.imageUrl ? { imageUrl: item.imageUrl } : {}),
         },
       })
     }

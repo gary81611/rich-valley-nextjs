@@ -3,7 +3,10 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
-import { formatFishingReportTime, type VoiceFishingReport } from '@/lib/fishing-report-intake'
+import {
+  formatFishingReportFeedDate,
+  type FishingReportFeedItem,
+} from '@/lib/fishing-report-feed'
 
 const CONDITION_COLORS: Record<string, string> = {
   good: '#16A34A',
@@ -43,18 +46,6 @@ type ConditionsReportRow = {
   general_notes: string | null
 }
 
-type FishingReport = {
-  id: string
-  title: string
-  content: string
-  river: string | null
-  hatch_info: string | null
-  fly_recommendations: string | null
-  water_clarity: string | null
-  published_at: string
-  guides: { name: string } | null
-}
-
 type TrailCondition = {
   id: string
   section: string
@@ -73,22 +64,37 @@ const FISHING_FALLBACK = (
 const TRAIL_FALLBACK = 'Trail condition updates coming soon.'
 const BIRD_FALLBACK = 'Birdwatching highlights — check back soon.'
 
-function VoiceReportDetails({ report }: { report: VoiceFishingReport }) {
-  const fields = [
-    report.flows ? { label: 'Flows', value: report.flows } : null,
-    report.water_temp ? { label: 'Water temp', value: report.water_temp } : null,
-    report.hatches_and_flies ? { label: 'Hatches & flies', value: report.hatches_and_flies } : null,
-    report.what_is_working ? { label: "What's working", value: report.what_is_working } : null,
-  ].filter((field): field is { label: string; value: string } => field !== null)
-
+function FishingFeedArticle({ item, featured = false }: { item: FishingReportFeedItem; featured?: boolean }) {
   return (
     <article>
-      <p className="text-sm text-rva-forest/60 mb-1">{formatFishingReportTime(report.created_at)}</p>
-      <h3 className="font-semibold text-rva-forest-dark mb-2">{report.river_or_section}</h3>
-      <p className="text-rva-forest/80 leading-relaxed whitespace-pre-wrap">{report.summary}</p>
-      {fields.length > 0 && (
+      <p className="text-xs font-semibold text-rva-copper uppercase tracking-wide mb-1">
+        {item.source === 'voice' ? 'Guide call-in' : 'Weekly report'}
+      </p>
+      <p className={featured ? 'text-sm text-rva-forest/60 mb-1' : 'text-xs text-rva-forest/50'}>
+        {formatFishingReportFeedDate(item)}
+      </p>
+      {item.river ? (
+        <h3 className={featured ? 'font-semibold text-rva-forest-dark mb-2' : 'text-sm font-semibold text-rva-forest-dark'}>
+          {item.river}
+        </h3>
+      ) : null}
+      {item.title ? (
+        <p className={featured ? 'font-semibold text-rva-forest-dark mb-2' : 'text-sm font-semibold text-rva-forest-dark'}>
+          {item.title}
+        </p>
+      ) : null}
+      <p
+        className={
+          featured
+            ? 'text-rva-forest/80 leading-relaxed whitespace-pre-wrap'
+            : 'text-sm text-rva-forest/70 leading-relaxed whitespace-pre-wrap'
+        }
+      >
+        {item.body}
+      </p>
+      {item.details.length > 0 && (
         <div className="mt-4 space-y-3 text-sm text-rva-forest/80 leading-relaxed">
-          {fields.map((field) => (
+          {item.details.map((field) => (
             <div key={field.label}>
               <p className="text-xs font-semibold text-rva-forest-dark uppercase tracking-wide mb-1">{field.label}</p>
               <p className="whitespace-pre-wrap">{field.value}</p>
@@ -96,20 +102,18 @@ function VoiceReportDetails({ report }: { report: VoiceFishingReport }) {
           ))}
         </div>
       )}
-      <p className="text-sm text-rva-forest/60 mt-4">Reported by {report.reporter}</p>
+      {item.reporter_display ? (
+        <p className="text-sm text-rva-forest/60 mt-4">Reported by {item.reporter_display}</p>
+      ) : null}
     </article>
   )
 }
 
-export default function ConditionsPageClient({ voiceReports = [] }: { voiceReports?: VoiceFishingReport[] }) {
-  const latestVoice = voiceReports[0]
-  const earlierVoice = voiceReports.slice(1, 6)
+export default function ConditionsPageClient({ feed }: { feed: FishingReportFeedItem[] }) {
   const [stations, setStations] = useState<Station[]>([])
   const [loading, setLoading] = useState(true)
   const [fetchedAt, setFetchedAt] = useState('')
   const [conditionsReport, setConditionsReport] = useState<ConditionsReportRow | null>(null)
-  const [fishingReport, setFishingReport] = useState<FishingReport | null>(null)
-  const [reportExpanded, setReportExpanded] = useState(false)
   const [trailConditions, setTrailConditions] = useState<TrailCondition[]>([])
 
   useEffect(() => {
@@ -133,17 +137,6 @@ export default function ConditionsPageClient({ voiceReports = [] }: { voiceRepor
       .maybeSingle()
       .then(({ data }) => {
         if (data) setConditionsReport(data as ConditionsReportRow)
-      })
-
-    supabase
-      .from('fishing_reports')
-      .select('*, guides(name)')
-      .eq('is_published', true)
-      .order('published_at', { ascending: false })
-      .limit(1)
-      .single()
-      .then(({ data }) => {
-        if (data) setFishingReport(data as FishingReport)
       })
 
     supabase
@@ -262,102 +255,24 @@ export default function ConditionsPageClient({ voiceReports = [] }: { voiceRepor
           </p>
         )}
 
-        {/* Fishing / hatches */}
+        {/* One merged feed: voice call-ins and published CMS reports, newest first. */}
         <div className="mb-12 bg-white p-8 rounded-lg border border-rva-copper/10">
           <h2 className="font-playfair text-2xl text-rva-forest-dark mb-4">Latest Fishing Report</h2>
-          {latestVoice && (
+          {feed.length > 0 ? (
             <div className="mb-8">
-              <VoiceReportDetails report={latestVoice} />
-              {earlierVoice.length > 0 && (
+              <FishingFeedArticle item={feed[0]} featured />
+              {feed.length > 1 && (
                 <ul className="mt-6 space-y-4 border-t border-rva-copper/10 pt-6">
-                  {earlierVoice.map((report) => (
-                    <li key={report.id}>
-                      <p className="text-xs text-rva-forest/50">{formatFishingReportTime(report.created_at)}</p>
-                      <p className="text-sm font-semibold text-rva-forest-dark">{report.river_or_section}</p>
-                      <p className="text-sm text-rva-forest/70 leading-relaxed whitespace-pre-wrap">{report.summary}</p>
+                  {feed.slice(1).map((item) => (
+                    <li key={`${item.source}-${item.id}`}>
+                      <FishingFeedArticle item={item} />
                     </li>
                   ))}
                 </ul>
               )}
             </div>
-          )}
-          <p className="text-rva-forest/80 leading-relaxed mb-4">
-            Guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady.
-          </p>
-
-          {conditionsReport ? (
-            <div className="space-y-4 text-sm text-rva-forest/80 leading-relaxed">
-              {conditionsReport.hatch_report && (
-                <div>
-                  <p className="text-xs font-semibold text-rva-forest-dark uppercase tracking-wide mb-1">Hatch report</p>
-                  <p className="whitespace-pre-wrap">{conditionsReport.hatch_report}</p>
-                </div>
-              )}
-              {conditionsReport.fly_recommendations && (
-                <div>
-                  <p className="text-xs font-semibold text-rva-forest-dark uppercase tracking-wide mb-1">Fly recommendations</p>
-                  <p className="whitespace-pre-wrap">{conditionsReport.fly_recommendations}</p>
-                </div>
-              )}
-              {conditionsReport.water_clarity && (
-                <div>
-                  <p className="text-xs font-semibold text-rva-forest-dark uppercase tracking-wide mb-1">Water clarity</p>
-                  <p className="whitespace-pre-wrap">{conditionsReport.water_clarity}</p>
-                </div>
-              )}
-              {conditionsReport.general_notes && (
-                <div>
-                  <p className="text-xs font-semibold text-rva-forest-dark uppercase tracking-wide mb-1">Notes</p>
-                  <p className="whitespace-pre-wrap">{conditionsReport.general_notes}</p>
-                </div>
-              )}
-              {!conditionsReport.hatch_report &&
-                !conditionsReport.fly_recommendations &&
-                !conditionsReport.water_clarity &&
-                !conditionsReport.general_notes && <div className="bg-rva-cream p-6 rounded-lg">{FISHING_FALLBACK}</div>}
-            </div>
-          ) : fishingReport ? (
-            <>
-              <div className="flex items-center gap-3 mb-4">
-                {fishingReport.guides?.name && <p className="text-sm text-rva-forest/60">By {fishingReport.guides.name}</p>}
-                <p className="text-sm text-rva-forest/40">
-                  {new Date(fishingReport.published_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                </p>
-              </div>
-              <h3 className="font-semibold text-rva-forest-dark mb-3">{fishingReport.title}</h3>
-              <div className="flex flex-wrap gap-4 mb-4">
-                {fishingReport.river && (
-                  <span className="text-xs bg-rva-copper/10 text-rva-copper px-2 py-1 rounded">{fishingReport.river}</span>
-                )}
-                {fishingReport.water_clarity && (
-                  <span className="text-xs bg-rva-forest/10 text-rva-forest px-2 py-1 rounded">Clarity: {fishingReport.water_clarity}</span>
-                )}
-              </div>
-              {fishingReport.hatch_info && (
-                <div className="mb-3">
-                  <p className="text-xs font-semibold text-rva-forest-dark uppercase tracking-wide mb-1">Hatch Report</p>
-                  <p className="text-sm text-rva-forest/70">{fishingReport.hatch_info}</p>
-                </div>
-              )}
-              {fishingReport.fly_recommendations && (
-                <div className="mb-3">
-                  <p className="text-xs font-semibold text-rva-forest-dark uppercase tracking-wide mb-1">Fly Recommendations</p>
-                  <p className="text-sm text-rva-forest/70">{fishingReport.fly_recommendations}</p>
-                </div>
-              )}
-              <div className="bg-rva-cream p-6 rounded-lg">
-                <p className="text-rva-forest/70 leading-relaxed text-sm">
-                  {reportExpanded ? fishingReport.content : fishingReport.content.length > 300 ? `${fishingReport.content.slice(0, 300)}...` : fishingReport.content}
-                </p>
-                {fishingReport.content.length > 300 && (
-                  <button onClick={() => setReportExpanded(!reportExpanded)} className="text-rva-copper text-sm font-semibold mt-3 hover:underline">
-                    {reportExpanded ? 'Show less' : 'Read more'}
-                  </button>
-                )}
-              </div>
-            </>
           ) : (
-            <div className="bg-rva-cream p-6 rounded-lg">
+            <div className="bg-rva-cream p-6 rounded-lg mb-4">
               {FISHING_FALLBACK}
               <p className="text-xs text-rva-copper mt-4">
                 Check back for the latest from the river — or{' '}
@@ -368,6 +283,42 @@ export default function ConditionsPageClient({ voiceReports = [] }: { voiceRepor
               </p>
             </div>
           )}
+          <p className="text-rva-forest/80 leading-relaxed mb-4">
+            Guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady.
+          </p>
+
+          {conditionsReport &&
+            (conditionsReport.hatch_report ||
+              conditionsReport.fly_recommendations ||
+              conditionsReport.water_clarity ||
+              conditionsReport.general_notes) && (
+              <div className="space-y-4 text-sm text-rva-forest/80 leading-relaxed">
+                {conditionsReport.hatch_report && (
+                  <div>
+                    <p className="text-xs font-semibold text-rva-forest-dark uppercase tracking-wide mb-1">Hatch report</p>
+                    <p className="whitespace-pre-wrap">{conditionsReport.hatch_report}</p>
+                  </div>
+                )}
+                {conditionsReport.fly_recommendations && (
+                  <div>
+                    <p className="text-xs font-semibold text-rva-forest-dark uppercase tracking-wide mb-1">Fly recommendations</p>
+                    <p className="whitespace-pre-wrap">{conditionsReport.fly_recommendations}</p>
+                  </div>
+                )}
+                {conditionsReport.water_clarity && (
+                  <div>
+                    <p className="text-xs font-semibold text-rva-forest-dark uppercase tracking-wide mb-1">Water clarity</p>
+                    <p className="whitespace-pre-wrap">{conditionsReport.water_clarity}</p>
+                  </div>
+                )}
+                {conditionsReport.general_notes && (
+                  <div>
+                    <p className="text-xs font-semibold text-rva-forest-dark uppercase tracking-wide mb-1">Notes</p>
+                    <p className="whitespace-pre-wrap">{conditionsReport.general_notes}</p>
+                  </div>
+                )}
+              </div>
+            )}
         </div>
 
         {/* Trail / wildlife / birds */}

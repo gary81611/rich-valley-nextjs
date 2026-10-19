@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import RVAHomeClient from './RVAHomeClient'
+import { loadFishingReportFeed } from '@/lib/fishing-report-feed'
 
 /** Kids callout and featured trips must render from this file, not a stale edge prerender. */
 export const dynamic = 'force-dynamic'
@@ -24,11 +25,12 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RVAPage() {
+export default async function RVAPage() {
+  const feed = await loadFishingReportFeed(1)
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
-      <RVAHomeClient />
+      <RVAHomeClient featuredReport={feed[0] ?? null} />
     </>
   )
 }

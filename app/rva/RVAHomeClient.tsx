@@ -9,6 +9,10 @@ import type { Adventure, Testimonial, GalleryImage } from '@/lib/types'
 import { isBookableAdventureName } from '@/lib/rva-adventure-filters'
 import { seoAlt } from '@/lib/seo/alt-text'
 import { KIDS_FAMILY_FISHING } from '@/lib/rva-fly-fishing-content'
+import {
+  formatFishingReportFeedDate,
+  type FishingReportFeedItem,
+} from '@/lib/fishing-report-feed'
 
 const FEATURED_TRIPS = [
   {
@@ -30,7 +34,11 @@ const FEATURED_TRIPS = [
   },
 ] as const
 
-export default function RVAHomeClient() {
+export default function RVAHomeClient({
+  featuredReport = null,
+}: {
+  featuredReport?: FishingReportFeedItem | null
+}) {
   const [adventures, setAdventures] = useState<Array<{ title: string; slug: string; description: string; image: string; duration: string; difficulty: string; season: string }>>([])
   const [activeSeason, setActiveSeason] = useState<string | null>(null)
   const [testimonials, setTestimonials] = useState<Array<{ quote: string; name: string; location: string }>>([])
@@ -42,13 +50,6 @@ export default function RVAHomeClient() {
     { value: '3,000+', label: 'Adventures Led' },
     { value: '4.9', label: 'Average Rating' },
   ])
-  const [fishingReport, setFishingReport] = useState<{
-    title: string
-    date: string
-    author: string
-    preview: string
-    imageUrl: string | null
-  } | null>(null)
   const [conditionsPreview, setConditionsPreview] = useState<{ teaser: string; author?: string; date?: string } | null>(null)
   const [conditionsPreviewReady, setConditionsPreviewReady] = useState(false)
 
@@ -65,18 +66,11 @@ export default function RVAHomeClient() {
   useEffect(() => {
     async function fetchSupabaseData() {
       const supabase = createClient()
-      const [advRes, testRes, galRes, settingsRes, reportRes] = await Promise.all([
+      const [advRes, testRes, galRes, settingsRes] = await Promise.all([
         supabase.from('adventures').select('*').eq('is_active', true).order('display_order'),
         supabase.from('testimonials').select('*').eq('is_active', true).eq('site_key', 'rva'),
         supabase.from('gallery_images').select('*').eq('is_active', true).eq('site_key', 'rva').order('display_order'),
         supabase.from('site_settings').select('phone, settings').eq('site_key', 'rva').single(),
-        supabase
-          .from('fishing_reports')
-          .select('title, published_at, created_at, content, featured_image_url, guides(name)')
-          .eq('is_published', true)
-          .order('published_at', { ascending: false })
-          .limit(1)
-          .single(),
       ])
       if (advRes.data && advRes.data.length > 0) {
         setAdventures(
@@ -107,18 +101,6 @@ export default function RVAHomeClient() {
       }
       if (settingsRes.data?.settings?.stats) {
         setStats(settingsRes.data.settings.stats)
-      }
-      if (reportRes.data) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const r = reportRes.data as any
-        const guideName = Array.isArray(r.guides) ? r.guides[0]?.name : r.guides?.name
-        setFishingReport({
-          title: r.title,
-          date: r.published_at || r.created_at,
-          author: guideName || 'Staff',
-          preview: r.content?.length > 200 ? r.content.slice(0, 200) + '...' : r.content || '',
-          imageUrl: typeof r.featured_image_url === 'string' && r.featured_image_url.trim() ? r.featured_image_url.trim() : null,
-        })
       }
     }
     fetchSupabaseData()
@@ -386,8 +368,8 @@ export default function RVAHomeClient() {
         </div>
       </section>
 
-      {/* LATEST FISHING REPORT */}
-      {fishingReport && (
+      {/* LATEST FISHING REPORT — newest item from the merged server feed */}
+      {featuredReport && (
       <section className="py-16 bg-rva-cream">
         <div className="max-w-3xl mx-auto px-6">
           <ScrollReveal className="text-center mb-10">
@@ -396,12 +378,12 @@ export default function RVAHomeClient() {
           </ScrollReveal>
           <ScrollReveal delay={100}>
             <div className="bg-white rounded-2xl p-8 md:p-10 shadow-sm border border-rva-cream-dark">
-              {fishingReport.imageUrl && (
+              {featuredReport.imageUrl && (
                 <div className="relative w-full aspect-[21/9] rounded-xl overflow-hidden mb-6 bg-rva-cream-dark">
                   <Image
-                    src={fishingReport.imageUrl}
+                    src={featuredReport.imageUrl}
                     alt={seoAlt({
-                      subject: fishingReport.title,
+                      subject: featuredReport.title || featuredReport.river || 'Fishing report',
                       location: 'Roaring Fork Valley, Colorado',
                       context: 'weekly fishing conditions',
                       brand: 'Rich Valley Adventures',
@@ -412,11 +394,22 @@ export default function RVAHomeClient() {
                   />
                 </div>
               )}
-              <h3 className="font-playfair text-2xl text-rva-forest font-semibold mb-2">{fishingReport.title}</h3>
-              <p className="text-rva-copper text-sm mb-4">
-                {new Date(fishingReport.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} · {fishingReport.author}
+              <p className="text-xs font-semibold uppercase tracking-wide text-rva-copper mb-2">
+                {featuredReport.source === 'voice' ? 'Guide call-in' : 'Weekly report'}
               </p>
-              <p className="text-gray-700 leading-relaxed mb-6">{fishingReport.preview}</p>
+              <h3 className="font-playfair text-2xl text-rva-forest font-semibold mb-2">
+                {featuredReport.title || featuredReport.river}
+              </h3>
+              <p className="text-rva-copper text-sm mb-4">
+                {formatFishingReportFeedDate(featuredReport)}
+                {featuredReport.reporter_display ? ` · ${featuredReport.reporter_display}` : ''}
+              </p>
+              {featuredReport.title && featuredReport.river ? (
+                <p className="text-sm text-gray-600 mb-4">{featuredReport.river}</p>
+              ) : null}
+              <p className="text-gray-700 leading-relaxed mb-6">
+                {featuredReport.body.length > 200 ? `${featuredReport.body.slice(0, 200)}...` : featuredReport.body}
+              </p>
               <Link
                 href="/conditions"
                 className="inline-flex items-center gap-2 text-rva-copper font-semibold hover:text-rva-copper-light transition-colors"
