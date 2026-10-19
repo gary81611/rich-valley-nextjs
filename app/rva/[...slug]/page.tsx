@@ -9,6 +9,7 @@ import FaqPageTemplate from '@/components/templates/FaqPageTemplate'
 import LandingPageTemplate from '@/components/templates/LandingPageTemplate'
 import { rvaServicePageRelatedBlogLinks } from '@/lib/rva-blog-pillars'
 import type { CmsPage } from '@/lib/pages'
+import { KIDS_FAMILY_FISHING, withYearRoundFishingNote } from '@/lib/rva-fly-fishing-content'
 
 const PADDLE_RENTAL = 'Paddleboarding is a rental from $100, not a guided trip.'
 const RVA_BOOKING =
@@ -99,13 +100,56 @@ function applyRvaConfirmedFacts(page: CmsPage | null): CmsPage | null {
         { question: 'Do you offer corporate packages?', answer: RVA_CORPORATE, category: 'Booking & Logistics' },
       ]
     }
+    return applyFishingSeasonAndKids({ ...page, content })
+  }
+
+  return applyFishingSeasonAndKids(page)
+}
+
+function applyFishingSeasonAndKids(page: CmsPage): CmsPage {
+  if (page.template_type === 'faq') {
+    const content = { ...(page.content as FaqContent) }
+    content.intro = content.intro ? withYearRoundFishingNote(content.intro) : content.intro
+    content.faqs = content.faqs.map((faq) => ({
+      ...faq,
+      answer: /can kids fish/i.test(faq.question) ? KIDS_FAMILY_FISHING : withYearRoundFishingNote(faq.answer),
+    }))
+    if (!content.faqs.some((faq) => /can kids fish/i.test(faq.question))) {
+      content.faqs = [
+        { question: 'Can kids fish?', answer: KIDS_FAMILY_FISHING, category: 'Fly Fishing' },
+        ...content.faqs,
+      ]
+    }
+    return { ...page, content }
+  }
+
+  if (page.template_type === 'service' || page.template_type === 'location') {
+    const content = { ...(page.content as ServiceContent & LocationContent) }
+    content.intro = withYearRoundFishingNote(content.intro || '')
+    if (content.h2_sections) {
+      content.h2_sections = content.h2_sections.map((section) => ({
+        ...section,
+        content: withYearRoundFishingNote(section.content),
+      }))
+    }
+    content.faqs = (content.faqs || []).map((faq) => ({
+      ...faq,
+      answer: /can kids fish/i.test(faq.question) ? KIDS_FAMILY_FISHING : withYearRoundFishingNote(faq.answer),
+    }))
+    if (
+      page.slug === 'fly-fishing' &&
+      !(content.faqs || []).some((faq) => /can kids fish/i.test(faq.question))
+    ) {
+      content.faqs = [{ question: 'Can kids fish?', answer: KIDS_FAMILY_FISHING }, ...(content.faqs || [])]
+    }
     return { ...page, content }
   }
 
   return page
 }
 
-export const revalidate = 30
+/** CMS FAQ and season copy must render from this file, not a stale edge prerender. */
+export const dynamic = 'force-dynamic'
 
 interface Props {
   params: Promise<{ slug: string[] }>

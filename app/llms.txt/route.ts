@@ -21,6 +21,9 @@ export async function GET(request: Request) {
 - Paddleboarding: rental from $100, not a guided trip
 - Full-day float trip: from $1,400 for 2 people (1 boat, 1 captain). Additional adults $375 each, kids $175. An 8-12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up.
 - Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+)
+- Kids & family fishing: kids ages 3 and up can fish. Waders are available for all children 3 and up, and adult sizes go up to size 15 feet. Kids on the full-day float are $175. At the Spring Creek Ranch private ranch and picnic, kids are $250 each (ages 3+). Guests and grandparents with limited mobility can be hosted at the ranch ponds.
+- Year-round fishing: guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady.
+- Featured trips, in order: (1) full-day float trip, (2) private ranch family fishing and picnic lunch, (3) group hiking (includes transportation and picnic lunch)
 - Corporate packages: groups of 50+, custom mix of fishing and hiking
 - Booking: at least 2 days' advance notice, 50% deposit at booking, cancellations within 72 hours billed in full
 - Partner transportation (when referenced on site): Aspen Alpenglow Limousine — https://aspenalpenglowlimousine.com
@@ -58,8 +61,8 @@ Sitemap: https://www.richvalleyadventures.com/sitemap.xml
 - Location: Aspen, Colorado 81611, United States (Roaring Fork Valley & resort corridor)
 - Phone: +1 970-456-3666
 - Founded: 2012
-- Fleet (per site): Chevrolet Suburban SUVs (7 passengers each), Ford Transit Van (14 passengers); Starlink, ski racks, and roof cargo space
-- Drivers: 8 full-time local drivers with 15+ years of mountain driving experience. Child car seats and boosters are free. Pets welcome, with a cleaning fee.
+- Fleet (per site): Chevrolet Suburban SUVs (7 passengers each), Ford Transit Van (13 passengers); Starlink, ski racks, and roof cargo space
+- Drivers: 8 full-time local drivers with 15+ years of mountain driving experience. Child car seats and boosters are free. No shared rides are offered. Pets welcome, with a cleaning fee.
 - Private FBO airport service: Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison
 - One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.
 - Flight diversions to Denver or Grand Junction: 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice.

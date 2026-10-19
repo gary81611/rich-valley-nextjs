@@ -36,7 +36,7 @@ Book car service with explicit buffer on ski Fridays and holiday Sundays. If you
 
 ## Packing and vehicle fit
 
-Ski trips mean awkward cargo: boot bags, helmets, and sometimes a full quiver. Before you confirm a vehicle, count hard cases. A Chevrolet Suburban class SUV handles most families; fourteen-passenger van layouts matter when you are moving a corporate retreat or two merged families under one roof.
+Ski trips mean awkward cargo: boot bags, helmets, and sometimes a full quiver. Before you confirm a vehicle, count hard cases. A Chevrolet Suburban class SUV handles most families; thirteen-passenger van layouts matter when you are moving a corporate retreat or two merged families under one roof.
 
 ---
 

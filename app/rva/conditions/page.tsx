@@ -65,7 +65,7 @@ type TrailCondition = {
 
 const FISHING_FALLBACK = (
   <p className="text-rva-forest/70 italic leading-relaxed">
-    Fishing reports will be updated regularly during fishing season. Our guides cover hatch reports, fly recommendations, water clarity, and river observations across the Roaring Fork, Frying Pan, Colorado River, and Gunnison River.
+    Fishing reports will be updated regularly during fishing season. Guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady. Our guides cover hatch reports, fly recommendations, water clarity, and river observations across the Roaring Fork, Frying Pan, Colorado River, and Gunnison River.
   </p>
 )
 
@@ -234,6 +234,9 @@ export default function ConditionsPage() {
         {/* Fishing / hatches */}
         <div className="mb-12 bg-white p-8 rounded-lg border border-rva-copper/10">
           <h2 className="font-playfair text-2xl text-rva-forest-dark mb-4">Latest Fishing Report</h2>
+          <p className="text-rva-forest/80 leading-relaxed mb-4">
+            Guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady.
+          </p>
 
           {conditionsReport ? (
             <div className="space-y-4 text-sm text-rva-forest/80 leading-relaxed">

@@ -2,6 +2,36 @@ import type { ServiceContent } from '@/lib/pages'
 
 export const flyFishingPageTitle = 'Guided Fly Fishing in Aspen & the Roaring Fork Valley'
 
+export const KIDS_FAMILY_FISHING =
+  'Kids ages 3 and up can fish. Waders are available for all children 3 and up, and adult sizes go up to size 15 feet. Kids on the full-day float are $175. At the Spring Creek Ranch private ranch and picnic, kids are $250 each (ages 3+). Guests and grandparents with limited mobility can be hosted at the ranch ponds.'
+
+export const YEAR_ROUND_FISHING =
+  'Guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady.'
+
+/** Append the alpine-springs fact where copy still frames fishing as a summer-only season. */
+export function withYearRoundFishingNote(text: string): string {
+  if (!text || !/fish/i.test(text) || /alpine springs/i.test(text)) return text
+  const limited =
+    /may through october/i.test(text) ||
+    /best time of year to fly fish/i.test(text) ||
+    /july through september is generally the best window/i.test(text) ||
+    /during fishing season/i.test(text)
+  if (!limited) return text
+  if (/fall offers outstanding streamer fishing for large brown trout\./.test(text)) {
+    return text.replace(
+      /fall offers outstanding streamer fishing for large brown trout\./,
+      `fall offers outstanding streamer fishing for large brown trout. ${YEAR_ROUND_FISHING}`,
+    )
+  }
+  if (/from May through October/.test(text)) {
+    return text.replace(/from May through October/, `from May through October. ${YEAR_ROUND_FISHING}`)
+  }
+  if (/during fishing season\./.test(text)) {
+    return text.replace(/during fishing season\./, `during fishing season. ${YEAR_ROUND_FISHING}`)
+  }
+  return `${text} ${YEAR_ROUND_FISHING}`
+}
+
 export const flyFishingServiceContent: ServiceContent = {
   hero_title: flyFishingPageTitle,
   hero_subtitle: "Cast on Colorado's Gold Medal Waters with Expert Local Guides",
@@ -9,8 +39,12 @@ export const flyFishingServiceContent: ServiceContent = {
 
 Rich Valley Adventures has been guiding these waters since 2012. Our guides grew up fishing these drainages and know every productive run, seam, and riffle across seasons. Whether you're picking up a fly rod for the first time or you're a seasoned angler chasing your personal best, we tailor every trip to your experience level and goals.
 
-We offer half-day and full-day guided trips from May through October on our wading fisheries, full-day float trips on the Roaring Fork or Colorado River, and dedicated float trips on the Gunnison with our in-house boat captain. All gear is provided — premium fly rods, reels, waders, wading boots, and a full fly selection matched to current hatch conditions. Our catch-and-release philosophy protects these waters for generations of anglers to come.`,
+We offer half-day and full-day guided trips from May through October on our wading fisheries, full-day float trips on the Roaring Fork or Colorado River, and dedicated float trips on the Gunnison with our in-house boat captain. Guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady. All gear is provided — premium fly rods, reels, waders, wading boots, and a full fly selection matched to current hatch conditions. Our catch-and-release philosophy protects these waters for generations of anglers to come.`,
   h2_sections: [
+    {
+      title: 'Kids & Family Fishing',
+      content: KIDS_FAMILY_FISHING,
+    },
     {
       title: 'The Roaring Fork River — Gold Medal Fly Fishing Near Aspen',
       content: `The Roaring Fork River flows 70 miles from its headwaters near Independence Pass through Aspen, Basalt, and Carbondale before joining the Colorado River at Glenwood Springs. The stretch through and below Aspen is designated Gold Medal water by Colorado Parks & Wildlife — a designation reserved for waters that consistently produce large wild trout in exceptional numbers.
@@ -46,6 +80,10 @@ We also offer exclusive river access on the Old Town Basalt Private Ranch on the
   ],
   features: [
     {
+      title: 'Kids & Family Fishing',
+      description: KIDS_FAMILY_FISHING,
+    },
+    {
       title: 'Rivers & waters we fish',
       description:
         'Roaring Fork River, Frying Pan River, Colorado River (near Glenwood Springs), Gunnison River float trips, Spring Creek Ranch in Carbondale, and other private water — including pond, alpine spring, ranch water, and high mountain lakes.',
@@ -78,6 +116,10 @@ We also offer exclusive river access on the Old Town Basalt Private Ranch on the
   ],
   faqs: [
     {
+      question: 'Can kids fish?',
+      answer: KIDS_FAMILY_FISHING,
+    },
+    {
       question: 'Do I need a Colorado fishing license?',
       answer:
         'A Colorado Parks and Wildlife fishing license is required for ages 16 and up.',
@@ -85,7 +127,7 @@ We also offer exclusive river access on the Old Town Basalt Private Ranch on the
     {
       question: 'What time of year is best for fly fishing near Aspen?',
       answer:
-        'The Roaring Fork Valley offers excellent fishing year-round. June through September is peak dry fly season with multiple hatches daily. October and November are prime for large browns in the fall spawn. The Frying Pan tailwater fishes well even in winter due to the stable, cold water temperatures from Ruedi Reservoir.',
+        'The Roaring Fork Valley offers excellent fishing year-round. June through September is peak dry fly season with multiple hatches daily. October and November are prime for large browns in the fall spawn. The Frying Pan tailwater fishes well even in winter due to the stable, cold water temperatures from Ruedi Reservoir. Guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady.',
     },
     {
       question: 'Can beginners go fly fishing with you?',

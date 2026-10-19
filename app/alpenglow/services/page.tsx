@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { alpenglowData } from '@/lib/site-data'
 
+export const dynamic = 'force-dynamic'
+
 const pageUrl = 'https://aspenalpenglowlimousine.com/services'
 
 export const metadata: Metadata = {
@@ -28,13 +30,13 @@ const sections = [
     id: 'weddings',
     title: 'Wedding Transportation',
     href: '/weddings',
-    body: `Your wedding day deserves transportation that is punctual, elegant, and invisible when it needs to be. We coordinate bridal party transfers, venue shuttles, and guest movement throughout Aspen and Snowmass so nobody is stranded at the wrong property. Our team has extensive experience with premier venues including The Little Nell, Hotel Jerome, Aspen Meadows, Limelight, and Snowmass base-area properties. Both our Chevrolet Suburban SUVs and Ford Transit Van are available depending on group size — the Transit comfortably moves parties up to fourteen with room for gowns, flowers, and celebration gear.`,
+    body: `Your wedding day deserves transportation that is punctual, elegant, and invisible when it needs to be. We coordinate bridal party transfers, venue shuttles, and guest movement throughout Aspen and Snowmass so nobody is stranded at the wrong property. Our team has extensive experience with premier venues including The Little Nell, Hotel Jerome, Aspen Meadows, Limelight, and Snowmass base-area properties. Both our Chevrolet Suburban SUVs and Ford Transit Van are available depending on group size — the Transit comfortably moves parties up to thirteen with room for gowns, flowers, and celebration gear. No shared rides are offered.`,
   },
   {
     id: 'ski-resort-transfers',
     title: 'Ski Resort Transfers',
     href: '/services/ski-resort-transfers',
-    body: `Private group transport to Aspen Mountain, Aspen Highlands, Buttermilk, and Snowmass — without the parking headache or the shared-shuttle shuffle. We run Suburban SUVs and a fourteen-passenger Ford Transit Van, each fitted with Myers 6X ski racks so boots and bags stay organized. Early-morning first-chair runs and flexible afternoon pickups are standard. You focus on the turns; we handle icy lots, gear loading, and the drive home when your legs are done.`,
+    body: `Private group transport to Aspen Mountain, Aspen Highlands, Buttermilk, and Snowmass — without the parking headache or the shared-shuttle shuffle. We run Suburban SUVs and a thirteen-passenger Ford Transit Van, each fitted with Myers 6X ski racks so boots and bags stay organized. Early-morning first-chair runs and flexible afternoon pickups are standard. You focus on the turns; we handle icy lots, gear loading, and the drive home when your legs are done. No shared rides are offered.`,
   },
 ]
 

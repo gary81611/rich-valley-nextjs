@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { alpenglowData } from '@/lib/site-data'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { correctAalFleetCapacity, correctAalFleetText } from '@/lib/aal-public-copy'
 
 export const dynamic = 'force-dynamic'
 
@@ -34,8 +35,8 @@ const defaultWhyChooseUs = [
 ]
 
 const defaultFleet = [
-  { name: 'Executive Escalade', image: '/images/fleet/escalade.png', passengers: 'Up to 6 Passengers', features: ['Premium leather interior', 'Climate control', 'USB & WiFi', 'Privacy partition available'] },
-  { name: 'Luxury Sprinter', image: '/images/fleet/sprinter.png', passengers: 'Up to 14 Passengers', features: ['Executive seating', 'Entertainment system', 'Overhead storage', 'Standing headroom'] },
+  { name: 'Executive Escalade', image: '/images/fleet/escalade.png', passengers: 'Up to 7 Passengers', features: ['Premium leather interior', 'Climate control', 'USB & WiFi', 'Privacy partition available'] },
+  { name: 'Luxury Sprinter', image: '/images/fleet/sprinter.png', passengers: 'Up to 13 Passengers', features: ['Executive seating', 'Entertainment system', 'Overhead storage', 'Standing headroom'] },
 ]
 
 export default async function AboutPage() {
@@ -62,8 +63,8 @@ export default async function AboutPage() {
       fleet = fleetRes.data.map((v: { name: string; image_url: string; capacity: number; description: string }) => ({
         name: v.name,
         image: v.image_url || '/images/fleet/escalade.png',
-        passengers: `Up to ${v.capacity} Passengers`,
-        features: v.description ? [v.description] : [],
+        passengers: `Up to ${correctAalFleetCapacity(v.name, v.capacity)} Passengers`,
+        features: v.description ? [correctAalFleetText(v.description)] : [],
       }))
     }
   } catch {

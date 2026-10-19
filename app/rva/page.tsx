@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import RVAHomeClient from './RVAHomeClient'
 
+/** Kids callout and featured trips must render from this file, not a stale edge prerender. */
+export const dynamic = 'force-dynamic'
+
 const RVA_URL = 'https://www.richvalleyadventures.com'
 
 /** Speakable targets use stable class hooks in `RVAHomeClient` (not Squarespace selectors). */

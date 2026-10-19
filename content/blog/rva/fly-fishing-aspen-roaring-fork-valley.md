@@ -61,7 +61,7 @@ All anglers in Colorado need a valid state fishing license. Non-residents can pu
 Yes, all anglers need a valid Colorado fishing license regardless of age (with the exception of children under 16). If you book with Rich Valley Adventures, we'll point you to the easiest way to purchase your license before the trip — it only takes a few minutes online.
 
 **What is the best time of year to fly fish in Aspen?**
-July through September is generally the best window for dry-fly action and consistent hatch activity. However, the Fryingpan River near Basalt is fishable year-round as a tailwater, and fall offers outstanding streamer fishing for large brown trout.
+July through September is generally the best window for dry-fly action and consistent hatch activity. However, the Fryingpan River near Basalt is fishable year-round as a tailwater, and fall offers outstanding streamer fishing for large brown trout. Guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady.
 
 **Is fly fishing difficult to learn for a first-timer?**
 It's more accessible than most people expect. With a good guide and a few hours of practice, beginners are typically casting effectively and catching fish. The fundamentals of casting and reading water can be absorbed in a single morning on the river.

@@ -57,7 +57,7 @@ This is the simple one. Aspen's après scene — Ajax Tavern, the rooftop at Lim
 
 ### Ski gear logistics disappear
 
-Our vehicles are configured for ski travel. Executive Escalades handle up to 6 passengers with full ski equipment. Luxury Sprinters take groups of up to 14 with all their gear in a single, organized load. No roof rack negotiation, no ski bag jammed in the trunk at an angle, no boot bag on someone's lap.
+Our vehicles are configured for ski travel. Executive Escalades handle up to 7 passengers with full ski equipment. Luxury Sprinters take groups of up to 13 with all their gear in a single, organized load. No roof rack negotiation, no ski bag jammed in the trunk at an angle, no boot bag on someone's lap.
 
 We load and unload your gear at pickup and dropoff — that's part of the service.
 
@@ -96,4 +96,4 @@ Yes — the Roaring Fork Transit Authority (RFTA) operates free bus service with
 For holiday periods (Christmas/New Year, Presidents' Week), book 4–6 weeks in advance. For regular winter weekends, 1–2 weeks advance booking is generally sufficient, though earlier is always better. Aspen Alpenglow Limousine does accommodate same-day bookings on an availability basis.
 
 **Can a private car service handle ski equipment for a group of 6?**
-Yes. Our Executive Escalades comfortably accommodate 6 passengers with full ski equipment — skis, boots, poles, bags. For larger groups, our Luxury Sprinters handle up to 14 passengers with all their gear in a single load.
+Yes. Our Executive Escalades comfortably accommodate 7 passengers with full ski equipment — skis, boots, poles, bags. For larger groups, our Luxury Sprinters handle up to 13 passengers with all their gear in a single load.

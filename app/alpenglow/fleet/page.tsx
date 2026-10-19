@@ -2,10 +2,13 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { alpenglowData } from '@/lib/site-data'
 
+/** Fleet capacities must render from this file, not a stale edge prerender. */
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Luxury Fleet | Suburban SUVs & Transit Van | Alpenglow',
   description:
-    'Chevrolet Suburban SUVs (7 pax each) & 14-passenger Ford Transit Van — Starlink WiFi, ski racks, Aspen & Snowmass chauffeur service. View amenities & book.',
+    'Chevrolet Suburban SUVs (7 pax each) & 13-passenger Ford Transit Van — Starlink WiFi, ski racks, Aspen & Snowmass chauffeur service. Child seats are free. No shared rides are offered.',
   alternates: { canonical: 'https://aspenalpenglowlimousine.com/fleet' },
 }
 
@@ -37,7 +40,7 @@ const VEHICLES = [
   {
     id: 'transit-2025',
     title: '2025 Ford Transit Van',
-    capacity: 14,
+    capacity: 13,
     amenities: ['WiFi (Starlink)', 'XM Radio', 'Complimentary Water', 'Myers 6X Ski Rack'],
   },
 ] as const
@@ -60,7 +63,7 @@ const fleetJsonLd = {
         vehicleInteriorColor: 'Black',
         color: 'Black',
         description:
-          'Full-size luxury SUV seating up to 7 passengers. Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee. Driven by full-time local drivers with 15+ years of mountain driving experience.',
+          'Full-size luxury SUV seating up to 7 passengers. Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. Driven by full-time local drivers with 15+ years of mountain driving experience.',
         offers: {
           '@type': 'Offer',
           priceCurrency: 'USD',
@@ -76,11 +79,11 @@ const fleetJsonLd = {
         name: 'Ford Transit Van',
         vehicleModelDate: '2025',
         numberOfDoors: 4,
-        seatingCapacity: 14,
+        seatingCapacity: 13,
         vehicleInteriorColor: 'Black',
         color: 'Black',
         description:
-          '14-passenger Ford Transit Van for larger groups, corporate retreats, wedding parties, and ski group transfers. Spacious interior, WiFi, ski racks.',
+          '13-passenger Ford Transit Van for larger groups, corporate retreats, wedding parties, and ski group transfers. Spacious interior, WiFi, ski racks. Child car seats and boosters are free. No shared rides are offered.',
         offers: {
           '@type': 'Offer',
           priceCurrency: 'USD',
@@ -145,7 +148,7 @@ export default function FleetPage() {
           </div>
 
           <p className="mt-12 text-center text-alp-slate max-w-3xl mx-auto leading-relaxed">
-            8 full-time local drivers with 15+ years of mountain driving experience. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee.
+            8 full-time local drivers with 15+ years of mountain driving experience. Vehicles have Starlink, ski racks, and roof cargo space. SUVs seat 7 and the passenger shuttle van seats 13. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee.
           </p>
         </div>
       </section>

@@ -57,7 +57,7 @@ Here's the typical structure we build for NYE clients:
 
 NYE is often a group affair in Aspen. Extended families, friend groups who planned a trip together, couples who decided to do something memorable — these groups typically have 8–20 people moving together throughout the evening.
 
-A single Luxury Sprinter (up to 14 passengers) keeps the group together from the start of the night to the end, which is the thing that actually makes a group NYE work well. No coordinating multiple vehicles, no abandoned members of the group who were in the wrong car when someone decided to change plans.
+A single Luxury Sprinter (up to 13 passengers) keeps the group together from the start of the night to the end, which is the thing that actually makes a group NYE work well. No coordinating multiple vehicles, no abandoned members of the group who were in the wrong car when someone decided to change plans.
 
 For larger groups or groups with multiple accommodation locations, we can coordinate multiple vehicles with a unified dispatch point.
 

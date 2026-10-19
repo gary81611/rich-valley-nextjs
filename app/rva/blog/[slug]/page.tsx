@@ -9,6 +9,7 @@ import { mergeRvaBlogSidebarLinks } from '@/lib/rva-blog-pillars'
 import { rvaBlogSlugShouldRedirectToBlogIndex } from '@/lib/rva-blog-seo-redirect'
 import { seoAlt } from '@/lib/seo/alt-text'
 import type { BlogPost } from '@/lib/types'
+import { withYearRoundFishingNote } from '@/lib/rva-fly-fishing-content'
 
 export const dynamic = 'force-dynamic'
 
@@ -147,10 +148,11 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
     post.meta_description ||
     (post.content ? post.content.replace(/\s+/g, ' ').trim().slice(0, 200) : '') ||
     post.title
+  const articleBody = post.content ? withYearRoundFishingNote(post.content) : ''
   const sanitizedFaqs = (post.faqs ?? [])
     .map((f) => ({
       question: typeof f.question === 'string' ? f.question.trim() : '',
-      answer: typeof f.answer === 'string' ? f.answer.trim() : '',
+      answer: typeof f.answer === 'string' ? withYearRoundFishingNote(f.answer.trim()) : '',
     }))
     .filter((f) => f.question.length > 0 && f.answer.length > 0)
 
@@ -285,7 +287,7 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
 
           {/* Article body */}
           <article className="bg-white rounded-2xl p-8 md:p-12 shadow-sm border border-rva-cream-dark">
-            {post.content ? renderMarkdown(post.content) : <p className="text-slate-400">Content coming soon.</p>}
+            {articleBody ? renderMarkdown(articleBody) : <p className="text-slate-400">Content coming soon.</p>}
 
             {/* FAQs inline in article */}
             {sanitizedFaqs.length > 0 && (

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
+
 const pageUrl = 'https://aspenalpenglowlimousine.com/weddings'
 
 export const metadata: Metadata = {
@@ -72,8 +74,8 @@ export default function WeddingsPage() {
           <p>
             For bridal parties and immediate family groups, our Chevrolet Suburban SUVs seat up to seven passengers
             with comfortable luggage capacity. For larger groups and coordinated guest movement, our Ford Transit Van
-            seats up to fourteen passengers and keeps everyone together from pre-ceremony pickups through the final
-            return.
+            seats up to thirteen passengers and keeps everyone together from pre-ceremony pickups through the final
+            return. No shared rides are offered.
           </p>
           <p>
             We routinely support weddings at Aspen and Snowmass venues, including hotel properties, private estates,

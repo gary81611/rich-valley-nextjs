@@ -254,7 +254,7 @@ const vehicleSchemas = [
     '@type': 'Service',
     name: 'Chevrolet Suburban — 7 Passenger Luxury SUV',
     description:
-      'Late-model Chevrolet Suburban with WiFi (Starlink), XM Radio, Yakima roof rack, and Myers ski rack. The fleet includes two Suburbans. Used for airport transfers, private charters, and executive travel in Aspen, Colorado.',
+      'Late-model Chevrolet Suburban with WiFi (Starlink), XM Radio, Yakima roof rack, and Myers ski rack. The fleet includes two Suburbans, each seating 7. Child car seats and boosters are free. No shared rides are offered. Used for airport transfers, private charters, and executive travel in Aspen, Colorado.',
     serviceType: 'Luxury Limousine & Private Car Service',
     provider: {
       '@type': 'LocalBusiness',
@@ -272,9 +272,9 @@ const vehicleSchemas = [
   {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    name: 'Ford Transit Van — 14 Passenger Group Transportation',
+    name: 'Ford Transit Van — 13 Passenger Group Transportation',
     description:
-      'Late-model Ford Transit Van with WiFi (Starlink), XM Radio, and Myers ski rack. Seats up to 14 passengers. Ideal for group airport transfers, wedding parties, and corporate events in Aspen and the Roaring Fork Valley.',
+      'Late-model Ford Transit Van with WiFi (Starlink), XM Radio, and Myers ski rack. Seats up to 13 passengers. Child car seats and boosters are free. No shared rides are offered. Ideal for group airport transfers, wedding parties, and corporate events in Aspen and the Roaring Fork Valley.',
     serviceType: 'Luxury Group Transportation & Van Service',
     provider: {
       '@type': 'LocalBusiness',
@@ -287,7 +287,7 @@ const vehicleSchemas = [
       { '@type': 'City', name: 'Snowmass Village', containedIn: 'Colorado, USA' },
       { '@type': 'City', name: 'Glenwood Springs', containedIn: 'Colorado, USA' },
     ],
-    additionalProperty: { '@type': 'PropertyValue', name: 'Passenger Capacity', value: 14 },
+    additionalProperty: { '@type': 'PropertyValue', name: 'Passenger Capacity', value: 13 },
   },
 ]
 

@@ -243,7 +243,7 @@ function applyConfirmedPolicies(titles: string[]): string[] {
 const CONFIRMED_FLEET_FOR_PRICING = [
   { name: '2026 Chevrolet Suburban', seats: 7, features: ['WiFi (Starlink)', 'XM Radio', 'Yakima + ski racks'] },
   { name: '2025 Chevrolet Suburban', seats: 7, features: ['WiFi (Starlink)', 'XM Radio', 'Yakima + ski racks'] },
-  { name: '2025 Ford Transit Van', seats: 14, features: ['WiFi (Starlink)', 'XM Radio', 'Myers ski rack'] },
+  { name: '2025 Ford Transit Van', seats: 13, features: ['WiFi (Starlink)', 'XM Radio', 'Myers ski rack'] },
 ]
 
 export const dynamic = 'force-dynamic'
@@ -289,7 +289,7 @@ function PriceTable({ title, routes }: { title: string; routes: RouteRow[] }) {
               <th className="text-left py-3 px-4 font-semibold text-alp-navy">Distance</th>
               <th className="text-left py-3 px-4 font-semibold text-alp-navy">Drive Time</th>
               <th className="text-right py-3 px-4 font-semibold text-alp-navy">SUV (7 pass.)</th>
-              <th className="text-right py-3 px-4 font-semibold text-alp-navy">Ford Transit Van (14 pass.)</th>
+              <th className="text-right py-3 px-4 font-semibold text-alp-navy">Ford Transit Van (13 pass.)</th>
             </tr>
           </thead>
           <tbody>

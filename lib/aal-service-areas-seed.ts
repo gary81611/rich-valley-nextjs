@@ -59,7 +59,7 @@ From the Aspen core to Red Mountain, Starwood, and West Aspen addresses, we plan
       {
         question: 'What vehicles serve Aspen?',
         answer:
-          'Our fleet includes two late-model Chevrolet Suburbans (up to seven passengers each) and a Ford Transit Van (up to fourteen passengers), all with WiFi, XM Radio, complimentary water, and ski/luggage racks as equipped.',
+          'Our fleet includes two late-model Chevrolet Suburbans (up to seven passengers each) and a Ford Transit Van (up to thirteen passengers), all with WiFi, XM Radio, complimentary water, and ski/luggage racks as equipped.',
       },
     ],
   },
@@ -95,7 +95,7 @@ Service is available 24 hours a day for early-morning powder days, late après-s
       {
         question: 'Can you transport ski gear and large groups in Snowmass?',
         answer:
-          'Yes. Suburbans include ski racks and generous cargo space; the Ford Transit Van carries up to fourteen passengers for larger families and corporate retreats.',
+          'Yes. Suburbans include ski racks and generous cargo space; the Ford Transit Van carries up to thirteen passengers for larger families and corporate retreats.',
       },
       {
         question: 'Are Snowmass transfers all-inclusive?',
@@ -153,7 +153,7 @@ All rides include professional chauffeurs, complimentary amenities, and transpar
     is_active: true,
     meta_title: 'Carbondale Private Car Service | Roaring Fork Valley | Alpenglow',
     meta_description:
-      'Luxury transportation in Carbondale, CO—Aspen and airport transfers, Crystal River events, corporate travel. Suburbans & 14-passenger van. All-inclusive.',
+      'Luxury transportation in Carbondale, CO—Aspen and airport transfers, Crystal River events, corporate travel. Suburbans & 13-passenger van. All-inclusive.',
     description:
       'Private SUV and van service for Carbondale, the Crystal River Valley, and connections to Aspen, Glenwood, and Colorado airports.',
     long_description: `Carbondale blends ranch heritage with a vibrant arts and food scene. Aspen Alpenglow Limousine supports residents and visitors with discreet door-to-door service for airport runs, wedding weekends at local venues, and corporate retreats along the Crystal River corridor.
@@ -235,10 +235,10 @@ Whether you need a direct transfer to Aspen or a multi-stop day that pairs Glenw
     is_active: true,
     meta_title: 'Vail & Eagle County Car Service | EGE Airport | Aspen Alpenglow',
     meta_description:
-      'Private transfers between Aspen and Vail, Beaver Creek, and Eagle County Airport (EGE). Luxury Suburbans & 14-pass van. All-inclusive mountain pricing.',
+      'Private transfers between Aspen and Vail, Beaver Creek, and Eagle County Airport (EGE). Luxury Suburbans & 13-pass van. All-inclusive mountain pricing.',
     description:
       'Long-distance private car service connecting the Roaring Fork Valley with Vail, Beaver Creek, and Eagle County Regional Airport (EGE).',
-    long_description: `Aspen Alpenglow Limousine operates experienced mountain-road chauffeurs for the high-demand corridor between Aspen and the Vail Valley. We serve Eagle County Regional Airport (EGE), Vail Village, Lionshead, Avon, and Beaver Creek with Chevrolet Suburbans and our fourteen-passenger Ford Transit Van.
+    long_description: `Aspen Alpenglow Limousine operates experienced mountain-road chauffeurs for the high-demand corridor between Aspen and the Vail Valley. We serve Eagle County Regional Airport (EGE), Vail Village, Lionshead, Avon, and Beaver Creek with Chevrolet Suburbans and our thirteen-passenger Ford Transit Van.
 
 These transfers cross high mountain passes and can be affected by snow, wind, and I-70 incidents. We build padding into itineraries, monitor CDOT alerts, and communicate proactively if timing needs to shift.
 
@@ -263,7 +263,7 @@ Ideal for split-resort ski weeks, corporate incentives, and wedding parties movi
       {
         question: 'Can larger groups travel between Aspen and Vail in one vehicle?',
         answer:
-          'Groups up to fourteen passengers can ride in our Ford Transit Van; smaller parties typically choose dual Suburbans for extra luggage capacity.',
+          'Groups up to thirteen passengers can ride in our Ford Transit Van; smaller parties typically choose dual Suburbans for extra luggage capacity.',
       },
     ],
   },

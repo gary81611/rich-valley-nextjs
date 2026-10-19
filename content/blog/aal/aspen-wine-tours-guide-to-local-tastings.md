@@ -20,7 +20,7 @@ Ask your concierge (or our dispatch team) about seasonal hours — mountain town
 
 Serious Colorado wine touring often means Palisade and the Grand Valley — a commitment from Aspen. Treat it as a curated road trip, not a sprint. We build in vineyard time, meal breaks, and realistic return windows so you are not tasting under sunset panic on I-70.
 
-Groups of six to fourteen frequently choose the Transit van configuration: standing headroom, cooler space, and a single cohesive itinerary instead of a two-car convoy guessing exits.
+Groups of six to thirteen frequently choose the Transit van configuration: standing headroom, cooler space, and a single cohesive itinerary instead of a two-car convoy guessing exits.
 
 ## Aspen dining: wine-forward reservations
 

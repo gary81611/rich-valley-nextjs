@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import AlpenglowHomeClient from './ALPHomeClient'
 
+/** Fleet paragraph must render from this file, not a stale edge prerender. */
+export const dynamic = 'force-dynamic'
+
 const ALP_URL = 'https://aspenalpenglowlimousine.com'
 
 const speakableSchema = {

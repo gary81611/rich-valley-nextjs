@@ -8,6 +8,7 @@ import LocationPageTemplate from '@/components/templates/LocationPageTemplate'
 import FaqPageTemplate from '@/components/templates/FaqPageTemplate'
 import LandingPageTemplate from '@/components/templates/LandingPageTemplate'
 import type { CmsPage } from '@/lib/pages'
+import { correctAalFleetText } from '@/lib/aal-public-copy'
 
 const AAL_FBO =
   'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison.'
@@ -17,6 +18,68 @@ const AAL_CANCEL =
   "Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice."
 const AAL_CORPORATE = 'Corporate charge accounts are billed monthly.'
 
+function applyFleetCapacityCopy(page: CmsPage): CmsPage {
+  const meta_description = page.meta_description ? correctAalFleetText(page.meta_description) : page.meta_description
+  const meta_title = page.meta_title ? correctAalFleetText(page.meta_title) : page.meta_title
+  const title = correctAalFleetText(page.title)
+  if (page.template_type === 'service' || page.template_type === 'location') {
+    const content = { ...(page.content as ServiceContent & LocationContent) }
+    content.hero_title = content.hero_title ? correctAalFleetText(content.hero_title) : content.hero_title
+    content.hero_subtitle = content.hero_subtitle ? correctAalFleetText(content.hero_subtitle) : content.hero_subtitle
+    content.intro = correctAalFleetText(content.intro || '')
+    content.area_description = content.area_description ? correctAalFleetText(content.area_description) : content.area_description
+    content.h2_sections = content.h2_sections?.map((section) => ({
+      ...section,
+      title: correctAalFleetText(section.title),
+      content: correctAalFleetText(section.content),
+    }))
+    content.features = content.features?.map((feature) => ({
+      ...feature,
+      title: correctAalFleetText(feature.title),
+      description: correctAalFleetText(feature.description),
+    }))
+    content.faqs = content.faqs?.map((faq) => ({
+      ...faq,
+      question: correctAalFleetText(faq.question),
+      answer: correctAalFleetText(faq.answer),
+    }))
+    content.local_tips = content.local_tips?.map((tip) => ({
+      ...tip,
+      title: correctAalFleetText(tip.title),
+      description: correctAalFleetText(tip.description),
+    }))
+    content.services_available = content.services_available?.map((item) => correctAalFleetText(item))
+    return { ...page, title, meta_title, meta_description, content }
+  }
+  if (page.template_type === 'faq') {
+    const content = { ...(page.content as FaqContent) }
+    content.intro = content.intro ? correctAalFleetText(content.intro) : content.intro
+    content.faqs = content.faqs.map((faq) => ({
+      ...faq,
+      question: correctAalFleetText(faq.question),
+      answer: correctAalFleetText(faq.answer),
+    }))
+    return { ...page, title, meta_title, meta_description, content }
+  }
+  if (page.template_type === 'landing') {
+    const content = { ...(page.content as LandingContent) }
+    content.hero_title = correctAalFleetText(content.hero_title)
+    content.hero_subtitle = content.hero_subtitle ? correctAalFleetText(content.hero_subtitle) : content.hero_subtitle
+    content.sections = content.sections?.map((section) => ({
+      ...section,
+      title: section.title ? correctAalFleetText(section.title) : section.title,
+      content: section.content ? correctAalFleetText(section.content) : section.content,
+      items: section.items?.map((item) => ({
+        ...item,
+        title: correctAalFleetText(item.title),
+        description: correctAalFleetText(item.description),
+      })),
+    }))
+    return { ...page, title, meta_title, meta_description, content }
+  }
+  return { ...page, title, meta_title, meta_description }
+}
+
 function applyAalConfirmedFacts(page: CmsPage | null): CmsPage | null {
   if (!page) return null
   if (page.slug === 'airport-transfers' && page.template_type === 'service') {
@@ -25,25 +88,26 @@ function applyAalConfirmedFacts(page: CmsPage | null): CmsPage | null {
     if (!content.intro?.includes('Buena Vista')) {
       content.intro = `${content.intro || ''}\n\n${note}`.trim()
     }
-    return {
+    return applyFleetCapacityCopy({
       ...page,
       meta_description: page.meta_description?.includes('Buena Vista')
         ? page.meta_description
         : `${AAL_FBO} ${AAL_ONE_WAY}`.slice(0, 300),
       content,
-    }
+    })
   }
   if ((page.slug === 'corporate' || page.slug === 'corporate-travel') && page.template_type === 'service') {
     const content = { ...(page.content as ServiceContent) }
     if (!content.intro?.includes('billed monthly')) {
       content.intro = `${content.intro || ''}\n\n${AAL_CORPORATE}`.trim()
     }
-    return { ...page, content }
+    return applyFleetCapacityCopy({ ...page, content })
   }
-  return page
+  return applyFleetCapacityCopy(page)
 }
 
-export const revalidate = 30
+/** CMS fleet copy must render from this file, not a stale edge prerender. */
+export const dynamic = 'force-dynamic'
 
 interface Props {
   params: Promise<{ slug: string[] }>

@@ -47,7 +47,7 @@ For weddings with 50 or more guests, a shuttle program is almost always worthwhi
 
 A good shuttle program makes your wedding more relaxed for everyone — guests don't worry about driving or parking, the open bar is more fun when nobody needs to drive, and the couple doesn't spend their reception worrying about whether guests are getting home safely.
 
-Aspen Alpenglow Limousine can coordinate multiple-vehicle shuttle programs for larger weddings. Our Luxury Sprinters accommodate up to 14 passengers and are well-suited for guest shuttle runs between accommodations and venue.
+Aspen Alpenglow Limousine can coordinate multiple-vehicle shuttle programs for larger weddings. Our Luxury Sprinters accommodate up to 13 passengers and are well-suited for guest shuttle runs between accommodations and venue.
 
 ### The grand getaway
 
@@ -101,7 +101,7 @@ When you book wedding transportation with us, you get a dedicated wedding coordi
 For summer weddings (June–September), book your transportation vendor 8–10 months in advance. July and August are peak demand periods and professional services fill quickly. For off-season weddings, 4–6 months is generally sufficient.
 
 **How many vehicles do I need for an Aspen wedding with 100 guests?**
-It depends heavily on where guests are staying. For a typical wedding with guests distributed across two or three accommodation properties, a shuttle program with two Luxury Sprinters (14 passengers each) plus a dedicated Escalade for the bridal party handles most situations. Aspen Alpenglow Limousine will assess your specific guest distribution and venue layout and recommend the right configuration.
+It depends heavily on where guests are staying. For a typical wedding with guests distributed across two or three accommodation properties, a shuttle program with two Luxury Sprinters (13 passengers each) plus a dedicated Escalade for the bridal party handles most situations. Aspen Alpenglow Limousine will assess your specific guest distribution and venue layout and recommend the right configuration.
 
 **Can wedding vehicles be decorated for an Aspen wedding?**
 Yes — we offer decorated vehicles for the bridal couple's grand getaway (flowers, ribbons, and "Just Married" signage upon request) and can accommodate most decoration requests with advance notice. We ask that no permanent adhesives or materials be used on vehicle exteriors.

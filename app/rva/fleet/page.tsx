@@ -3,13 +3,14 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { seoAlt } from '@/lib/seo/alt-text'
+import { correctAalFleetText } from '@/lib/aal-public-copy'
 
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Fleet | Rich Valley Adventures',
   description:
-    'Our sister company Aspen Alpenglow Limousine provides luxury transportation in Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (14 passengers) for Chauffeur Guided Tours and Excursions and transfers.',
+    'Our sister company Aspen Alpenglow Limousine provides luxury transportation in Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (13 passengers) for Chauffeur Guided Tours and Excursions and transfers. Child seats are free. No shared rides are offered.',
   alternates: {
     canonical: 'https://aspenalpenglowlimousine.com/fleet',
   },
@@ -98,13 +99,13 @@ export default async function FleetPage() {
                       <span className="bg-rva-copper/10 text-rva-copper text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                         {vehicle.vehicle_type ?? (i === 0 ? 'SUV' : 'Van')}
                       </span>
-                      <span className="text-gray-500 text-sm">{vehicle.passengers}</span>
+                      <span className="text-gray-500 text-sm">{correctAalFleetText(String(vehicle.passengers ?? ''))}</span>
                     </div>
                     <h2 className="font-playfair text-3xl sm:text-4xl font-bold text-rva-forest mb-4">
                       {vehicle.name}
                     </h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
-                      {vehicle.description}
+                      {vehicle.description ? correctAalFleetText(vehicle.description) : vehicle.description}
                     </p>
                     <ul className="grid grid-cols-2 gap-3 mb-8">
                       {(vehicle.features as string[])?.map((feature) => (

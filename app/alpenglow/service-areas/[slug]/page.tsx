@@ -5,6 +5,7 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { slugifyServiceName } from '@/lib/alpenglow-services'
 import { serviceAreaMatchesPathSlug } from '@/lib/alpenglow-service-areas'
 import { alpenglowData } from '@/lib/site-data'
+import { correctAalFleetText } from '@/lib/aal-public-copy'
 
 export const dynamic = 'force-dynamic'
 
@@ -43,7 +44,26 @@ async function getArea(pathSlug: string): Promise<ServiceAreaRow | null> {
     .eq('is_active', true)
 
   if (!rows?.length) return null
-  return (rows as ServiceAreaRow[]).find((area) => serviceAreaMatchesPathSlug(area, pathSlug)) ?? null
+  const area = (rows as ServiceAreaRow[]).find((row) => serviceAreaMatchesPathSlug(row, pathSlug)) ?? null
+  if (!area) return null
+  return {
+    ...area,
+    description: correctAalFleetText(area.description),
+    long_description: area.long_description ? correctAalFleetText(area.long_description) : area.long_description,
+    meta_title: area.meta_title ? correctAalFleetText(area.meta_title) : area.meta_title,
+    meta_description: area.meta_description ? correctAalFleetText(area.meta_description) : area.meta_description,
+    faq_schema: Array.isArray(area.faq_schema)
+      ? area.faq_schema.map((item) => {
+          if (!item || typeof item !== 'object') return item
+          const row = item as Record<string, unknown>
+          return {
+            ...row,
+            question: typeof row.question === 'string' ? correctAalFleetText(row.question) : row.question,
+            answer: typeof row.answer === 'string' ? correctAalFleetText(row.answer) : row.answer,
+          }
+        })
+      : area.faq_schema,
+  }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

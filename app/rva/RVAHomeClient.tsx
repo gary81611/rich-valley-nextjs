@@ -8,6 +8,27 @@ import { createClient } from '@/lib/supabase'
 import type { Adventure, Testimonial, GalleryImage } from '@/lib/types'
 import { isBookableAdventureName } from '@/lib/rva-adventure-filters'
 import { seoAlt } from '@/lib/seo/alt-text'
+import { KIDS_FAMILY_FISHING } from '@/lib/rva-fly-fishing-content'
+
+const FEATURED_TRIPS = [
+  {
+    title: 'Full-day float trip',
+    href: '/fly-fishing',
+    detail:
+      'From $1,400 for 2 people (1 boat, 1 captain). Additional adults $375, kids $175. An 8–12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation included.',
+  },
+  {
+    title: 'Private ranch family fishing and picnic lunch',
+    href: '/fly-fishing',
+    detail:
+      'Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+).',
+  },
+  {
+    title: 'Group hiking',
+    href: '/hiking',
+    detail: 'Includes transportation and picnic lunch.',
+  },
+] as const
 
 export default function RVAHomeClient() {
   const [adventures, setAdventures] = useState<Array<{ title: string; slug: string; description: string; image: string; duration: string; difficulty: string; season: string }>>([])
@@ -196,6 +217,25 @@ export default function RVAHomeClient() {
             <p className="rva-speak-services-intro text-white/70 text-xl max-w-2xl mx-auto">
               Seven ways to experience the Roaring Fork Valley — each one expertly guided, fully equipped, and unforgettable.
             </p>
+            <div className="mt-8 max-w-3xl mx-auto text-left bg-rva-cream text-rva-forest rounded-2xl p-6 md:p-8">
+              <h3 className="font-playfair text-2xl md:text-3xl font-bold mb-3">Kids &amp; Family Fishing</h3>
+              <p className="text-base md:text-lg leading-relaxed">{KIDS_FAMILY_FISHING}</p>
+              <Link href="/fly-fishing" className="mt-4 inline-flex text-rva-copper font-semibold hover:text-rva-copper-light">
+                Fly fishing trips
+              </Link>
+            </div>
+            <ol className="mt-8 grid md:grid-cols-3 gap-6 text-left">
+              {FEATURED_TRIPS.map((trip, index) => (
+                <li key={trip.title} className="bg-rva-forest rounded-2xl p-6 border border-white/10">
+                  <p className="text-rva-copper-light text-sm font-semibold mb-2">{index + 1}</p>
+                  <h3 className="font-playfair text-2xl text-white font-semibold mb-3">{trip.title}</h3>
+                  <p className="text-white/75 text-sm leading-relaxed mb-4">{trip.detail}</p>
+                  <Link href={trip.href} className="text-rva-copper-light text-sm font-semibold hover:text-rva-copper">
+                    Learn more
+                  </Link>
+                </li>
+              ))}
+            </ol>
             <div className="flex justify-center gap-3 mt-6">
               {[
                 { label: 'All', value: null },

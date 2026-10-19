@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 const VEHICLE_ANSWER =
-  '8 full-time local drivers with 15+ years of mountain driving experience. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee. The fleet includes two late-model Chevrolet Suburbans (up to 7 passengers each) and a Ford Transit Van (up to 14 passengers).'
+  '8 full-time local drivers with 15+ years of mountain driving experience. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. The fleet includes two late-model Chevrolet Suburbans (SUVs seat 7) and a Ford Transit Van (the passenger shuttle van seats 13).'
 
 const DEN_COST_ANSWER =
   `${AAL_ONE_WAY_RATES} Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison.`
@@ -93,7 +93,7 @@ function applyClientContent(faqs: { q: string; a: string }[]) {
 
   const patched = rows.map(({ q, a }) => {
     const ql = q.toLowerCase()
-    if (ql.includes('what vehicles') && ql.includes('alpenglow')) return { q, a: VEHICLE_ANSWER }
+    if (ql.includes('what vehicles') || ql.includes('which vehicles')) return { q, a: VEHICLE_ANSWER }
     if (ql.includes('denver') && (ql.includes('cost') || ql.includes('limo') || ql.includes('how much'))) return { q, a: DEN_COST_ANSWER }
     if (ql.includes('cancellation')) return { q, a: CANCELLATION_ANSWER }
     if (ql.includes('corporate account')) return { q, a: CORPORATE_ACCOUNT_FAQ.a }
@@ -125,6 +125,11 @@ function applyClientContent(faqs: { q: string; a: string }[]) {
 
   if (!alreadyCorporate) out = [...out, CORPORATE_ACCOUNT_FAQ]
 
+  const alreadyVehicles = out.some((f) => /what vehicles|which vehicles/i.test(f.q))
+  if (!alreadyVehicles) {
+    out = [{ q: 'What vehicles does Aspen Alpenglow Limousine use?', a: VEHICLE_ANSWER }, ...out]
+  }
+
   return out
 }
 
@@ -140,7 +145,7 @@ function canonicalAnswerForSchema(question: string): string | null {
   if (ql.includes('denver') && (ql.includes('cost') || ql.includes('how much') || ql.includes('limo'))) {
     return DEN_TRANSFER_SCHEMA_FAQ.a
   }
-  if (ql.includes('what vehicles') && ql.includes('alpenglow')) {
+  if (ql.includes('what vehicles') || ql.includes('which vehicles')) {
     return VEHICLE_ANSWER
   }
   if (ql.includes('cancellation')) return CANCELLATION_ANSWER

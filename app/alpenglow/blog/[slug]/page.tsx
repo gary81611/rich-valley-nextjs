@@ -6,6 +6,7 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { absolutePublicImageUrl } from '@/lib/seo/canonical'
 import { seoAlt } from '@/lib/seo/alt-text'
 import type { BlogPost } from '@/lib/types'
+import { correctAalFleetText } from '@/lib/aal-public-copy'
 
 export const dynamic = 'force-dynamic'
 
@@ -132,7 +133,7 @@ const AAL_BLOG_RELATED: Record<string, { text: string; url: string }[]> = {
   ],
   'corporate-retreat-transportation-aspen': [
     { text: 'Corporate & executive transportation', url: '/corporate' },
-    { text: 'Fleet — Suburbans & 14-passenger van', url: '/fleet' },
+    { text: 'Fleet — Suburbans & 13-passenger van', url: '/fleet' },
     { text: 'Request a group quote', url: '/contact' },
   ],
   'aspen-wine-tours-guide-to-local-tastings': [
@@ -166,6 +167,12 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
   const { slug } = await params
   const post = await getPost(slug)
   if (!post) notFound()
+
+  const articleBody = post.content ? correctAalFleetText(post.content) : ''
+  const articleFaqs = (post.faqs ?? []).map((faq) => ({
+    question: correctAalFleetText(faq.question),
+    answer: correctAalFleetText(faq.answer),
+  }))
 
   const relatedLinks = mergeRelatedLinks(post.slug, post.internal_links)
 
@@ -220,11 +227,11 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
       .slice(0, 500),
   }
 
-  const faqSchema = post.faqs.length > 0
+  const faqSchema = articleFaqs.length > 0
     ? {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
-        mainEntity: post.faqs.map(f => ({
+        mainEntity: articleFaqs.map(f => ({
           '@type': 'Question',
           name: f.question,
           acceptedAnswer: { '@type': 'Answer', text: f.answer },
@@ -323,16 +330,16 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
 
           {/* Article body */}
           <article className="bg-white rounded-2xl p-8 md:p-12 shadow-sm border border-alp-pearl-dark">
-            {post.content ? renderMarkdown(post.content) : <p className="text-slate-400">Content coming soon.</p>}
+            {articleBody ? renderMarkdown(articleBody) : <p className="text-slate-400">Content coming soon.</p>}
 
             {/* FAQs inline in article */}
-            {post.faqs.length > 0 && (
+            {articleFaqs.length > 0 && (
               <div className="mt-12 pt-8 border-t border-alp-pearl-dark">
                 <h2 className="font-playfair text-2xl font-bold text-alp-navy mb-6">
                   Frequently Asked Questions
                 </h2>
                 <div className="space-y-4">
-                  {post.faqs.map((faq, i) => (
+                  {articleFaqs.map((faq, i) => (
                     <details key={i} className="group bg-alp-pearl rounded-xl p-5">
                       <summary className="flex items-center justify-between cursor-pointer font-semibold text-alp-navy list-none">
                         <span>{faq.question}</span>

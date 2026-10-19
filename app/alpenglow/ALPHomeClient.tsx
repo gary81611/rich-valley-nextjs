@@ -9,7 +9,7 @@ import { createClient } from '@/lib/supabase'
 import { hrefForService } from '@/lib/alpenglow-services'
 import type { Service as ServiceType, FleetVehicle, Testimonial } from '@/lib/types'
 import { seoAlt } from '@/lib/seo/alt-text'
-import { AAL_ONE_WAY_RATES, correctAalFaqItem } from '@/lib/aal-public-copy'
+import { AAL_ONE_WAY_RATES, correctAalFaqItem, correctAalFleetCapacity, correctAalFleetText } from '@/lib/aal-public-copy'
 
 interface GeoBlock {
   id: string
@@ -29,7 +29,7 @@ function correctAalCopy(question: string, answer: string): string {
   if (blob.includes('cancellation') && (/50%|7-day|7 day|full refund/.test(answer))) {
     return "Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice."
   }
-  return answer
+  return correctAalFleetText(answer)
 }
 
 const ServiceIcon = ({ icon }: { icon: string }) => {
@@ -84,7 +84,8 @@ export default function AlpenglowHomeClient() {
         if (fleetRes.data && fleetRes.data.length > 0) {
           setFleet(fleetRes.data.map((v: FleetVehicle) => ({
             name: v.name, image: v.image_url || '/images/escalade.png',
-            passengers: `Up to ${v.capacity} Passengers`, features: v.description ? [v.description] : [],
+            passengers: `Up to ${correctAalFleetCapacity(v.name, v.capacity)} Passengers`,
+            features: v.description ? [correctAalFleetText(v.description)] : [],
           })))
         }
         if (testRes.data && testRes.data.length > 0) {
@@ -254,7 +255,7 @@ export default function AlpenglowHomeClient() {
               Every detail handled. Every journey seamless.
             </p>
             <p className="alp-speak-services-overview text-alp-slate text-base max-w-3xl mx-auto mt-6 leading-relaxed border-t border-alp-pearl-dark pt-6">
-              Aspen Alpenglow Limousine operates a professional fleet of three late-model vehicles — two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (14 passengers) — with Starlink, ski racks, and roof cargo space. 8 full-time local drivers have 15+ years of mountain driving experience. Child car seats and boosters are free. Pets are welcome, with a cleaning fee. Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison, alongside Aspen/Pitkin County Airport (ASE) and Denver International Airport (DEN). One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.
+              Aspen Alpenglow Limousine operates a professional fleet of three late-model vehicles — two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (13 passengers) — with Starlink, ski racks, and roof cargo space. 8 full-time local drivers have 15+ years of mountain driving experience. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison, alongside Aspen/Pitkin County Airport (ASE) and Denver International Airport (DEN). One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.
             </p>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 gap-8">

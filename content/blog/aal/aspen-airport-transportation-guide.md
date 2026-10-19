@@ -25,7 +25,7 @@ A professional car service meeting you at baggage claim is the gold standard for
 
 In ski season especially, arriving with skis, poles, boot bags, and regular luggage in a mountain airport terminal after a long travel day — and then figuring out transportation — is genuinely exhausting. Having a professional waiting for you, handling bags, and knowing exactly where you're going is worth every penny.
 
-Aspen Alpenglow Limousine operates both Executive Escalades (up to 6 passengers and their luggage) and Luxury Sprinters (up to 14 passengers), so groups of any size are covered in a single vehicle.
+Aspen Alpenglow Limousine operates both Executive Escalades (up to 7 passengers and their luggage) and Luxury Sprinters (up to 13 passengers), so groups of any size are covered in a single vehicle. No shared rides are offered.
 
 ### Shared Shuttle Service
 
