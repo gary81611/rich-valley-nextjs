@@ -39,7 +39,7 @@ export function rvaPillarBlogExtraInternalLinks(slug: string): { text: string; u
     ]
   }
   return [
-    { text: 'Family-friendly paddle boarding', url: '/paddle-boarding' },
+    { text: 'Paddleboard rental from $100', url: '/paddle-boarding' },
     { text: 'Guided fly fishing for families', url: '/fly-fishing' },
     adventures,
     areas,

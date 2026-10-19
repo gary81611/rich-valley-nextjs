@@ -16,13 +16,13 @@ const sections = [
     id: 'airport-transfers',
     title: 'Airport Transfers',
     href: '/airport-transfers',
-    body: `Aspen Alpenglow Limousine offers all-inclusive, door-to-door private car service from ASE, EGE, DEN, KAPA (Centennial), KRIL (Rifle), and GJT (Grand Junction). We monitor flights in real time, meet you at arrivals with a warm greeting, and include thirty minutes of complimentary wait time on airport pickups so you are never rushed after baggage claim. Whether you are landing after a long haul or connecting from a regional flight, your chauffeur handles luggage and navigation while you relax. Service is available twenty-four hours a day, every day of the year — early Aspen departures and late-night Denver arrivals are our specialty.`,
+    body: `Aspen Alpenglow Limousine offers all-inclusive, door-to-door private car service from ASE, EGE, DEN, KAPA (Centennial), KRIL (Rifle), and GJT (Grand Junction). Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way rates from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally. Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice. We monitor flights in real time, meet you at arrivals with a warm greeting, and include thirty minutes of complimentary wait time on airport pickups so you are never rushed after baggage claim.`,
   },
   {
     id: 'corporate',
     title: 'Corporate & Executive Travel',
     href: '/corporate',
-    body: `Discreet, professional transportation for business travelers, corporate retreats, and executive transfers across Aspen and Snowmass. We understand confidentiality, tight schedules, and the need for a calm cabin between meetings. Corporate billing is available for approved accounts, and every driver is an experienced mountain operator — not a generic city driver guessing at snow-packed passes. All vehicles are equipped with Starlink WiFi so you can stay productive between venues, hotels, and the airport.`,
+    body: `Discreet, professional transportation for business travelers, corporate retreats, and executive transfers across Aspen and Snowmass. Corporate charge accounts are billed monthly. 8 full-time local drivers with 15+ years of mountain driving experience. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee.`,
   },
   {
     id: 'weddings',

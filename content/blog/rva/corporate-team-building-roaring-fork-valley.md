@@ -29,7 +29,7 @@ Aspen and the surrounding valley have a unique combination of assets that most c
 
 ### Group Fly Fishing — The Collaborative Challenge
 
-We run corporate fly fishing trips for groups of 4–20+ regularly, and the dynamics are fascinating every time. Fly fishing requires you to slow down, pay attention, and take instruction — three things that are hard for high-performing, autonomous professionals who are used to running their own show.
+Corporate packages are for groups of 50 or more: a custom mix of fishing and hiking. Fly fishing requires you to slow down, pay attention, and take instruction — three things that are hard for high-performing, autonomous professionals who are used to running their own show.
 
 Watching a VP and their newest analyst work together to figure out a drift, with the analyst knowing slightly more because they've been at it for three hours, creates something genuine. Hierarchies soften. Collaboration becomes natural because everyone is equally out of their element.
 

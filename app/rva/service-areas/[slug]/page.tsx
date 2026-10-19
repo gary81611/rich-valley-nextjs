@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return {
       title: 'Guided Outdoor Adventures in Aspen, CO | Rich Valley Adventures',
       description:
-        'Book guided fly fishing, hiking, paddleboarding, and elevated camping in Aspen, CO. Local expert guides, small groups. Reserve your Aspen adventure today.',
+        'Book guided fly fishing, hiking, and elevated camping in Aspen, CO. Paddleboarding is a rental from $100, not a guided trip.',
       alternates: { canonical: `${BASE}/service-areas/aspen` },
       robots: { index: true, follow: true },
     }

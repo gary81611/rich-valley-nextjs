@@ -19,7 +19,7 @@ export const LOCATIONS: Location[] = [
     activities: ['Fly Fishing', 'Guided Hiking', 'Snowshoeing', 'Chauffeur Guided Tours', 'Mountain Biking', 'Cross-Country Skiing'],
     highlights: ['Gold medal trout water', 'Maroon Bells scenic area', 'Historic downtown', 'Four ski mountains'],
     faq: [
-      { q: 'What fly fishing is available in Aspen?', a: 'The Roaring Fork River runs through Aspen offering excellent trout fishing. Rich Valley Adventures provides guided trips with all gear included, starting at $250 per person.' },
+      { q: 'What fly fishing is available in Aspen?', a: 'The Roaring Fork River runs through Aspen. A full-day float trip is from $1,400 for 2 people (1 boat, 1 captain). Additional adults are $375 each and kids are $175. It covers an 8–12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation are included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up.' },
       { q: 'What guided hikes are available from Aspen?', a: 'We offer guided hikes ranging from easy valley walks to challenging alpine treks. Half-day (3-4 hours) and full-day (6-8 hours) options available, all gear and transport included.' },
     ],
   },

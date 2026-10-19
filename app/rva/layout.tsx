@@ -60,7 +60,7 @@ const websiteSchema = {
   name: 'Rich Valley Adventures',
   inLanguage: 'en-US',
   description:
-    'Expert-guided fly fishing, hiking, mountain biking, paddle boarding, and elevated camping in Aspen, Colorado and the Roaring Fork Valley.',
+    'Expert-guided fly fishing, hiking, mountain biking, and elevated camping in Aspen, Colorado and the Roaring Fork Valley. Paddleboarding is a rental from $100.',
   publisher: { '@id': `${RVA_URL}/#business` },
 }
 
@@ -70,7 +70,7 @@ const localBusinessSchema = {
   '@id': `${RVA_URL}/#business`,
   name: 'Rich Valley Adventures',
   description:
-    'Expert-guided fly fishing, hiking, mountain biking, paddle boarding, hunting, and elevated camping in Aspen, Colorado and the Roaring Fork Valley since 2012.',
+    'Expert-guided fly fishing, hiking, mountain biking, paddleboard rentals, hunting, and elevated camping in Aspen, Colorado and the Roaring Fork Valley since 2012.',
   url: RVA_URL,
   telephone: '+19704563666',
   email: 'kit@richvalleyadventures.com',
@@ -166,9 +166,8 @@ const localBusinessSchema = {
         '@type': 'Offer',
         itemOffered: {
           '@type': 'SportsActivityLocation',
-          name: 'Guided Stand-Up Paddle Boarding — Aspen, CO',
-          description:
-            'Stand-up paddle boarding on pristine mountain lakes and rivers near Aspen, Colorado. Instruction and all equipment provided. No experience required.',
+          name: 'Paddleboard Rental — Aspen, CO',
+          description: 'Paddleboarding is a rental from $100, not a guided trip.',
         },
       },
       {

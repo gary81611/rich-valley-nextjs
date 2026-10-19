@@ -47,7 +47,7 @@ export const alpenglowData = {
   },
   partnerSite: {
     name: 'Rich Valley Adventures',
-    description: "Looking for something to do while you're in town? Our sister company offers guided fly fishing, paddle boarding, mountain biking, and more.",
+    description: "Looking for something to do while you're in town? Our sister company offers guided fly fishing, mountain biking, and paddleboard rentals from $100.",
     url: 'https://www.richvalleyadventures.com',
   },
 }

@@ -85,7 +85,7 @@ export default function LocationDetailView({ loc, backLink }: Props) {
             >
               Aspen Alpenglow Limousine
             </a>{' '}
-            — luxury SUV or Sprinter with WiFi and Starlink. Door-to-door service included with guided adventures.
+            — vehicles with Starlink, ski racks, and roof cargo space. Door-to-door service included with guided adventures.
           </p>
           <a
             href="https://aspenalpenglowlimousine.com/pricing"
@@ -100,12 +100,17 @@ export default function LocationDetailView({ loc, backLink }: Props) {
         {faqs.length > 0 && (
           <div className="mb-12">
             <h2 className="font-playfair text-2xl text-rva-forest-dark mb-6">Frequently Asked Questions</h2>
-            {faqs.map((f) => (
+            {faqs.map((f) => {
+              const answer = /\$250/.test(f.a) && /fish/i.test(`${f.q} ${f.a}`)
+                ? 'A full-day float trip is from $1,400 for 2 people (1 boat, 1 captain). Additional adults are $375 each and kids are $175. It covers an 8–12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation are included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up.'
+                : f.a
+              return (
               <details key={f.q} className="group mb-3 bg-white rounded-lg border border-rva-copper/10">
                 <summary className="p-4 cursor-pointer font-medium text-rva-forest-dark text-sm">{f.q}</summary>
-                <p className="px-4 pb-4 text-sm text-rva-forest/70">{f.a}</p>
+                <p className="px-4 pb-4 text-sm text-rva-forest/70">{answer}</p>
               </details>
-            ))}
+              )
+            })}
           </div>
         )}
 

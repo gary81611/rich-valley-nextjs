@@ -43,7 +43,7 @@ export default function FlyFishingPage() {
       telephone: '+19704563666',
       email: 'kit@richvalleyadventures.com',
       description:
-        'Expert-guided fly fishing, hiking, mountain biking, paddle boarding, hunting, and elevated camping in Aspen, Colorado and the Roaring Fork Valley since 2012.',
+        'Expert-guided fly fishing, hiking, mountain biking, paddleboard rentals, hunting, and elevated camping in Aspen, Colorado and the Roaring Fork Valley since 2012.',
       priceRange: '$$$$',
       openingHours: 'Mo-Su 00:00-23:59',
       address: {
@@ -73,6 +73,24 @@ export default function FlyFishingPage() {
         address: { '@type': 'PostalAddress', addressLocality: 'Aspen', addressRegion: 'CO', addressCountry: 'US' },
       },
       areaServed: { '@type': 'City', name: 'Aspen', containedInPlace: { '@type': 'State', name: 'Colorado' } },
+      offers: [
+        {
+          '@type': 'Offer',
+          name: 'Full-day float trip',
+          price: '1400',
+          priceCurrency: 'USD',
+          description:
+            'From $1,400 for 2 people (1 boat, 1 captain). Additional adults $375 each, kids $175. An 8–12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation included.',
+        },
+        {
+          '@type': 'Offer',
+          name: 'Private ranch and picnic package at Spring Creek Ranch, Carbondale, CO',
+          price: '800',
+          priceCurrency: 'USD',
+          description:
+            'From $800 per adult, $250 per child (ages 3+). Ponds, creeks, and a private section of the Roaring Fork River.',
+        },
+      ],
     },
     {
       '@context': 'https://schema.org',
@@ -80,11 +98,12 @@ export default function FlyFishingPage() {
       name: 'How to Book a Guided Fly Fishing Trip in Aspen, CO',
       description:
         'Book a guided fly fishing trip with Rich Valley Adventures on Gold Medal waters including the Roaring Fork River. All skill levels welcome. Equipment provided.',
-      totalTime: 'PT4H',
+      totalTime: 'PT8H',
       estimatedCost: {
         '@type': 'MonetaryAmount',
         currency: 'USD',
-        value: '150-350',
+        value: '1400',
+        description: 'Full-day float from $1,400 for 2 people',
       },
       step: [
         {
@@ -95,7 +114,7 @@ export default function FlyFishingPage() {
         {
           '@type': 'HowToStep',
           name: 'Select your date and group size',
-          text: 'Rich Valley Adventures runs small groups of 2–6 guests. Book in advance, especially for summer weekends.',
+          text: 'Book at least 2 days in advance. A 50% deposit is due at booking. Cancellations within 72 hours are billed in full.',
         },
         {
           '@type': 'HowToStep',
@@ -105,7 +124,7 @@ export default function FlyFishingPage() {
         {
           '@type': 'HowToStep',
           name: 'Prepare for your trip',
-          text: 'All rods, reels, flies, waders, and boots are included. Bring sunscreen, layers, and snacks. A Colorado fishing license is required — your guide can help you obtain one.',
+          text: 'On a full-day float, lunch, gear, and luxury door-to-door transportation are included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up.',
         },
       ],
       supply: [
@@ -143,7 +162,7 @@ export default function FlyFishingPage() {
           closes: '18:00',
         },
       ],
-      priceRange: '$150–$350 per person',
+      priceRange: 'Full-day float from $1400 for 2 people',
       aggregateRating: {
         '@type': 'AggregateRating',
         ratingValue: '4.9',

@@ -25,7 +25,7 @@ Rich Valley Adventures offers half-day fly fishing trips specifically sized for 
 
 ## 3. Paddleboarding on Hallam Lake or Ruedi Reservoir
 
-Flatwater paddleboarding is the perfect family water activity — low barrier to entry, endlessly fun, and forgiving for beginners. Ruedi Reservoir up the Fryingpan Valley near Basalt is a local favorite: calm water, mountain views on all sides, and a beach for younger kids who'd rather splash than paddle.
+Rich Valley Adventures lists paddleboarding as a rental from $100, not a guided trip. Flatwater paddleboarding is a family water activity — low barrier to entry, endlessly fun, and forgiving for beginners. Ruedi Reservoir up the Fryingpan Valley near Basalt is a local favorite: calm water, mountain views on all sides, and a beach for younger kids who'd rather splash than paddle.
 
 Hallam Lake, right in Aspen, is another beautiful option managed by the Aspen Center for Environmental Studies, where wildlife sightings are common.
 

@@ -41,6 +41,85 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
     if (p) Object.assign(r, p)
   }
 
+  const oneWayFromAspen: Record<'eagle' | 'denver' | 'gj' | 'rifle', number> = {
+    eagle: 120,
+    denver: 1375,
+    gj: 950,
+    rifle: 720,
+  }
+
+  const fromAspenKey = (row: DbPricingRoute): 'eagle' | 'denver' | 'gj' | 'rifle' | null => {
+    const origin = (row.origin || '').toLowerCase()
+    const name = (row.route_name || '').toLowerCase()
+    const fromAspen = origin.includes('aspen') || name.startsWith('aspen to') || name.startsWith('aspen -')
+    if (!fromAspen) return null
+    const blob = `${row.route_name} ${row.destination}`.toLowerCase()
+    if (/\bkapa\b|centennial/.test(blob)) return null
+    if (/\brifle\b|\bkril\b/.test(blob)) return 'rifle'
+    if (/grand junction|\bgjt\b/.test(blob)) return 'gj'
+    if (/\bdenver\b|\bden\b/.test(blob)) return 'denver'
+    if (/\beagle\b|\bege\b/.test(blob) && !/vail|beaver/.test(blob)) return 'eagle'
+    return null
+  }
+
+  const seenOneWay = new Set<'eagle' | 'denver' | 'gj' | 'rifle'>()
+  for (const r of list) {
+    const key = fromAspenKey(r)
+    if (!key) continue
+    r.suv_price = oneWayFromAspen[key]
+    seenOneWay.add(key)
+  }
+
+  const missingOneWay: Record<'eagle' | 'denver' | 'gj' | 'rifle', DbPricingRoute> = {
+    eagle: {
+      route_name: 'Aspen to EGE',
+      category: 'airport-outbound',
+      origin: 'Aspen',
+      destination: 'EGE (Eagle)',
+      distance: '—',
+      drive_time: '—',
+      suv_price: 120,
+      price_note: TRANSIT_NOTE,
+      display_order: 11,
+    },
+    denver: {
+      route_name: 'Aspen to DEN',
+      category: 'airport-outbound',
+      origin: 'Aspen',
+      destination: 'DEN (Denver)',
+      distance: '—',
+      drive_time: '—',
+      suv_price: 1375,
+      price_note: TRANSIT_NOTE,
+      display_order: 12,
+    },
+    gj: {
+      route_name: 'Aspen to GJT',
+      category: 'airport-outbound',
+      origin: 'Aspen',
+      destination: 'GJT (Grand Junction)',
+      distance: '—',
+      drive_time: '—',
+      suv_price: 950,
+      price_note: TRANSIT_NOTE,
+      display_order: 13,
+    },
+    rifle: {
+      route_name: 'Aspen to KRIL',
+      category: 'airport-outbound',
+      origin: 'Aspen',
+      destination: 'KRIL (Rifle)',
+      distance: '—',
+      drive_time: '—',
+      suv_price: 720,
+      price_note: TRANSIT_NOTE,
+      display_order: 14,
+    },
+  }
+  for (const key of Object.keys(missingOneWay) as Array<keyof typeof missingOneWay>) {
+    if (!seenOneWay.has(key)) list.push(missingOneWay[key])
+  }
+
   const names = new Set(list.map((r) => r.route_name))
   if (!names.has('KAPA to Aspen')) {
     list.push({
@@ -70,6 +149,26 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
   }
 
   return list.sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
+}
+
+function applyConfirmedPolicies(titles: string[]): string[] {
+  const diversion =
+    "Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice."
+  const rewritten = titles.map((title) => {
+    const t = title.toLowerCase()
+    if (t.includes('winter and summer')) return 'Holiday pricing may change seasonally.'
+    if (t.includes('7-day') || t.includes('24-hour cancellation') || t.includes('24 hour cancellation')) return diversion
+    return title
+  })
+  const extras = [
+    'One-way rates from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.',
+    diversion,
+    'Corporate charge accounts are billed monthly.',
+  ]
+  for (const extra of extras) {
+    if (!rewritten.includes(extra)) rewritten.push(extra)
+  }
+  return rewritten.filter((title, index) => rewritten.indexOf(title) === index)
 }
 
 const CONFIRMED_FLEET_FOR_PRICING = [
@@ -173,7 +272,8 @@ export default async function PricingPage() {
   }))
   const FLEET = FLEET_FROM_DB.length > 0 ? FLEET_FROM_DB : CONFIRMED_FLEET_FOR_PRICING
 
-  const POLICIES = policyRows ? policyRows.map((p: any) => p.title) : []
+  const rawPolicies = policyRows ? policyRows.map((p: { title: string }) => p.title) : []
+  const POLICIES = applyConfirmedPolicies(rawPolicies)
 
   const allRoutes = applyConfirmedPricingRoutes((rows || []) as DbPricingRoute[])
 
@@ -232,9 +332,15 @@ export default async function PricingPage() {
 
         <PriceTable title="Airport to Aspen/Snowmass" routes={AIRPORT_INBOUND} />
         <PriceTable title="Aspen to Airport" routes={AIRPORT_OUTBOUND} />
+        <p className="text-sm text-alp-navy/70 mb-4 max-w-3xl leading-relaxed">
+          <strong className="text-alp-navy">Private FBO airport service:</strong> Eagle, Rifle, and Grand Junction,
+          plus Buena Vista, Montrose, and Gunnison. Existing partners: EGE — Signature Aviation | KRIL (Rifle) — Atlantic
+          Aviation | GJT — West Star Aviation | KAPA — Centennial Airport Denver.
+        </p>
         <p className="text-sm text-alp-navy/70 mb-12 max-w-3xl leading-relaxed">
-          <strong className="text-alp-navy">FBO Partners:</strong> EGE — Signature Aviation | KRIL (Rifle) — Atlantic
-          Aviation | GJT — West Star Aviation | KAPA — Centennial Airport Denver
+          One-way rates from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.
+          Flight diversions to Denver or Grand Junction are handled with 2 hours&apos; notice and no Aspen cancellation penalty.
+          General cancellations need 24 hours&apos; notice.
         </p>
         <PriceTable title="Local / Roaring Fork Valley" routes={LOCAL_ROUTES} />
         <PriceTable title="Long-Distance / Resort-to-Resort" routes={LONG_DISTANCE} />
@@ -335,13 +441,22 @@ export default async function PricingPage() {
           address: { '@type': 'PostalAddress', addressLocality: 'Aspen', addressRegion: 'CO', addressCountry: 'US' },
         },
         areaServed: ['Aspen', 'Snowmass', 'Basalt', 'Carbondale', 'Glenwood Springs', 'Vail', 'Denver'],
-        offers: AIRPORT_INBOUND.slice(0, 5).map(r => ({
-          '@type': 'Offer',
-          name: `${r.from} to ${r.to}`,
-          price: r.suvPrice,
-          priceCurrency: 'USD',
-          description: `Private SUV transfer, ${r.driveTime} drive`,
-        })),
+        offers: [
+          ...AIRPORT_OUTBOUND.filter((r) => /eagle|denver|grand junction|rifle|ege|den|gjt|kril/i.test(`${r.from} ${r.to}`)).map((r) => ({
+            '@type': 'Offer',
+            name: `${r.from} to ${r.to}`,
+            price: r.suvPrice,
+            priceCurrency: 'USD',
+            description: 'One-way private SUV rate from Aspen. Holiday pricing may change seasonally.',
+          })),
+          ...AIRPORT_INBOUND.slice(0, 5).map(r => ({
+            '@type': 'Offer',
+            name: `${r.from} to ${r.to}`,
+            price: r.suvPrice,
+            priceCurrency: 'USD',
+            description: `Private SUV transfer, ${r.driveTime} drive`,
+          })),
+        ],
       })}} />
     </div>
   )

@@ -8,6 +8,102 @@ import LocationPageTemplate from '@/components/templates/LocationPageTemplate'
 import FaqPageTemplate from '@/components/templates/FaqPageTemplate'
 import LandingPageTemplate from '@/components/templates/LandingPageTemplate'
 import { rvaServicePageRelatedBlogLinks } from '@/lib/rva-blog-pillars'
+import type { CmsPage } from '@/lib/pages'
+
+const PADDLE_RENTAL = 'Paddleboarding is a rental from $100, not a guided trip.'
+const RVA_BOOKING =
+  "Book at least 2 days in advance. A 50% deposit is due at booking. Cancellations within 72 hours are billed in full."
+const RVA_CORPORATE =
+  'Corporate packages are for groups of 50 or more: a custom mix of fishing and hiking.'
+const RVA_LICENSE = 'A Colorado Parks and Wildlife fishing license is required for ages 16 and up.'
+
+function rewritePaddleCopy(text: string): string {
+  return text
+    .replace(/Rich Valley Adventures guides SUP experiences/gi, 'Rich Valley Adventures rents stand-up paddle boards')
+    .replace(/Our paddle boarding trips are guided[^.]*\./gi, PADDLE_RENTAL)
+    .replace(/\bguided paddle\s*boarding\b/gi, 'paddleboard rental')
+    .replace(/\bguided SUP tours\b/gi, 'paddleboard rentals')
+    .replace(/\bguided SUP\b/gi, 'paddleboard rental')
+    .replace(/\bSUP tours\b/gi, 'paddleboard rentals')
+    .replace(/\bour guided sessions\b/gi, 'Rentals')
+    .replace(/\bguided sessions\b/gi, 'rentals')
+}
+
+function applyRvaConfirmedFacts(page: CmsPage | null): CmsPage | null {
+  if (!page) return null
+  if (page.slug === 'paddle-boarding' && page.template_type === 'service') {
+    const content = { ...(page.content as ServiceContent) }
+    let intro = rewritePaddleCopy(content.intro || '')
+    if (!intro.includes('rental from $100')) {
+      intro = `${PADDLE_RENTAL}\n\n${intro}`
+    }
+    content.intro = intro
+    content.hero_subtitle = content.hero_subtitle
+      ? rewritePaddleCopy(content.hero_subtitle)
+      : PADDLE_RENTAL
+    content.h2_sections = (content.h2_sections || [])
+      .filter((section) => !/lesson|guided/i.test(section.title))
+      .map((section) => ({ ...section, content: rewritePaddleCopy(section.content) }))
+    content.features = (content.features || [])
+      .filter((feature) => !/lesson|guided/i.test(feature.title))
+      .map((feature) => ({
+        ...feature,
+        description: rewritePaddleCopy(feature.description),
+      }))
+    if (!content.features.some((feature) => feature.description.includes('rental from $100'))) {
+      content.features = [
+        { title: 'Paddleboard rental', description: PADDLE_RENTAL },
+        ...content.features,
+      ]
+    }
+    content.faqs = (content.faqs || []).map((faq) => ({
+      ...faq,
+      answer: rewritePaddleCopy(faq.answer).includes('rental from $100')
+        ? rewritePaddleCopy(faq.answer)
+        : `${PADDLE_RENTAL} ${rewritePaddleCopy(faq.answer)}`,
+    }))
+    content.cta_text = 'Rent a Paddleboard'
+    return {
+      ...page,
+      meta_title: 'Paddleboard Rental Aspen CO | From $100 | Rich Valley Adventures',
+      meta_description: `${PADDLE_RENTAL} Rich Valley Adventures, Aspen, Colorado.`,
+      content,
+    }
+  }
+
+  if (page.slug === 'faq' && page.template_type === 'faq') {
+    const content = { ...(page.content as FaqContent) }
+    content.faqs = content.faqs.map((faq) => {
+      const q = faq.question.toLowerCase()
+      if (q.includes('cancellation') || q.includes('how do i book')) {
+        return { ...faq, answer: RVA_BOOKING }
+      }
+      if (q.includes('fishing license')) {
+        return { ...faq, answer: RVA_LICENSE }
+      }
+      if (q.includes('group size')) {
+        const cleaned = faq.answer.replace(/,?\s*paddle boarding \(6 per guide\)/gi, '')
+        return { ...faq, answer: cleaned.includes('groups of 50') ? cleaned : `${cleaned} ${RVA_CORPORATE}` }
+      }
+      if (q.includes('corporate') || q.includes('private tours')) {
+        return faq.answer.includes('groups of 50') ? faq : { ...faq, answer: `${faq.answer} ${RVA_CORPORATE}` }
+      }
+      if (q.includes('paddle')) {
+        return { ...faq, answer: rewritePaddleCopy(faq.answer).includes('$100') ? rewritePaddleCopy(faq.answer) : `${PADDLE_RENTAL} ${rewritePaddleCopy(faq.answer)}` }
+      }
+      return faq
+    })
+    if (!content.faqs.some((faq) => faq.question.toLowerCase().includes('corporate package'))) {
+      content.faqs = [
+        ...content.faqs,
+        { question: 'Do you offer corporate packages?', answer: RVA_CORPORATE, category: 'Booking & Logistics' },
+      ]
+    }
+    return { ...page, content }
+  }
+
+  return page
+}
 
 export const revalidate = 30
 
@@ -23,7 +119,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const slugStr = slug.join('/')
-  const page = await getPageBySlug('rva', slugStr)
+  const page = applyRvaConfirmedFacts(await getPageBySlug('rva', slugStr))
 
   if (!page) {
     return { title: 'Page Not Found | Rich Valley Adventures' }
@@ -141,7 +237,7 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
 export default async function CmsPage({ params }: Props) {
   const { slug } = await params
   const slugStr = slug.join('/')
-  const page = await getPageBySlug('rva', slugStr)
+  const page = applyRvaConfirmedFacts(await getPageBySlug('rva', slugStr))
 
   if (!page) notFound()
 

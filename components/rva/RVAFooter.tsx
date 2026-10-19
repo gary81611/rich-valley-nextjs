@@ -3,7 +3,7 @@ import { rvaData } from '@/lib/site-data'
 
 const FOOTER_ADVENTURES = [
   { title: 'Fly Fishing', href: '/fly-fishing' },
-  { title: 'Paddle Boarding', href: '/paddle-boarding' },
+  { title: 'Paddleboard Rental', href: '/paddle-boarding' },
   { title: 'Mountain Biking', href: '/adventures/mountain-biking' },
   { title: 'Hiking', href: '/hiking' },
   { title: 'Elevated Camping', href: '/elevated-camping' },

@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 const serviceOptions = [
   'Fly Fishing',
-  'Paddle Boarding',
+  'Paddleboard Rental',
   'Mountain Biking',
   'Trail Hiking',
   'Chauffeur Guided Tours and Excursions',

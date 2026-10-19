@@ -17,6 +17,20 @@ interface GeoBlock {
   block_type: string
 }
 
+function correctAalCopy(question: string, answer: string): string {
+  const blob = `${question} ${answer}`.toLowerCase()
+  if (/1,475|1475/.test(answer) && blob.includes('denver')) {
+    return 'One-way rates from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.'
+  }
+  if (blob.includes('net-30') || blob.includes('net 30')) {
+    return 'Corporate charge accounts are billed monthly.'
+  }
+  if (blob.includes('cancellation') && (/50%|7-day|7 day|full refund/.test(answer))) {
+    return "Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice."
+  }
+  return answer
+}
+
 const ServiceIcon = ({ icon }: { icon: string }) => {
   const icons: Record<string, React.ReactNode> = {
     Plane: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>,
@@ -78,12 +92,18 @@ export default function AlpenglowHomeClient() {
           })))
         }
         if (geoRes.data && geoRes.data.length > 0) {
-          setGeoBlocks(geoRes.data)
+          setGeoBlocks(geoRes.data.map((block: GeoBlock) => ({
+            ...block,
+            answer: correctAalCopy(block.question, block.answer),
+          })))
         }
         if (faqRes.data) {
           const mapped = faqRes.data
             .filter((f: { question: string; answer: string }) => f.question && f.answer)
-            .map((f: { question: string; answer: string }) => ({ q: f.question, a: f.answer }))
+            .map((f: { question: string; answer: string }) => ({
+              q: f.question,
+              a: correctAalCopy(f.question, f.answer),
+            }))
           setFaqs(mapped)
         }
         if (settingsRes.data?.phone) {
@@ -231,7 +251,7 @@ export default function AlpenglowHomeClient() {
               Every detail handled. Every journey seamless.
             </p>
             <p className="alp-speak-services-overview text-alp-slate text-base max-w-3xl mx-auto mt-6 leading-relaxed border-t border-alp-pearl-dark pt-6">
-              Aspen Alpenglow Limousine operates a professional fleet of three late-model vehicles — two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (14 passengers) — serving Aspen/Pitkin County Airport (ASE), Eagle County Regional Airport (EGE), Rifle/Garfield County Airport (KRIL), Grand Junction Regional Airport (GJT), and Denver International Airport (DEN), as well as all destinations throughout the Roaring Fork Valley.
+              Aspen Alpenglow Limousine operates a professional fleet of three late-model vehicles — two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (14 passengers) — with Starlink, ski racks, and roof cargo space. 8 full-time local drivers have 15+ years of mountain driving experience. Child car seats and boosters are free. Pets are welcome, with a cleaning fee. Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison, alongside Aspen/Pitkin County Airport (ASE) and Denver International Airport (DEN). One-way rates from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.
             </p>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 gap-8">

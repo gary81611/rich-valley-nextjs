@@ -20,22 +20,22 @@ export default function TermsPage() {
 
           <section>
             <h2 className="font-playfair text-2xl font-semibold text-slate-900 mb-3">2. Booking and Reservations</h2>
-            <p className="text-slate-700 leading-relaxed">All bookings are subject to availability. A reservation is confirmed once you receive written confirmation via email or text. We recommend booking 48–72 hours in advance for standard services. Peak seasons (December–March for ski season, July–August for summer) may require 2–4 weeks advance notice.</p>
+            <p className="text-slate-700 leading-relaxed">All bookings are subject to availability. A reservation is confirmed once you receive written confirmation via email or text. Rich Valley Adventures requires at least 2 days&apos; advance notice, with a 50% deposit at booking. Aspen Alpenglow Limousine general cancellations need 24 hours&apos; notice.</p>
           </section>
 
           <section>
             <h2 className="font-playfair text-2xl font-semibold text-slate-900 mb-3">3. Cancellation Policy</h2>
-            <p className="text-slate-700 leading-relaxed">Cancellations made 24 hours or more before the scheduled service will receive a full refund. Cancellations within 24 hours are subject to a cancellation fee of up to 50% of the service cost. No-shows will be charged the full service amount. Weather-related cancellations for outdoor adventures will be rescheduled or refunded at no charge.</p>
+            <p className="text-slate-700 leading-relaxed">Rich Valley Adventures: cancellations within 72 hours are billed in full. Aspen Alpenglow Limousine: general cancellations need 24 hours&apos; notice. Flight diversions to Denver or Grand Junction are handled with 2 hours&apos; notice and no Aspen cancellation penalty.</p>
           </section>
 
           <section>
             <h2 className="font-playfair text-2xl font-semibold text-slate-900 mb-3">4. Adventure Services — Rich Valley Adventures</h2>
-            <p className="text-slate-700 leading-relaxed">Participants must follow all safety instructions provided by guides. All necessary equipment is provided and must be returned in good condition. Participants acknowledge the inherent risks associated with outdoor activities including but not limited to fly fishing, mountain biking, paddle boarding, hiking, and camping. Participants under 18 must have a parent or guardian present or provide signed consent.</p>
+            <p className="text-slate-700 leading-relaxed">Participants must follow all safety instructions provided by guides. A full-day float trip is from $1,400 for 2 people (1 boat, 1 captain). Additional adults are $375 each and kids are $175. It covers an 8–12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation are included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up. The private ranch and picnic package at Spring Creek Ranch, Carbondale, CO is from $800 per adult and $250 per child (ages 3+). Paddleboarding is a rental from $100, not a guided trip. Corporate packages are for groups of 50 or more: a custom mix of fishing and hiking. Participants acknowledge the inherent risks associated with outdoor activities. Participants under 18 must have a parent or guardian present or provide signed consent.</p>
           </section>
 
           <section>
             <h2 className="font-playfair text-2xl font-semibold text-slate-900 mb-3">5. Transportation Services — Aspen Alpenglow Limousine</h2>
-            <p className="text-slate-700 leading-relaxed">Transportation services include professional chauffeur, vehicle, and standard amenities. Flight tracking is provided for airport transfers; complimentary wait time of up to 30 minutes is included for airport pickups. Additional stops, extended hours, or route changes are subject to additional charges. Passengers must comply with all Colorado motor vehicle laws.</p>
+            <p className="text-slate-700 leading-relaxed">Transportation includes a professional chauffeur, the vehicle, and standard amenities. Flight tracking is provided for airport transfers; complimentary wait time of up to 30 minutes is included for airport pickups. 8 full-time local drivers have 15+ years of mountain driving experience. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee. Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way rates from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally. Corporate charge accounts are billed monthly. Additional stops, extended hours, or route changes are subject to additional charges. Passengers must comply with all Colorado motor vehicle laws.</p>
           </section>
 
           <section>
@@ -45,7 +45,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="font-playfair text-2xl font-semibold text-slate-900 mb-3">7. Payment</h2>
-            <p className="text-slate-700 leading-relaxed">We accept all major credit cards, cash, and approved corporate billing. Gratuities are not included and are at the client&apos;s discretion. Pricing is subject to change without notice; however, confirmed reservations will be honored at the quoted rate.</p>
+            <p className="text-slate-700 leading-relaxed">Rich Valley Adventures collects a 50% deposit at booking. Aspen Alpenglow Limousine corporate charge accounts are billed monthly. We accept all major credit cards and cash. Gratuities are not included and are at the client&apos;s discretion. Holiday pricing may change seasonally; confirmed reservations will be honored at the quoted rate.</p>
           </section>
 
           <section>

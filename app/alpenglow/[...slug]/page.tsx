@@ -7,6 +7,41 @@ import ServicePageTemplate from '@/components/templates/ServicePageTemplate'
 import LocationPageTemplate from '@/components/templates/LocationPageTemplate'
 import FaqPageTemplate from '@/components/templates/FaqPageTemplate'
 import LandingPageTemplate from '@/components/templates/LandingPageTemplate'
+import type { CmsPage } from '@/lib/pages'
+
+const AAL_FBO =
+  'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison.'
+const AAL_ONE_WAY =
+  'One-way rates from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.'
+const AAL_CANCEL =
+  "Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice."
+const AAL_CORPORATE = 'Corporate charge accounts are billed monthly.'
+
+function applyAalConfirmedFacts(page: CmsPage | null): CmsPage | null {
+  if (!page) return null
+  if (page.slug === 'airport-transfers' && page.template_type === 'service') {
+    const content = { ...(page.content as ServiceContent) }
+    const note = `${AAL_FBO} ${AAL_ONE_WAY} ${AAL_CANCEL}`
+    if (!content.intro?.includes('Buena Vista')) {
+      content.intro = `${content.intro || ''}\n\n${note}`.trim()
+    }
+    return {
+      ...page,
+      meta_description: page.meta_description?.includes('Buena Vista')
+        ? page.meta_description
+        : `${AAL_FBO} ${AAL_ONE_WAY}`.slice(0, 300),
+      content,
+    }
+  }
+  if ((page.slug === 'corporate' || page.slug === 'corporate-travel') && page.template_type === 'service') {
+    const content = { ...(page.content as ServiceContent) }
+    if (!content.intro?.includes('billed monthly')) {
+      content.intro = `${content.intro || ''}\n\n${AAL_CORPORATE}`.trim()
+    }
+    return { ...page, content }
+  }
+  return page
+}
 
 export const revalidate = 30
 
@@ -22,7 +57,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const slugStr = slug.join('/')
-  const page = await getPageBySlug('alpenglow', slugStr)
+  const page = applyAalConfirmedFacts(await getPageBySlug('alpenglow', slugStr))
 
   if (!page) {
     return { title: 'Page Not Found | Aspen Alpenglow Limousine' }
@@ -118,7 +153,7 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
         '@type': 'Offer',
         priceCurrency: 'USD',
         description:
-          'Private luxury airport transfers to/from ASE, EGE, and DEN. Flight tracking included. No surcharges for delays.',
+          'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally. Flight diversions to Denver or Grand Junction are handled with 2 hours\' notice and no Aspen cancellation penalty.',
         availability: 'https://schema.org/InStock',
         seller: {
           '@type': 'Organization',
@@ -195,7 +230,7 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
 export default async function CmsPage({ params }: Props) {
   const { slug } = await params
   const slugStr = slug.join('/')
-  const page = await getPageBySlug('alpenglow', slugStr)
+  const page = applyAalConfirmedFacts(await getPageBySlug('alpenglow', slugStr))
 
   if (!page) notFound()
 

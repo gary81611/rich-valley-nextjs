@@ -7,20 +7,28 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'FAQ | Aspen Alpenglow Limousine — Transportation Questions Answered',
   description:
-    'Frequently asked questions about Aspen transportation, airport transfers, car service pricing, and getting to Aspen from Denver, Eagle, and Grand Junction airports.',
+    'Aspen car service FAQs: one-way rates from Aspen (Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720), FBO airports, fleet, and cancellation notice.',
   alternates: { canonical: 'https://aspenalpenglowlimousine.com/faq' },
 }
 
 const VEHICLE_ANSWER =
-  'Our fleet includes two late-model Chevrolet Suburbans (up to 7 passengers each) and a Ford Transit Van (up to 14 passengers). All vehicles are equipped with WiFi (Starlink), XM Radio, complimentary water, and Myers ski racks. The Suburbans also feature Yakima roof racks for luggage. All vehicles are professionally chauffeured and meticulously maintained.'
+  '8 full-time local drivers with 15+ years of mountain driving experience. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee. The fleet includes two late-model Chevrolet Suburbans (up to 7 passengers each) and a Ford Transit Van (up to 14 passengers).'
 
 const DEN_COST_ANSWER =
-  'Our Aspen to Denver International Airport (DEN) transfer is $1,475 all-inclusive — no service charge or gratuity added on top. The drive is approximately 3.5–4 hours. We serve Denver (DEN), Eagle/Vail (EGE), Rifle (KRIL), Grand Junction (GJT), and Aspen (ASE) airports.'
+  'One-way rates from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally. Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison.'
 
 const CHARTER_MIN_FAQ = {
   q: 'Is there a minimum for charter bookings?',
-  a: 'Chartered services require a 4-hour minimum. Cancellation: 24 hours standard, 7 days for events.',
+  a: "Chartered services require a 4-hour minimum. General cancellations need 24 hours' notice. Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty.",
 }
+
+const CORPORATE_ACCOUNT_FAQ = {
+  q: 'Do you offer corporate charge accounts?',
+  a: 'Corporate charge accounts are billed monthly.',
+}
+
+const CANCELLATION_ANSWER =
+  "Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice."
 
 const ALL_INCLUSIVE_FAQ = {
   q: 'Is your pricing all-inclusive?',
@@ -29,7 +37,7 @@ const ALL_INCLUSIVE_FAQ = {
 
 const DEN_TRANSFER_SCHEMA_FAQ = {
   q: 'How much does a transfer from Aspen to Denver airport cost?',
-  a: 'The Aspen to Denver International Airport transfer is $1,475 all-inclusive. Drive time is approximately 3.5 to 4 hours.',
+  a: 'The one-way rate from Aspen to Denver is $1,375. Holiday pricing may change seasonally.',
 }
 
 async function getFaqsFromDb(): Promise<{ q: string; a: string }[]> {
@@ -85,12 +93,16 @@ function applyClientContent(faqs: { q: string; a: string }[]) {
   const patched = rows.map(({ q, a }) => {
     const ql = q.toLowerCase()
     if (ql.includes('what vehicles') && ql.includes('alpenglow')) return { q, a: VEHICLE_ANSWER }
-    if (ql.includes('denver airport') && (ql.includes('cost') || ql.includes('limo'))) return { q, a: DEN_COST_ANSWER }
+    if (ql.includes('denver') && (ql.includes('cost') || ql.includes('limo') || ql.includes('how much'))) return { q, a: DEN_COST_ANSWER }
+    if (ql.includes('cancellation')) return { q, a: CANCELLATION_ANSWER }
+    if (ql.includes('corporate account')) return { q, a: CORPORATE_ACCOUNT_FAQ.a }
+    if (/\$1,475|\$1475/.test(a) && /denver/i.test(`${q} ${a}`)) return { q, a: DEN_COST_ANSWER }
     return { q, a: normalizeVehicleAnswerText(a) }
   })
 
   const alreadyCharter = patched.some((f) => f.q.toLowerCase().includes('minimum for charter'))
   const alreadyAllIncl = patched.some((f) => f.q.toLowerCase().includes('pricing all-inclusive'))
+  const alreadyCorporate = patched.some((f) => f.q.toLowerCase().includes('corporate'))
 
   const leadIdx = patched.findIndex((f) =>
     /lead time|how far in advance|advance.*book|book.*advance/i.test(f.q),
@@ -110,6 +122,8 @@ function applyClientContent(faqs: { q: string; a: string }[]) {
     out = [...out, ALL_INCLUSIVE_FAQ]
   }
 
+  if (!alreadyCorporate) out = [...out, CORPORATE_ACCOUNT_FAQ]
+
   return out
 }
 
@@ -128,6 +142,8 @@ function canonicalAnswerForSchema(question: string): string | null {
   if (ql.includes('what vehicles') && ql.includes('alpenglow')) {
     return VEHICLE_ANSWER
   }
+  if (ql.includes('cancellation')) return CANCELLATION_ANSWER
+  if (ql.includes('corporate account')) return CORPORATE_ACCOUNT_FAQ.a
   return null
 }
 
@@ -135,6 +151,7 @@ const SCHEMA_EXTRA_FAQS: { q: string; a: string }[] = [
   ALL_INCLUSIVE_FAQ,
   CHARTER_MIN_FAQ,
   DEN_TRANSFER_SCHEMA_FAQ,
+  CORPORATE_ACCOUNT_FAQ,
 ]
 
 function buildFaqPageJsonLd(visibleFaqs: { q: string; a: string }[]) {

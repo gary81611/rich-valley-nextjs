@@ -9,7 +9,7 @@ export const flyFishingServiceContent: ServiceContent = {
 
 Rich Valley Adventures has been guiding these waters since 2012. Our guides grew up fishing these drainages and know every productive run, seam, and riffle across seasons. Whether you're picking up a fly rod for the first time or you're a seasoned angler chasing your personal best, we tailor every trip to your experience level and goals.
 
-We offer half-day and full-day guided trips from May through October on our wading fisheries, and dedicated float trips on the Gunnison with our in-house boat captain. All gear is provided — premium fly rods, reels, waders, wading boots, and a full fly selection matched to current hatch conditions. Our catch-and-release philosophy protects these waters for generations of anglers to come.`,
+We offer half-day and full-day guided trips from May through October on our wading fisheries, full-day float trips on the Roaring Fork or Colorado River, and dedicated float trips on the Gunnison with our in-house boat captain. All gear is provided — premium fly rods, reels, waders, wading boots, and a full fly selection matched to current hatch conditions. Our catch-and-release philosophy protects these waters for generations of anglers to come.`,
   h2_sections: [
     {
       title: 'The Roaring Fork River — Gold Medal Fly Fishing Near Aspen',
@@ -22,6 +22,14 @@ Brown trout averaging 14–18 inches are common, with fish over 20 inches taken 
       content: `Just 15 miles from Basalt, the Frying Pan River below Ruedi Reservoir is widely considered one of the top tailwater fisheries in North America. The cold, nutrient-rich water released from the dam creates an almost year-round midge hatch and supports an extraordinary density of large wild trout — browns and rainbows averaging 16–22 inches.
 
 The Frying Pan demands technical precision: long leaders, small flies, and delicate presentations. Our guides excel at teaching the nuances of tailwater nymphing and the art of fishing size-22 midge clusters to selective risers. This river rewards patience and skill — and the payoff is the fish of a lifetime.`,
+    },
+    {
+      title: 'Full-Day Float Trip',
+      content: `Full-day float trip: from $1,400 for 2 people (1 boat, 1 captain). Additional adults $375 each, kids $175. Covers an 8–12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation are included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up.`,
+    },
+    {
+      title: 'Private Ranch and Picnic — Spring Creek Ranch, Carbondale',
+      content: `Private ranch and picnic package at Spring Creek Ranch, Carbondale, CO: from $800 per adult, $250 per child (ages 3+). Includes ponds, creeks, and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat, and brook trout from 12 to 30 inches.`,
     },
     {
       title: 'Gunnison River — Big Water, Trophy Trout',
@@ -40,7 +48,7 @@ We also offer exclusive river access on the Old Town Basalt Private Ranch on the
     {
       title: 'Rivers & waters we fish',
       description:
-        'Roaring Fork River, Frying Pan River, Colorado River (near Glenwood Springs), Gunnison River float trips, and private water access — including pond, alpine spring, ranch water, and high mountain lakes.',
+        'Roaring Fork River, Frying Pan River, Colorado River (near Glenwood Springs), Gunnison River float trips, Spring Creek Ranch in Carbondale, and other private water — including pond, alpine spring, ranch water, and high mountain lakes.',
     },
     {
       title: 'All Equipment Provided',
@@ -65,7 +73,7 @@ We also offer exclusive river access on the Old Town Basalt Private Ranch on the
     {
       title: 'Licenses, lunch & logistics',
       description:
-        'Fishing license support, streamside lunch on full-day trips, professional photos of your fish, and transportation coordinated with Aspen Alpenglow Limousine when needed. Up to four anglers per guide on wading trips.',
+        'A Colorado Parks and Wildlife fishing license is required for ages 16 and up. Full-day float trips include lunch, gear, and luxury door-to-door transportation. Wading trips include streamside lunch on full days and transportation coordinated with Aspen Alpenglow Limousine when needed. Up to four anglers per guide on wading trips.',
     },
     {
       title: 'Catch & Release',
@@ -77,7 +85,7 @@ We also offer exclusive river access on the Old Town Basalt Private Ranch on the
     {
       question: 'Do I need a Colorado fishing license?',
       answer:
-        'Yes — Colorado requires a valid fishing license for anglers 16 and older. We can arrange licenses in advance and credit the fee toward your trip, or you can purchase one online at cpw.state.co.us before your trip.',
+        'A Colorado Parks and Wildlife fishing license is required for ages 16 and up. We can arrange licenses in advance and credit the fee toward your trip, or you can purchase one online at cpw.state.co.us before your trip.',
     },
     {
       question: 'What time of year is best for fly fishing near Aspen?',
@@ -92,7 +100,12 @@ We also offer exclusive river access on the Old Town Basalt Private Ranch on the
     {
       question: 'How far in advance should I book?',
       answer:
-        'We recommend booking 2–4 weeks in advance for summer dates, especially June through August when demand is highest. Spring and fall dates are more available but still fill up. Contact us as early as possible to secure your preferred date.',
+        'Book at least 2 days in advance. A 50% deposit is due at booking. Cancellations within 72 hours are billed in full. For summer dates, especially June through August, booking further ahead is wise because those days fill up.',
+    },
+    {
+      question: 'Do you offer corporate packages?',
+      answer:
+        'Corporate packages are for groups of 50 or more: a custom mix of fishing and hiking.',
     },
     {
       question: 'What should I wear and bring?',

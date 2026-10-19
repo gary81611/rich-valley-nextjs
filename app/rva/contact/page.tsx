@@ -7,7 +7,7 @@ import { RVA_GLOBAL_PILLAR_BLOG_LINKS } from '@/lib/rva-blog-pillars'
 export const metadata: Metadata = {
   title: 'Contact Rich Valley Adventures | Book Your Aspen Adventure',
   description:
-    'Contact Rich Valley Adventures to book guided fly fishing, paddle boarding, mountain biking, hiking, and more in Aspen, Colorado. Call 970-456-3666 or fill out our booking form.',
+    'Contact Rich Valley Adventures to book guided fly fishing, hiking, and mountain biking, or a paddleboard rental from $100, in Aspen, Colorado. Call 970-456-3666.',
   alternates: {
     canonical: 'https://www.richvalleyadventures.com/contact',
   },
@@ -128,11 +128,19 @@ export default function ContactPage() {
                 <ul className="space-y-3 text-white/80 text-sm">
                   <li className="flex items-start gap-3">
                     <span className="w-1.5 h-1.5 bg-rva-copper rounded-full mt-2 flex-shrink-0" />
-                    All gear and equipment included with every adventure
+                    Book at least 2 days in advance. A 50% deposit is due at booking. Cancellations within 72 hours are billed in full.
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="w-1.5 h-1.5 bg-rva-copper rounded-full mt-2 flex-shrink-0" />
-                    Small groups of 2-6 guests per guide
+                    Corporate packages: groups of 50+, a custom mix of fishing and hiking
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="w-1.5 h-1.5 bg-rva-copper rounded-full mt-2 flex-shrink-0" />
+                    Paddleboarding is a rental from $100, not a guided trip
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="w-1.5 h-1.5 bg-rva-copper rounded-full mt-2 flex-shrink-0" />
+                    Full-day float from $1,400 for 2 people. Spring Creek Ranch picnic from $800 per adult
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="w-1.5 h-1.5 bg-rva-copper rounded-full mt-2 flex-shrink-0" />

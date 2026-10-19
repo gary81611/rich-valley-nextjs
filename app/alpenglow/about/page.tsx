@@ -297,10 +297,9 @@ export default async function AboutPage() {
               Professional Chauffeurs, Local Experts
             </h2>
             <p className="text-alp-slate text-lg leading-relaxed mb-6">
-              Our chauffeurs are more than drivers — they are hospitality professionals who live in
-              the Roaring Fork Valley. They know the fastest routes, the best restaurants, and every
-              back road shortcut. Professionally licensed, background-checked, and trained in
-              white-glove service.
+              8 full-time local drivers with 15+ years of mountain driving experience. They live in
+              the Roaring Fork Valley and know the fastest routes, the best restaurants, and every
+              back road shortcut. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee.
             </p>
             <p className="text-alp-slate text-lg leading-relaxed">
               When you ride with Alpenglow, you are in the hands of someone who takes pride in making

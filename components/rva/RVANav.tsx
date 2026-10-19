@@ -5,7 +5,7 @@ import { rvaData } from '@/lib/site-data'
 
 const SERVICE_PAGES: { label: string; slug: string; href?: string }[] = [
   { label: 'Fly Fishing', slug: 'fly-fishing' },
-  { label: 'Paddle Boarding', slug: 'paddle-boarding' },
+  { label: 'Paddleboard Rental', slug: 'paddle-boarding' },
   { label: 'Mountain Biking', slug: 'mountain-biking', href: '/adventures/mountain-biking' },
   { label: 'Hiking', slug: 'hiking' },
   { label: 'Snowshoeing', slug: 'snowshoeing' },

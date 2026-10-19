@@ -30,7 +30,7 @@ const serviceSchema = {
   },
   areaServed: ['Aspen', 'Snowmass Village', 'Basalt', 'Carbondale', 'Glenwood Springs'],
   description:
-    'Executive airport transfers, corporate retreat shuttles, and private group transport in Aspen and the Roaring Fork Valley.',
+    'Executive airport transfers, corporate retreat shuttles, and private group transport in Aspen and the Roaring Fork Valley. Corporate charge accounts are billed monthly.',
   url: pageUrl,
 }
 
@@ -84,6 +84,9 @@ export default function CorporatePage() {
             Our chauffeurs are local professionals who understand Aspen-area event traffic and winter driving. Service
             is available 24/7 for early departures, late arrivals, and schedule changes that happen in real-world
             corporate travel.
+          </p>
+          <p>
+            Corporate charge accounts are billed monthly.
           </p>
 
           <div className="pt-4">

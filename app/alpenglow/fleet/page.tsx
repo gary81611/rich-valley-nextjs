@@ -60,7 +60,7 @@ const fleetJsonLd = {
         vehicleInteriorColor: 'Black',
         color: 'Black',
         description:
-          'Full-size luxury SUV seating up to 7 passengers with ample luggage space. Ideal for airport transfers, corporate travel, and small groups. WiFi, ski racks, professionally chauffeured.',
+          'Full-size luxury SUV seating up to 7 passengers. Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee. Driven by full-time local drivers with 15+ years of mountain driving experience.',
         offers: {
           '@type': 'Offer',
           priceCurrency: 'USD',
@@ -145,8 +145,7 @@ export default function FleetPage() {
           </div>
 
           <p className="mt-12 text-center text-alp-slate max-w-3xl mx-auto leading-relaxed">
-            All vehicles are professionally maintained, late-model, and chauffeured by experienced mountain drivers.
-            Ski racks and roof storage available on every vehicle.
+            8 full-time local drivers with 15+ years of mountain driving experience. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee.
           </p>
         </div>
       </section>

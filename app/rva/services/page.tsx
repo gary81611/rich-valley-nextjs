@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Guided Adventure Trips in Aspen, Colorado | Rich Valley Adventures',
   description:
-    'Browse all guided outdoor experiences — fly fishing, hiking, rafting, paddle boarding, and glamping — offered by Rich Valley Adventures in the Aspen area.',
+    'Browse guided outdoor experiences — fly fishing, hiking, rafting, and glamping — plus paddleboard rentals from $100, from Rich Valley Adventures in the Aspen area.',
   alternates: {
     canonical: 'https://www.richvalleyadventures.com/services',
   },
