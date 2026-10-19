@@ -32,8 +32,11 @@ function anonClient(): SupabaseClient | null {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   if (!url || !key || !url.startsWith('http')) return null
+  // Next.js caches fetch() on the server. These rows change on every call-in.
+  const fetchNoStore: typeof fetch = (input, init) => fetch(input, { ...init, cache: 'no-store' })
   return createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
+    global: { fetch: fetchNoStore },
   })
 }
 

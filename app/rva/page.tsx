@@ -2,8 +2,9 @@ import type { Metadata } from 'next'
 import RVAHomeClient from './RVAHomeClient'
 import { loadFishingReportFeed } from '@/lib/fishing-report-feed'
 
-/** Kids callout and featured trips must render from this file, not a stale edge prerender. */
+/** Kids callout, featured trips, and the fishing-report feed render per request. */
 export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 const RVA_URL = 'https://www.richvalleyadventures.com'
 
