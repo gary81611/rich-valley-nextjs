@@ -16,7 +16,7 @@ const sections = [
     id: 'airport-transfers',
     title: 'Airport Transfers',
     href: '/airport-transfers',
-    body: `Aspen Alpenglow Limousine offers all-inclusive, door-to-door private car service from ASE, EGE, DEN, KAPA (Centennial), KRIL (Rifle), and GJT (Grand Junction). Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way rates from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally. Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice. We monitor flights in real time, meet you at arrivals with a warm greeting, and include thirty minutes of complimentary wait time on airport pickups so you are never rushed after baggage claim.`,
+    body: `Aspen Alpenglow Limousine offers all-inclusive, door-to-door private car service from ASE, EGE, DEN, KAPA (Centennial), KRIL (Rifle), and GJT (Grand Junction). Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally. Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice. We monitor flights in real time, meet you at arrivals with a warm greeting, and include thirty minutes of complimentary wait time on airport pickups so you are never rushed after baggage claim.`,
   },
   {
     id: 'corporate',

@@ -29,7 +29,7 @@ The Frying Pan demands technical precision: long leaders, small flies, and delic
     },
     {
       title: 'Private Ranch and Picnic — Spring Creek Ranch, Carbondale',
-      content: `Private ranch and picnic package at Spring Creek Ranch, Carbondale, CO: from $800 per adult, $250 per child (ages 3+). Includes ponds, creeks, and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat, and brook trout from 12 to 30 inches.`,
+      content: `Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+). Includes ponds, creeks and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat and brook trout from 12 to 30 inches.`,
     },
     {
       title: 'Gunnison River — Big Water, Trophy Trout',
@@ -61,11 +61,6 @@ We also offer exclusive river access on the Old Town Basalt Private Ranch on the
         'From first-cast beginners to trophy hunters — we match your guide and itinerary to your experience.',
     },
     {
-      title: 'Small Groups (Max 4)',
-      description:
-        'Intimate guide-to-angler ratios mean more instruction, better water, and a more personal experience.',
-    },
-    {
       title: 'Half-Day & Full-Day Options',
       description:
         'Choose a 4-hour morning or afternoon session, or go all-in with a full-day trip including riverside lunch where applicable.',
@@ -73,7 +68,7 @@ We also offer exclusive river access on the Old Town Basalt Private Ranch on the
     {
       title: 'Licenses, lunch & logistics',
       description:
-        'A Colorado Parks and Wildlife fishing license is required for ages 16 and up. Full-day float trips include lunch, gear, and luxury door-to-door transportation. Wading trips include streamside lunch on full days and transportation coordinated with Aspen Alpenglow Limousine when needed. Up to four anglers per guide on wading trips.',
+        'A Colorado Parks and Wildlife fishing license is required for ages 16 and up. Full-day float trips include lunch, gear, and luxury door-to-door transportation. Wading trips include streamside lunch on full days and transportation coordinated with Aspen Alpenglow Limousine when needed.',
     },
     {
       title: 'Catch & Release',
@@ -85,7 +80,7 @@ We also offer exclusive river access on the Old Town Basalt Private Ranch on the
     {
       question: 'Do I need a Colorado fishing license?',
       answer:
-        'A Colorado Parks and Wildlife fishing license is required for ages 16 and up. We can arrange licenses in advance and credit the fee toward your trip, or you can purchase one online at cpw.state.co.us before your trip.',
+        'A Colorado Parks and Wildlife fishing license is required for ages 16 and up.',
     },
     {
       question: 'What time of year is best for fly fishing near Aspen?',

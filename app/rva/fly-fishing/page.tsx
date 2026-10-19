@@ -6,6 +6,9 @@ import {
 } from '@/lib/rva-fly-fishing-content'
 import { rvaServicePageRelatedBlogLinks } from '@/lib/rva-blog-pillars'
 
+/** The prerendered HTML was stuck on the Vercel edge as STALE after the copy change. Render each request from this file. */
+export const dynamic = 'force-dynamic'
+
 const pageUrl = 'https://www.richvalleyadventures.com/fly-fishing'
 
 export const metadata: Metadata = {

@@ -21,7 +21,7 @@ const rvaPages: PageSeed[] = [
     content: {
       hero_title: 'Guided Fly Fishing in Aspen & the Roaring Fork Valley',
       hero_subtitle: 'Cast on Colorado\'s Gold Medal Waters with Expert Local Guides',
-      intro: `The Roaring Fork Valley is one of the most storied fly fishing destinations in the American West. From the crystalline riffles of the upper Roaring Fork River above Aspen to the legendary tailwater of the Frying Pan River below Ruedi Reservoir, these Gold Medal-designated waters hold trophy-class wild brown and rainbow trout year-round.\n\nRich Valley Adventures has been guiding anglers on these rivers since 2012. Our guides grew up fishing these drainages and know every productive run, seam, and riffle across seasons. Whether you\'re picking up a fly rod for the first time or you\'re a seasoned angler chasing your personal best, we tailor every trip to your experience level and goals.\n\nWe offer half-day and full-day guided wading trips from May through October. All gear is provided — premium fly rods, reels, waders, wading boots, and a full fly selection matched to current hatch conditions. Our catch-and-release philosophy protects these waters for generations of anglers to come.`,
+      intro: `The Roaring Fork Valley is one of the most storied fly fishing destinations in the American West. From the crystalline riffles of the upper Roaring Fork River above Aspen to the legendary tailwater of the Frying Pan River below Ruedi Reservoir, these Gold Medal-designated waters hold trophy-class wild brown and rainbow trout year-round.\n\nRich Valley Adventures has been guiding anglers on these rivers since 2012. Our guides grew up fishing these drainages and know every productive run, seam, and riffle across seasons. Whether you\'re picking up a fly rod for the first time or you\'re a seasoned angler chasing your personal best, we tailor every trip to your experience level and goals.\n\nWe offer half-day and full-day trips from May through October on wading fisheries, plus full-day float trips on the Roaring Fork or Colorado River. All gear is provided — premium fly rods, reels, waders, wading boots, and a full fly selection matched to current hatch conditions. Our catch-and-release philosophy protects these waters for generations of anglers to come.`,
       h2_sections: [
         {
           title: 'The Roaring Fork River — Gold Medal Fly Fishing Near Aspen',
@@ -32,20 +32,23 @@ const rvaPages: PageSeed[] = [
           content: `Just 15 miles from Basalt, the Frying Pan River below Ruedi Reservoir is widely considered one of the top tailwater fisheries in North America. The cold, nutrient-rich water released from the dam creates an almost year-round midge hatch and supports an extraordinary density of large wild trout — browns and rainbows averaging 16–22 inches.\n\nThe Frying Pan demands technical precision: long leaders, small flies, and delicate presentations. Our guides excel at teaching the nuances of tailwater nymphing and the art of fishing size-22 midge clusters to selective risers. This river rewards patience and skill — and the payoff is the fish of a lifetime.`,
         },
         {
-          title: 'What\'s Included in Your Guided Fly Fishing Trip',
-          content: `Every guided trip includes all fishing equipment (fly rods, reels, lines, waders, boots, and flies), a Colorado fishing license fee credit, streamside lunch on full-day trips, professional photography of your catches, and transportation to and from the river if needed. We keep groups small — a maximum of four anglers per guide — to ensure personalized instruction and the best possible water access. Trips depart from Aspen or Basalt depending on the day\'s river conditions.`,
+          title: 'Full-Day Float Trip',
+          content: `Full-day float trip: from $1,400 for 2 people (1 boat, 1 captain). Additional adults $375 each, kids $175. Covers an 8-12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear and luxury door-to-door transportation included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up.`,
+        },
+        {
+          title: 'Private Ranch and Picnic — Spring Creek Ranch, Carbondale',
+          content: `Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+). Includes ponds, creeks and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat and brook trout from 12 to 30 inches.`,
         },
       ],
       features: [
         { title: 'All Equipment Provided', description: 'Premium Sage rods, Scientific Anglers lines, Simms waders and boots, and a full fly selection matched to current hatches.' },
         { title: 'All Skill Levels Welcome', description: 'From first-cast beginners to trophy hunters — we match your guide and itinerary to your experience.' },
-        { title: 'Small Groups (Max 4)', description: 'Intimate guide-to-angler ratios mean more instruction, better water, and a more personal experience.' },
         { title: 'Half-Day & Full-Day Options', description: 'Choose a 4-hour morning or afternoon session, or go all-in with a full-day trip including riverside lunch.' },
         { title: 'Catch & Release', description: 'We practice strict catch-and-release to protect these wild fisheries and the next generation of anglers.' },
         { title: 'Guided Photography', description: 'We capture the moment so you can focus on the fight. Share-worthy shots of every big fish.' },
       ],
       faqs: [
-        { question: 'Do I need a Colorado fishing license?', answer: 'Yes — Colorado requires a valid fishing license for anglers 16 and older. We can arrange licenses in advance and credit the fee toward your trip, or you can purchase one online at cpw.state.co.us before your trip.' },
+        { question: 'Do I need a Colorado fishing license?', answer: 'A Colorado Parks and Wildlife fishing license is required for ages 16 and up.' },
         { question: 'What time of year is best for fly fishing near Aspen?', answer: 'The Roaring Fork Valley offers excellent fishing year-round. June through September is peak dry fly season with multiple hatches daily. October and November are prime for large browns in the fall spawn. The Frying Pan tailwater fishes well even in winter due to the stable, cold water temperatures from Ruedi Reservoir.' },
         { question: 'Can beginners go fly fishing with you?', answer: 'Absolutely. Beginners are welcome and we love introducing new anglers to the sport. Our guides are patient, enthusiastic teachers. Many of our most rewarding trips are with anglers casting a fly rod for the very first time.' },
         { question: 'How far in advance should I book?', answer: 'We recommend booking 2–4 weeks in advance for summer dates, especially June through August when demand is highest. Spring and fall dates are more available but still fill up. Contact us as early as possible to secure your preferred date.' },

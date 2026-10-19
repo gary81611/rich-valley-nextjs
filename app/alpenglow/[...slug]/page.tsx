@@ -12,7 +12,7 @@ import type { CmsPage } from '@/lib/pages'
 const AAL_FBO =
   'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison.'
 const AAL_ONE_WAY =
-  'One-way rates from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.'
+  'One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.'
 const AAL_CANCEL =
   "Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice."
 const AAL_CORPORATE = 'Corporate charge accounts are billed monthly.'
@@ -153,7 +153,7 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
         '@type': 'Offer',
         priceCurrency: 'USD',
         description:
-          'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally. Flight diversions to Denver or Grand Junction are handled with 2 hours\' notice and no Aspen cancellation penalty.',
+          'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally. Flight diversions to Denver or Grand Junction are handled with 2 hours\' notice and no Aspen cancellation penalty.',
         availability: 'https://schema.org/InStock',
         seller: {
           '@type': 'Organization',

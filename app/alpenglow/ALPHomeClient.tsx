@@ -9,6 +9,7 @@ import { createClient } from '@/lib/supabase'
 import { hrefForService } from '@/lib/alpenglow-services'
 import type { Service as ServiceType, FleetVehicle, Testimonial } from '@/lib/types'
 import { seoAlt } from '@/lib/seo/alt-text'
+import { AAL_ONE_WAY_RATES, correctAalFaqItem } from '@/lib/aal-public-copy'
 
 interface GeoBlock {
   id: string
@@ -20,7 +21,7 @@ interface GeoBlock {
 function correctAalCopy(question: string, answer: string): string {
   const blob = `${question} ${answer}`.toLowerCase()
   if (/1,475|1475/.test(answer) && blob.includes('denver')) {
-    return 'One-way rates from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.'
+    return AAL_ONE_WAY_RATES
   }
   if (blob.includes('net-30') || blob.includes('net 30')) {
     return 'Corporate charge accounts are billed monthly.'
@@ -92,18 +93,20 @@ export default function AlpenglowHomeClient() {
           })))
         }
         if (geoRes.data && geoRes.data.length > 0) {
-          setGeoBlocks(geoRes.data.map((block: GeoBlock) => ({
-            ...block,
-            answer: correctAalCopy(block.question, block.answer),
-          })))
+          setGeoBlocks(
+            geoRes.data.flatMap((block: GeoBlock) => {
+              const fixed = correctAalFaqItem(block.question, correctAalCopy(block.question, block.answer))
+              return fixed ? [{ ...block, question: fixed.q, answer: fixed.a }] : []
+            }),
+          )
         }
         if (faqRes.data) {
           const mapped = faqRes.data
             .filter((f: { question: string; answer: string }) => f.question && f.answer)
-            .map((f: { question: string; answer: string }) => ({
-              q: f.question,
-              a: correctAalCopy(f.question, f.answer),
-            }))
+            .flatMap((f: { question: string; answer: string }) => {
+              const fixed = correctAalFaqItem(f.question, correctAalCopy(f.question, f.answer))
+              return fixed ? [fixed] : []
+            })
           setFaqs(mapped)
         }
         if (settingsRes.data?.phone) {
@@ -251,7 +254,7 @@ export default function AlpenglowHomeClient() {
               Every detail handled. Every journey seamless.
             </p>
             <p className="alp-speak-services-overview text-alp-slate text-base max-w-3xl mx-auto mt-6 leading-relaxed border-t border-alp-pearl-dark pt-6">
-              Aspen Alpenglow Limousine operates a professional fleet of three late-model vehicles — two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (14 passengers) — with Starlink, ski racks, and roof cargo space. 8 full-time local drivers have 15+ years of mountain driving experience. Child car seats and boosters are free. Pets are welcome, with a cleaning fee. Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison, alongside Aspen/Pitkin County Airport (ASE) and Denver International Airport (DEN). One-way rates from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.
+              Aspen Alpenglow Limousine operates a professional fleet of three late-model vehicles — two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (14 passengers) — with Starlink, ski racks, and roof cargo space. 8 full-time local drivers have 15+ years of mountain driving experience. Child car seats and boosters are free. Pets are welcome, with a cleaning fee. Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison, alongside Aspen/Pitkin County Airport (ASE) and Denver International Airport (DEN). One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.
             </p>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 gap-8">

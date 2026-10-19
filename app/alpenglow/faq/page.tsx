@@ -1,13 +1,14 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { AAL_ONE_WAY_RATES, correctAalFaqItem } from '@/lib/aal-public-copy'
 
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'FAQ | Aspen Alpenglow Limousine — Transportation Questions Answered',
   description:
-    'Aspen car service FAQs: one-way rates from Aspen (Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720), FBO airports, fleet, and cancellation notice.',
+    'Aspen car service FAQs: one-way rates each way (Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720), FBO airports, fleet, and cancellation notice.',
   alternates: { canonical: 'https://aspenalpenglowlimousine.com/faq' },
 }
 
@@ -15,7 +16,7 @@ const VEHICLE_ANSWER =
   '8 full-time local drivers with 15+ years of mountain driving experience. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee. The fleet includes two late-model Chevrolet Suburbans (up to 7 passengers each) and a Ford Transit Van (up to 14 passengers).'
 
 const DEN_COST_ANSWER =
-  'One-way rates from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally. Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison.'
+  `${AAL_ONE_WAY_RATES} Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison.`
 
 const CHARTER_MIN_FAQ = {
   q: 'Is there a minimum for charter bookings?',
@@ -37,7 +38,7 @@ const ALL_INCLUSIVE_FAQ = {
 
 const DEN_TRANSFER_SCHEMA_FAQ = {
   q: 'How much does a transfer from Aspen to Denver airport cost?',
-  a: 'The one-way rate from Aspen to Denver is $1,375. Holiday pricing may change seasonally.',
+  a: 'The one-way rate from Aspen to Denver is $1,375. The one-way rate from Denver to Aspen is $1,375. Holiday pricing may change seasonally.',
 }
 
 async function getFaqsFromDb(): Promise<{ q: string; a: string }[]> {
@@ -97,8 +98,8 @@ function applyClientContent(faqs: { q: string; a: string }[]) {
     if (ql.includes('cancellation')) return { q, a: CANCELLATION_ANSWER }
     if (ql.includes('corporate account')) return { q, a: CORPORATE_ACCOUNT_FAQ.a }
     if (/\$1,475|\$1475/.test(a) && /denver/i.test(`${q} ${a}`)) return { q, a: DEN_COST_ANSWER }
-    return { q, a: normalizeVehicleAnswerText(a) }
-  })
+    return correctAalFaqItem(q, normalizeVehicleAnswerText(a))
+  }).filter((item): item is { q: string; a: string } => item !== null)
 
   const alreadyCharter = patched.some((f) => f.q.toLowerCase().includes('minimum for charter'))
   const alreadyAllIncl = patched.some((f) => f.q.toLowerCase().includes('pricing all-inclusive'))

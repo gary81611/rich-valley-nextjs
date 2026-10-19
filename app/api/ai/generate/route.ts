@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { generateWithAI } from '@/lib/openrouter'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
 
 const rateLimitMap = new Map<string, number[]>()
 
@@ -52,10 +53,22 @@ Return ONLY valid JSON array (no markdown fences):
 
 const brandContext: Record<string, string> = {
   rva: `Rich Valley Adventures is a guided outdoor adventure company in Aspen, Colorado, operating since 2012. Phone: 970-456-3666. Full-day float trip: from $1,400 for 2 people (1 boat, 1 captain). Additional adults $375 each, kids $175. Covers an 8-12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up. Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+). Includes ponds, creeks, and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat, and brook trout from 12 to 30 inches. Paddleboarding is a rental from $100, not a guided trip. Corporate packages: groups of 50+, custom mix of fishing and hiking. Booking: at least 2 days' advance notice, 50% deposit at booking, cancellations within 72 hours billed in full.`,
-  alpenglow: `Aspen Alpenglow Limousine is a luxury private car and limousine service in Aspen, Colorado, operating 24/7 since 2012. Phone: 970-456-3666. 8 full-time local drivers with 15+ years of mountain driving experience. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets welcome, with a cleaning fee. Private FBO airport service: Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way rates from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally. Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice. Corporate charge accounts are billed monthly.`,
+  alpenglow: `Aspen Alpenglow Limousine is a luxury private car and limousine service in Aspen, Colorado, operating 24/7 since 2012. Phone: 970-456-3666. 8 full-time local drivers with 15+ years of mountain driving experience. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets welcome, with a cleaning fee. Private FBO airport service: Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally. Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice. Corporate charge accounts are billed monthly.`,
 }
 
 export async function POST(request: NextRequest) {
+  try {
+    const supabase = await createServerSupabaseClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+  } catch {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const ip = request.headers.get('x-forwarded-for') || 'unknown'
   if (!checkRateLimit(ip)) {
     return NextResponse.json({ error: 'Rate limit exceeded. Max 10 requests per minute.' }, { status: 429 })

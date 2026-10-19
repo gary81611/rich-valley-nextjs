@@ -41,19 +41,14 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
     if (p) Object.assign(r, p)
   }
 
-  const oneWayFromAspen: Record<'eagle' | 'denver' | 'gj' | 'rifle', number> = {
-    eagle: 120,
+  const pairRate: Record<'eagle' | 'denver' | 'gj' | 'rifle', number> = {
+    eagle: 720,
     denver: 1375,
     gj: 950,
     rifle: 720,
   }
 
-  const fromAspenKey = (row: DbPricingRoute): 'eagle' | 'denver' | 'gj' | 'rifle' | null => {
-    const origin = (row.origin || '').toLowerCase()
-    const name = (row.route_name || '').toLowerCase()
-    const fromAspen = origin.includes('aspen') || name.startsWith('aspen to') || name.startsWith('aspen -')
-    if (!fromAspen) return null
-    const blob = `${row.route_name} ${row.destination}`.toLowerCase()
+  const pairKey = (blob: string): 'eagle' | 'denver' | 'gj' | 'rifle' | null => {
     if (/\bkapa\b|centennial/.test(blob)) return null
     if (/\brifle\b|\bkril\b/.test(blob)) return 'rifle'
     if (/grand junction|\bgjt\b/.test(blob)) return 'gj'
@@ -62,12 +57,36 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
     return null
   }
 
-  const seenOneWay = new Set<'eagle' | 'denver' | 'gj' | 'rifle'>()
+  const fromAspenKey = (row: DbPricingRoute): 'eagle' | 'denver' | 'gj' | 'rifle' | null => {
+    const origin = (row.origin || '').toLowerCase()
+    const name = (row.route_name || '').toLowerCase()
+    const fromAspen = origin.includes('aspen') || name.startsWith('aspen to') || name.startsWith('aspen -')
+    if (!fromAspen) return null
+    return pairKey(`${row.route_name} ${row.destination}`.toLowerCase())
+  }
+
+  const toAspenKey = (row: DbPricingRoute): 'eagle' | 'denver' | 'gj' | 'rifle' | null => {
+    const destination = (row.destination || '').toLowerCase()
+    const name = (row.route_name || '').toLowerCase()
+    if (name.startsWith('aspen to') || name.startsWith('aspen -')) return null
+    const intoAspen = destination.includes('aspen') || /\bto aspen\b/.test(name)
+    if (!intoAspen) return null
+    return pairKey(`${row.route_name} ${row.origin}`.toLowerCase())
+  }
+
+  const seenFrom = new Set<'eagle' | 'denver' | 'gj' | 'rifle'>()
+  const seenTo = new Set<'eagle' | 'denver' | 'gj' | 'rifle'>()
   for (const r of list) {
-    const key = fromAspenKey(r)
-    if (!key) continue
-    r.suv_price = oneWayFromAspen[key]
-    seenOneWay.add(key)
+    const outKey = fromAspenKey(r)
+    if (outKey) {
+      r.suv_price = pairRate[outKey]
+      seenFrom.add(outKey)
+    }
+    const inKey = toAspenKey(r)
+    if (inKey) {
+      r.suv_price = pairRate[inKey]
+      seenTo.add(inKey)
+    }
   }
 
   const missingOneWay: Record<'eagle' | 'denver' | 'gj' | 'rifle', DbPricingRoute> = {
@@ -78,7 +97,7 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
       destination: 'EGE (Eagle)',
       distance: '—',
       drive_time: '—',
-      suv_price: 120,
+      suv_price: 720,
       price_note: TRANSIT_NOTE,
       display_order: 11,
     },
@@ -117,7 +136,57 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
     },
   }
   for (const key of Object.keys(missingOneWay) as Array<keyof typeof missingOneWay>) {
-    if (!seenOneWay.has(key)) list.push(missingOneWay[key])
+    if (!seenFrom.has(key)) list.push(missingOneWay[key])
+  }
+
+  const missingInbound: Record<'eagle' | 'denver' | 'gj' | 'rifle', DbPricingRoute> = {
+    eagle: {
+      route_name: 'EGE to Aspen',
+      category: 'airport-inbound',
+      origin: 'EGE (Eagle)',
+      destination: 'Aspen',
+      distance: '—',
+      drive_time: '—',
+      suv_price: 720,
+      price_note: TRANSIT_NOTE,
+      display_order: 3,
+    },
+    denver: {
+      route_name: 'DEN to Aspen',
+      category: 'airport-inbound',
+      origin: 'DEN (Denver)',
+      destination: 'Aspen',
+      distance: '—',
+      drive_time: '—',
+      suv_price: 1375,
+      price_note: TRANSIT_NOTE,
+      display_order: 4,
+    },
+    gj: {
+      route_name: 'GJT to Aspen',
+      category: 'airport-inbound',
+      origin: 'GJT (Grand Junction)',
+      destination: 'Aspen',
+      distance: '—',
+      drive_time: '—',
+      suv_price: 950,
+      price_note: TRANSIT_NOTE,
+      display_order: 5,
+    },
+    rifle: {
+      route_name: 'KRIL to Aspen',
+      category: 'airport-inbound',
+      origin: 'KRIL (Rifle)',
+      destination: 'Aspen',
+      distance: '—',
+      drive_time: '—',
+      suv_price: 720,
+      price_note: TRANSIT_NOTE,
+      display_order: 6,
+    },
+  }
+  for (const key of Object.keys(missingInbound) as Array<keyof typeof missingInbound>) {
+    if (!seenTo.has(key)) list.push(missingInbound[key])
   }
 
   const names = new Set(list.map((r) => r.route_name))
@@ -161,7 +230,7 @@ function applyConfirmedPolicies(titles: string[]): string[] {
     return title
   })
   const extras = [
-    'One-way rates from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.',
+    'One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.',
     diversion,
     'Corporate charge accounts are billed monthly.',
   ]
@@ -338,7 +407,7 @@ export default async function PricingPage() {
           Aviation | GJT — West Star Aviation | KAPA — Centennial Airport Denver.
         </p>
         <p className="text-sm text-alp-navy/70 mb-12 max-w-3xl leading-relaxed">
-          One-way rates from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.
+          One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.
           Flight diversions to Denver or Grand Junction are handled with 2 hours&apos; notice and no Aspen cancellation penalty.
           General cancellations need 24 hours&apos; notice.
         </p>

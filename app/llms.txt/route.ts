@@ -61,7 +61,7 @@ Sitemap: https://www.richvalleyadventures.com/sitemap.xml
 - Fleet (per site): Chevrolet Suburban SUVs (7 passengers each), Ford Transit Van (14 passengers); Starlink, ski racks, and roof cargo space
 - Drivers: 8 full-time local drivers with 15+ years of mountain driving experience. Child car seats and boosters are free. Pets welcome, with a cleaning fee.
 - Private FBO airport service: Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison
-- One-way rates from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.
+- One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.
 - Flight diversions to Denver or Grand Junction: 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice.
 - Corporate charge accounts billed monthly
 - Primary services: airport transfers, corporate & executive travel, wedding transportation, ski resort transfers, hourly charter

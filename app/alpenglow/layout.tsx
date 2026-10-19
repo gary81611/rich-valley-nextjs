@@ -166,13 +166,37 @@ const localBusinessSchema = {
           '@type': 'Service',
           name: 'Airport Transfer — Aspen/Pitkin County Airport & Eagle County Airport',
           description:
-            'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way from Aspen: Eagle $120, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.',
+            'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.',
         },
       },
       {
         '@type': 'Offer',
         name: 'One-way from Aspen to Eagle',
-        price: '120',
+        price: '720',
+        priceCurrency: 'USD',
+      },
+      {
+        '@type': 'Offer',
+        name: 'One-way from Eagle to Aspen',
+        price: '720',
+        priceCurrency: 'USD',
+      },
+      {
+        '@type': 'Offer',
+        name: 'One-way from Denver to Aspen',
+        price: '1375',
+        priceCurrency: 'USD',
+      },
+      {
+        '@type': 'Offer',
+        name: 'One-way from Grand Junction to Aspen',
+        price: '950',
+        priceCurrency: 'USD',
+      },
+      {
+        '@type': 'Offer',
+        name: 'One-way from Rifle to Aspen',
+        price: '720',
         priceCurrency: 'USD',
       },
       {
