@@ -2,7 +2,6 @@ import { timingSafeEqual } from 'crypto'
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import {
-  FISHING_REPORT_HOURLY_CAP,
   FISHING_REPORT_LIMITS,
   FISHING_REPORT_MAX_BODY_BYTES,
 } from '@/lib/fishing-report-intake'
@@ -33,11 +32,9 @@ function unauthorized() {
   return new NextResponse(null, { status: 401 })
 }
 
-function authorized(request: Request): boolean {
+function headerMatches(header: string | null): header is string {
   const secret = process.env.FISHING_REPORT_SECRET
-  if (!secret) return false
-  const header = request.headers.get('x-report-secret')
-  if (!header) return false
+  if (!secret || !header) return false
   const provided = Buffer.from(header, 'utf8')
   const expected = Buffer.from(secret, 'utf8')
   if (provided.length !== expected.length) return false
@@ -98,8 +95,21 @@ function waterTempText(value: unknown): string | null | undefined {
   return optionalText(value, FISHING_REPORT_LIMITS.water_temp)
 }
 
+function rpcFailure(error: { code?: string; message?: string }) {
+  const code = error.code ?? ''
+  const message = error.message ?? ''
+  console.error('submit_voice_fishing_report failed', { code, message })
+  if (code === '28000' || message === 'unauthorized') return unauthorized()
+  if (code === '22023' || message === 'invalid') return invalid()
+  if (code === 'P0429' || message === 'rate_limited') {
+    return NextResponse.json({ error: 'Too many reports' }, { status: 429 })
+  }
+  return NextResponse.json({ error: 'Could not save the report' }, { status: 500 })
+}
+
 export async function POST(request: Request) {
-  if (!authorized(request)) return unauthorized()
+  const headerSecret = request.headers.get('x-report-secret')
+  if (!headerMatches(headerSecret)) return unauthorized()
 
   const raw = await readBody(request)
   if (raw.tooLarge) {
@@ -135,42 +145,31 @@ export async function POST(request: Request) {
   }
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   if (!url || !key || !url.startsWith('http')) {
     return NextResponse.json({ error: 'Could not save the report' }, { status: 500 })
   }
 
-  const supabase = createClient(url, key, { auth: { persistSession: false } })
-  const since = new Date(Date.now() - 60 * 60 * 1000).toISOString()
-  const { count, error: countError } = await supabase
-    .from('voice_fishing_reports')
-    .select('id', { count: 'exact', head: true })
-    .gte('created_at', since)
+  const supabase = createClient(url, key, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  })
+  const { data, error } = await supabase.rpc('submit_voice_fishing_report', {
+    p_secret: headerSecret,
+    p_reporter: reporter,
+    p_river_or_section: river,
+    p_summary: summary,
+    p_flows: flows,
+    p_water_temp: waterTemp,
+    p_hatches_and_flies: hatches,
+    p_what_is_working: working,
+  })
 
-  if (countError || count === null) {
-    return NextResponse.json({ error: 'Could not save the report' }, { status: 500 })
-  }
-  if (count >= FISHING_REPORT_HOURLY_CAP) {
-    return NextResponse.json({ error: 'Too many reports' }, { status: 429 })
-  }
+  if (error) return rpcFailure(error)
 
-  const { data, error } = await supabase
-    .from('voice_fishing_reports')
-    .insert({
-      reporter,
-      river_or_section: river,
-      flows,
-      water_temp: waterTemp,
-      hatches_and_flies: hatches,
-      what_is_working: working,
-      summary,
-    })
-    .select('id, created_at')
-    .single()
-
-  if (error || !data) {
+  const row = Array.isArray(data) ? data[0] : data
+  if (!row || typeof row !== 'object' || !('id' in row) || !('created_at' in row)) {
     return NextResponse.json({ error: 'Could not save the report' }, { status: 500 })
   }
 
-  return NextResponse.json({ id: data.id, created_at: data.created_at }, { status: 201 })
+  return NextResponse.json({ id: row.id, created_at: row.created_at }, { status: 201 })
 }
