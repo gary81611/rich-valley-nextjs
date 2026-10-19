@@ -7,6 +7,7 @@ import { absolutePublicImageUrl } from '@/lib/seo/canonical'
 import { seoAlt } from '@/lib/seo/alt-text'
 import type { BlogPost } from '@/lib/types'
 import { correctAalFleetText } from '@/lib/aal-public-copy'
+import { blogImageSrcForNext, isBlogPostPubliclyVisible } from '@/lib/blog-visibility'
 
 export const dynamic = 'force-dynamic'
 
@@ -23,7 +24,8 @@ async function getPost(slug: string): Promise<BlogPost | null> {
       .eq('slug', slug)
       .eq('status', 'published')
       .single()
-    return data as BlogPost | null
+    if (!data || !isBlogPostPubliclyVisible(data as BlogPost)) return null
+    return data as BlogPost
   } catch {
     return null
   }
@@ -59,10 +61,22 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 // ── Simple server-side markdown renderer ──────────────────────────────────────
 
 function renderInline(text: string): React.ReactNode[] {
-  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/)
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*|\[[^\]]+\]\([^)\s]+\))/g)
   return parts.map((part, i) => {
     if (part.startsWith('**') && part.endsWith('**')) return <strong key={i}>{part.slice(2, -2)}</strong>
-    if (part.startsWith('*') && part.endsWith('*')) return <em key={i}>{part.slice(1, -1)}</em>
+    if (part.startsWith('*') && part.endsWith('*') && part.length > 2) return <em key={i}>{part.slice(1, -1)}</em>
+    const link = /^\[([^\]]+)\]\(([^)\s]+)\)$/.exec(part)
+    if (link) {
+      const href = link[2]
+      if (href.startsWith('/') && !href.startsWith('//')) {
+        return (
+          <Link key={i} href={href} className="text-alp-gold hover:text-alp-navy font-medium underline">
+            {link[1]}
+          </Link>
+        )
+      }
+      return link[1]
+    }
     return part
   })
 }
@@ -178,6 +192,7 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
 
   const defaultArticleImage = 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1200&q=80'
   const coverImageAbsolute = absolutePublicImageUrl('alpenglow', post.featured_image_url)
+  const coverImageSrc = blogImageSrcForNext(post.featured_image_url)
   const schemaImageUrl = coverImageAbsolute || defaultArticleImage
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -307,7 +322,7 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
           {coverImageAbsolute && (
             <div className="relative mt-10 max-w-4xl mx-auto aspect-[2/1] rounded-xl overflow-hidden shadow-xl border border-white/10">
               <Image
-                src={coverImageAbsolute}
+                src={coverImageSrc || coverImageAbsolute}
                 alt={seoAlt({
                   subject: post.title,
                   location: 'Aspen, Colorado',
@@ -347,7 +362,7 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                       </summary>
-                      <p className="mt-3 text-slate-600 leading-relaxed">{faq.answer}</p>
+                      <p className="mt-3 text-slate-600 leading-relaxed">{renderInline(faq.answer)}</p>
                     </details>
                   ))}
                 </div>

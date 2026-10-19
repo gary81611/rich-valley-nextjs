@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { RVA_GLOBAL_PILLAR_BLOG_LINKS } from '@/lib/rva-blog-pillars'
-import { absolutePublicImageUrl } from '@/lib/seo/canonical'
+import { blogImageSrcForNext, filterPublicBlogPosts } from '@/lib/blog-visibility'
 import { seoAlt } from '@/lib/seo/alt-text'
 import type { BlogPost } from '@/lib/types'
 
@@ -35,7 +35,7 @@ async function getPosts(): Promise<BlogPost[]> {
       .eq('site_key', 'rva')
       .eq('status', 'published')
       .order('published_at', { ascending: false })
-    return (data as BlogPost[]) || []
+    return filterPublicBlogPosts((data as BlogPost[]) || [])
   } catch {
     return []
   }
@@ -105,7 +105,7 @@ export default async function RVABlogPage() {
       </section>
 
       {/* Posts grid */}
-      <main className="max-w-5xl mx-auto px-6 py-16">
+      <main className="max-w-5xl mx-auto px-6 py-16" data-blog-visibility="published-at">
         {posts.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-slate-400 text-lg">No posts published yet. Check back soon!</p>
@@ -113,7 +113,7 @@ export default async function RVABlogPage() {
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map((post) => {
-              const cardImg = absolutePublicImageUrl('rva', post.featured_image_url)
+              const cardImg = blogImageSrcForNext(post.featured_image_url)
               return (
               <article key={post.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-rva-cream-dark hover:shadow-md transition-shadow group">
                 <Link href={`/blog/${post.slug}`}>

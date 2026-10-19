@@ -4,7 +4,10 @@
  * Every Supabase query must filter by site_key / site_id from resolveSiteKeyFromHost.
  */
 import { createClient } from '@supabase/supabase-js'
+import { isBlogPostPubliclyVisible } from '@/lib/blog-visibility'
 import { resolveSiteKeyFromHost } from '@/lib/site-from-host'
+
+export const dynamic = 'force-dynamic'
 
 const RVA_ORIGIN = 'https://www.richvalleyadventures.com'
 const AAL_ORIGIN = 'https://aspenalpenglowlimousine.com'
@@ -216,12 +219,14 @@ export async function GET(request: Request) {
 
     const base = isAAL ? AAL_ORIGIN : RVA_ORIGIN
 
-    const blogEntries: SitemapEntry[] = (posts || []).map((post) => ({
-      url: `${base}/blog/${post.slug}`,
-      lastModified: post.updated_at ? new Date(post.updated_at) : lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    }))
+    const blogEntries: SitemapEntry[] = (posts || [])
+      .filter((post) => isBlogPostPubliclyVisible(post))
+      .map((post) => ({
+        url: `${base}/blog/${post.slug}`,
+        lastModified: post.updated_at ? new Date(post.updated_at) : lastModified,
+        changeFrequency: 'monthly',
+        priority: 0.7,
+      }))
 
     const excludedAalSlugs = new Set([
       'alpenglow/about',
