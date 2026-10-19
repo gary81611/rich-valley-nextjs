@@ -245,10 +245,9 @@ export default function AlpenglowHomeClient() {
       )}
 
       {/* TRANSPORTATION SERVICES */}
-      {services.length > 0 && (
       <section id="services" className="py-24 bg-alp-pearl">
         <div className="max-w-7xl mx-auto px-6">
-          <ScrollReveal className="text-center mb-16">
+          <div className="text-center mb-16">
             <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">What We Offer</p>
             <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-6">Our Services</h2>
             <p className="text-alp-slate text-xl max-w-2xl mx-auto">
@@ -257,7 +256,8 @@ export default function AlpenglowHomeClient() {
             <p className="alp-speak-services-overview text-alp-slate text-base max-w-3xl mx-auto mt-6 leading-relaxed border-t border-alp-pearl-dark pt-6">
               Aspen Alpenglow Limousine operates a professional fleet of three late-model vehicles — two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (13 passengers) — with Starlink, ski racks, and roof cargo space. 8 full-time local drivers have 15+ years of mountain driving experience. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison, alongside Aspen/Pitkin County Airport (ASE) and Denver International Airport (DEN). One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.
             </p>
-          </ScrollReveal>
+          </div>
+          {services.length > 0 && (
           <div className="grid md:grid-cols-2 gap-8">
             {services.map((service, i) => (
               <ScrollReveal key={service.title} delay={i * 100}>
@@ -291,9 +291,9 @@ export default function AlpenglowHomeClient() {
               </ScrollReveal>
             ))}
           </div>
+          )}
         </div>
       </section>
-      )}
 
       {/* WHY ALPENGLOW */}
       {whyChooseUs.length > 0 && (
