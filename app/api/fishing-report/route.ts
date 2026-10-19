@@ -104,6 +104,9 @@ function rpcFailure(error: { code?: string; message?: string }) {
   if (code === 'P0429' || message === 'rate_limited') {
     return NextResponse.json({ error: 'Too many reports' }, { status: 429 })
   }
+  if (code === 'PGRST202') {
+    return NextResponse.json({ error: 'Could not save the report' }, { status: 500 })
+  }
   return NextResponse.json({ error: 'Could not save the report' }, { status: 500 })
 }
 
