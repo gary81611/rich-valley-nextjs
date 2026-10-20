@@ -1,6 +1,6 @@
 ---
-title: "Aspen Ski Season: Why Private Transfers Beat Rental Cars"
-description: "Renting a car for your Aspen ski trip? Read this first. Here's an honest comparison of rental cars vs. private car service for ski season in the Roaring Fork Valley — and why most regulars have made the switch."
+title: "Do You Need a Rental Car in Aspen? Ski Season 2026–27"
+description: "Rental car or private transfer for your Aspen ski trip? Real costs, parking, winter roads and when each makes sense — updated for 2026–27."
 date: "2026-03-21"
 author: "Aspen Alpenglow Limousine"
 keywords: ["aspen ski season transportation", "aspen skiing car service", "rental car vs private transfer aspen", "snowmass transportation winter", "aspen car service ski trip"]
@@ -57,7 +57,7 @@ This is the simple one. Aspen's après scene — Ajax Tavern, the rooftop at Lim
 
 ### Ski gear logistics disappear
 
-Our vehicles are configured for ski travel. Executive Escalades handle up to 7 passengers with full ski equipment. Luxury Sprinters take groups of up to 13 with all their gear in a single, organized load. No roof rack negotiation, no ski bag jammed in the trunk at an angle, no boot bag on someone's lap.
+Our vehicles are configured for ski travel. SUVs handle up to 7 passengers with full ski equipment. Ford Transit passenger vans take groups of up to 13 with all their gear in a single, organized load. No roof rack negotiation, no ski bag jammed in the trunk at an angle, no boot bag on someone's lap.
 
 We load and unload your gear at pickup and dropoff — that's part of the service.
 
@@ -96,4 +96,4 @@ Yes — the Roaring Fork Transit Authority (RFTA) operates free bus service with
 For holiday periods (Christmas/New Year, Presidents' Week), book 4–6 weeks in advance. For regular winter weekends, 1–2 weeks advance booking is generally sufficient, though earlier is always better. Aspen Alpenglow Limousine does accommodate same-day bookings on an availability basis.
 
 **Can a private car service handle ski equipment for a group of 6?**
-Yes. Our Executive Escalades comfortably accommodate 7 passengers with full ski equipment — skis, boots, poles, bags. For larger groups, our Luxury Sprinters handle up to 13 passengers with all their gear in a single load.
+Yes. Our SUVs comfortably accommodate 7 passengers with full ski equipment — skis, boots, poles, bags. For larger groups, our Ford Transit passenger vans handle up to 13 passengers with all their gear in a single load.

@@ -4,7 +4,9 @@ import ALPFooter from '@/components/alpenglow/ALPFooter'
 import { alpenglowData } from '@/lib/site-data'
 
 const ALP_URL = 'https://aspenalpenglowlimousine.com'
-const ALP_OG_IMAGE = 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1200&q=80'
+const ALP_LOGO = `${ALP_URL}/images/logos/alpenglow-logo.png`
+const ALP_LOGO_WIDTH = 1312
+const ALP_LOGO_HEIGHT = 650
 
 export const metadata: Metadata = {
   metadataBase: new URL(ALP_URL),
@@ -25,10 +27,10 @@ export const metadata: Metadata = {
     siteName: 'Aspen Alpenglow Limousine',
     images: [
       {
-        url: ALP_OG_IMAGE,
-        width: 1200,
-        height: 630,
-        alt: 'Luxury private SUV and limousine service in Aspen, Colorado — Aspen Alpenglow Limousine',
+        url: ALP_LOGO,
+        width: ALP_LOGO_WIDTH,
+        height: ALP_LOGO_HEIGHT,
+        alt: 'Aspen Alpenglow Limousine logo',
       },
     ],
   },
@@ -36,7 +38,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Aspen Alpenglow Limousine | Luxury Transportation in Aspen, CO',
     description: 'Distinguished private car and limousine service throughout Aspen and the Roaring Fork Valley. Available 24/7 since 2012.',
-    images: [ALP_OG_IMAGE],
+    images: [ALP_LOGO],
   },
   verification: {
     google: 'xZU80Fp2QsHL03QMSVl-lqt1m8Mh6ZbY2yl8Gy1iXTc',
@@ -70,19 +72,17 @@ const localBusinessSchema = {
     'Distinguished private car and limousine service in Aspen, Colorado. Airport transfers, wedding transportation, corporate travel, and ski resort shuttles. Available 24/7 since 2012.',
   url: ALP_URL,
   telephone: '+19704563666',
-  email: 'kit@richvalleyadventures.com',
   priceRange: '$$$$',
-  image: ALP_OG_IMAGE,
+  image: ALP_LOGO,
   logo: {
     '@type': 'ImageObject',
-    url: ALP_OG_IMAGE,
-    width: 1200,
-    height: 630,
+    url: ALP_LOGO,
+    width: ALP_LOGO_WIDTH,
+    height: ALP_LOGO_HEIGHT,
   },
   foundingDate: '2012',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: '',
     addressLocality: 'Aspen',
     addressRegion: 'CO',
     postalCode: '81611',
@@ -139,7 +139,6 @@ const localBusinessSchema = {
     '@type': 'ContactPoint',
     telephone: '+1-970-456-3666',
     contactType: 'Reservations',
-    email: 'kit@richvalleyadventures.com',
     areaServed: 'US',
     availableLanguage: 'English',
     hoursAvailable: {
@@ -148,13 +147,6 @@ const localBusinessSchema = {
       opens: '07:00',
       closes: '20:00',
     },
-  },
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.9',
-    reviewCount: '150',
-    bestRating: '5',
-    worstRating: '1',
   },
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
@@ -297,7 +289,6 @@ export default function AlpenglowLayout({ children }: { children: React.ReactNod
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       <link rel="preconnect" href="https://lirp.cdn-website.com" crossOrigin="anonymous" />
-      <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}

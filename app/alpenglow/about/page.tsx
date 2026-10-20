@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { alpenglowData } from '@/lib/site-data'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
-import { correctAalFleetCapacity, correctAalFleetText } from '@/lib/aal-public-copy'
+import { correctAalFleetCapacity, correctAalPublicText } from '@/lib/aal-public-copy'
 
 export const dynamic = 'force-dynamic'
 
@@ -35,8 +35,8 @@ const defaultWhyChooseUs = [
 ]
 
 const defaultFleet = [
-  { name: 'Executive Escalade', image: '/images/fleet/escalade.png', passengers: 'Up to 7 Passengers', features: ['Premium leather interior', 'Climate control', 'USB & WiFi', 'Privacy partition available'] },
-  { name: 'Luxury Sprinter', image: '/images/fleet/sprinter.png', passengers: 'Up to 13 Passengers', features: ['Executive seating', 'Entertainment system', 'Overhead storage', 'Standing headroom'] },
+  { name: 'SUV', image: '/images/fleet/escalade.png', passengers: 'Up to 7 Passengers', features: ['Premium leather interior', 'Climate control', 'USB & WiFi', 'Starlink'] },
+  { name: 'Ford Transit passenger van', image: '/images/fleet/sprinter.png', passengers: 'Up to 13 Passengers', features: ['Executive seating', 'Starlink', 'Ski racks', 'Roof cargo space'] },
 ]
 
 export default async function AboutPage() {
@@ -61,10 +61,10 @@ export default async function AboutPage() {
     }
     if (fleetRes.data && fleetRes.data.length > 0) {
       fleet = fleetRes.data.map((v: { name: string; image_url: string; capacity: number; description: string }) => ({
-        name: v.name,
+        name: correctAalPublicText(v.name),
         image: v.image_url || '/images/fleet/escalade.png',
         passengers: `Up to ${correctAalFleetCapacity(v.name, v.capacity)} Passengers`,
-        features: v.description ? [correctAalFleetText(v.description)] : [],
+        features: v.description ? [correctAalPublicText(v.description)] : [],
       }))
     }
   } catch {
@@ -158,7 +158,7 @@ export default async function AboutPage() {
               <p className="text-alp-slate text-lg leading-relaxed mb-6">
                 Aspen Alpenglow Limousine was founded in 2012 with a simple promise: deliver the
                 highest standard of private transportation in the Roaring Fork Valley. What began
-                as a single Escalade and a dedication to impeccable service has grown into
+                as a single SUV and a dedication to impeccable service has grown into
                 Aspen&apos;s most trusted luxury car service.
               </p>
               <p className="text-alp-slate text-lg leading-relaxed mb-6">

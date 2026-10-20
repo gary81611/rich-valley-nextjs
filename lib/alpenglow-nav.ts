@@ -25,6 +25,7 @@ const CANONICAL_CMS_SERVICE_SLUGS = new Set([
   'weddings',
   'night-out',
   'wine-tours',
+  'ski-resort-transfers',
 ])
 
 const LEGACY_TO_CANONICAL_SLUG: Record<string, string> = {
@@ -34,6 +35,9 @@ const LEGACY_TO_CANONICAL_SLUG: Record<string, string> = {
 
 export function normalizeAalServiceNavHref(href: string): string {
   const u = href.trim()
+  if (u === '/services/ski-resort-transfers' || u === '/services/ski-resort-transfers/') {
+    return '/ski-resort-transfers'
+  }
   if (!u.startsWith('/') || u.startsWith('http') || u.startsWith('/services/') || u.startsWith('/service-areas')) {
     return href
   }

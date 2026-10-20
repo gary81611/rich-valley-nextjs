@@ -8,7 +8,7 @@ import LocationPageTemplate from '@/components/templates/LocationPageTemplate'
 import FaqPageTemplate from '@/components/templates/FaqPageTemplate'
 import LandingPageTemplate from '@/components/templates/LandingPageTemplate'
 import type { CmsPage } from '@/lib/pages'
-import { correctAalFleetText } from '@/lib/aal-public-copy'
+import { correctAalPublicText } from '@/lib/aal-public-copy'
 
 const AAL_FBO =
   'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison.'
@@ -19,60 +19,60 @@ const AAL_CANCEL =
 const AAL_CORPORATE = 'Corporate charge accounts are billed monthly.'
 
 function applyFleetCapacityCopy(page: CmsPage): CmsPage {
-  const meta_description = page.meta_description ? correctAalFleetText(page.meta_description) : page.meta_description
-  const meta_title = page.meta_title ? correctAalFleetText(page.meta_title) : page.meta_title
-  const title = correctAalFleetText(page.title)
+  const meta_description = page.meta_description ? correctAalPublicText(page.meta_description) : page.meta_description
+  const meta_title = page.meta_title ? correctAalPublicText(page.meta_title) : page.meta_title
+  const title = correctAalPublicText(page.title)
   if (page.template_type === 'service' || page.template_type === 'location') {
     const content = { ...(page.content as ServiceContent & LocationContent) }
-    content.hero_title = content.hero_title ? correctAalFleetText(content.hero_title) : content.hero_title
-    content.hero_subtitle = content.hero_subtitle ? correctAalFleetText(content.hero_subtitle) : content.hero_subtitle
-    content.intro = correctAalFleetText(content.intro || '')
-    content.area_description = content.area_description ? correctAalFleetText(content.area_description) : content.area_description
+    content.hero_title = content.hero_title ? correctAalPublicText(content.hero_title) : content.hero_title
+    content.hero_subtitle = content.hero_subtitle ? correctAalPublicText(content.hero_subtitle) : content.hero_subtitle
+    content.intro = correctAalPublicText(content.intro || '')
+    content.area_description = content.area_description ? correctAalPublicText(content.area_description) : content.area_description
     content.h2_sections = content.h2_sections?.map((section) => ({
       ...section,
-      title: correctAalFleetText(section.title),
-      content: correctAalFleetText(section.content),
+      title: correctAalPublicText(section.title),
+      content: correctAalPublicText(section.content),
     }))
     content.features = content.features?.map((feature) => ({
       ...feature,
-      title: correctAalFleetText(feature.title),
-      description: correctAalFleetText(feature.description),
+      title: correctAalPublicText(feature.title),
+      description: correctAalPublicText(feature.description),
     }))
     content.faqs = content.faqs?.map((faq) => ({
       ...faq,
-      question: correctAalFleetText(faq.question),
-      answer: correctAalFleetText(faq.answer),
+      question: correctAalPublicText(faq.question),
+      answer: correctAalPublicText(faq.answer),
     }))
     content.local_tips = content.local_tips?.map((tip) => ({
       ...tip,
-      title: correctAalFleetText(tip.title),
-      description: correctAalFleetText(tip.description),
+      title: correctAalPublicText(tip.title),
+      description: correctAalPublicText(tip.description),
     }))
-    content.services_available = content.services_available?.map((item) => correctAalFleetText(item))
+    content.services_available = content.services_available?.map((item) => correctAalPublicText(item))
     return { ...page, title, meta_title, meta_description, content }
   }
   if (page.template_type === 'faq') {
     const content = { ...(page.content as FaqContent) }
-    content.intro = content.intro ? correctAalFleetText(content.intro) : content.intro
+    content.intro = content.intro ? correctAalPublicText(content.intro) : content.intro
     content.faqs = content.faqs.map((faq) => ({
       ...faq,
-      question: correctAalFleetText(faq.question),
-      answer: correctAalFleetText(faq.answer),
+      question: correctAalPublicText(faq.question),
+      answer: correctAalPublicText(faq.answer),
     }))
     return { ...page, title, meta_title, meta_description, content }
   }
   if (page.template_type === 'landing') {
     const content = { ...(page.content as LandingContent) }
-    content.hero_title = correctAalFleetText(content.hero_title)
-    content.hero_subtitle = content.hero_subtitle ? correctAalFleetText(content.hero_subtitle) : content.hero_subtitle
+    content.hero_title = correctAalPublicText(content.hero_title)
+    content.hero_subtitle = content.hero_subtitle ? correctAalPublicText(content.hero_subtitle) : content.hero_subtitle
     content.sections = content.sections?.map((section) => ({
       ...section,
-      title: section.title ? correctAalFleetText(section.title) : section.title,
-      content: section.content ? correctAalFleetText(section.content) : section.content,
+      title: section.title ? correctAalPublicText(section.title) : section.title,
+      content: section.content ? correctAalPublicText(section.content) : section.content,
       items: section.items?.map((item) => ({
         ...item,
-        title: correctAalFleetText(item.title),
-        description: correctAalFleetText(item.description),
+        title: correctAalPublicText(item.title),
+        description: correctAalPublicText(item.description),
       })),
     }))
     return { ...page, title, meta_title, meta_description, content }
@@ -319,13 +319,24 @@ export default async function CmsPage({ params }: Props) {
           relatedLinks={
             slugStr === 'airport-transfers'
               ? [
+                  { href: '/airport-transfers/eagle-ege-to-aspen', label: 'Eagle Airport (EGE) to Aspen private car — $720' },
+                  { href: '/airport-transfers/denver-den-to-aspen', label: 'Denver Airport (DEN) to Aspen private car — $1,375' },
+                  { href: '/aspen-airport-closure-2027', label: 'Aspen Airport closure in 2027' },
                   { href: '/areas/snowmass', label: 'Snowmass Village pickups & Aspen transfers' },
                   { href: '/areas/vail', label: 'Aspen ↔ Vail / Beaver Creek private car service' },
-                  { href: '/destinations', label: 'Chauffeured Colorado day trips & Front Range venues' },
-                  { href: '/fleet', label: 'Our Suburban & Transit van fleet for airport arrivals' },
-                  { href: '/blog/airport-transfer-guide-aspen-pitkin-county-airport', label: 'ASE airport transfer guide (blog)' },
+                  { href: '/fleet', label: 'SUVs and Ford Transit van for airport arrivals' },
+                  { href: '/pricing', label: 'Published private car rates' },
                 ]
-              : undefined
+              : slugStr === 'ski-resort-transfers'
+                ? [
+                    { href: '/events/x-games-aspen-transportation', label: 'X Games Aspen 2027 transportation' },
+                    { href: '/seasonal/holiday-private-car-aspen', label: 'Holiday private car service' },
+                    { href: '/events/new-years-eve-aspen', label: "New Year's Eve private car service" },
+                    { href: '/airport-transfers', label: 'Airport transfers' },
+                    { href: '/pricing', label: 'Published private car rates' },
+                    { href: '/blog/aspen-ski-season-private-transfers-vs-rental-cars', label: 'Ski season: rental car or private transfer' },
+                  ]
+                : undefined
           }
         />
       )}

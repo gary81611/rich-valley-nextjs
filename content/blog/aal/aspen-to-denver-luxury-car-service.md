@@ -43,7 +43,7 @@ Rental cars at ASE and DEN both carry significant fees. Factor in insurance, fue
 
 ### Your whole group in one vehicle
 
-Traveling with 4, 6, or 8 people? A single luxury Sprinter or Escalade keeps the group together from departure to arrival. No caravan driving, no "which car has the good AUX cord," no risk of one vehicle getting separated in a snowstorm. One departure time, one driver, one smooth arrival.
+Traveling with 4, 6, or 8 people? A single Ford Transit passenger van or SUV keeps the group together from departure to arrival. No caravan driving, no "which car has the good AUX cord," no risk of one vehicle getting separated in a snowstorm. One departure time, one driver, one smooth arrival.
 
 ## What the Experience Looks Like
 

@@ -19,7 +19,13 @@ export default function ALPFooter() {
               <li><a href="/airport-transfers" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Airport Transfers</a></li>
               <li><a href="/corporate" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Corporate Transportation</a></li>
               <li><a href="/weddings" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Wedding Transportation</a></li>
-              <li><a href="/services/ski-resort-transfers" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Ski Resort Transfers</a></li>
+              <li><a href="/ski-resort-transfers" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Ski Resort Transfers</a></li>
+              <li><a href="/airport-transfers/eagle-ege-to-aspen" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Eagle Airport (EGE)</a></li>
+              <li><a href="/airport-transfers/denver-den-to-aspen" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Denver Airport (DEN)</a></li>
+              <li><a href="/events/x-games-aspen-transportation" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">X Games Aspen 2027</a></li>
+              <li><a href="/seasonal/holiday-private-car-aspen" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Holiday Private Car</a></li>
+              <li><a href="/events/new-years-eve-aspen" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">New Year&apos;s Eve</a></li>
+              <li><a href="/aspen-airport-closure-2027" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">ASE Closure 2027</a></li>
             </ul>
           </div>
           <div>

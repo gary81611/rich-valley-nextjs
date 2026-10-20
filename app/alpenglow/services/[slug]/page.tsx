@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { serviceMatchesPathSlug } from '@/lib/alpenglow-services'
 import { alpenglowData } from '@/lib/site-data'
+import { correctAalFleetCapacity, correctAalPublicText } from '@/lib/aal-public-copy'
 
 export const dynamic = 'force-dynamic'
 
@@ -51,7 +53,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   return {
     title: `${service.name} in Aspen, CO | Aspen Alpenglow Limousine`,
-    description: service.description,
+    description: correctAalPublicText(service.description),
     alternates: { canonical: `https://aspenalpenglowlimousine.com/services/${slug}` },
   }
 }
@@ -60,22 +62,13 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   const { slug } = await params
   const service = await getServiceByPathSlug(slug)
 
-  if (!service) {
-    return (
-      <div className="min-h-screen bg-alp-pearl font-inter flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="font-playfair text-3xl font-bold text-alp-navy mb-4">Service Not Found</h1>
-          <Link href="/services" className="text-alp-gold hover:underline">
-            Back to Services
-          </Link>
-        </div>
-      </div>
-    )
-  }
+  if (!service) notFound()
 
-  const displayTitle = service.name
-  const bodyCopy = (service.long_description || service.description || '').trim()
-  const features = Array.isArray(service.features) ? (service.features as string[]) : []
+  const displayTitle = correctAalPublicText(service.name)
+  const bodyCopy = correctAalPublicText((service.long_description || service.description || '').trim())
+  const features = (Array.isArray(service.features) ? (service.features as string[]) : []).map((feature) =>
+    correctAalPublicText(feature),
+  )
   const plainDescription = bodyCopy.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
 
   const supabase = await createServerSupabaseClient()
@@ -110,7 +103,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
       <section className="bg-alp-navy-deep text-white py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">{displayTitle}</h1>
-          <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl">{service.description}</p>
+          <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl">{correctAalPublicText(service.description)}</p>
         </div>
       </section>
 
@@ -151,20 +144,20 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
                     <div className="relative w-full h-48 mb-4 rounded-xl overflow-hidden bg-alp-navy-deep">
                       <Image
                         src={vehicle.image_url || '/images/fleet/default.png'}
-                        alt={vehicle.name}
+                        alt={correctAalPublicText(vehicle.name)}
                         fill
                         className="object-cover"
                         unoptimized
                       />
                     </div>
-                    <h4 className="font-playfair text-xl font-bold text-alp-navy mb-1">{vehicle.name}</h4>
-                    <p className="text-alp-gold font-semibold text-sm mb-3">Up to {vehicle.capacity} Passengers</p>
+                    <h4 className="font-playfair text-xl font-bold text-alp-navy mb-1">{correctAalPublicText(vehicle.name)}</h4>
+                    <p className="text-alp-gold font-semibold text-sm mb-3">Up to {correctAalFleetCapacity(vehicle.name, vehicle.capacity)} Passengers</p>
                     {Array.isArray(vehicle.features) && vehicle.features.length > 0 && (
                       <ul className="grid grid-cols-2 gap-1">
                         {(vehicle.features as string[]).map((f) => (
                           <li key={f} className="text-sm text-alp-slate flex items-center gap-1">
                             <span className="w-1 h-1 bg-alp-gold rounded-full flex-shrink-0" />
-                            {f}
+                            {correctAalPublicText(f)}
                           </li>
                         ))}
                       </ul>

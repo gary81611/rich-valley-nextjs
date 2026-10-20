@@ -9,7 +9,7 @@ import { createClient } from '@/lib/supabase'
 import { hrefForService } from '@/lib/alpenglow-services'
 import type { Service as ServiceType, FleetVehicle, Testimonial } from '@/lib/types'
 import { seoAlt } from '@/lib/seo/alt-text'
-import { AAL_ONE_WAY_RATES, correctAalFaqItem, correctAalFleetCapacity, correctAalFleetText } from '@/lib/aal-public-copy'
+import { AAL_ONE_WAY_RATES, correctAalFaqItem, correctAalFleetCapacity, correctAalPublicText } from '@/lib/aal-public-copy'
 
 interface GeoBlock {
   id: string
@@ -29,7 +29,7 @@ function correctAalCopy(question: string, answer: string): string {
   if (blob.includes('cancellation') && (/50%|7-day|7 day|full refund/.test(answer))) {
     return "Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice."
   }
-  return correctAalFleetText(answer)
+  return correctAalPublicText(answer)
 }
 
 const ServiceIcon = ({ icon }: { icon: string }) => {
@@ -75,17 +75,17 @@ export default function AlpenglowHomeClient() {
             svcRes.data.map((s: ServiceType) => ({
               title: s.name,
               slug: s.slug ?? '',
-              description: s.description,
-              features: Array.isArray(s.features) ? (s.features as string[]) : [],
+              description: correctAalPublicText(s.description),
+              features: Array.isArray(s.features) ? (s.features as string[]).map((feature) => correctAalPublicText(feature)) : [],
               icon: s.icon || 'Plane',
             })),
           )
         }
         if (fleetRes.data && fleetRes.data.length > 0) {
           setFleet(fleetRes.data.map((v: FleetVehicle) => ({
-            name: v.name, image: v.image_url || '/images/escalade.png',
+            name: correctAalPublicText(v.name), image: v.image_url || '/images/fleet/escalade.png',
             passengers: `Up to ${correctAalFleetCapacity(v.name, v.capacity)} Passengers`,
-            features: v.description ? [correctAalFleetText(v.description)] : [],
+            features: v.description ? [correctAalPublicText(v.description)] : [],
           })))
         }
         if (testRes.data && testRes.data.length > 0) {

@@ -47,7 +47,7 @@ Most Grand Valley itineraries run eight to nine hours including drive time, tast
 Yes — Colorado’s craft scene crosses categories. Tell us your preferences and we sequence stops so palate fatigue does not ruin the last visit.
 
 **What vehicle should we book for six wine travelers?**
-A luxury SUV often suffices; for six plus cases and photography gear, a Sprinter-style van adds comfort. Share headcount and shopping intentions up front.
+A luxury SUV often suffices; for six plus cases and photography gear, a Ford Transit passenger van adds comfort. Share headcount and shopping intentions up front.
 
 **Do you offer airport-to-winery routing?**
 We can meet DEN or EGE arrivals and transition directly into a tasting itinerary when scheduling allows for acclimation and meal timing.

@@ -20,7 +20,7 @@ Corporate programs should document a primary airport and a fallback communicatio
 
 It is common to split rooms across The Little Nell, Hotel Jerome, Limelight, and Snowmass base properties. That fragmentation is fine for lodging contracts — painful for ad hoc rideshare.
 
-We build shuttle sheets: pickup windows, vehicle assignment, primary contact on site, and escalation numbers for the transportation captain. Sprinter vans become rolling conference rooms between venues; Suburbans handle smaller partner groups who need discretion.
+We build shuttle sheets: pickup windows, vehicle assignment, primary contact on site, and escalation numbers for the transportation captain. Ford Transit passenger vans become rolling conference rooms between venues; Suburbans handle smaller partner groups who need discretion.
 
 ## Schedule padding that still feels executive
 

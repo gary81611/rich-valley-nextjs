@@ -151,6 +151,37 @@ const RVA_ROUTE_LASTMOD: Record<string, string> = {
 /** Used when a CMS row has no updated_at, and for AAL static URLs. A real past date, not "now". */
 const SITEMAP_FALLBACK_LASTMOD = '2026-10-19T14:47:26-06:00'
 
+/** Round 12 source edit date for AAL routes whose copy or template changed in this commit. */
+const AAL_ROUTE_LASTMOD: Record<string, string> = {
+  '/': '2026-10-20T20:00:00-06:00',
+  '/pricing': '2026-10-20T20:00:00-06:00',
+  '/about': '2026-10-20T20:00:00-06:00',
+  '/faq': '2026-10-20T20:00:00-06:00',
+  '/fleet': '2026-10-20T20:00:00-06:00',
+  '/services': '2026-10-20T20:00:00-06:00',
+  '/blog': '2026-10-20T20:00:00-06:00',
+  '/airport-transfers': '2026-10-20T20:00:00-06:00',
+  '/ski-resort-transfers': '2026-10-20T20:00:00-06:00',
+  '/airport-transfers/eagle-ege-to-aspen': '2026-10-20T20:00:00-06:00',
+  '/airport-transfers/denver-den-to-aspen': '2026-10-20T20:00:00-06:00',
+  '/events/x-games-aspen-transportation': '2026-10-20T20:00:00-06:00',
+  '/events/new-years-eve-aspen': '2026-10-20T20:00:00-06:00',
+  '/seasonal/holiday-private-car-aspen': '2026-10-20T20:00:00-06:00',
+  '/aspen-airport-closure-2027': '2026-10-20T20:00:00-06:00',
+}
+
+/** Top-level CMS slugs that 308. They must not appear in the AAL sitemap. */
+const AAL_SITEMAP_REDIRECT_SLUGS = new Set(['corporate-events', 'wedding-transportation'])
+
+/** Live /services/* pages that return 200. Redirects and the soft-404 twin stay out. */
+const AAL_SERVICE_SITEMAP_PATHS = [
+  '/services/hourly-charter',
+  '/services/charter-services',
+  '/services/wedding-transportation',
+  '/services/vehicle-concierge-services',
+  '/services/corporate-travel',
+]
+
 function dated(iso: string): Date {
   return new Date(iso)
 }
@@ -242,7 +273,7 @@ export async function GET(request: Request) {
     process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!supabaseUrl || !supabaseKey || !supabaseUrl.startsWith('http')) {
-    return sitemapResponse(toXml(withRvaSitemapExtras(staticWithDates, isAAL)), 'fallback')
+    return sitemapResponse(toXml(fallbackSitemap(staticWithDates, isAAL)), 'fallback')
   }
 
   try {
@@ -263,7 +294,7 @@ export async function GET(request: Request) {
         .order('slug'),
       supabase
         .from('service_areas')
-        .select('slug, updated_at')
+        .select('slug, name, updated_at')
         .eq('site_key', siteKey)
         .eq('is_active', true),
     ])
@@ -293,6 +324,7 @@ export async function GET(request: Request) {
 
     const pageEntries: SitemapEntry[] = (pages || [])
       .filter((page) => !(siteKey === 'alpenglow' && excludedAalSlugs.has(page.slug)))
+      .filter((page) => !(siteKey === 'alpenglow' && AAL_SITEMAP_REDIRECT_SLUGS.has(normalizeAalPageSlug(page.slug))))
       .filter((page) => !(siteKey === 'rva' && shouldOmitRvaCmsPageSlug(page.slug)))
       .map((page) => {
         const normalizedSlug =
@@ -328,13 +360,50 @@ export async function GET(request: Request) {
           })
       : []
 
-    const merged = dedupeByUrl([
-      ...staticWithDates,
-      ...blogEntries,
-      ...pageEntries,
-      ...serviceAreaEntries,
-      ...rvaSitemapExtras(isAAL),
-    ])
+    const aalAreaEntries: SitemapEntry[] = isAAL
+      ? (serviceAreas || []).flatMap((row) => {
+          const slug = typeof row.slug === 'string' ? row.slug.trim() : ''
+          if (!slug) return []
+          return [
+            {
+              url: `${AAL_ORIGIN}/service-areas/${slug}`,
+              lastModified: row.updated_at ? new Date(row.updated_at) : lastModified,
+              changeFrequency: 'monthly',
+              priority: 0.78,
+            },
+          ]
+        })
+      : []
+
+    const aalServiceEntries: SitemapEntry[] = isAAL
+      ? AAL_SERVICE_SITEMAP_PATHS.map((path) => ({
+          url: `${AAL_ORIGIN}${path}`,
+          lastModified,
+          changeFrequency: 'monthly',
+          priority: 0.8,
+        }))
+      : []
+
+    const merged = isAAL
+      ? applyFixedLastmod(
+          dedupeByUrl([
+            ...pageEntries,
+            ...blogEntries,
+            ...aalAreaEntries,
+            ...staticWithDates,
+            ...aalServiceEntries,
+            ...aalSitemapExtras(),
+          ]),
+          AAL_ORIGIN,
+          AAL_ROUTE_LASTMOD,
+        )
+      : dedupeByUrl([
+          ...staticWithDates,
+          ...blogEntries,
+          ...pageEntries,
+          ...serviceAreaEntries,
+          ...rvaSitemapExtras(false),
+        ])
 
     return sitemapResponse(toXml(merged), 'dynamic')
   } catch (err) {
@@ -343,7 +412,7 @@ export async function GET(request: Request) {
       siteKey,
       error: err instanceof Error ? err.message : String(err),
     })
-    return sitemapResponse(toXml(withRvaSitemapExtras(staticWithDates, isAAL)), 'fallback')
+    return sitemapResponse(toXml(fallbackSitemap(staticWithDates, isAAL)), 'fallback')
   }
 }
 
@@ -361,6 +430,22 @@ function rvaSitemapExtras(isAAL: boolean): SitemapEntry[] {
     changeFrequency,
     priority,
   }))
+}
+
+function aalSitemapExtras(): SitemapEntry[] {
+  return Object.entries(AAL_ROUTE_LASTMOD)
+    .filter(([path]) => path.split('/').length > 2 || path === '/ski-resort-transfers' || path === '/aspen-airport-closure-2027')
+    .map(([path, iso]) => ({
+      url: `${AAL_ORIGIN}${path}`,
+      lastModified: dated(iso),
+      changeFrequency: 'weekly',
+      priority: 0.86,
+    }))
+}
+
+function fallbackSitemap(entries: SitemapEntry[], isAAL: boolean): SitemapEntry[] {
+  if (!isAAL) return withRvaSitemapExtras(entries, false)
+  return applyFixedLastmod(dedupeByUrl([...entries, ...aalSitemapExtras()]), AAL_ORIGIN, AAL_ROUTE_LASTMOD)
 }
 
 function withRvaSitemapExtras(entries: SitemapEntry[], isAAL: boolean): SitemapEntry[] {

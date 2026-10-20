@@ -13,7 +13,7 @@ const FALLBACK_SERVICE_PAGES: NavItem[] = [
   { label: 'Airport Transfers', href: '/airport-transfers' },
   { label: 'Corporate Transportation', href: '/corporate' },
   { label: 'Wedding Transportation', href: '/weddings' },
-  { label: 'Ski Resort Transfers', href: '/services/ski-resort-transfers' },
+  { label: 'Ski Resort Transfers', href: '/ski-resort-transfers' },
   { label: 'Wine Tours', href: '/wine-tours' },
   { label: 'Night Out', href: '/night-out' },
 ]

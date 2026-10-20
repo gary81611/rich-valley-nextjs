@@ -136,6 +136,11 @@ function aalRedirects() {
         has: h,
       },
     )
+    // statusCode 301. permanent:true would be a 308. Both slash forms, AAL hosts only.
+    list.push(
+      { source: '/services/ski-resort-transfers', destination: '/ski-resort-transfers', statusCode: 301, has: h },
+      { source: '/services/ski-resort-transfers/', destination: '/ski-resort-transfers', statusCode: 301, has: h },
+    )
   }
   return list
 }

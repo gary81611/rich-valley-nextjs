@@ -249,12 +249,14 @@ const CONFIRMED_FLEET_FOR_PRICING = [
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Pricing | Aspen Alpenglow Limousine — All-Inclusive Transportation Rates',
-  description: 'Transparent, all-inclusive pricing for private car service in Aspen. Airport transfers from ASE, EGE, DEN. Local Roaring Fork Valley routes. No hidden fees.',
+  title: 'Aspen Car Service Prices | ASE $210 · Eagle $720 · DEN $1,375',
+  description:
+    'All-inclusive private SUV rates from Aspen: ASE, Eagle, Denver, Rifle, Grand Junction, Snowmass and valley routes. No service charges or added gratuity.',
   alternates: { canonical: 'https://aspenalpenglowlimousine.com/pricing' },
   openGraph: {
-    title: 'Aspen Alpenglow Limousine Pricing — All-Inclusive Rates',
-    description: 'Private car service from $100. Airport transfers, local routes, hourly charter. No hidden service charges.',
+    title: 'Aspen Car Service Prices | ASE $210 · Eagle $720 · DEN $1,375',
+    description:
+      'All-inclusive private SUV rates from Aspen: ASE, Eagle, Denver, Rifle, Grand Junction, Snowmass and valley routes. No service charges or added gratuity.',
   },
 }
 

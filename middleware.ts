@@ -89,6 +89,14 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  /** AAL ski canonical, including the trailing slash, before the generic slash strip (one hop). */
+  if (isAalHost) {
+    const bare = pathname.length > 1 && pathname.endsWith('/') ? pathname.replace(/\/+$/, '') : pathname
+    if (bare === '/services/ski-resort-transfers') {
+      return NextResponse.redirect(new URL('/ski-resort-transfers' + search, request.url), 301)
+    }
+  }
+
   /** Canonical: no trailing slash (except `/`). Use a plain URL so NextURL does not put the slash back. */
   if (pathname.length > 1 && pathname.endsWith('/')) {
     const stripped = pathname.replace(/\/+$/, '') || '/'

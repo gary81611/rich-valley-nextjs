@@ -35,7 +35,7 @@ The bridal party typically needs transportation for two or three legs:
 
 3. **Reception to after-party or accommodations:** At the end of the night, making sure the bridal party and immediate family get home safely is the transportation planner's final responsibility.
 
-Aspen Alpenglow Limousine typically recommends an Executive Escalade for the bridal couple and immediate wedding party, with a Luxury Sprinter for the extended bridal party and family members.
+Aspen Alpenglow Limousine typically recommends an SUV for the bridal couple and immediate wedding party, with a Ford Transit passenger van for the extended bridal party and family members.
 
 ### Guest shuttle logistics
 
@@ -47,7 +47,7 @@ For weddings with 50 or more guests, a shuttle program is almost always worthwhi
 
 A good shuttle program makes your wedding more relaxed for everyone — guests don't worry about driving or parking, the open bar is more fun when nobody needs to drive, and the couple doesn't spend their reception worrying about whether guests are getting home safely.
 
-Aspen Alpenglow Limousine can coordinate multiple-vehicle shuttle programs for larger weddings. Our Luxury Sprinters accommodate up to 13 passengers and are well-suited for guest shuttle runs between accommodations and venue.
+Aspen Alpenglow Limousine can coordinate multiple-vehicle shuttle programs for larger weddings. Our Ford Transit passenger vans accommodate up to 13 passengers and are well-suited for guest shuttle runs between accommodations and venue.
 
 ### The grand getaway
 
@@ -61,7 +61,7 @@ Popular grand getaway destinations in the Aspen area include:
 
 ### Vendor and family transportation
 
-Often overlooked until it becomes a problem: moving key family members (parents of the couple, grandparents, out-of-town VIPs) from the airport to accommodations and between events. Elderly or mobility-limited guests particularly benefit from a dedicated vehicle rather than navigating shared shuttles. We often provide a dedicated Escalade for the couple's immediate family throughout the wedding weekend.
+Often overlooked until it becomes a problem: moving key family members (parents of the couple, grandparents, out-of-town VIPs) from the airport to accommodations and between events. Elderly or mobility-limited guests particularly benefit from a dedicated vehicle rather than navigating shared shuttles. We often provide a dedicated SUV for the couple's immediate family throughout the wedding weekend.
 
 ## Working with Aspen Wedding Venues
 
@@ -101,7 +101,7 @@ When you book wedding transportation with us, you get a dedicated wedding coordi
 For summer weddings (June–September), book your transportation vendor 8–10 months in advance. July and August are peak demand periods and professional services fill quickly. For off-season weddings, 4–6 months is generally sufficient.
 
 **How many vehicles do I need for an Aspen wedding with 100 guests?**
-It depends heavily on where guests are staying. For a typical wedding with guests distributed across two or three accommodation properties, a shuttle program with two Luxury Sprinters (13 passengers each) plus a dedicated Escalade for the bridal party handles most situations. Aspen Alpenglow Limousine will assess your specific guest distribution and venue layout and recommend the right configuration.
+It depends heavily on where guests are staying. For a typical wedding with guests distributed across two or three accommodation properties, a shuttle program with two Ford Transit passenger vans (13 passengers each) plus a dedicated SUV for the bridal party handles most situations. Aspen Alpenglow Limousine will assess your specific guest distribution and venue layout and recommend the right configuration.
 
 **Can wedding vehicles be decorated for an Aspen wedding?**
 Yes — we offer decorated vehicles for the bridal couple's grand getaway (flowers, ribbons, and "Just Married" signage upon request) and can accommodate most decoration requests with advance notice. We ask that no permanent adhesives or materials be used on vehicle exteriors.

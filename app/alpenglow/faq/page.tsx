@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
-import { AAL_ONE_WAY_RATES, correctAalFaqItem } from '@/lib/aal-public-copy'
+import { AAL_ONE_WAY_RATES, correctAalFaqItem, correctAalPublicText } from '@/lib/aal-public-copy'
 
 export const dynamic = 'force-dynamic'
 
@@ -76,16 +76,7 @@ const FALLBACK_FAQS: { q: string; a: string }[] = [
 
 /** Normalize legacy CMS copy that still references Escalade / Sprinter. */
 function normalizeVehicleAnswerText(a: string): string {
-  let t = a
-  if (/both our escalade/i.test(t) && /sprinter/i.test(t)) {
-    t = t.replace(
-      /both our escalade and sprinter van are available\.?/i,
-      'Both our Suburban SUVs and Ford Transit Van are available.',
-    )
-  }
-  t = t.replace(/\bour luxury sprinter van seats\b/gi, 'Our Ford Transit Van seats')
-  t = t.replace(/\bluxury sprinter van seats\b/gi, 'Ford Transit Van seats')
-  return t
+  return correctAalPublicText(a)
 }
 
 function applyClientContent(faqs: { q: string; a: string }[]) {

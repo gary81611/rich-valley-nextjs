@@ -6,7 +6,7 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { absolutePublicImageUrl } from '@/lib/seo/canonical'
 import { seoAlt } from '@/lib/seo/alt-text'
 import type { BlogPost } from '@/lib/types'
-import { correctAalFleetText } from '@/lib/aal-public-copy'
+import { applyAalBlogPost } from '@/lib/aal-public-copy'
 import { blogImageSrcForNext, isBlogPostPubliclyVisible } from '@/lib/blog-visibility'
 
 export const dynamic = 'force-dynamic'
@@ -33,7 +33,8 @@ async function getPost(slug: string): Promise<BlogPost | null> {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
-  const post = await getPost(slug)
+  const loaded = await getPost(slug)
+  const post = loaded ? applyAalBlogPost(loaded) : null
   if (!post) return { title: 'Post Not Found | Aspen Alpenglow Limousine' }
 
   const canonical = `https://aspenalpenglowlimousine.com/blog/${post.slug}`
@@ -143,7 +144,7 @@ const AAL_BLOG_RELATED: Record<string, { text: string; url: string }[]> = {
   'best-ski-resorts-near-aspen-getting-there-in-style': [
     { text: 'Aspen ↔ Vail private transfers', url: '/areas/vail' },
     { text: 'Snowmass Village car service', url: '/areas/snowmass' },
-    { text: 'Ski resort & mountain shuttles', url: '/services/ski-resort-transfers' },
+    { text: 'Ski resort & mountain shuttles', url: '/ski-resort-transfers' },
   ],
   'corporate-retreat-transportation-aspen': [
     { text: 'Corporate & executive transportation', url: '/corporate' },
@@ -179,18 +180,16 @@ function mergeRelatedLinks(
 
 export default async function AlpenglowBlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const post = await getPost(slug)
-  if (!post) notFound()
+  const loaded = await getPost(slug)
+  if (!loaded) notFound()
+  const post = applyAalBlogPost(loaded)
 
-  const articleBody = post.content ? correctAalFleetText(post.content) : ''
-  const articleFaqs = (post.faqs ?? []).map((faq) => ({
-    question: correctAalFleetText(faq.question),
-    answer: correctAalFleetText(faq.answer),
-  }))
+  const articleBody = post.content || ''
+  const articleFaqs = post.faqs ?? []
 
   const relatedLinks = mergeRelatedLinks(post.slug, post.internal_links)
 
-  const defaultArticleImage = 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1200&q=80'
+  const defaultArticleImage = 'https://aspenalpenglowlimousine.com/images/logos/alpenglow-logo.png'
   const coverImageAbsolute = absolutePublicImageUrl('alpenglow', post.featured_image_url)
   const coverImageSrc = blogImageSrcForNext(post.featured_image_url)
   const schemaImageUrl = coverImageAbsolute || defaultArticleImage
@@ -202,8 +201,7 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
     image: {
       '@type': 'ImageObject',
       url: schemaImageUrl,
-      width: 1200,
-      height: 630,
+      ...(coverImageAbsolute ? {} : { width: 1312, height: 650 }),
     },
     datePublished: post.published_at,
     dateModified: post.updated_at || post.published_at,
@@ -219,8 +217,8 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
       logo: {
         '@type': 'ImageObject',
         url: 'https://aspenalpenglowlimousine.com/images/logos/alpenglow-logo.png',
-        width: 300,
-        height: 60,
+        width: 1312,
+        height: 650,
       },
     },
     mainEntityOfPage: {

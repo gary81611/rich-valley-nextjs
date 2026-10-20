@@ -35,7 +35,7 @@ const sections = [
   {
     id: 'ski-resort-transfers',
     title: 'Ski Resort Transfers',
-    href: '/services/ski-resort-transfers',
+    href: '/ski-resort-transfers',
     body: `Private group transport to Aspen Mountain, Aspen Highlands, Buttermilk, and Snowmass — without the parking headache or the shared-shuttle shuffle. We run Suburban SUVs and a thirteen-passenger Ford Transit Van, each fitted with Myers 6X ski racks so boots and bags stay organized. Early-morning first-chair runs and flexible afternoon pickups are standard. You focus on the turns; we handle icy lots, gear loading, and the drive home when your legs are done. No shared rides are offered.`,
   },
 ]

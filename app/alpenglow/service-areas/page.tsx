@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { hrefForServiceArea } from '@/lib/alpenglow-service-areas'
-import { correctAalFleetText } from '@/lib/aal-public-copy'
+import { correctAalPublicText } from '@/lib/aal-public-copy'
 
 export const dynamic = 'force-dynamic'
 
@@ -86,7 +86,7 @@ export default async function ServiceAreasPage() {
                       </h2>
                     </div>
                     <p className="text-alp-slate text-sm leading-relaxed mb-4">
-                      {correctAalFleetText(area.description)}
+                      {correctAalPublicText(area.description)}
                     </p>
                     <span className="inline-flex items-center text-alp-gold font-semibold text-sm">
                       View Area

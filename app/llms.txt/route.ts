@@ -76,10 +76,15 @@ Sitemap: https://www.richvalleyadventures.com/sitemap.xml
 - Drivers: 8 full-time local drivers with 15+ years of mountain driving experience. Child car seats and boosters are free. No shared rides are offered. Pets welcome, with a cleaning fee.
 - Private FBO airport service: Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison
 - One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.
+- ASE airport SUV rates on the pricing page include $210. Centennial Airport (KAPA), Telluride, and Crested Butte are $1,475 on that page.
 - Flight diversions to Denver or Grand Junction: 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice.
 - Corporate charge accounts billed monthly
 - Primary services: airport transfers, corporate & executive travel, wedding transportation, ski resort transfers, hourly charter
+- X Games Aspen 2027: January 29–31, 2027 at Buttermilk Mountain. Source: https://www.xgames.com/events/aspen-2027/
+- ASE closure: Sunday, April 4, 2027 at 11:00 p.m. through Friday, November 19, 2027 at 7:00 p.m. No commercial or general aviation operations. Existing terminal remains in use after reopening until the new terminal is completed (projected 2029). Source: https://www.aspenairport.com/closure/ (press release May 28, 2026). Check aspenairport.com for updates.
+- Cloud Nine Alpine Bistro is on Aspen Highlands.
 - Google Business review (leave a review): ${AAL_GOOGLE_REVIEW_URL}
+- Last updated: 2026-10-20
 
 ## Canonical URLs (authoritative)
 https://aspenalpenglowlimousine.com/
@@ -90,14 +95,27 @@ https://aspenalpenglowlimousine.com/fleet
 https://aspenalpenglowlimousine.com/reservations
 https://aspenalpenglowlimousine.com/contact
 https://aspenalpenglowlimousine.com/airport-transfers
+https://aspenalpenglowlimousine.com/airport-transfers/eagle-ege-to-aspen
+https://aspenalpenglowlimousine.com/airport-transfers/denver-den-to-aspen
+https://aspenalpenglowlimousine.com/aspen-airport-closure-2027
 https://aspenalpenglowlimousine.com/corporate
 https://aspenalpenglowlimousine.com/weddings
 https://aspenalpenglowlimousine.com/wine-tours
 https://aspenalpenglowlimousine.com/night-out
-https://aspenalpenglowlimousine.com/services/ski-resort-transfers
+https://aspenalpenglowlimousine.com/ski-resort-transfers
+https://aspenalpenglowlimousine.com/events/x-games-aspen-transportation
+https://aspenalpenglowlimousine.com/events/new-years-eve-aspen
+https://aspenalpenglowlimousine.com/seasonal/holiday-private-car-aspen
+https://aspenalpenglowlimousine.com/services/hourly-charter
 https://aspenalpenglowlimousine.com/areas/aspen
 https://aspenalpenglowlimousine.com/areas/snowmass
 https://aspenalpenglowlimousine.com/areas/vail
+https://aspenalpenglowlimousine.com/service-areas/basalt
+https://aspenalpenglowlimousine.com/service-areas/carbondale
+https://aspenalpenglowlimousine.com/service-areas/glenwood-springs
+https://aspenalpenglowlimousine.com/service-areas/denver
+https://aspenalpenglowlimousine.com/service-areas/rifle
+https://aspenalpenglowlimousine.com/service-areas/grand-junction
 https://aspenalpenglowlimousine.com/blog
 
 ## Machine-readable index
@@ -106,6 +124,7 @@ Sitemap: https://aspenalpenglowlimousine.com/sitemap.xml
 ## Legacy / non-authoritative (redirected; do not quote as current offerings)
 /corporate-events
 /wedding-transportation
+/services/ski-resort-transfers
 `
 
   const text = isAlpenglow ? aalText : rvaText
