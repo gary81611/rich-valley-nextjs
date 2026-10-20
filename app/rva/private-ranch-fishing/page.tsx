@@ -11,8 +11,9 @@ import { seoAlt } from '@/lib/seo/alt-text'
 export const dynamic = 'force-dynamic'
 
 const pageUrl = 'https://www.richvalleyadventures.com/private-ranch-fishing'
-const heroImage = '/images/adventures/fishing-catch.jpeg'
-const heroImageAbsolute = `https://www.richvalleyadventures.com${heroImage}`
+const heroImage = '/images/adventures/fishing-catch-1440.webp'
+const ogImage = '/images/adventures/fishing-catch.jpeg'
+const ogImageAbsolute = `https://www.richvalleyadventures.com${ogImage}`
 
 const metaDescription =
   'Private ranch trout fishing and family fishing at a historic ranch: Spring Creek Ranch in Carbondale, near Aspen. Ponds, creeks, and a private Roaring Fork section. From $800 per adult and $250 per child (ages 3+).'
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
     description: metaDescription,
     type: 'website',
     url: pageUrl,
-    images: [{ url: heroImageAbsolute }],
+    images: [{ url: ogImageAbsolute }],
   },
 }
 
@@ -49,7 +50,7 @@ export default function PrivateRanchFishingPage() {
       name: privateRanchFishingPageTitle,
       description: content.intro.replace(/\n+/g, ' ').slice(0, 500),
       url: pageUrl,
-      image: heroImageAbsolute,
+      image: ogImageAbsolute,
       provider: {
         '@type': 'LocalBusiness',
         name: 'Rich Valley Adventures',
@@ -86,7 +87,7 @@ export default function PrivateRanchFishingPage() {
       description:
         'The original private ranch fishing experience in the valley. Private ranch and picnic at Spring Creek Ranch in Carbondale, Colorado: ponds, creeks, and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat, and brook trout from 12 to 30 inches.',
       url: pageUrl,
-      image: heroImageAbsolute,
+      image: ogImageAbsolute,
       touristType: 'Families',
       provider: {
         '@type': 'Organization',

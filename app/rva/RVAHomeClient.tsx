@@ -36,7 +36,7 @@ const FEATURED_TRIPS = [
   {
     title: 'Private ranch family fishing and picnic lunch',
     href: '/private-ranch-fishing',
-    image: '/images/adventures/fishing-catch.jpeg',
+    image: '/images/adventures/fishing-catch-1440.webp',
     alt: 'Kids and a canoe at a pond',
     detail:
       'Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+).',
@@ -195,7 +195,7 @@ export default function RVAHomeClient({
         <div className="max-w-7xl mx-auto px-6 py-10 md:py-14 grid md:grid-cols-2 gap-8 items-center">
           <div className="relative aspect-[16/10] rounded-2xl overflow-hidden shadow-lg">
             <Image
-              src="/images/adventures/fishing-catch.jpeg"
+              src="/images/adventures/fishing-catch-1440.webp"
               alt={seoAlt({
                 subject: 'Angler with a trout',
                 location: 'Roaring Fork Valley, Colorado',
