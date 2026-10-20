@@ -6,7 +6,12 @@ import ScrollReveal from '@/components/shared/ScrollReveal'
 import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
 import { createClient } from '@/lib/supabase'
 import type { Adventure, Testimonial, GalleryImage } from '@/lib/types'
-import { isBookableAdventureName } from '@/lib/rva-adventure-filters'
+import {
+  PADDLE_PHOTO,
+  PADDLE_PHOTO_ALT,
+  isPublicAdventureCard,
+  toPublicAdventureCard,
+} from '@/lib/rva-adventure-public'
 import { seoAlt } from '@/lib/seo/alt-text'
 import { KIDS_FAMILY_FISHING } from '@/lib/rva-fly-fishing-content'
 import {
@@ -18,18 +23,24 @@ const FEATURED_TRIPS = [
   {
     title: 'Full-day float trip',
     href: '/fly-fishing',
+    image: '/images/adventures/paddle-boarding-lake.png',
+    alt: 'An angler in a drift boat holding a fish on a river',
     detail:
       'From $1,400 for 2 people (1 boat, 1 captain). Additional adults $375, kids $175. An 8–12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation included.',
   },
   {
     title: 'Private ranch family fishing and picnic lunch',
     href: '/private-ranch-fishing',
+    image: '/images/adventures/fishing-catch.jpeg',
+    alt: 'Kids and a canoe at a pond',
     detail:
       'Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+).',
   },
   {
     title: 'Group hiking',
     href: '/hiking',
+    image: '/images/gallery/family-hike.jpg',
+    alt: 'A group of people on a mountain trail',
     detail: 'Includes transportation and picnic lunch.',
   },
 ] as const
@@ -39,7 +50,20 @@ export default function RVAHomeClient({
 }: {
   featuredReport?: FishingReportFeedItem | null
 }) {
-  const [adventures, setAdventures] = useState<Array<{ title: string; slug: string; description: string; image: string; duration: string; difficulty: string; season: string }>>([])
+  const [adventures, setAdventures] = useState<
+    Array<{
+      title: string
+      slug: string
+      description: string
+      image: string
+      objectPosition?: string
+      href: string
+      duration: string
+      difficulty: string
+      season: string
+      fromText: string | null
+    }>
+  >([])
   const [activeSeason, setActiveSeason] = useState<string | null>(null)
   const [testimonials, setTestimonials] = useState<Array<{ quote: string; name: string; location: string }>>([])
   const [gallery, setGallery] = useState<string[]>([])
@@ -75,16 +99,8 @@ export default function RVAHomeClient({
       if (advRes.data && advRes.data.length > 0) {
         setAdventures(
           advRes.data
-            .filter((a: Adventure) => isBookableAdventureName(a.name))
-            .map((a: Adventure) => ({
-              title: a.name,
-              slug: a.name.toLowerCase().replace(/\s+/g, '-'),
-              description: a.description,
-              image: a.image_url || '/images/adventures/fly-fishing.png',
-              duration: a.duration,
-              difficulty: a.difficulty,
-              season: a.season || 'summer',
-            })),
+            .filter((a: Adventure) => isPublicAdventureCard(a))
+            .map((a: Adventure) => toPublicAdventureCard(a)),
         )
       }
       if (testRes.data && testRes.data.length > 0) {
@@ -248,13 +264,18 @@ export default function RVAHomeClient({
             </div>
             <ol className="mt-8 grid md:grid-cols-3 gap-6 text-left">
               {FEATURED_TRIPS.map((trip, index) => (
-                <li key={trip.title} className="bg-rva-forest rounded-2xl p-6 border border-white/10">
-                  <p className="text-rva-copper-light text-sm font-semibold mb-2">{index + 1}</p>
-                  <h3 className="font-playfair text-2xl text-white font-semibold mb-3">{trip.title}</h3>
-                  <p className="text-white/75 text-sm leading-relaxed mb-4">{trip.detail}</p>
-                  <Link href={trip.href} className="text-rva-copper-light text-sm font-semibold hover:text-rva-copper">
-                    Learn more
-                  </Link>
+                <li key={trip.title} className="bg-rva-forest rounded-2xl border border-white/10 overflow-hidden">
+                  <div className="relative aspect-[4/3]">
+                    <Image src={trip.image} alt={trip.alt} fill className="object-cover" unoptimized />
+                  </div>
+                  <div className="p-6">
+                    <p className="text-rva-copper-light text-sm font-semibold mb-2">{index + 1}</p>
+                    <h3 className="font-playfair text-2xl text-white font-semibold mb-3">{trip.title}</h3>
+                    <p className="text-white/75 text-sm leading-relaxed mb-4">{trip.detail}</p>
+                    <Link href={trip.href} className="text-rva-copper-light text-sm font-semibold hover:text-rva-copper">
+                      Learn more
+                    </Link>
+                  </div>
                 </li>
               ))}
             </ol>
@@ -286,14 +307,19 @@ export default function RVAHomeClient({
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
                       src={adventure.image}
-                      alt={seoAlt({
-                        subject: adventure.title,
-                        location: 'Aspen and the Roaring Fork Valley, Colorado',
-                        context: 'expert-guided outdoor adventure',
-                        brand: 'Rich Valley Adventures',
-                      })}
+                      alt={
+                        adventure.image === PADDLE_PHOTO
+                          ? PADDLE_PHOTO_ALT
+                          : seoAlt({
+                              subject: adventure.title,
+                              location: 'Aspen and the Roaring Fork Valley, Colorado',
+                              context: 'expert-guided outdoor adventure',
+                              brand: 'Rich Valley Adventures',
+                            })
+                      }
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      style={adventure.objectPosition ? { objectPosition: adventure.objectPosition } : undefined}
                       loading="eager"
                       unoptimized
                     />
@@ -307,18 +333,15 @@ export default function RVAHomeClient({
                   </div>
                   <div className="p-6 flex flex-col flex-1">
                     <h3 className="font-playfair text-2xl text-rva-copper font-semibold mb-3">{adventure.title}</h3>
+                    {adventure.fromText ? (
+                      <p className="text-rva-copper-light text-sm font-semibold mb-3">{adventure.fromText}</p>
+                    ) : null}
                     <p className="text-white/75 text-sm leading-relaxed flex-1">{adventure.description}</p>
                     <Link
-                      href={
-                        adventure.slug === 'elevated-camping'
-                          ? '/elevated-camping'
-                          : adventure.slug === 'mountain-biking'
-                            ? `/adventures/${adventure.slug}`
-                            : `/${adventure.slug}`
-                      }
+                      href={adventure.href}
                       className="mt-5 text-rva-copper-light text-sm font-semibold hover:text-rva-copper transition-colors flex items-center gap-2"
                     >
-                      Learn More
+                      Learn more
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                     </Link>
                   </div>

@@ -10,6 +10,12 @@ import LandingPageTemplate from '@/components/templates/LandingPageTemplate'
 import { rvaServicePageRelatedBlogLinks } from '@/lib/rva-blog-pillars'
 import type { CmsPage } from '@/lib/pages'
 import { KIDS_FAMILY_FISHING, withYearRoundFishingNote } from '@/lib/rva-fly-fishing-content'
+import {
+  PADDLE_OG_IMAGE,
+  PADDLE_PHOTO,
+  PADDLE_PHOTO_ALT,
+  PADDLE_PHOTO_POSITION,
+} from '@/lib/rva-adventure-public'
 
 const PADDLE_RENTAL = 'Paddleboarding is a rental from $100, not a guided trip.'
 const RVA_BOOKING =
@@ -170,19 +176,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const pageUrl = canonicalUrl('rva', `/${slugStr}`)
+  const isPaddlePage = slugStr === 'paddle-boarding'
+  const title = page.meta_title || page.title
+  const description = page.meta_description || undefined
 
   return {
-    title: page.meta_title || page.title,
-    description: page.meta_description || undefined,
+    title,
+    description,
     alternates: { canonical: pageUrl },
     openGraph: {
-      title: page.meta_title || page.title,
-      description: page.meta_description || undefined,
+      title,
+      description,
       url: pageUrl,
       siteName: 'Rich Valley Adventures',
       type: 'website',
-      images: page.og_image ? [{ url: page.og_image }] : undefined,
+      images: isPaddlePage
+        ? [{ url: PADDLE_OG_IMAGE, width: 1536, height: 2048, alt: PADDLE_PHOTO_ALT }]
+        : page.og_image
+          ? [{ url: page.og_image }]
+          : undefined,
     },
+    twitter: isPaddlePage
+      ? {
+          card: 'summary_large_image',
+          title,
+          description,
+          images: [PADDLE_OG_IMAGE],
+        }
+      : undefined,
   }
 }
 
@@ -217,6 +238,7 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
         address: { '@type': 'PostalAddress', addressLocality: 'Aspen', addressRegion: 'CO', addressCountry: 'US' },
       },
       areaServed: { '@type': 'City', name: 'Aspen', containedIn: 'Colorado, USA' },
+      ...(page.slug === 'paddle-boarding' ? { image: PADDLE_OG_IMAGE } : {}),
     })
   }
 
@@ -304,6 +326,9 @@ export default async function CmsPage({ params }: Props) {
           title={page.title}
           content={page.content as ServiceContent}
           relatedLinks={rvaServicePageRelatedBlogLinks(slugStr)}
+          heroImage={slugStr === 'paddle-boarding' ? PADDLE_PHOTO : undefined}
+          heroImageAlt={slugStr === 'paddle-boarding' ? PADDLE_PHOTO_ALT : undefined}
+          heroObjectPosition={slugStr === 'paddle-boarding' ? PADDLE_PHOTO_POSITION : undefined}
         />
       )}
       {page.template_type === 'location' && (

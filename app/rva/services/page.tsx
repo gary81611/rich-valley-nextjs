@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import type { Adventure } from '@/lib/types'
+import { PADDLE_PHOTO, PADDLE_PHOTO_ALT, isPublicAdventureCard, toPublicAdventureCard } from '@/lib/rva-adventure-public'
 
 export const dynamic = 'force-dynamic'
 
@@ -29,14 +31,9 @@ export default async function ServicesPage() {
     .eq('is_active', true)
     .order('display_order')
 
-  const adventures = (adventuresRaw ?? []).map((a: any) => ({
-    title: a.name,
-    slug: a.name.toLowerCase().replace(/\s+/g, '-'),
-    description: a.description,
-    image: a.image_url,
-    duration: a.duration,
-    difficulty: a.difficulty,
-  }))
+  const adventures = (adventuresRaw ?? [])
+    .filter((a: Adventure) => isPublicAdventureCard(a))
+    .map((a: Adventure) => toPublicAdventureCard(a))
 
   const services = (servicesRaw ?? []).map((s: any) => ({
     title: s.name,
@@ -97,15 +94,16 @@ export default async function ServicesPage() {
               {adventures.map((adventure) => (
                 <Link
                   key={adventure.slug}
-                  href={`/adventures/${adventure.slug}`}
+                  href={adventure.href}
                   className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-rva-cream-dark hover:-translate-y-1"
                 >
                   <div className="relative h-48 bg-rva-forest-dark">
                     <Image
                       src={adventure.image}
-                      alt={adventure.title}
+                      alt={adventure.image === PADDLE_PHOTO ? PADDLE_PHOTO_ALT : adventure.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      style={adventure.objectPosition ? { objectPosition: adventure.objectPosition } : undefined}
                       unoptimized
                     />
                   </div>
@@ -113,6 +111,9 @@ export default async function ServicesPage() {
                     <h3 className="font-playfair text-xl font-bold text-rva-forest group-hover:text-rva-copper transition-colors mb-2">
                       {adventure.title}
                     </h3>
+                    {adventure.fromText ? (
+                      <p className="text-rva-copper text-sm font-semibold mb-2">{adventure.fromText}</p>
+                    ) : null}
                     <p className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-2">
                       {adventure.description}
                     </p>
@@ -121,6 +122,7 @@ export default async function ServicesPage() {
                       <span className="w-1 h-1 bg-gray-300 rounded-full" />
                       <span>{adventure.difficulty}</span>
                     </div>
+                    <span className="mt-4 inline-flex text-rva-copper text-sm font-semibold">Learn more</span>
                   </div>
                 </Link>
               ))}

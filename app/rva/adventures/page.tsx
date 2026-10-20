@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
 import type { Adventure } from '@/lib/types'
-import { isBookableAdventureName, slugFromAdventureName } from '@/lib/rva-adventure-filters'
+import { PADDLE_PHOTO, PADDLE_PHOTO_ALT, isPublicAdventureCard, toPublicAdventureCard } from '@/lib/rva-adventure-public'
 import { RVA_GLOBAL_PILLAR_BLOG_LINKS } from '@/lib/rva-blog-pillars'
 
 type Season = 'all' | 'summer' | 'winter' | 'year-round'
@@ -15,13 +15,12 @@ interface AdventureCard {
   slug: string
   description: string
   image: string
+  objectPosition?: string
+  href: string
   duration: string
   difficulty: string
   season: string
-}
-
-function toSlug(title: string): string {
-  return slugFromAdventureName(title)
+  fromText: string | null
 }
 
 const seasonTabs: { label: string; value: Season }[] = [
@@ -48,16 +47,8 @@ export default function AdventuresPage() {
         if (data && data.length > 0) {
           setAdventures(
             data
-              .filter((a: Adventure) => isBookableAdventureName(a.name))
-              .map((a: Adventure) => ({
-                title: a.name,
-                slug: toSlug(a.name),
-                description: a.description,
-                image: a.image_url || '/images/rva/flyfishing.png',
-                duration: a.duration,
-                difficulty: a.difficulty,
-                season: a.season || 'summer',
-              })),
+              .filter((a: Adventure) => isPublicAdventureCard(a))
+              .map((a: Adventure) => toPublicAdventureCard(a)),
           )
         }
       } catch {
@@ -163,16 +154,21 @@ export default function AdventuresPage() {
               {filtered.map((adventure) => (
                 <Link
                   key={adventure.slug}
-                  href={`/adventures/${adventure.slug}`}
+                  href={adventure.href}
                   className="group"
                 >
                   <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
                     <div className="relative aspect-[4/3] overflow-hidden">
                       <Image
                         src={adventure.image}
-                        alt={`${adventure.title} — guided adventure in Aspen and the Roaring Fork Valley`}
+                        alt={
+                          adventure.image === PADDLE_PHOTO
+                            ? PADDLE_PHOTO_ALT
+                            : `${adventure.title} — guided adventure in Aspen and the Roaring Fork Valley`
+                        }
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-700"
+                        style={adventure.objectPosition ? { objectPosition: adventure.objectPosition } : undefined}
                         unoptimized
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-rva-forest-dark/60 via-transparent to-transparent" />
@@ -191,11 +187,14 @@ export default function AdventuresPage() {
                       <h2 className="font-playfair text-2xl text-rva-forest font-semibold mb-3">
                         {adventure.title}
                       </h2>
+                      {adventure.fromText ? (
+                        <p className="text-rva-copper text-sm font-semibold mb-3">{adventure.fromText}</p>
+                      ) : null}
                       <p className="text-gray-600 text-sm leading-relaxed flex-1">
                         {adventure.description}
                       </p>
                       <span className="mt-5 text-rva-copper text-sm font-semibold group-hover:text-rva-copper-light transition-colors flex items-center gap-2">
-                        View Details
+                        Learn more
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path
                             strokeLinecap="round"

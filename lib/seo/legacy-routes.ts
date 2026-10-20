@@ -3,6 +3,22 @@ export type RvaSeoRedirect =
   | { kind: 'path'; path: string }
   | { kind: 'external'; url: string }
 
+/** Paths that must land on the paddleboard rentals page. `/paddle-boarding` itself is not an alias. */
+const PADDLE_RENTAL_ALIAS_PATHS = new Set([
+  '/adventures/paddle-boarding',
+  '/adventures/paddle-board-rentals',
+  '/paddle-board-rentals',
+  '/paddleboard-rentals',
+  '/paddle-boarding-tours',
+  '/paddleboard-tours',
+])
+
+/** RVA-only. Strips a trailing slash so `/paddle-board-rentals/` is one hop, not slash-strip then redirect. */
+export function rvaPaddleRentalAliasPath(pathname: string): '/paddle-boarding' | null {
+  const bare = pathname.length > 1 ? pathname.replace(/\/+$/, '') || '/' : pathname
+  return PADDLE_RENTAL_ALIAS_PATHS.has(bare) ? '/paddle-boarding' : null
+}
+
 /**
  * Maps legacy public paths (and paths after stripping `/rva`) to their final canonical
  * destination in one hop — avoids chains like `/service-areas-locations/*` → `/service-areas/*-co` → `/service-areas/*`.
@@ -42,6 +58,18 @@ export function resolveRvaLegacySingleHop(pathname: string, search: string): Rva
     return { kind: 'path', path: legacy[p] + (search || '') }
   }
 
+  if (PADDLE_RENTAL_ALIAS_PATHS.has(p)) {
+    return { kind: 'path', path: '/paddle-boarding' + (search || '') }
+  }
+
+  if (p === '/trail-hiking') {
+    return { kind: 'path', path: '/hiking' + (search || '') }
+  }
+
+  if (p === '/scenic-escalade-tours') {
+    return { kind: 'path', path: '/adventures/scenic-escalade-tours' + (search || '') }
+  }
+
   if (p === '/adventures' || p.startsWith('/adventures/')) {
     const normalized = normalizeRvaLegacyPath(pathnameWithQuery)
     if (normalized !== pathnameWithQuery) {
@@ -77,6 +105,11 @@ export function normalizeRvaLegacyPath(url: string): string {
     hiking: '/hiking',
     'mountain-biking': '/adventures/mountain-biking',
     'paddle-boarding': '/paddle-boarding',
+    'paddle-board-rentals': '/paddle-boarding',
+    'trail-hiking': '/hiking',
+    // Detail pages stay on /adventures/<slug>. Mapping to themselves skips the /<slug> fallback.
+    'scenic-escalade-tours': '/adventures/scenic-escalade-tours',
+    'horseback-riding': '/adventures/horseback-riding',
     hunting: '/hunting',
     'winter-adventures': '/winter',
   }

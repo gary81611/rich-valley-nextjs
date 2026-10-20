@@ -11,7 +11,6 @@ function rvaRedirects() {
       { source: '/adventures/elevated-camping', destination: '/elevated-camping', permanent: true, has: h },
       { source: '/adventures/fly-fishing', destination: '/fly-fishing', permanent: true, has: h },
       { source: '/adventures/hiking', destination: '/hiking', permanent: true, has: h },
-      { source: '/adventures/paddle-boarding', destination: '/paddle-boarding', permanent: true, has: h },
       { source: '/adventures/hunting', destination: '/hunting', permanent: true, has: h },
       { source: '/adventures/winter-adventures', destination: '/winter', permanent: true, has: h },
       { source: '/adventures/glamping', destination: '/elevated-camping', permanent: true, has: h },
@@ -45,6 +44,24 @@ function rvaRedirects() {
       { source: '/home', destination: '/', permanent: true, has: h },
       { source: '/home/', destination: '/', permanent: true, has: h },
     )
+    // statusCode 301: permanent:true is a 308. These aliases must be a true 301.
+    const paddleAliases = [
+      '/adventures/paddle-boarding',
+      '/adventures/paddle-boarding/',
+      '/adventures/paddle-board-rentals',
+      '/adventures/paddle-board-rentals/',
+      '/paddle-board-rentals',
+      '/paddle-board-rentals/',
+      '/paddleboard-rentals',
+      '/paddleboard-rentals/',
+      '/paddle-boarding-tours',
+      '/paddle-boarding-tours/',
+      '/paddleboard-tours',
+      '/paddleboard-tours/',
+    ]
+    for (const source of paddleAliases) {
+      list.push({ source, destination: '/paddle-boarding', statusCode: 301, has: h })
+    }
   }
   return list
 }
@@ -118,6 +135,10 @@ if (supabaseHost) {
 }
 
 const nextConfig = {
+  // Next's built-in "/:path+/" rule is a 308 that runs before these redirects.
+  // Skipping it lets the paddle alias 301s (and middleware) see the trailing slash in one hop.
+  // Other trailing slashes still 301 in middleware.ts.
+  skipTrailingSlashRedirect: true,
   images: {
     minimumCacheTTL: 31536000,
     remotePatterns: imageRemotePatterns,

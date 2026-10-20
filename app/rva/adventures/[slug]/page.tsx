@@ -2,6 +2,15 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import {
+  PADDLE_OG_IMAGE,
+  PADDLE_PHOTO_ALT,
+  PADDLE_RENTAL_ID,
+  adventurePublicHref,
+  adventurePublicImage,
+  isPaddleTourListing,
+  isPublicAdventureCard,
+} from '@/lib/rva-adventure-public'
 
 export const dynamic = 'force-dynamic'
 
@@ -47,15 +56,13 @@ async function getRelatedAdventures(currentId: string): Promise<AdventureRow[]> 
     .eq('is_active', true)
     .neq('id', currentId)
     .order('display_order')
-    .limit(3)
-
-  return (adventures as AdventureRow[]) || []
+  return ((adventures as AdventureRow[]) || []).filter((a) => isPublicAdventureCard(a)).slice(0, 3)
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
   const adventure = await getAdventure(slug)
-  if (!adventure) {
+  if (!adventure || isPaddleTourListing(adventure)) {
     return {
       title: 'Adventure Not Found | Rich Valley Adventures',
       alternates: {
@@ -65,6 +72,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     }
   }
   const adventureSlug = slugify(adventure.name)
+  const isRental = adventure.id === PADDLE_RENTAL_ID || adventureSlug === 'paddle-board-rentals'
+  const visual = adventurePublicImage(adventure)
   return {
     title: `${adventure.name} | Rich Valley Adventures | Aspen, CO`,
     description: adventure.description,
@@ -78,10 +87,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       url: `https://www.richvalleyadventures.com/adventures/${adventureSlug}`,
       images: [
         {
-          url: adventure.image_url,
+          url: isRental ? PADDLE_OG_IMAGE : adventure.image_url || visual.src,
           width: 1200,
           height: 630,
-          alt: `${adventure.name} with Rich Valley Adventures in Aspen, Colorado`,
+          alt: isRental
+            ? PADDLE_PHOTO_ALT
+            : `${adventure.name} with Rich Valley Adventures in Aspen, Colorado`,
         },
       ],
     },
@@ -92,7 +103,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
   const { slug } = await params
   const adventure = await getAdventure(slug)
 
-  if (!adventure) {
+  if (!adventure || isPaddleTourListing(adventure)) {
     return (
       <div className="min-h-screen bg-rva-cream font-inter flex items-center justify-center">
         <div className="text-center">
@@ -114,6 +125,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
   }
 
   const relatedAdventures = await getRelatedAdventures(adventure.id)
+  const visual = adventurePublicImage(adventure)
   const longDescription = adventure.long_description || adventure.description
   const whatsIncluded = Array.isArray(adventure.whats_included) ? adventure.whats_included : []
   const highlights = Array.isArray(adventure.highlights) ? adventure.highlights : []
@@ -145,10 +157,15 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
       <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src={adventure.image_url}
-            alt={`${adventure.name} — guided adventure experience in Aspen, Colorado with Rich Valley Adventures`}
+            src={visual.src}
+            alt={
+              visual.src.endsWith('/paddle-boarding.jpg')
+                ? PADDLE_PHOTO_ALT
+                : `${adventure.name} — guided adventure experience in Aspen, Colorado with Rich Valley Adventures`
+            }
             fill
             className="object-cover"
+            style={visual.objectPosition ? { objectPosition: visual.objectPosition } : undefined}
             priority
             unoptimized
           />
@@ -307,18 +324,25 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
                     More Adventures
                   </h3>
                   <div className="space-y-4">
-                    {relatedAdventures.map((related) => (
+                    {relatedAdventures.map((related) => {
+                      const relatedVisual = adventurePublicImage(related)
+                      return (
                       <Link
                         key={related.id}
-                        href={`/adventures/${slugify(related.name)}`}
+                        href={adventurePublicHref(related)}
                         className="group flex gap-4 bg-white rounded-xl p-3 shadow-sm hover:shadow-md transition-all"
                       >
                         <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
                           <Image
-                            src={related.image_url}
-                            alt={related.name}
+                            src={relatedVisual.src}
+                            alt={relatedVisual.src.endsWith('/paddle-boarding.jpg') ? PADDLE_PHOTO_ALT : related.name}
                             fill
                             className="object-cover group-hover:scale-110 transition-transform duration-500"
+                            style={
+                              relatedVisual.objectPosition
+                                ? { objectPosition: relatedVisual.objectPosition }
+                                : undefined
+                            }
                             unoptimized
                           />
                         </div>
@@ -329,7 +353,8 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
                           <p className="text-gray-500 text-xs mt-1">{related.duration}</p>
                         </div>
                       </Link>
-                    ))}
+                      )
+                    })}
                   </div>
                 </div>
               )}

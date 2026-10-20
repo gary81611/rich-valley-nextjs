@@ -11,6 +11,8 @@ interface Props {
   /** Existing public image. Omitted pages keep the text hero. */
   heroImage?: string
   heroImageAlt?: string
+  /** CSS object-position for a portrait hero. Omitted pages stay at the default cover crop. */
+  heroObjectPosition?: string
   /** Booking form path, including a service query when the form can preselect it. */
   bookingHref?: string
   bookingLabel?: string
@@ -25,6 +27,7 @@ export default function ServicePageTemplate({
   relatedLinks,
   heroImage,
   heroImageAlt,
+  heroObjectPosition,
   bookingHref,
   bookingLabel,
 }: Props) {
@@ -53,6 +56,7 @@ export default function ServicePageTemplate({
               priority
               unoptimized
               className="object-cover"
+              style={heroObjectPosition ? { objectPosition: heroObjectPosition } : undefined}
               sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-rva-forest-dark/55 via-rva-forest-dark/45 to-rva-forest-dark/80" />
