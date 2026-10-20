@@ -191,7 +191,7 @@ function applyFixedLastmod(entries: SitemapEntry[], origin: string, table: Recor
     let path = entry.url.startsWith(origin) ? entry.url.slice(origin.length) : '/'
     if (path === '') path = '/'
     const iso = table[path]
-    return iso ? { ...entry, lastModified: dated(iso) } : { ...entry, lastModified: dated(SITEMAP_FALLBACK_LASTMOD) }
+    return iso ? { ...entry, lastModified: dated(iso) } : entry
   })
 }
 
