@@ -23,7 +23,7 @@ export async function GET(request: Request) {
 - Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+). Page: https://www.richvalleyadventures.com/private-ranch-fishing
 - Kids & family fishing: kids ages 3 and up can fish. Waders are available for all children 3 and up, and adult sizes go up to size 15 feet. Kids on the full-day float are $175. At the Spring Creek Ranch private ranch and picnic, kids are $250 each (ages 3+). Guests and grandparents with limited mobility can be hosted at the ranch ponds.
 - Year-round fishing: guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady.
-- Featured trips, in order: (1) full-day float trip, (2) private ranch family fishing and picnic lunch, (3) group hiking (includes transportation and picnic lunch)
+- Featured trips, in order: (1) Fly Fishing — half-day and full-day wading trips, and a full-day float from $1,400 for 2 people (1 boat, 1 captain), (2) private ranch family fishing and picnic lunch, (3) Trail Hiking (3–6 hours, moderate)
 - Corporate packages: groups of 50+, custom mix of fishing and hiking
 - Booking: at least 2 days' advance notice, 50% deposit at booking, cancellations within 72 hours billed in full
 - Partner transportation (when referenced on site): Aspen Alpenglow Limousine — https://aspenalpenglowlimousine.com

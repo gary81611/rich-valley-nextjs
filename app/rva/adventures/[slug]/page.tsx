@@ -6,6 +6,9 @@ import {
   PADDLE_OG_IMAGE,
   PADDLE_PHOTO_ALT,
   PADDLE_RENTAL_ID,
+  FLY_FISHING_PUBLIC_DESCRIPTION,
+  TRAIL_HIKING_PUBLIC_DESCRIPTION,
+  adventurePublicDescription,
   adventurePublicHref,
   adventurePublicImage,
   isPaddleTourListing,
@@ -74,25 +77,28 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const adventureSlug = slugify(adventure.name)
   const isRental = adventure.id === PADDLE_RENTAL_ID || adventureSlug === 'paddle-board-rentals'
   const visual = adventurePublicImage(adventure)
+  const publicDescription = adventurePublicDescription(adventure)
   return {
     title: `${adventure.name} | Rich Valley Adventures | Aspen, CO`,
-    description: adventure.description,
+    description: publicDescription,
     alternates: {
       canonical: `https://www.richvalleyadventures.com/adventures/${adventureSlug}`,
     },
     openGraph: {
       title: `${adventure.name} — Guided Adventure in Aspen | Rich Valley Adventures`,
-      description: adventure.description,
+      description: publicDescription,
       type: 'website',
       url: `https://www.richvalleyadventures.com/adventures/${adventureSlug}`,
       images: [
         {
-          url: isRental ? PADDLE_OG_IMAGE : adventure.image_url || visual.src,
+          url: isRental ? PADDLE_OG_IMAGE : visual.src,
           width: 1200,
           height: 630,
-          alt: isRental
-            ? PADDLE_PHOTO_ALT
-            : `${adventure.name} with Rich Valley Adventures in Aspen, Colorado`,
+          alt:
+            visual.alt ||
+            (isRental
+              ? PADDLE_PHOTO_ALT
+              : `${adventure.name} with Rich Valley Adventures in Aspen, Colorado`),
         },
       ],
     },
@@ -126,7 +132,12 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
 
   const relatedAdventures = await getRelatedAdventures(adventure.id)
   const visual = adventurePublicImage(adventure)
-  const longDescription = adventure.long_description || adventure.description
+  const publicDescription = adventurePublicDescription(adventure)
+  const longDescription =
+    publicDescription === FLY_FISHING_PUBLIC_DESCRIPTION ||
+    publicDescription === TRAIL_HIKING_PUBLIC_DESCRIPTION
+      ? publicDescription
+      : adventure.long_description || adventure.description
   const whatsIncluded = Array.isArray(adventure.whats_included) ? adventure.whats_included : []
   const highlights = Array.isArray(adventure.highlights) ? adventure.highlights : []
   const groupSize = adventure.group_size || '2-6 guests'
@@ -159,9 +170,10 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
           <Image
             src={visual.src}
             alt={
-              visual.src.endsWith('/paddle-boarding.jpg')
+              visual.alt ||
+              (visual.src.endsWith('/paddle-boarding.jpg')
                 ? PADDLE_PHOTO_ALT
-                : `${adventure.name} — guided adventure experience in Aspen, Colorado with Rich Valley Adventures`
+                : `${adventure.name} — guided adventure experience in Aspen, Colorado with Rich Valley Adventures`)
             }
             fill
             className="object-cover"
@@ -181,7 +193,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
             </span>
           </div>
           <h1 className="font-playfair text-4xl md:text-6xl font-bold mb-4">{adventure.name}</h1>
-          <p className="text-xl text-white/85 max-w-2xl mx-auto">{adventure.description}</p>
+          <p className="text-xl text-white/85 max-w-2xl mx-auto">{publicDescription}</p>
         </div>
       </section>
 
@@ -335,7 +347,12 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
                         <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
                           <Image
                             src={relatedVisual.src}
-                            alt={relatedVisual.src.endsWith('/paddle-boarding.jpg') ? PADDLE_PHOTO_ALT : related.name}
+                            alt={
+                              relatedVisual.alt ||
+                              (relatedVisual.src.endsWith('/paddle-boarding.jpg')
+                                ? PADDLE_PHOTO_ALT
+                                : related.name)
+                            }
                             fill
                             className="object-cover group-hover:scale-110 transition-transform duration-500"
                             style={

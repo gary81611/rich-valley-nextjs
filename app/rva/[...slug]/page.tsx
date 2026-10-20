@@ -18,6 +18,15 @@ import {
 } from '@/lib/rva-adventure-public'
 
 const PADDLE_RENTAL = 'Paddleboarding is a rental from $100, not a guided trip.'
+const PADDLE_PAGE_TITLE = 'Paddleboard Rentals in Aspen, Colorado'
+const PADDLE_META_TITLE = 'Paddleboard Rentals in Aspen, CO | From $100 | Rich Valley Adventures'
+const PADDLE_META_DESCRIPTION = `${PADDLE_RENTAL} Rich Valley Adventures, Aspen, Colorado.`
+/** Live intro sentences that stay. Lesson, endurance, and logistics sentences are not included. */
+const PADDLE_INTRO = [
+  'Stand up paddle boarding in the Roaring Fork Valley offers something rare: glassy water surrounded by 14,000-foot peaks. Rich Valley Adventures rents stand-up paddle boards on some of the most scenic alpine lakes in Colorado, from the vast calm of Ruedi Reservoir above Basalt to the intimate wilderness setting of Grizzly Lake near Independence Pass.',
+  PADDLE_RENTAL,
+  'All equipment is provided — premium inflatable and hard SUP boards, adjustable paddles, Coast Guard-approved PFDs, and dry bags for your gear.',
+].join('\n\n')
 const RVA_BOOKING =
   "Book at least 2 days in advance. A 50% deposit is due at booking. Cancellations within 72 hours are billed in full."
 const RVA_CORPORATE =
@@ -36,44 +45,90 @@ function rewritePaddleCopy(text: string): string {
     .replace(/\bguided sessions\b/gi, 'rentals')
 }
 
+function isPaddleLessonSentence(sentence: string): boolean {
+  return (
+    /beginners learn balance/i.test(sentence) ||
+    /experienced paddlers/i.test(sentence) ||
+    /push their endurance/i.test(sentence) ||
+    /beginner orientation/i.test(sentence) ||
+    /within the first 30 minutes/i.test(sentence) ||
+    /we handle the logistics/i.test(sentence) ||
+    /we schedule sessions/i.test(sentence) ||
+    /adjust meeting locations/i.test(sentence) ||
+    /reschedule if conditions/i.test(sentence) ||
+    /monitor forecasts closely/i.test(sentence)
+  )
+}
+
+/** Drop lesson and guided-session sentences. Keep the rental sentence, which contains the word "guided". */
+function stripPaddleLessonCopy(text: string): string {
+  const rewritten = rewritePaddleCopy(text)
+  const cleaned = rewritten
+    .split(/(\n\n+)/)
+    .map((part) => {
+      if (/^\n+$/.test(part)) return part
+      return part
+        .split(/(?<=[.!?])\s+/)
+        .filter((sentence) => sentence.trim() && !isPaddleLessonSentence(sentence))
+        .join(' ')
+    })
+    .join('')
+  return cleaned.replace(/[ \t]{2,}/g, ' ').replace(/\n{3,}/g, '\n\n').trim()
+}
+
+/** Lesson or session headings. A heading that only says this is not a guided trip stays. */
+function isPaddleLessonHeading(title: string): boolean {
+  if (/not a guided trip/i.test(title)) return false
+  return /\b(lesson|lessons|orientation|instruction|session|sessions|guided)\b/i.test(title)
+}
+
+function cleanPaddleFaqAnswer(question: string, answer: string): string {
+  if (/experience/i.test(question)) return 'No experience needed at all.'
+  if (/wind/i.test(question)) return 'Wind is the main variable for SUP.'
+  return stripPaddleLessonCopy(answer)
+    .replace(/^Paddleboarding is a rental from \$100, not a guided trip\.\s*/i, '')
+    .trim()
+}
+
 function applyRvaConfirmedFacts(page: CmsPage | null): CmsPage | null {
   if (!page) return null
   if (page.slug === 'paddle-boarding' && page.template_type === 'service') {
     const content = { ...(page.content as ServiceContent) }
-    let intro = rewritePaddleCopy(content.intro || '')
-    if (!intro.includes('rental from $100')) {
-      intro = `${PADDLE_RENTAL}\n\n${intro}`
-    }
-    content.intro = intro
-    content.hero_subtitle = content.hero_subtitle
-      ? rewritePaddleCopy(content.hero_subtitle)
-      : PADDLE_RENTAL
+    content.hero_title = PADDLE_PAGE_TITLE
+    content.hero_subtitle = PADDLE_RENTAL
+    content.intro = PADDLE_INTRO
     content.h2_sections = (content.h2_sections || [])
-      .filter((section) => !/lesson|guided/i.test(section.title))
-      .map((section) => ({ ...section, content: rewritePaddleCopy(section.content) }))
-    content.features = (content.features || [])
-      .filter((feature) => !/lesson|guided/i.test(feature.title))
-      .map((feature) => ({
-        ...feature,
-        description: rewritePaddleCopy(feature.description),
-      }))
+      .filter((section) => !isPaddleLessonHeading(section.title))
+      .map((section) => ({ ...section, content: stripPaddleLessonCopy(section.content) }))
+      .filter((section) => section.content.trim().length > 0)
+    const features = (content.features || [])
+      .filter((feature) => !isPaddleLessonHeading(feature.title))
+      .map((feature) =>
+        /not a guided trip/i.test(feature.title)
+          ? { ...feature, title: 'Paddleboard rental', description: PADDLE_RENTAL }
+          : { ...feature, description: stripPaddleLessonCopy(feature.description) },
+      )
+      .filter((feature) => feature.description.trim().length > 0)
+    const seenTitles = new Set<string>()
+    content.features = features.filter((feature) => {
+      const key = feature.title.toLowerCase()
+      if (seenTitles.has(key)) return false
+      seenTitles.add(key)
+      return true
+    })
     if (!content.features.some((feature) => feature.description.includes('rental from $100'))) {
-      content.features = [
-        { title: 'Paddleboard rental', description: PADDLE_RENTAL },
-        ...content.features,
-      ]
+      content.features = [{ title: 'Paddleboard rental', description: PADDLE_RENTAL }, ...content.features]
     }
     content.faqs = (content.faqs || []).map((faq) => ({
       ...faq,
-      answer: rewritePaddleCopy(faq.answer).includes('rental from $100')
-        ? rewritePaddleCopy(faq.answer)
-        : `${PADDLE_RENTAL} ${rewritePaddleCopy(faq.answer)}`,
+      answer: cleanPaddleFaqAnswer(faq.question, faq.answer),
     }))
     content.cta_text = 'Rent a Paddleboard'
     return {
       ...page,
-      meta_title: 'Paddleboard Rental Aspen CO | From $100 | Rich Valley Adventures',
-      meta_description: `${PADDLE_RENTAL} Rich Valley Adventures, Aspen, Colorado.`,
+      title: PADDLE_PAGE_TITLE,
+      meta_title: PADDLE_META_TITLE,
+      meta_description: PADDLE_META_DESCRIPTION,
       content,
     }
   }

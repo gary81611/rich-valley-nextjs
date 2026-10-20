@@ -15,6 +15,7 @@ interface AdventureCard {
   slug: string
   description: string
   image: string
+  imageAlt?: string
   objectPosition?: string
   href: string
   duration: string
@@ -162,9 +163,10 @@ export default function AdventuresPage() {
                       <Image
                         src={adventure.image}
                         alt={
-                          adventure.image === PADDLE_PHOTO
+                          adventure.imageAlt ||
+                          (adventure.image === PADDLE_PHOTO
                             ? PADDLE_PHOTO_ALT
-                            : `${adventure.title} — guided adventure in Aspen and the Roaring Fork Valley`
+                            : `${adventure.title} — guided adventure in Aspen and the Roaring Fork Valley`)
                         }
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-700"

@@ -7,9 +7,15 @@ import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
 import { createClient } from '@/lib/supabase'
 import type { Adventure, Testimonial, GalleryImage } from '@/lib/types'
 import {
+  FLY_FISHING_IMAGE,
+  FLY_FISHING_IMAGE_ALT,
+  FLY_FISHING_PUBLIC_DESCRIPTION,
   PADDLE_PHOTO,
   PADDLE_PHOTO_ALT,
-  isPublicAdventureCard,
+  TRAIL_HIKING_IMAGE,
+  TRAIL_HIKING_IMAGE_ALT,
+  TRAIL_HIKING_PUBLIC_DESCRIPTION,
+  isHomeGridAdventure,
   toPublicAdventureCard,
 } from '@/lib/rva-adventure-public'
 import { seoAlt } from '@/lib/seo/alt-text'
@@ -21,12 +27,11 @@ import {
 
 const FEATURED_TRIPS = [
   {
-    title: 'Full-day float trip',
+    title: 'Fly Fishing',
     href: '/fly-fishing',
-    image: '/images/adventures/paddle-boarding-lake.png',
-    alt: 'An angler in a drift boat holding a fish on a river',
-    detail:
-      'From $1,400 for 2 people (1 boat, 1 captain). Additional adults $375, kids $175. An 8–12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation included.',
+    image: FLY_FISHING_IMAGE,
+    alt: FLY_FISHING_IMAGE_ALT,
+    detail: FLY_FISHING_PUBLIC_DESCRIPTION,
   },
   {
     title: 'Private ranch family fishing and picnic lunch',
@@ -37,11 +42,11 @@ const FEATURED_TRIPS = [
       'Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+).',
   },
   {
-    title: 'Group hiking',
+    title: 'Trail Hiking',
     href: '/hiking',
-    image: '/images/gallery/family-hike.jpg',
-    alt: 'A group of people on a mountain trail',
-    detail: 'Includes transportation and picnic lunch.',
+    image: TRAIL_HIKING_IMAGE,
+    alt: TRAIL_HIKING_IMAGE_ALT,
+    detail: TRAIL_HIKING_PUBLIC_DESCRIPTION,
   },
 ] as const
 
@@ -56,6 +61,7 @@ export default function RVAHomeClient({
       slug: string
       description: string
       image: string
+      imageAlt?: string
       objectPosition?: string
       href: string
       duration: string
@@ -99,7 +105,7 @@ export default function RVAHomeClient({
       if (advRes.data && advRes.data.length > 0) {
         setAdventures(
           advRes.data
-            .filter((a: Adventure) => isPublicAdventureCard(a))
+            .filter((a: Adventure) => isHomeGridAdventure(a))
             .map((a: Adventure) => toPublicAdventureCard(a)),
         )
       }
@@ -308,14 +314,15 @@ export default function RVAHomeClient({
                     <Image
                       src={adventure.image}
                       alt={
-                        adventure.image === PADDLE_PHOTO
+                        adventure.imageAlt ||
+                        (adventure.image === PADDLE_PHOTO
                           ? PADDLE_PHOTO_ALT
                           : seoAlt({
                               subject: adventure.title,
                               location: 'Aspen and the Roaring Fork Valley, Colorado',
                               context: 'expert-guided outdoor adventure',
                               brand: 'Rich Valley Adventures',
-                            })
+                            }))
                       }
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-700"

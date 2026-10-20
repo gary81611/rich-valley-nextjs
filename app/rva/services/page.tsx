@@ -100,7 +100,10 @@ export default async function ServicesPage() {
                   <div className="relative h-48 bg-rva-forest-dark">
                     <Image
                       src={adventure.image}
-                      alt={adventure.image === PADDLE_PHOTO ? PADDLE_PHOTO_ALT : adventure.title}
+                      alt={
+                        adventure.imageAlt ||
+                        (adventure.image === PADDLE_PHOTO ? PADDLE_PHOTO_ALT : adventure.title)
+                      }
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                       style={adventure.objectPosition ? { objectPosition: adventure.objectPosition } : undefined}
