@@ -16,7 +16,8 @@ const PADDLE_RENTAL_ALIAS_PATHS = new Set([
 /**
  * Extra one-hop aliases. Trailing slashes are stripped by the lookup so
  * `/glamping/` does not 301 to `/glamping` and then again.
- * Bare `/horseback-riding` stays on `/` (existing destination).
+ * Bare `/horseback-riding` goes to the live adventure page.
+ * `/hunting` and `/adventures/hunting` go to `/winter`, which lists the hunting trips.
  */
 const RVA_EXACT_ALIAS: Record<string, string> = {
   '/adventures/paddleboarding': '/paddle-boarding',
@@ -44,7 +45,9 @@ const RVA_EXACT_ALIAS: Record<string, string> = {
   '/adventures/trail-hiking': '/hiking',
   '/trail-hiking': '/hiking',
   '/scenic-escalade-tours': '/adventures/scenic-escalade-tours',
-  '/horseback-riding': '/',
+  '/horseback-riding': '/adventures/horseback-riding',
+  '/hunting': '/winter',
+  '/adventures/hunting': '/winter',
 }
 
 /** RVA-only. Strips a trailing slash so `/paddle-board-rentals/` is one hop, not slash-strip then redirect. */
@@ -151,15 +154,19 @@ export function resolveRvaLegacySingleHop(pathname: string, search: string): Rva
     return { kind: 'path', path: '/adventures/scenic-escalade-tours' + (search || '') }
   }
 
+  if (p === '/horseback-riding') {
+    return { kind: 'path', path: '/adventures/horseback-riding' + (search || '') }
+  }
+
+  if (p === '/hunting' || p === '/adventures/hunting') {
+    return { kind: 'path', path: '/winter' + (search || '') }
+  }
+
   if (p === '/adventures' || p.startsWith('/adventures/')) {
     const normalized = normalizeRvaLegacyPath(pathnameWithQuery)
     if (normalized !== pathnameWithQuery) {
       return { kind: 'path', path: normalized }
     }
-  }
-
-  if (p === '/horseback-riding') {
-    return { kind: 'path', path: '/' + (search || '') }
   }
 
   return null
@@ -202,7 +209,7 @@ export function normalizeRvaLegacyPath(url: string): string {
     // Detail pages stay on /adventures/<slug>. Mapping to themselves skips the /<slug> fallback.
     'scenic-escalade-tours': '/adventures/scenic-escalade-tours',
     'horseback-riding': '/adventures/horseback-riding',
-    hunting: '/hunting',
+    hunting: '/winter',
     'winter-adventures': '/winter',
   }
 

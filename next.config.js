@@ -11,7 +11,6 @@ function rvaRedirects() {
       { source: '/adventures/elevated-camping', destination: '/elevated-camping', permanent: true, has: h },
       { source: '/adventures/fly-fishing', destination: '/fly-fishing', permanent: true, has: h },
       { source: '/adventures/hiking', destination: '/hiking', permanent: true, has: h },
-      { source: '/adventures/hunting', destination: '/hunting', permanent: true, has: h },
       { source: '/adventures/winter-adventures', destination: '/winter', permanent: true, has: h },
       { source: '/adventures/glamping', destination: '/elevated-camping', permanent: true, has: h },
       { source: '/mountain-biking', destination: '/adventures/mountain-biking', permanent: true, has: h },
@@ -81,7 +80,9 @@ function rvaRedirects() {
       ['/adventures/trail-hiking', '/hiking'],
       ['/trail-hiking', '/hiking'],
       ['/scenic-escalade-tours', '/adventures/scenic-escalade-tours'],
-      ['/horseback-riding', '/'],
+      ['/horseback-riding', '/adventures/horseback-riding'],
+      ['/hunting', '/winter'],
+      ['/adventures/hunting', '/winter'],
       ['/blog/summer-activities-aspen-families', '/blog/family-fly-fishing-trips-aspen-rich-valley-adventures'],
     ]
     // Old limo URLs. Each AAL destination returned 200. statusCode 301, both slash forms, RVA host only.
