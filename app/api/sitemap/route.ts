@@ -116,6 +116,54 @@ function canonicalRvaServiceAreaSlug(raw: string): string | null {
   return slug
 }
 
+/**
+ * Git commit dates of the route source, or the round 11 edit date for pages changed in that commit.
+ * Not the clock time of the request.
+ */
+const RVA_ROUTE_LASTMOD: Record<string, string> = {
+  '/': '2026-10-20T18:00:00-06:00',
+  '/fly-fishing': '2026-10-20T18:00:00-06:00',
+  '/private-ranch-fishing': '2026-10-20T18:00:00-06:00',
+  '/hiking': '2026-10-20T18:00:00-06:00',
+  '/paddle-boarding': '2026-10-20T18:00:00-06:00',
+  '/about': '2026-10-20T18:00:00-06:00',
+  '/adventures': '2026-10-20T18:00:00-06:00',
+  '/blog': '2026-10-20T18:00:00-06:00',
+  '/contact': '2026-10-20T18:00:00-06:00',
+  '/service-areas': '2026-10-20T18:00:00-06:00',
+  '/locations': '2026-10-20T18:00:00-06:00',
+  '/guides': '2026-10-20T18:00:00-06:00',
+  '/services': '2026-10-20T12:07:58-06:00',
+  '/adventures/mountain-biking': '2026-10-20T12:07:58-06:00',
+  '/winter': '2026-04-08T10:02:08-06:00',
+  '/elevated-camping': '2026-03-31T07:00:03-06:00',
+  '/conditions': '2026-10-19T14:47:26-06:00',
+  '/gallery': '2026-10-19T14:47:26-06:00',
+  '/destinations': '2026-10-19T14:47:26-06:00',
+  '/terms': '2026-10-19T14:47:26-06:00',
+  '/privacy': '2026-10-19T14:47:26-06:00',
+  '/service-areas/aspen': '2026-10-19T14:47:26-06:00',
+  '/service-areas/snowmass-village': '2026-10-19T14:47:26-06:00',
+  '/service-areas/basalt': '2026-10-19T14:47:26-06:00',
+  '/service-areas/carbondale': '2026-10-19T14:47:26-06:00',
+}
+
+/** Used when a CMS row has no updated_at, and for AAL static URLs. A real past date, not "now". */
+const SITEMAP_FALLBACK_LASTMOD = '2026-10-19T14:47:26-06:00'
+
+function dated(iso: string): Date {
+  return new Date(iso)
+}
+
+function applyFixedLastmod(entries: SitemapEntry[], origin: string, table: Record<string, string>): SitemapEntry[] {
+  return entries.map((entry) => {
+    let path = entry.url.startsWith(origin) ? entry.url.slice(origin.length) : '/'
+    if (path === '') path = '/'
+    const iso = table[path]
+    return iso ? { ...entry, lastModified: dated(iso) } : { ...entry, lastModified: dated(SITEMAP_FALLBACK_LASTMOD) }
+  })
+}
+
 function sitemapResponse(body: string, mode: 'dynamic' | 'fallback'): Response {
   return new Response(body, {
     headers: {
@@ -130,7 +178,7 @@ export async function GET(request: Request) {
   const hostname = request.headers.get('host') || ''
   const siteKey = resolveSiteKeyFromHost(hostname)
   const isAAL = siteKey === 'alpenglow'
-  const lastModified = new Date()
+  const lastModified = dated(SITEMAP_FALLBACK_LASTMOD)
 
   /** Paths must match real routes + metadata canonicals (SEO/AEO). */
   const staticEntries: SitemapEntry[] = isAAL
@@ -187,12 +235,14 @@ export async function GET(request: Request) {
         { url: `${RVA_ORIGIN}/privacy`, lastModified, changeFrequency: 'yearly', priority: 0.25 },
       ]
 
+  const staticWithDates = isAAL ? staticEntries : applyFixedLastmod(staticEntries, RVA_ORIGIN, RVA_ROUTE_LASTMOD)
+
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseKey =
     process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!supabaseUrl || !supabaseKey || !supabaseUrl.startsWith('http')) {
-    return sitemapResponse(toXml(staticEntries), 'fallback')
+    return sitemapResponse(toXml(withRvaSitemapExtras(staticWithDates, isAAL)), 'fallback')
   }
 
   try {
@@ -278,7 +328,13 @@ export async function GET(request: Request) {
           })
       : []
 
-    const merged = dedupeByUrl([...staticEntries, ...blogEntries, ...pageEntries, ...serviceAreaEntries])
+    const merged = dedupeByUrl([
+      ...staticWithDates,
+      ...blogEntries,
+      ...pageEntries,
+      ...serviceAreaEntries,
+      ...rvaSitemapExtras(isAAL),
+    ])
 
     return sitemapResponse(toXml(merged), 'dynamic')
   } catch (err) {
@@ -287,6 +343,26 @@ export async function GET(request: Request) {
       siteKey,
       error: err instanceof Error ? err.message : String(err),
     })
-    return sitemapResponse(toXml(staticEntries), 'fallback')
+    return sitemapResponse(toXml(withRvaSitemapExtras(staticWithDates, isAAL)), 'fallback')
   }
+}
+
+/** Pages that are real routes and were missing from the static list. Appended so a CMS updated_at already in the list wins. */
+function rvaSitemapExtras(isAAL: boolean): SitemapEntry[] {
+  if (isAAL) return []
+  const rows: [string, string, string, number][] = [
+    ['/snowshoeing', '2026-04-12T16:09:28-06:00', 'monthly', 0.8],
+    ['/adventures/horseback-riding', '2026-10-20T18:00:00-06:00', 'monthly', 0.8],
+    ['/adventures/scenic-escalade-tours', '2026-10-20T18:00:00-06:00', 'monthly', 0.8],
+  ]
+  return rows.map(([path, iso, changeFrequency, priority]) => ({
+    url: `${RVA_ORIGIN}${path}`,
+    lastModified: dated(iso),
+    changeFrequency,
+    priority,
+  }))
+}
+
+function withRvaSitemapExtras(entries: SitemapEntry[], isAAL: boolean): SitemapEntry[] {
+  return dedupeByUrl([...entries, ...rvaSitemapExtras(isAAL)])
 }

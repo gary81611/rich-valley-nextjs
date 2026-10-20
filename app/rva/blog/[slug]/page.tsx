@@ -163,7 +163,7 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
 
   const articleUrl = canonicalUrl('rva', `/blog/${post.slug}`)
   const publisherLogoUrl = 'https://www.richvalleyadventures.com/images/logos/rva-logo.png'
-  const defaultArticleImage = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80'
+  const defaultArticleImage = publisherLogoUrl
   const heroImageUrl = coverImageAbsolute || defaultArticleImage
   const description =
     post.meta_description ||

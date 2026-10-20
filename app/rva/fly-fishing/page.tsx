@@ -46,12 +46,11 @@ export default function FlyFishingPage() {
       telephone: '+19704563666',
       email: 'kit@richvalleyadventures.com',
       description:
-        'Expert-guided fly fishing, hiking, mountain biking, paddleboard rentals, hunting, and elevated camping in Aspen, Colorado and the Roaring Fork Valley since 2012.',
+        'Expert-guided fly fishing, hiking, mountain biking, paddleboard rentals, hunting from $250 per person, and elevated camping in Aspen, Colorado and the Roaring Fork Valley since 2012.',
       priceRange: '$$$$',
       openingHours: 'Mo-Su 00:00-23:59',
       address: {
         '@type': 'PostalAddress',
-        streetAddress: '',
         addressLocality: 'Aspen',
         addressRegion: 'CO',
         postalCode: '81611',
@@ -150,7 +149,6 @@ export default function FlyFishingPage() {
       telephone: '+19704563666',
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Aspen',
         addressLocality: 'Aspen',
         addressRegion: 'CO',
         postalCode: '81611',
@@ -166,13 +164,6 @@ export default function FlyFishingPage() {
         },
       ],
       priceRange: 'Full-day float from $1400 for 2 people',
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.9',
-        reviewCount: '200',
-        bestRating: '5',
-        worstRating: '1',
-      },
     },
   ]
 

@@ -17,14 +17,6 @@ function rvaRedirects() {
       { source: '/mountain-biking', destination: '/adventures/mountain-biking', permanent: true, has: h },
       // Legacy indexed patterns → canonical /service-areas/[slug]
       { source: '/areas/:path*', destination: '/service-areas/:path*', permanent: true, has: h },
-      // `/service-areas-locations/*` → single-hop 301 to final URLs in middleware (avoid /service-areas/*-co chains).
-      { source: '/service-areas/aspen-co', destination: '/service-areas/aspen', permanent: true, has: h },
-      { source: '/service-areas/basalt-co', destination: '/service-areas/basalt', permanent: true, has: h },
-      { source: '/service-areas/snowmass-village-co', destination: '/service-areas/snowmass-village', permanent: true, has: h },
-      { source: '/service-areas/carbondale-co', destination: '/service-areas/carbondale', permanent: true, has: h },
-      // Missing city pages route to the service areas index.
-      { source: '/service-areas/rifle-co', destination: '/service-areas', permanent: true, has: h },
-      { source: '/service-areas/denver-co', destination: '/service-areas', permanent: true, has: h },
       // Legacy blog slug consolidated to current canonical post.
       {
         source: '/blog/best-fly-fishing-guide-aspen-rich-valley-adventures',
@@ -90,8 +82,28 @@ function rvaRedirects() {
       ['/trail-hiking', '/hiking'],
       ['/scenic-escalade-tours', '/adventures/scenic-escalade-tours'],
       ['/horseback-riding', '/'],
+      ['/blog/summer-activities-aspen-families', '/blog/family-fly-fishing-trips-aspen-rich-valley-adventures'],
+    ]
+    // Old limo URLs. Each AAL destination returned 200. statusCode 301, both slash forms, RVA host only.
+    const limoToAal = [
+      ['/service-areas/aspen-co', 'https://aspenalpenglowlimousine.com/service-areas/aspen'],
+      ['/service-areas/basalt-co', 'https://aspenalpenglowlimousine.com/service-areas/basalt'],
+      ['/service-areas/snowmass-village-co', 'https://aspenalpenglowlimousine.com/service-areas/snowmass-village'],
+      ['/service-areas/carbondale-co', 'https://aspenalpenglowlimousine.com/service-areas/carbondale'],
+      ['/service-areas/rifle-co', 'https://aspenalpenglowlimousine.com/service-areas/rifle'],
+      ['/service-areas/denver-co', 'https://aspenalpenglowlimousine.com/service-areas/denver'],
+      ['/service-areas-locations/aspen-co', 'https://aspenalpenglowlimousine.com/service-areas/aspen'],
+      ['/service-areas-locations/basalt-co', 'https://aspenalpenglowlimousine.com/service-areas/basalt'],
+      ['/service-areas-locations/snowmass-village-co', 'https://aspenalpenglowlimousine.com/service-areas/snowmass-village'],
+      ['/service-areas-locations/carbondale-co', 'https://aspenalpenglowlimousine.com/service-areas/carbondale'],
+      ['/service-areas-locations/rifle-co', 'https://aspenalpenglowlimousine.com/service-areas/rifle'],
+      ['/service-areas-locations/denver-co', 'https://aspenalpenglowlimousine.com/service-areas/denver'],
     ]
     for (const [source, destination] of singleHop) {
+      list.push({ source, destination, statusCode: 301, has: h })
+      list.push({ source: `${source}/`, destination, statusCode: 301, has: h })
+    }
+    for (const [source, destination] of limoToAal) {
       list.push({ source, destination, statusCode: 301, has: h })
       list.push({ source: `${source}/`, destination, statusCode: 301, has: h })
     }

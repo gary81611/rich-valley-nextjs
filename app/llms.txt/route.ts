@@ -17,8 +17,15 @@ export async function GET(request: Request) {
 - Phone: +1 970-456-3666
 - Email: kit@richvalleyadventures.com
 - Founded: 2012
-- Primary services: guided fly fishing, hiking, mountain biking, elevated camping, winter adventures, hunting-related experiences
-- Paddleboarding: rental from $100, not a guided trip
+- Primary services: guided fly fishing, hiking, mountain biking, elevated camping, winter adventures, hunting from $250 per person, horseback riding, Scenic Escalade tours, whitewater rafting
+- Paddleboarding: rental from $100, not a guided trip. Boards can be delivered to you. No delivery hours, areas, or fees are published.
+- Horseback riding: gentle trail rides through meadows and aspen forests. 2–4 hours. All levels. https://www.richvalleyadventures.com/adventures/horseback-riding
+- Scenic Escalade tours: Colorado landmarks from a luxury Escalade, for guests who want the views without the vertical. Half day or full day. Easy — ride along. https://www.richvalleyadventures.com/adventures/scenic-escalade-tours
+- Whitewater rafting is offered. Call +1 970-456-3666 to plan.
+- Winter, November through April: https://www.richvalleyadventures.com/winter . From $250 per person. Half-day is 3–4 hours door-to-door with snacks and drinks. Full day is 6–8 hours door-to-door with lunch. Groups are 1–12. All gear is provided. Transportation on winter trips is by Aspen Alpenglow Limousine.
+- Hunting on the winter page, from $250 per person: elk and mule deer (September 1 – December 10), waterfowl (October 1 – January 15), and cast and blast (October 1 – January 15). There is no separate hunting page.
+- Ice fishing, snowshoeing, and cross-country skiing on the winter page need 7 days' notice. The winter listing dates those three December 15 – February 25 (cross-country skiing is marked approximate). Other winter activities: 48-hour advance booking is recommended.
+- Snowshoeing page: https://www.richvalleyadventures.com/snowshoeing . Guided tours December through March. All snowshoes, poles, and safety equipment are provided. Routes include Ashcroft. Suitable for all ages; kids as young as 5 can participate on appropriate terrain. Book 7 days ahead.
 - Full-day float trip: from $1,400 for 2 people (1 boat, 1 captain). Additional adults $375 each, kids $175. An 8-12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up.
 - Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+). Page: https://www.richvalleyadventures.com/private-ranch-fishing
 - Kids & family fishing: kids ages 3 and up can fish. Waders are available for all children 3 and up, and adult sizes go up to size 15 feet. Kids on the full-day float are $175. At the Spring Creek Ranch private ranch and picnic, kids are $250 each (ages 3+). Guests and grandparents with limited mobility can be hosted at the ranch ponds.
@@ -35,8 +42,11 @@ https://www.richvalleyadventures.com/private-ranch-fishing
 https://www.richvalleyadventures.com/hiking
 https://www.richvalleyadventures.com/adventures/mountain-biking
 https://www.richvalleyadventures.com/paddle-boarding
+https://www.richvalleyadventures.com/adventures/horseback-riding
+https://www.richvalleyadventures.com/adventures/scenic-escalade-tours
 https://www.richvalleyadventures.com/elevated-camping
 https://www.richvalleyadventures.com/winter
+https://www.richvalleyadventures.com/snowshoeing
 https://www.richvalleyadventures.com/conditions
 https://www.richvalleyadventures.com/guides
 https://www.richvalleyadventures.com/locations

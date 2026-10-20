@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Adventure Locations | Rich Valley Adventures — Colorado Outdoor Destinations',
-  description: 'Guided adventures across Colorado — Aspen, Basalt, Carbondale, Glenwood Springs, Snowmass, Vail, Telluride, and more. Fly fishing, hiking, hunting throughout the Roaring Fork Valley.',
+  description: 'Guided adventures across Colorado — Aspen, Basalt, Carbondale, Glenwood Springs, Snowmass, Vail, Telluride, and more. Fly fishing, hiking, and hunting from $250 per person throughout the Roaring Fork Valley.',
   alternates: { canonical: 'https://www.richvalleyadventures.com/locations' },
 }
 

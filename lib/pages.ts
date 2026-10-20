@@ -13,17 +13,29 @@ export interface PopularHike {
   duration: string
 }
 
+export interface ServiceLead {
+  heading?: string
+  paragraphs: string[]
+  /** Compact facts already published on the page. */
+  facts?: { label: string; value: string }[]
+  links?: { href: string; label: string }[]
+}
+
 export interface ServiceContent {
   hero_title: string
   hero_subtitle?: string
   intro: string
+  /** Short answer near the top. Rendered only when set. */
+  lead?: ServiceLead
   /** Optional reference list (e.g. guided hiking page) */
   popular_hikes?: PopularHike[]
-  h2_sections?: { title: string; content: string; link?: { href: string; label: string } }[]
+  h2_sections?: { title: string; content: string; id?: string; link?: { href: string; label: string } }[]
   features?: { title: string; description: string }[]
   faqs?: { question: string; answer: string }[]
   cta_phone?: string
   cta_text?: string
+  /** One line above the booking buttons, when the page has an extra published fact. */
+  cta_note?: string
   gallery_images?: string[]
 }
 

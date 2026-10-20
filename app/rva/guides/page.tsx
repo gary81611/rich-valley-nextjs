@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Our Guides | Rich Valley Adventures — Expert Local Guides in Aspen',
   description:
-    'Meet the Rich Valley Adventures guide team. First Aid certified experts in fly fishing, hunting, hiking, and outdoor adventures in the Roaring Fork Valley.',
+    'Meet the Rich Valley Adventures guide team. First Aid certified experts in fly fishing, hunting from $250 per person, hiking, and outdoor adventures in the Roaring Fork Valley.',
   alternates: { canonical: 'https://www.richvalleyadventures.com/guides' },
 }
 

@@ -5,7 +5,7 @@
 export const RVA_PILLAR_BLOG_SLUGS = [
   'fly-fishing-aspen-roaring-fork-valley',
   'guided-hiking-tours-aspen-maroon-bells',
-  'summer-activities-aspen-families',
+  'family-fly-fishing-trips-aspen-rich-valley-adventures',
 ] as const
 
 export type RvaPillarBlogSlug = (typeof RVA_PILLAR_BLOG_SLUGS)[number]
@@ -71,8 +71,8 @@ export function rvaServicePageRelatedBlogLinks(serviceSlug: string): { href: str
   if (s === 'paddle-boarding') {
     return [
       {
-        href: '/blog/summer-activities-aspen-families',
-        label: 'Top summer activities in Aspen for families',
+        href: '/blog/family-fly-fishing-trips-aspen-rich-valley-adventures',
+        label: 'Family fly fishing trips in Aspen',
       },
     ]
   }
@@ -106,7 +106,7 @@ export const RVA_GLOBAL_PILLAR_BLOG_LINKS: { href: string; label: string }[] = [
     label: 'Guided hiking: Maroon Bells, Independence Pass & more',
   },
   {
-    href: '/blog/summer-activities-aspen-families',
-    label: 'Summer in Aspen for families — activities & trip ideas',
+    href: '/blog/family-fly-fishing-trips-aspen-rich-valley-adventures',
+    label: 'Family fly fishing trips in Aspen',
   },
 ]

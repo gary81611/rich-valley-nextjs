@@ -10,6 +10,7 @@ import LandingPageTemplate from '@/components/templates/LandingPageTemplate'
 import { rvaServicePageRelatedBlogLinks } from '@/lib/rva-blog-pillars'
 import type { CmsPage } from '@/lib/pages'
 import { KIDS_FAMILY_FISHING, withYearRoundFishingNote } from '@/lib/rva-fly-fishing-content'
+import { rvaHikingAnswerFaqs, rvaHikingAnswerLead } from '@/lib/rva-hiking-page-seed'
 import {
   PADDLE_OG_IMAGE,
   PADDLE_PHOTO,
@@ -21,11 +22,14 @@ const PADDLE_RENTAL = 'Paddleboarding is a rental from $100, not a guided trip.'
 const PADDLE_PAGE_TITLE = 'Paddleboard Rentals in Aspen, Colorado'
 const PADDLE_META_TITLE = 'Paddleboard Rentals in Aspen, CO | From $100 | Rich Valley Adventures'
 const PADDLE_META_DESCRIPTION = `${PADDLE_RENTAL} Rich Valley Adventures, Aspen, Colorado.`
+/** Equipment fact already on the page. The rental sentence stays in the intro only. */
+const PADDLE_SUBTITLE =
+  'All equipment is provided — premium inflatable and hard SUP boards, adjustable paddles, Coast Guard-approved PFDs, and dry bags for your gear.'
+const PADDLE_DELIVERY = 'Boards can be delivered to you.'
 /** Live intro sentences that stay. Lesson, endurance, and logistics sentences are not included. */
 const PADDLE_INTRO = [
   'Stand up paddle boarding in the Roaring Fork Valley offers something rare: glassy water surrounded by 14,000-foot peaks. Rich Valley Adventures rents stand-up paddle boards on some of the most scenic alpine lakes in Colorado, from the vast calm of Ruedi Reservoir above Basalt to the intimate wilderness setting of Grizzly Lake near Independence Pass.',
   PADDLE_RENTAL,
-  'All equipment is provided — premium inflatable and hard SUP boards, adjustable paddles, Coast Guard-approved PFDs, and dry bags for your gear.',
 ].join('\n\n')
 const RVA_BOOKING =
   "Book at least 2 days in advance. A 50% deposit is due at booking. Cancellations within 72 hours are billed in full."
@@ -95,18 +99,29 @@ function applyRvaConfirmedFacts(page: CmsPage | null): CmsPage | null {
   if (page.slug === 'paddle-boarding' && page.template_type === 'service') {
     const content = { ...(page.content as ServiceContent) }
     content.hero_title = PADDLE_PAGE_TITLE
-    content.hero_subtitle = PADDLE_RENTAL
+    content.hero_subtitle = PADDLE_SUBTITLE
     content.intro = PADDLE_INTRO
+    content.cta_note = PADDLE_DELIVERY
     content.h2_sections = (content.h2_sections || [])
       .filter((section) => !isPaddleLessonHeading(section.title))
-      .map((section) => ({ ...section, content: stripPaddleLessonCopy(section.content) }))
+      .map((section) => ({
+        ...section,
+        content: stripPaddleLessonCopy(section.content)
+          .replace(/Paddleboarding is a rental from \$100, not a guided trip\.?\s*/gi, '')
+          .trim(),
+      }))
       .filter((section) => section.content.trim().length > 0)
     const features = (content.features || [])
       .filter((feature) => !isPaddleLessonHeading(feature.title))
       .map((feature) =>
-        /not a guided trip/i.test(feature.title)
-          ? { ...feature, title: 'Paddleboard rental', description: PADDLE_RENTAL }
-          : { ...feature, description: stripPaddleLessonCopy(feature.description) },
+        /not a guided trip/i.test(feature.title) || /rental from \$100/i.test(feature.description)
+          ? { title: 'Wind', description: 'Wind is the main variable for SUP.' }
+          : {
+              ...feature,
+              description: stripPaddleLessonCopy(feature.description)
+                .replace(/Paddleboarding is a rental from \$100, not a guided trip\.?\s*/gi, '')
+                .trim(),
+            },
       )
       .filter((feature) => feature.description.trim().length > 0)
     const seenTitles = new Set<string>()
@@ -116,9 +131,6 @@ function applyRvaConfirmedFacts(page: CmsPage | null): CmsPage | null {
       seenTitles.add(key)
       return true
     })
-    if (!content.features.some((feature) => feature.description.includes('rental from $100'))) {
-      content.features = [{ title: 'Paddleboard rental', description: PADDLE_RENTAL }, ...content.features]
-    }
     content.faqs = (content.faqs || []).map((faq) => ({
       ...faq,
       answer: cleanPaddleFaqAnswer(faq.question, faq.answer),
@@ -161,6 +173,15 @@ function applyRvaConfirmedFacts(page: CmsPage | null): CmsPage | null {
         { question: 'Do you offer corporate packages?', answer: RVA_CORPORATE, category: 'Booking & Logistics' },
       ]
     }
+    return applyFishingSeasonAndKids({ ...page, content })
+  }
+
+  if (page.slug === 'hiking' && page.template_type === 'service') {
+    const content = { ...(page.content as ServiceContent) }
+    content.lead = rvaHikingAnswerLead
+    const have = new Set((content.faqs || []).map((faq) => faq.question))
+    const extra = rvaHikingAnswerFaqs.filter((faq) => !have.has(faq.question))
+    content.faqs = [...extra, ...(content.faqs || [])]
     return applyFishingSeasonAndKids({ ...page, content })
   }
 

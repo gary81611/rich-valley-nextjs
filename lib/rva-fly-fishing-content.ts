@@ -42,6 +42,19 @@ export function withYearRoundFishingNote(text: string): string {
 export const flyFishingServiceContent: ServiceContent = {
   hero_title: flyFishingPageTitle,
   hero_subtitle: "Cast on Colorado's Gold Medal Waters with Expert Local Guides",
+  lead: {
+    heading: 'Trip prices',
+    paragraphs: [
+      'Full-day float trips are from $1,400 for 2 people (1 boat, 1 captain). Additional adults are $375 each, and kids are $175.',
+      'Wade trips: call 970-456-3666 for pricing.',
+    ],
+    links: [
+      {
+        href: '/private-ranch-fishing',
+        label: 'Private ranch fishing at Spring Creek Ranch is from $800 per adult and $250 per child (ages 3+).',
+      },
+    ],
+  },
   intro: `The Roaring Fork Valley is one of the most storied fly fishing destinations in the American West. We guide the Roaring Fork River, Frying Pan River, Colorado River near Glenwood Springs, the Gunnison River on float trips, and exclusive private water — including pond and alpine spring settings, high mountain lakes, and the Old Town Basalt Private Ranch on the Roaring Fork — for anglers who want uncrowded water and a tailored experience.
 
 Rich Valley Adventures has been guiding these waters since 2012. Our guides grew up fishing these drainages and know every productive run, seam, and riffle across seasons. Whether you're picking up a fly rod for the first time or you're a seasoned angler chasing your personal best, we tailor every trip to your experience level and goals.
@@ -65,6 +78,7 @@ Brown trout averaging 14–18 inches are common, with fish over 20 inches taken 
 The Frying Pan demands technical precision: long leaders, small flies, and delicate presentations. Our guides excel at teaching the nuances of tailwater nymphing and the art of fishing size-22 midge clusters to selective risers. This river rewards patience and skill — and the payoff is the fish of a lifetime.`,
     },
     {
+      id: 'full-day-float-trip',
       title: 'Full-Day Float Trip',
       content: `Full-day float trip: from $1,400 for 2 people (1 boat, 1 captain). Additional adults $375 each, kids $175. Covers an 8–12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation are included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up.`,
     },

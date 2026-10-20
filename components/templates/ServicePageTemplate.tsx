@@ -70,6 +70,46 @@ export default function ServicePageTemplate({
         </div>
       </section>
 
+      {content.lead && (content.lead.paragraphs.length > 0 || (content.lead.facts && content.lead.facts.length > 0)) && (
+        <section className={`py-10 px-6 border-b ${rva ? 'bg-white border-rva-sage/20' : 'bg-white border-alp-slate/15'}`}>
+          <div className="max-w-3xl mx-auto">
+            {content.lead.heading && (
+              <h2 className={`font-playfair text-2xl md:text-3xl font-bold mb-4 ${rva ? 'text-rva-forest' : 'text-alp-navy'}`}>
+                {content.lead.heading}
+              </h2>
+            )}
+            {content.lead.paragraphs.map((para, i) => (
+              <p key={i} className="text-base md:text-lg leading-relaxed mb-4 last:mb-0">{para}</p>
+            ))}
+            {content.lead.links && content.lead.links.length > 0 && (
+              <ul className="mt-4 space-y-2">
+                {content.lead.links.map((l) => (
+                  <li key={l.href}>
+                    <Link href={l.href} className={linkClass}>
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {content.lead.facts && content.lead.facts.length > 0 && (
+              <table className="w-full text-sm md:text-base mt-6 border-collapse">
+                <tbody>
+                  {content.lead.facts.map((fact) => (
+                    <tr key={fact.label} className={rva ? 'border-b border-rva-sage/30' : 'border-b border-alp-slate/20'}>
+                      <th className={`text-left py-2 pr-4 font-semibold align-top w-[34%] ${rva ? 'text-rva-forest' : 'text-alp-navy'}`}>
+                        {fact.label}
+                      </th>
+                      <td className="py-2 align-top">{fact.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </section>
+      )}
+
       {/* Intro */}
       <section className={`py-14 px-6 ${rva ? 'bg-rva-cream' : 'bg-alp-pearl'}`}>
         <div className="max-w-3xl mx-auto">
@@ -150,7 +190,7 @@ export default function ServicePageTemplate({
           <div className="max-w-3xl mx-auto space-y-12">
             {content.h2_sections.map((s, i) => (
               <div key={i}>
-                <h2 className={`font-playfair text-2xl md:text-3xl font-bold mb-4 ${rva ? 'text-rva-forest' : 'text-alp-navy'}`}>
+                <h2 id={s.id} className={`font-playfair text-2xl md:text-3xl font-bold mb-4 ${rva ? 'text-rva-forest' : 'text-alp-navy'}`}>
                   {s.title}
                 </h2>
                 {s.content.split('\n\n').map((para, j) => (
@@ -238,6 +278,7 @@ export default function ServicePageTemplate({
       <section className={`py-16 px-6 text-center ${rva ? 'bg-rva-copper text-white' : 'bg-alp-gold text-alp-navy-deep'}`}>
         <div className="max-w-xl mx-auto">
           <h2 className="font-playfair text-3xl font-bold mb-4">{content.cta_text || 'Ready to Book?'}</h2>
+          {content.cta_note && <p className="mb-4 text-base font-medium">{content.cta_note}</p>}
           <p className="mb-8 opacity-90">
             {bookingHref
               ? 'Send a booking request, or call to check availability and reserve your spot.'

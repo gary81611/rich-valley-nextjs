@@ -78,7 +78,6 @@ export default function RVAHomeClient({
   const [stats, setStats] = useState([
     { value: '14+', label: 'Years of Experience' },
     { value: '3,000+', label: 'Adventures Led' },
-    { value: '4.9', label: 'Average Rating' },
   ])
   const [conditionsPreview, setConditionsPreview] = useState<{ teaser: string; author?: string; date?: string } | null>(null)
   const [conditionsPreviewReady, setConditionsPreviewReady] = useState(false)
@@ -122,7 +121,10 @@ export default function RVAHomeClient({
         setPhoneHref(`tel:+1${settingsRes.data.phone.replace(/\D/g, '')}`)
       }
       if (settingsRes.data?.settings?.stats) {
-        setStats(settingsRes.data.settings.stats)
+        const published = (settingsRes.data.settings.stats as { value: string; label: string }[]).filter(
+          (stat) => !/rating/i.test(stat.label),
+        )
+        if (published.length > 0) setStats(published)
       }
     }
     fetchSupabaseData()
@@ -178,7 +180,7 @@ export default function RVAHomeClient({
         </div>
         {/* Stats bar */}
         <div className="absolute bottom-0 left-0 right-0 bg-rva-forest/90 backdrop-blur-sm border-t border-white/10">
-          <div className="max-w-4xl mx-auto px-6 py-5 grid grid-cols-3 gap-4 text-center">
+          <div className={`max-w-4xl mx-auto px-6 py-5 grid gap-4 text-center ${stats.length >= 3 ? 'grid-cols-3' : 'grid-cols-2'}`}>
             {stats.map((stat) => (
               <div key={stat.label}>
                 <div className="font-playfair text-3xl font-bold text-rva-copper-light">{stat.value}</div>
@@ -254,7 +256,7 @@ export default function RVAHomeClient({
             <p className="font-cormorant text-rva-copper-light text-lg tracking-widest uppercase mb-4">What We Offer</p>
             <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold mb-6">Our Adventures</h2>
             <p className="rva-speak-services-intro text-white/70 text-xl max-w-2xl mx-auto">
-              Seven ways to experience the Roaring Fork Valley — each one expertly guided, fully equipped, and unforgettable.
+              Guided trips and rentals across the Roaring Fork Valley, fully equipped.
             </p>
             <div className="mt-8 max-w-3xl mx-auto text-left bg-rva-cream text-rva-forest rounded-2xl p-6 md:p-8">
               <h3 className="font-playfair text-2xl md:text-3xl font-bold mb-3">Kids &amp; Family Fishing</h3>

@@ -140,7 +140,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
       : adventure.long_description || adventure.description
   const whatsIncluded = Array.isArray(adventure.whats_included) ? adventure.whats_included : []
   const highlights = Array.isArray(adventure.highlights) ? adventure.highlights : []
-  const groupSize = adventure.group_size || '2-6 guests'
+  const groupSize = (adventure.group_size || '').trim()
 
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
@@ -213,7 +213,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
             <div className="flex items-center justify-between text-sm text-rva-forest/70 mb-4">
               <span>{adventure.duration}</span>
               <span>{adventure.difficulty}</span>
-              <span>{groupSize}</span>
+              {groupSize ? <span>{groupSize}</span> : null}
             </div>
             <div className="flex gap-3">
               <Link href="/contact" className="flex-1 bg-rva-copper hover:bg-rva-copper-light text-white text-center py-3 rounded-full text-sm font-semibold transition-colors">
@@ -322,10 +322,12 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
                     <span className="text-white/60">Difficulty</span>
                     <span className="font-medium">{adventure.difficulty}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-white/60">Group Size</span>
-                    <span className="font-medium">{groupSize}</span>
-                  </div>
+                  {groupSize ? (
+                    <div className="flex justify-between">
+                      <span className="text-white/60">Group Size</span>
+                      <span className="font-medium">{groupSize}</span>
+                    </div>
+                  ) : null}
                 </div>
               </div>
 

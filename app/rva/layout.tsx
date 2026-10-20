@@ -4,7 +4,10 @@ import RVAFooter from '@/components/rva/RVAFooter'
 import { rvaData } from '@/lib/site-data'
 
 const RVA_URL = 'https://www.richvalleyadventures.com'
-const RVA_OG_IMAGE = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80'
+/** On-site logo, 441×212. Replaces the old Unsplash photo used as the OG and logo fallback. */
+const RVA_LOGO = `${RVA_URL}/images/logos/rva-logo.png`
+const RVA_LOGO_WIDTH = 441
+const RVA_LOGO_HEIGHT = 212
 
 export const metadata: Metadata = {
   metadataBase: new URL(RVA_URL),
@@ -27,10 +30,10 @@ export const metadata: Metadata = {
     siteName: 'Rich Valley Adventures',
     images: [
       {
-        url: RVA_OG_IMAGE,
-        width: 1200,
-        height: 630,
-        alt: 'Guided fly fishing and outdoor adventures in the Roaring Fork Valley near Aspen, Colorado',
+        url: RVA_LOGO,
+        width: RVA_LOGO_WIDTH,
+        height: RVA_LOGO_HEIGHT,
+        alt: 'Rich Valley Adventures logo',
       },
     ],
   },
@@ -39,7 +42,7 @@ export const metadata: Metadata = {
     title: 'Rich Valley Adventures | Guided Outdoor Experiences in Aspen, CO',
     description:
       'Expert-guided fly fishing, hiking, mountain biking, and elevated camping in Aspen and the Roaring Fork Valley.',
-    images: [RVA_OG_IMAGE],
+    images: [RVA_LOGO],
   },
   verification: {
     google: '-q1tnKm96Tll0PlWAdnV5kSJHd-doPIrpc7BWnHb53o',
@@ -70,22 +73,21 @@ const localBusinessSchema = {
   '@id': `${RVA_URL}/#business`,
   name: 'Rich Valley Adventures',
   description:
-    'Expert-guided fly fishing, hiking, mountain biking, paddleboard rentals, hunting, and elevated camping in Aspen, Colorado and the Roaring Fork Valley since 2012.',
+    'Expert-guided fly fishing, hiking, mountain biking, paddleboard rentals, hunting from $250 per person, and elevated camping in Aspen, Colorado and the Roaring Fork Valley since 2012.',
   url: RVA_URL,
   telephone: '+19704563666',
   email: 'kit@richvalleyadventures.com',
   priceRange: '$$$$',
-  image: RVA_OG_IMAGE,
+  image: RVA_LOGO,
   logo: {
     '@type': 'ImageObject',
-    url: RVA_OG_IMAGE,
-    width: 1200,
-    height: 630,
+    url: RVA_LOGO,
+    width: RVA_LOGO_WIDTH,
+    height: RVA_LOGO_HEIGHT,
   },
   foundingDate: '2012',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: '',
     addressLocality: 'Aspen',
     addressRegion: 'CO',
     postalCode: '81611',
@@ -114,7 +116,6 @@ const localBusinessSchema = {
   sameAs: [
     'https://www.facebook.com/richvalleyadventures',
     'https://www.instagram.com/richvalleyadventures',
-    'https://www.tripadvisor.com/richvalleyadventures',
     rvaData.googleMapsPlaceUrl,
     rvaData.googleReviewUrl,
   ],
@@ -141,13 +142,6 @@ const localBusinessSchema = {
       opens: '07:00',
       closes: '20:00',
     },
-  },
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.9',
-    reviewCount: '200',
-    bestRating: '5',
-    worstRating: '1',
   },
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
@@ -198,7 +192,7 @@ const localBusinessSchema = {
           '@type': 'SportsActivityLocation',
           name: 'Guided Trail Hiking — Aspen & Elk Mountains, CO',
           description:
-            'Guided hiking in the Elk Mountains and Roaring Fork Valley near Aspen, Colorado. Half-day and full-day options available for all fitness levels.',
+            'Guided hiking in the Elk Mountains and Roaring Fork Valley near Aspen, Colorado. Trail Hiking is 3–6 hours and moderate. The hiking page also lists easier walks and strenuous alpine days.',
         },
       },
       {

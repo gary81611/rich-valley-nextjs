@@ -15,15 +15,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'About Rich Valley Adventures | Our Story Since 2012',
     description:
-      'Founded in 2012 by local Aspen guides. 14+ years, 3,000+ adventures, 4.9 rating. Discover the team behind Rich Valley Adventures.',
+      'Founded in 2012 by local Aspen guides. 14+ years, 3,000+ adventures. Discover the team behind Rich Valley Adventures.',
     type: 'website',
     url: 'https://www.richvalleyadventures.com/about',
     images: [
       {
-        url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80',
-        width: 1200,
-        height: 630,
-        alt: 'Rich Valley Adventures team in Aspen, Colorado',
+        url: 'https://www.richvalleyadventures.com/images/logos/rva-logo.png',
+        width: 441,
+        height: 212,
+        alt: 'Rich Valley Adventures logo',
       },
     ],
   },

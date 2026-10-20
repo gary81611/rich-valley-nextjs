@@ -18,9 +18,27 @@ const BOOKING =
 
 const LICENSE = 'A Colorado Parks and Wildlife fishing license is required for ages 16 and up.'
 
+const RANCH_ANSWER = [
+  'Private ranch fishing at Spring Creek Ranch is the private ranch and picnic package on a historic ranch in Carbondale, Colorado, owned by the same family since the late 1800s.',
+  'The ranch has ponds, creeks, and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat, and brook trout from 12 to 30 inches.',
+  'The package is from $800 per adult and $250 per child (ages 3+).',
+]
+
 export const privateRanchFishingServiceContent: ServiceContent = {
   hero_title: privateRanchFishingPageTitle,
   hero_subtitle: 'The original private ranch fishing experience in the valley',
+  lead: {
+    heading: 'What is private ranch fishing at Spring Creek Ranch?',
+    paragraphs: RANCH_ANSWER,
+    facts: [
+      { label: 'Location', value: 'Spring Creek Ranch, Carbondale, CO' },
+      { label: 'Water', value: 'Ponds, creeks, and a private section of the Roaring Fork River' },
+      { label: 'Species', value: 'Rainbow, brown, native cutthroat, and brook trout' },
+      { label: 'Size', value: '12–30 inches' },
+      { label: 'Pricing', value: 'From $800 per adult, $250 per child (ages 3+)' },
+      { label: 'Booking', value: "2 days' notice, 50% deposit, 72-hour cancellation" },
+    ],
+  },
   intro: `Spring Creek Ranch in Carbondale, Colorado is a famous historic ranch owned by the same family since the late 1800s. Rich Valley Adventures offers the original private ranch fishing experience in the valley here: world-class trout fishing on private water, with a picnic.
 
 The ranch has multiple ponds and creeks, plus a private section of the Roaring Fork River. The water holds rainbow, brown, native cutthroat, and brook trout, from 12 to 30 inches.
@@ -60,6 +78,10 @@ ${PRICE}`,
     },
   ],
   faqs: [
+    {
+      question: 'What is private ranch fishing at Spring Creek Ranch?',
+      answer: RANCH_ANSWER.join(' '),
+    },
     {
       question: 'Where is Spring Creek Ranch?',
       answer:

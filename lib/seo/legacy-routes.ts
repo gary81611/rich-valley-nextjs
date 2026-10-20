@@ -59,6 +59,33 @@ export function rvaEarlyAliasPath(pathname: string): string | null {
 }
 
 /**
+ * Old transport URLs and the dead family blog post.
+ * Each AAL target was checked and returned 200. Trailing slashes are stripped by the lookup.
+ */
+const RVA_EXTERNAL_ALIAS: Record<string, string> = {
+  '/service-areas/aspen-co': 'https://aspenalpenglowlimousine.com/service-areas/aspen',
+  '/service-areas/basalt-co': 'https://aspenalpenglowlimousine.com/service-areas/basalt',
+  '/service-areas/snowmass-village-co': 'https://aspenalpenglowlimousine.com/service-areas/snowmass-village',
+  '/service-areas/carbondale-co': 'https://aspenalpenglowlimousine.com/service-areas/carbondale',
+  '/service-areas/rifle-co': 'https://aspenalpenglowlimousine.com/service-areas/rifle',
+  '/service-areas/denver-co': 'https://aspenalpenglowlimousine.com/service-areas/denver',
+  '/service-areas-locations/aspen-co': 'https://aspenalpenglowlimousine.com/service-areas/aspen',
+  '/service-areas-locations/basalt-co': 'https://aspenalpenglowlimousine.com/service-areas/basalt',
+  '/service-areas-locations/snowmass-village-co': 'https://aspenalpenglowlimousine.com/service-areas/snowmass-village',
+  '/service-areas-locations/carbondale-co': 'https://aspenalpenglowlimousine.com/service-areas/carbondale',
+  '/service-areas-locations/rifle-co': 'https://aspenalpenglowlimousine.com/service-areas/rifle',
+  '/service-areas-locations/denver-co': 'https://aspenalpenglowlimousine.com/service-areas/denver',
+  '/blog/summer-activities-aspen-families':
+    'https://www.richvalleyadventures.com/blog/family-fly-fishing-trips-aspen-rich-valley-adventures',
+}
+
+/** RVA-only absolute 301, including a trailing slash, before the generic slash strip. */
+export function rvaExternalEarlyUrl(pathname: string): string | null {
+  const bare = pathname.length > 1 ? pathname.replace(/\/+$/, '') || '/' : pathname
+  return RVA_EXTERNAL_ALIAS[bare] ?? null
+}
+
+/**
  * Maps legacy public paths (and paths after stripping `/rva`) to their final canonical
  * destination in one hop — avoids chains like `/service-areas-locations/*` → `/service-areas/*-co` → `/service-areas/*`.
  */
@@ -66,6 +93,10 @@ export function resolveRvaLegacySingleHop(pathname: string, search: string): Rva
   const pathnameWithQuery = search ? `${pathname}${search}` : pathname
   const [rawPath] = pathnameWithQuery.split('?', 2)
   const p = rawPath.replace(/\/$/, '') || '/'
+
+  if (RVA_EXTERNAL_ALIAS[p]) {
+    return { kind: 'external', url: RVA_EXTERNAL_ALIAS[p] }
+  }
 
   if (p.startsWith('/service-areas-locations')) {
     const map: Record<string, string> = {

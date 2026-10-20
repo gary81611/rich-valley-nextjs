@@ -1,4 +1,47 @@
-import type { ServiceContent } from './pages'
+import type { ServiceContent, ServiceLead } from './pages'
+
+/** Visible answer block for /hiking. Facts already on this page, the Trail Hiking card, and the site booking rule. */
+export const rvaHikingAnswerLead: ServiceLead = {
+  heading: 'Guided hiking in Aspen',
+  paragraphs: [
+    'Rich Valley Adventures guides hikes in the Elk Mountains and the Roaring Fork Valley, from gentle riparian walks and easy valley miles to strenuous high-alpine days. The Trail Hiking trip is 3–6 hours and moderate. Groups are typically 2–8, and this page lists a maximum of 8.',
+    'Book at least 2 days in advance. A 50% deposit is due at booking. Cancellations within 72 hours are billed in full. For a date, a route, or a plan this page does not list, call 970-456-3666.',
+  ],
+}
+
+/** Question queries around positions 6–10. No prices, discounts, or unpublished trails. */
+export const rvaHikingAnswerFaqs: { question: string; answer: string }[] = [
+  {
+    question: 'Do you offer easy or beginner guided hikes in Aspen?',
+    answer:
+      'The Trail Hiking trip is 3–6 hours and moderate. This page also describes easier walks: Maroon Lake Scenic Trail is about 1 mile (30–60 minutes) and is a fit for a first day at altitude, the Grottos are short family-friendly paths, and the Rio Grande Trail is a flat rail-trail. We match the route to the group. No hiking price is published. Call 970-456-3666 to plan.',
+  },
+  {
+    question: 'Do you have family-friendly hikes for kids?',
+    answer:
+      'The Grottos are short family-friendly paths, great with kids, and Bear Den Trail is suitable for families or a mellow half-day. This page does not publish a children’s rate or a minimum age for hiking. Call 970-456-3666 to plan.',
+  },
+  {
+    question: 'How do I book a guided hike, and what is the reservation policy?',
+    answer:
+      'Book at least 2 days in advance. A 50% deposit is due at booking. Cancellations within 72 hours are billed in full. Call 970-456-3666.',
+  },
+  {
+    question: 'Can you take a group of 12, and are there discounts?',
+    answer:
+      'Guided hikes on this page are small groups, typically 2–8, with a listed maximum of 8. A group of 12 and a group discount are not published. Corporate packages are for groups of 50 or more: a custom mix of fishing and hiking. Call 970-456-3666 to plan.',
+  },
+  {
+    question: 'What guided hikes and trails do you offer near Aspen?',
+    answer:
+      'This page lists 25 popular hikes near Aspen, including Maroon Lake, Crater Lake, Cathedral Lake, the Ute Trail, and Independence Pass trails such as the Grottos and Lost Man Lake Loop. Your guide matches mileage and elevation to the group. The Trail Hiking trip is 3–6 hours and moderate.',
+  },
+  {
+    question: 'Are guided hikes available in June and July?',
+    answer:
+      'Late June through September is the main hiking window for the high country. July and August bring wildflowers and afternoon thunderstorms. This page does not list which dates are still open. Call 970-456-3666 to plan.',
+  },
+]
 
 /**
  * Default CMS content for RVA `/hiking` (guided hiking). Imported by `lib/seed-pages.ts`.
