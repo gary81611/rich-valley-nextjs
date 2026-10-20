@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { blogImageSrcForNext, filterPublicBlogPosts } from '@/lib/blog-visibility'
+import { applyAalBlogPost } from '@/lib/aal-public-copy'
 import { seoAlt } from '@/lib/seo/alt-text'
 import type { BlogPost } from '@/lib/types'
 
@@ -79,7 +80,8 @@ export default async function AlpenglowBlogPage() {
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map((post) => {
+            {posts.map((raw) => {
+              const post = applyAalBlogPost(raw)
               const cardImg = blogImageSrcForNext(post.featured_image_url)
               return (
               <article key={post.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-alp-pearl-dark hover:shadow-md transition-shadow group">
