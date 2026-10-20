@@ -62,6 +62,39 @@ function rvaRedirects() {
     for (const source of paddleAliases) {
       list.push({ source, destination: '/paddle-boarding', statusCode: 301, has: h })
     }
+    // statusCode 301, both slash forms. permanent:true would be a 308.
+    const singleHop = [
+      ['/adventures/paddleboarding', '/paddle-boarding'],
+      ['/paddleboarding', '/paddle-boarding'],
+      ['/adventures/paddleboard-tour', '/paddle-boarding'],
+      ['/paddleboard-tour', '/paddle-boarding'],
+      ['/adventures/sup', '/paddle-boarding'],
+      ['/sup', '/paddle-boarding'],
+      ['/adventures/stand-up-paddle-boarding', '/paddle-boarding'],
+      ['/stand-up-paddle-boarding', '/paddle-boarding'],
+      ['/adventures/stand-up-paddleboard', '/paddle-boarding'],
+      ['/stand-up-paddleboard', '/paddle-boarding'],
+      ['/adventures/paddleboard', '/paddle-boarding'],
+      ['/paddleboard', '/paddle-boarding'],
+      ['/adventures/float-trip', '/fly-fishing'],
+      ['/float-trip', '/fly-fishing'],
+      ['/adventures/full-day-float-trip', '/fly-fishing'],
+      ['/full-day-float-trip', '/fly-fishing'],
+      ['/adventures/group-hiking', '/hiking'],
+      ['/group-hiking', '/hiking'],
+      ['/glamping', '/elevated-camping'],
+      ['/adventures/private-ranch-family-fishing-and-picnic-lunch', '/private-ranch-fishing'],
+      ['/private-ranch-family-fishing-and-picnic-lunch', '/private-ranch-fishing'],
+      ['/adventures/private-ranch-fishing', '/private-ranch-fishing'],
+      ['/adventures/trail-hiking', '/hiking'],
+      ['/trail-hiking', '/hiking'],
+      ['/scenic-escalade-tours', '/adventures/scenic-escalade-tours'],
+      ['/horseback-riding', '/'],
+    ]
+    for (const [source, destination] of singleHop) {
+      list.push({ source, destination, statusCode: 301, has: h })
+      list.push({ source: `${source}/`, destination, statusCode: 301, has: h })
+    }
   }
   return list
 }

@@ -13,10 +13,49 @@ const PADDLE_RENTAL_ALIAS_PATHS = new Set([
   '/paddleboard-tours',
 ])
 
+/**
+ * Extra one-hop aliases. Trailing slashes are stripped by the lookup so
+ * `/glamping/` does not 301 to `/glamping` and then again.
+ * Bare `/horseback-riding` stays on `/` (existing destination).
+ */
+const RVA_EXACT_ALIAS: Record<string, string> = {
+  '/adventures/paddleboarding': '/paddle-boarding',
+  '/paddleboarding': '/paddle-boarding',
+  '/adventures/paddleboard-tour': '/paddle-boarding',
+  '/paddleboard-tour': '/paddle-boarding',
+  '/adventures/sup': '/paddle-boarding',
+  '/sup': '/paddle-boarding',
+  '/adventures/stand-up-paddle-boarding': '/paddle-boarding',
+  '/stand-up-paddle-boarding': '/paddle-boarding',
+  '/adventures/stand-up-paddleboard': '/paddle-boarding',
+  '/stand-up-paddleboard': '/paddle-boarding',
+  '/adventures/paddleboard': '/paddle-boarding',
+  '/paddleboard': '/paddle-boarding',
+  '/adventures/float-trip': '/fly-fishing',
+  '/float-trip': '/fly-fishing',
+  '/adventures/full-day-float-trip': '/fly-fishing',
+  '/full-day-float-trip': '/fly-fishing',
+  '/adventures/group-hiking': '/hiking',
+  '/group-hiking': '/hiking',
+  '/glamping': '/elevated-camping',
+  '/adventures/private-ranch-family-fishing-and-picnic-lunch': '/private-ranch-fishing',
+  '/private-ranch-family-fishing-and-picnic-lunch': '/private-ranch-fishing',
+  '/adventures/private-ranch-fishing': '/private-ranch-fishing',
+  '/adventures/trail-hiking': '/hiking',
+  '/trail-hiking': '/hiking',
+  '/scenic-escalade-tours': '/adventures/scenic-escalade-tours',
+  '/horseback-riding': '/',
+}
+
 /** RVA-only. Strips a trailing slash so `/paddle-board-rentals/` is one hop, not slash-strip then redirect. */
 export function rvaPaddleRentalAliasPath(pathname: string): '/paddle-boarding' | null {
   const bare = pathname.length > 1 ? pathname.replace(/\/+$/, '') || '/' : pathname
   return PADDLE_RENTAL_ALIAS_PATHS.has(bare) ? '/paddle-boarding' : null
+}
+
+/** RVA-only alias, including the paddle set. Checked before the generic slash strip. */
+export function rvaEarlyAliasPath(pathname: string): string | null {
+  return rvaPaddleRentalAliasPath(pathname) ?? RVA_EXACT_ALIAS[pathname.length > 1 ? pathname.replace(/\/+$/, '') || '/' : pathname] ?? null
 }
 
 /**
@@ -53,6 +92,17 @@ export function resolveRvaLegacySingleHop(pathname: string, search: string): Rva
     '/adventure-booking': '/contact',
     '/contact-us': '/contact',
     '/privacy-policy': '/privacy',
+    '/glamping': '/elevated-camping',
+    '/sup': '/paddle-boarding',
+    '/paddleboard-tour': '/paddle-boarding',
+    '/paddleboarding': '/paddle-boarding',
+    '/paddleboard': '/paddle-boarding',
+    '/stand-up-paddle-boarding': '/paddle-boarding',
+    '/stand-up-paddleboard': '/paddle-boarding',
+    '/float-trip': '/fly-fishing',
+    '/full-day-float-trip': '/fly-fishing',
+    '/group-hiking': '/hiking',
+    '/private-ranch-family-fishing-and-picnic-lunch': '/private-ranch-fishing',
   }
   if (legacy[p]) {
     return { kind: 'path', path: legacy[p] + (search || '') }
@@ -106,6 +156,17 @@ export function normalizeRvaLegacyPath(url: string): string {
     'mountain-biking': '/adventures/mountain-biking',
     'paddle-boarding': '/paddle-boarding',
     'paddle-board-rentals': '/paddle-boarding',
+    paddleboarding: '/paddle-boarding',
+    sup: '/paddle-boarding',
+    'stand-up-paddle-boarding': '/paddle-boarding',
+    'stand-up-paddleboard': '/paddle-boarding',
+    paddleboard: '/paddle-boarding',
+    'paddleboard-tour': '/paddle-boarding',
+    'float-trip': '/fly-fishing',
+    'full-day-float-trip': '/fly-fishing',
+    'group-hiking': '/hiking',
+    'private-ranch-family-fishing-and-picnic-lunch': '/private-ranch-fishing',
+    'private-ranch-fishing': '/private-ranch-fishing',
     'trail-hiking': '/hiking',
     // Detail pages stay on /adventures/<slug>. Mapping to themselves skips the /<slug> fallback.
     'scenic-escalade-tours': '/adventures/scenic-escalade-tours',

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
-import { resolveRvaLegacySingleHop, rvaPaddleRentalAliasPath } from '@/lib/seo/legacy-routes'
+import { resolveRvaLegacySingleHop, rvaEarlyAliasPath } from '@/lib/seo/legacy-routes'
 
 const RVA_HOSTS = new Set(['www.richvalleyadventures.com', 'richvalleyadventures.com'])
 const AAL_HOSTS = new Set(['www.aspenalpenglowlimousine.com', 'aspenalpenglowlimousine.com'])
@@ -77,11 +77,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(pathPart + qs, request.url), 301)
   }
 
-  /** RVA paddle aliases, including trailing slashes, before the generic slash strip (one hop). */
+  /** RVA aliases, including trailing slashes, before the generic slash strip (one hop). */
   if (isRvaHost) {
-    const paddleTarget = rvaPaddleRentalAliasPath(pathname)
-    if (paddleTarget) {
-      return NextResponse.redirect(new URL(paddleTarget + search, request.url), 301)
+    const aliasTarget = rvaEarlyAliasPath(pathname)
+    if (aliasTarget) {
+      return NextResponse.redirect(new URL(aliasTarget + search, request.url), 301)
     }
   }
 
