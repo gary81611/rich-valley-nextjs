@@ -197,3 +197,20 @@ WHERE site_key = 'rva'
     OR content ILIKE '%twelve years of guiding corporate groups%'
   )
   AND content ILIKE '%twelve years of guiding corporate groups%';
+
+-- Same corporate post, second sentence. Still NOT APPLIED.
+-- "After twelve years of creating transformative outdoor experiences…"
+-- becomes since-2012 wording with no year count.
+UPDATE blog_posts
+SET content = regexp_replace(
+  content,
+  'After twelve years of creating transformative outdoor experiences',
+  'Since 2012, creating transformative outdoor experiences',
+  'gi'
+)
+WHERE site_key = 'rva'
+  AND (
+    slug = 'corporate-team-building-aspen-outdoor-adventures-rva'
+    OR content ILIKE '%twelve years of creating transformative outdoor experiences%'
+  )
+  AND content ILIKE '%twelve years of creating transformative outdoor experiences%';

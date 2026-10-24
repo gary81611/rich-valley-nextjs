@@ -45,6 +45,17 @@ html:has(.rva-site) {
   }
 }
 
+/* Desktop bar at lg has no bottom sticky CTA. */
+@media (min-width: 1024px) {
+  html:has(.rva-site) {
+    scroll-padding-bottom: 0px;
+  }
+
+  .rva-site :is(a, button, input, select, textarea, summary, [tabindex]) {
+    scroll-margin-bottom: 0px;
+  }
+}
+
 .rva-site :is(a, button, input, select, textarea, summary, [tabindex]) {
   scroll-margin-top: var(--rva-header, 6.25rem);
   scroll-margin-bottom: 7rem;

@@ -46,10 +46,10 @@ export default function RVANav() {
             />
           </span>
         </a>
-        <a href="tel:+19704563666" aria-label="Call Rich Valley Adventures at 970-456-3666" className="ml-3 hidden md:inline-flex flex-shrink-0 items-center min-h-12 bg-rva-copper-700 hover:bg-rva-copper-800 text-white px-4 rounded-full text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-rva-copper-300">
+        <a href="tel:+19704563666" aria-label="Call Rich Valley Adventures at 970-456-3666" className="ml-3 hidden lg:inline-flex flex-shrink-0 items-center min-h-12 bg-rva-copper-700 hover:bg-rva-copper-800 text-white px-4 rounded-full text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-rva-copper-300">
           970-456-3666
         </a>
-        <div className="hidden md:flex items-center gap-6 ml-auto">
+        <div className="hidden lg:flex items-center gap-x-2 xl:gap-x-6 ml-auto">
           <div
             className="relative"
             onMouseEnter={() => { if (closeTimerRef.current) clearTimeout(closeTimerRef.current); setAdventuresOpen(true) }}
@@ -99,14 +99,14 @@ export default function RVANav() {
             Transportation
           </a>
         </div>
-        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle mobile navigation menu" aria-expanded={mobileMenuOpen} className="md:hidden ml-auto text-white min-h-11 min-w-11 inline-flex flex-col items-center justify-center gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-rva-copper-300">
+        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle mobile navigation menu" aria-expanded={mobileMenuOpen} className="lg:hidden ml-auto text-white min-h-11 min-w-11 inline-flex flex-col items-center justify-center gap-1.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-rva-copper-300">
           <span className="w-6 h-0.5 bg-white"></span>
           <span className="w-6 h-0.5 bg-white"></span>
           <span className="w-6 h-0.5 bg-white"></span>
         </button>
       </div>
       {mobileMenuOpen && (
-        <div className="md:hidden max-h-[calc(100dvh-6.25rem-3.5rem)] space-y-1 overflow-y-auto overscroll-contain border-t border-white/10 bg-rva-forest px-6 py-4 pb-8">
+        <div className="lg:hidden max-h-[calc(100dvh-var(--rva-header,6.25rem)-3.5rem)] space-y-1 overflow-y-auto overscroll-contain border-t border-white/10 bg-rva-forest px-6 py-4 pb-8">
           <a href="tel:+19704563666" onClick={() => setMobileMenuOpen(false)} className="mb-2 inline-flex min-h-12 items-center rounded-full bg-rva-copper-700 px-4 text-sm font-semibold text-white hover:bg-rva-copper-800">
             970-456-3666
           </a>
