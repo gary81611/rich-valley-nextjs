@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
-import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import ServicePageTemplate from '@/components/templates/ServicePageTemplate'
+import AdventureCard from '@/components/rva/AdventureCard'
+import RvaButton from '@/components/rva/Button'
+import type { ServiceContent } from '@/lib/pages'
 import {
   PADDLE_OG_IMAGE,
   PADDLE_PHOTO_ALT,
@@ -119,12 +121,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
           <p className="text-gray-600 mb-8">
             We couldn&apos;t find that adventure. Check out all of our offerings below.
           </p>
-          <Link
-            href="/adventures"
-            className="bg-rva-copper hover:bg-rva-copper-light text-white px-8 py-3 rounded-full font-semibold transition-all inline-block"
-          >
-            View All Adventures
-          </Link>
+          <RvaButton href="/adventures" size="lg">View All Adventures</RvaButton>
         </div>
       </div>
     )
@@ -142,245 +139,62 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
   const highlights = Array.isArray(adventure.highlights) ? adventure.highlights : []
   const groupSize = (adventure.group_size || '').trim()
 
+  const facts = [
+    adventure.duration ? { label: 'Duration', value: adventure.duration } : null,
+    adventure.difficulty ? { label: 'Level', value: adventure.difficulty } : null,
+    groupSize ? { label: 'Group size', value: groupSize } : null,
+    adventure.season ? { label: 'Season', value: adventure.season } : null,
+    adventure.best_for ? { label: 'Best for', value: adventure.best_for } : null,
+  ].filter((fact): fact is { label: string; value: string } => fact !== null)
+
+  const content: ServiceContent = {
+    hero_title: adventure.name,
+    hero_subtitle: publicDescription,
+    intro: longDescription,
+    lead: facts.length > 0 ? { paragraphs: [], facts } : undefined,
+    features: whatsIncluded.filter(Boolean).map((item) => ({ title: item, description: '' })),
+    h2_sections:
+      highlights.length > 0 ? [{ title: 'Highlights', content: highlights.join('\n\n') }] : undefined,
+    cta_text: 'Check availability',
+  }
+
+  const heroSrc = (visual.src || '').trim()
+
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
-      {/* Breadcrumb */}
-      <div className="bg-rva-forest-dark">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center gap-2 text-sm">
-            <Link href="/" className="text-white/60 hover:text-rva-copper-light transition-colors">
-              Home
-            </Link>
-            <span className="text-white/40">/</span>
-            <Link
-              href="/adventures"
-              className="text-white/60 hover:text-rva-copper-light transition-colors"
-            >
-              Adventures
-            </Link>
-            <span className="text-white/40">/</span>
-            <span className="text-rva-copper-light">{adventure.name}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Hero */}
-      <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src={visual.src}
-            alt={
-              visual.alt ||
-              (visual.src.endsWith('/paddle-boarding.jpg')
-                ? PADDLE_PHOTO_ALT
-                : `${adventure.name} — guided adventure experience in Aspen, Colorado with Rich Valley Adventures`)
-            }
-            fill
-            className="object-cover"
-            style={visual.objectPosition ? { objectPosition: visual.objectPosition } : undefined}
-            priority
-            unoptimized
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-rva-forest-dark/60 via-rva-forest-dark/30 to-rva-forest-dark/80" />
-        </div>
-        <div className="relative z-10 text-center text-white px-6 max-w-4xl mx-auto">
-          <div className="flex justify-center gap-3 mb-6">
-            <span className="bg-rva-copper/90 backdrop-blur-sm text-white text-sm px-4 py-1.5 rounded-full font-medium">
-              {adventure.duration}
-            </span>
-            <span className="bg-white/15 backdrop-blur-sm text-white text-sm px-4 py-1.5 rounded-full border border-white/20">
-              {adventure.difficulty}
-            </span>
-          </div>
-          <h1 className="font-playfair text-4xl md:text-6xl font-bold mb-4">{adventure.name}</h1>
-          <p className="text-xl text-white/85 max-w-2xl mx-auto">{publicDescription}</p>
-        </div>
-      </section>
-
-      {/* "Best For" tag + Mobile CTA card */}
-      <section className="bg-rva-cream pt-8 pb-0">
-        <div className="max-w-7xl mx-auto px-6">
-          {/* Best For tag */}
-          {adventure.best_for && (
-            <p className="text-sm text-rva-forest/60 mb-4 flex items-center gap-2">
-              <svg className="w-4 h-4 text-rva-copper flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-              <span><strong className="text-rva-forest/80">Best for:</strong> {adventure.best_for}</span>
-            </p>
-          )}
-
-          {/* Mobile-only CTA card */}
-          <div className="lg:hidden bg-white rounded-xl p-5 shadow-sm border border-rva-copper/10 mb-6">
-            <div className="flex items-center justify-between text-sm text-rva-forest/70 mb-4">
-              <span>{adventure.duration}</span>
-              <span>{adventure.difficulty}</span>
-              {groupSize ? <span>{groupSize}</span> : null}
-            </div>
-            <div className="flex gap-3">
-              <Link href="/contact" className="flex-1 bg-rva-copper hover:bg-rva-copper-light text-white text-center py-3 rounded-full text-sm font-semibold transition-colors">
-                Request Booking
-              </Link>
-              <a href="tel:+19704563666" className="flex-1 border-2 border-rva-forest/20 text-rva-forest text-center py-3 rounded-full text-sm font-medium transition-colors hover:border-rva-forest/40">
-                Call Now
-              </a>
+      <ServicePageTemplate
+        site="rva"
+        title={adventure.name}
+        content={content}
+        heroImage={heroSrc || undefined}
+        heroImageAlt={visual.alt || `${adventure.name} with Rich Valley Adventures in Aspen, Colorado`}
+        heroObjectPosition={visual.objectPosition}
+        bookingHref="/contact"
+      />
+      {relatedAdventures.length > 0 && (
+        <section className="bg-rva-cream px-6 pb-16">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="font-playfair text-3xl text-rva-forest font-semibold mb-6">More Adventures</h2>
+            <div className="grid md:grid-cols-3 gap-6 items-stretch">
+              {relatedAdventures.map((related) => {
+                const relatedVisual = adventurePublicImage(related)
+                return (
+                  <AdventureCard
+                    key={related.id}
+                    href={adventurePublicHref(related)}
+                    title={related.name}
+                    image={relatedVisual.src}
+                    imageAlt={relatedVisual.alt || (relatedVisual.src.endsWith('/paddle-boarding.jpg') ? PADDLE_PHOTO_ALT : related.name)}
+                    objectPosition={relatedVisual.objectPosition}
+                    duration={related.duration}
+                    level={related.difficulty}
+                  />
+                )
+              })}
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Content */}
-      <section className="py-16 bg-rva-cream">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-3 gap-12">
-            {/* Main Content */}
-            <div className="lg:col-span-2">
-              <h2 className="font-playfair text-3xl text-rva-forest font-bold mb-6">
-                About This Adventure
-              </h2>
-              <p className="text-gray-700 text-lg leading-relaxed mb-10">
-                {longDescription}
-              </p>
-
-              {/* Highlights */}
-              {highlights.length > 0 && (
-                <>
-                  <h3 className="font-playfair text-2xl text-rva-forest font-semibold mb-4">
-                    Highlights
-                  </h3>
-                  <div className="grid sm:grid-cols-2 gap-4 mb-10">
-                    {highlights.map((highlight) => (
-                      <div
-                        key={highlight}
-                        className="flex items-center gap-3 bg-white rounded-xl p-4 shadow-sm"
-                      >
-                        <span className="w-3 h-3 bg-rva-copper rounded-full flex-shrink-0" />
-                        <span className="text-gray-700">{highlight}</span>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-
-              {/* What's Included */}
-              {whatsIncluded.length > 0 && (
-                <>
-                  <h3 className="font-playfair text-2xl text-rva-forest font-semibold mb-4">
-                    What&apos;s Included
-                  </h3>
-                  <div className="bg-white rounded-2xl p-8 shadow-sm">
-                    <ul className="grid sm:grid-cols-2 gap-3">
-                      {whatsIncluded.map((item) => (
-                        <li key={item} className="flex items-start gap-3 text-gray-700">
-                          <svg
-                            className="w-5 h-5 text-rva-copper flex-shrink-0 mt-0.5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* Sidebar */}
-            <div className="lg:col-span-1">
-              {/* Booking CTA */}
-              <div className="bg-rva-forest rounded-2xl p-8 text-white mb-8 sticky top-8">
-                <h3 className="font-playfair text-2xl font-bold mb-2">Book This Adventure</h3>
-                <p className="text-white/75 text-sm mb-6">
-                  Ready to experience {adventure.name.toLowerCase()} in the Roaring Fork Valley?
-                  Get in touch to check availability.
-                </p>
-                <Link
-                  href="/contact"
-                  className="block bg-rva-copper hover:bg-rva-copper-light text-white text-center px-6 py-3.5 rounded-full font-semibold transition-all hover:shadow-lg w-full mb-4"
-                >
-                  Request Booking
-                </Link>
-                <a
-                  href="tel:+19704563666"
-                  className="block border-2 border-white/30 hover:border-white text-white text-center px-6 py-3 rounded-full font-medium transition-all w-full"
-                >
-                  Call 970-456-3666
-                </a>
-                <div className="mt-6 pt-6 border-t border-white/20 space-y-3 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-white/60">Duration</span>
-                    <span className="font-medium">{adventure.duration}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-white/60">Difficulty</span>
-                    <span className="font-medium">{adventure.difficulty}</span>
-                  </div>
-                  {groupSize ? (
-                    <div className="flex justify-between">
-                      <span className="text-white/60">Group Size</span>
-                      <span className="font-medium">{groupSize}</span>
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-
-              {/* Related Adventures */}
-              {relatedAdventures.length > 0 && (
-                <div>
-                  <h3 className="font-playfair text-xl text-rva-forest font-semibold mb-4">
-                    More Adventures
-                  </h3>
-                  <div className="space-y-4">
-                    {relatedAdventures.map((related) => {
-                      const relatedVisual = adventurePublicImage(related)
-                      return (
-                      <Link
-                        key={related.id}
-                        href={adventurePublicHref(related)}
-                        className="group flex gap-4 bg-white rounded-xl p-3 shadow-sm hover:shadow-md transition-all"
-                      >
-                        <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
-                          <Image
-                            src={relatedVisual.src}
-                            alt={
-                              relatedVisual.alt ||
-                              (relatedVisual.src.endsWith('/paddle-boarding.jpg')
-                                ? PADDLE_PHOTO_ALT
-                                : related.name)
-                            }
-                            fill
-                            className="object-cover group-hover:scale-110 transition-transform duration-500"
-                            style={
-                              relatedVisual.objectPosition
-                                ? { objectPosition: relatedVisual.objectPosition }
-                                : undefined
-                            }
-                            unoptimized
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-playfair text-rva-forest font-semibold group-hover:text-rva-copper transition-colors">
-                            {related.name}
-                          </h4>
-                          <p className="text-gray-500 text-xs mt-1">{related.duration}</p>
-                        </div>
-                      </Link>
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   )
 }

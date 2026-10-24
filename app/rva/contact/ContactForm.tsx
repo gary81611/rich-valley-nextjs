@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import RvaButton from '@/components/rva/Button'
 
 const serviceOptions = [
   'Fly Fishing',
@@ -83,7 +84,7 @@ export default function ContactForm() {
             required
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rva-copper focus:ring-2 focus:ring-rva-copper/20 outline-none transition-all text-gray-800"
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rva-copper-700 focus:ring-2 focus:ring-rva-copper-700/20 outline-none transition-all text-gray-800"
             placeholder="Your name"
           />
         </div>
@@ -98,7 +99,7 @@ export default function ContactForm() {
             required
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rva-copper focus:ring-2 focus:ring-rva-copper/20 outline-none transition-all text-gray-800"
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rva-copper-700 focus:ring-2 focus:ring-rva-copper-700/20 outline-none transition-all text-gray-800"
             placeholder="your@email.com"
           />
         </div>
@@ -115,7 +116,7 @@ export default function ContactForm() {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rva-copper focus:ring-2 focus:ring-rva-copper/20 outline-none transition-all text-gray-800"
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rva-copper-700 focus:ring-2 focus:ring-rva-copper-700/20 outline-none transition-all text-gray-800"
             placeholder="(555) 123-4567"
           />
         </div>
@@ -129,7 +130,7 @@ export default function ContactForm() {
             required
             value={formData.service}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rva-copper focus:ring-2 focus:ring-rva-copper/20 outline-none transition-all text-gray-800 bg-white"
+            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rva-copper-700 focus:ring-2 focus:ring-rva-copper-700/20 outline-none transition-all text-gray-800 bg-white"
           >
             <option value="">Select an adventure...</option>
             {serviceOptions.map((opt) => (
@@ -151,7 +152,7 @@ export default function ContactForm() {
           name="preferredDate"
           value={formData.preferredDate}
           onChange={handleChange}
-          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rva-copper focus:ring-2 focus:ring-rva-copper/20 outline-none transition-all text-gray-800"
+          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rva-copper-700 focus:ring-2 focus:ring-rva-copper-700/20 outline-none transition-all text-gray-800"
         />
       </div>
 
@@ -165,7 +166,7 @@ export default function ContactForm() {
           rows={4}
           value={formData.details}
           onChange={handleChange}
-          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rva-copper focus:ring-2 focus:ring-rva-copper/20 outline-none transition-all text-gray-800 resize-none"
+          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rva-copper-700 focus:ring-2 focus:ring-rva-copper-700/20 outline-none transition-all text-gray-800 resize-none"
           placeholder="Tell us about your group, experience level, any special requests..."
         />
       </div>
@@ -176,13 +177,9 @@ export default function ContactForm() {
         </div>
       )}
 
-      <button
-        type="submit"
-        disabled={status === 'sending'}
-        className="w-full bg-rva-copper hover:bg-rva-copper-light disabled:opacity-50 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-lg"
-      >
+      <RvaButton type="submit" disabled={status === 'sending'} size="lg" className="w-full">
         {status === 'sending' ? 'Sending...' : 'Send Message'}
-      </button>
+      </RvaButton>
     </form>
   )
 }

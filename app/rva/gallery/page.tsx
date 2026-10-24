@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
 import type { GalleryImage } from '@/lib/types'
+import RvaButton from '@/components/rva/Button'
 
 interface GalleryItem {
   url: string
@@ -121,14 +122,11 @@ export default function GalleryPage() {
             Ready to Make Your Own Memories?
           </h2>
           <p className="text-white/75 text-lg mb-8 max-w-2xl mx-auto">
-            Book an adventure and we&apos;ll capture the moments for you.
+            Check availability and we&apos;ll capture the moments for you.
           </p>
-          <Link
-            href="/contact"
-            className="bg-rva-copper hover:bg-rva-copper-light text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block"
-          >
-            Book an Adventure
-          </Link>
+          <RvaButton href="/contact" size="lg" tone="on-dark">
+            Check availability
+          </RvaButton>
         </div>
       </section>
     </div>

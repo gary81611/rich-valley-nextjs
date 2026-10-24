@@ -29,7 +29,7 @@ export interface ServiceContent {
   lead?: ServiceLead
   /** Optional reference list (e.g. guided hiking page) */
   popular_hikes?: PopularHike[]
-  h2_sections?: { title: string; content: string; id?: string; link?: { href: string; label: string } }[]
+  h2_sections?: { title: string; content: string; id?: string; link?: { href: string; label: string }; image?: string; imageAlt?: string }[]
   features?: { title: string; description: string }[]
   faqs?: { question: string; answer: string }[]
   cta_phone?: string

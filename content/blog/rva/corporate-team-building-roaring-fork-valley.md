@@ -15,7 +15,7 @@ That's what Rich Valley Adventures builds for corporate groups. Not team buildin
 
 ## Why the Roaring Fork Valley for a Corporate Retreat?
 
-Aspen and the surrounding valley have a unique combination of assets that most corporate retreat destinations don't offer simultaneously.
+Aspen and the surrounding valley combine guided fishing, hiking, and time on the river in the same day.
 
 **Accessibility:** ASE (Aspen/Pitkin County Airport) has direct flights from Los Angeles, San Francisco, Dallas, New York, Chicago, Houston, and other major cities. For groups driving from Denver, the 4-hour drive over Independence Pass is itself a memorable experience.
 
@@ -82,7 +82,7 @@ Rich Valley Adventures has been building those stories for corporate groups sinc
 ## Frequently Asked Questions
 
 **What is the best team building activity in Aspen for corporate groups?**
-It depends on the group's culture and goals. For groups that want the deepest shared challenge, guided fly fishing is uniquely effective at creating collaboration across hierarchies. For high-energy teams, mountain biking or guided hiking produces the most physical engagement. For mixed groups with varying fitness levels, a scenic tour with facilitated discussion is consistently excellent.
+It depends on the group's culture and goals. For groups that want a shared challenge, guided fly fishing is one way people work together across the group. For high-energy teams, mountain biking or guided hiking produces the most physical engagement. For mixed groups with varying fitness levels, a scenic tour with facilitated discussion is consistently excellent.
 
 **How large of a corporate group can Rich Valley Adventures accommodate?**
 We regularly run programs for groups of 4–20 with single-guide trips, and can coordinate multi-guide, multi-activity programs for groups of up to 100+. Large group programs require advance planning and coordination — contact us at least 4–6 months in advance for groups over 30.

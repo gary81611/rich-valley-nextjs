@@ -60,7 +60,7 @@ export default function FaqPageTemplate({ site, title, content }: Props) {
       </section>
 
       {/* CTA */}
-      <section className={`py-16 px-6 text-center ${rva ? 'bg-rva-copper text-white' : 'bg-alp-gold text-alp-navy-deep'}`}>
+      <section className={`py-16 px-6 text-center ${rva ? 'bg-rva-copper-700 text-white' : 'bg-alp-gold text-alp-navy-deep'}`}>
         <div className="max-w-xl mx-auto">
           <h2 className="font-playfair text-3xl font-bold mb-4">{content.cta_text || 'Still have questions?'}</h2>
           <p className="mb-8 opacity-90">Call us — we're happy to help you plan the perfect experience.</p>

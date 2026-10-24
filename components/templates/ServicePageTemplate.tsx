@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import type { ServiceContent, SiteId } from '@/lib/pages'
+import { isPortraitAdventureImage } from '@/lib/rva-adventure-public'
+import RvaButton, { RVA_BOOKING_LABEL, RVA_PHONE_LABEL } from '@/components/rva/Button'
 
 interface Props {
   site: SiteId
@@ -34,17 +36,23 @@ export default function ServicePageTemplate({
   const rva = isRva(site)
   const phone = content.cta_phone || (rva ? '(970) 456-3666' : '(970) 456-3666')
   const linkClass = rva
-    ? 'text-rva-copper font-semibold hover:text-rva-forest'
+    ? 'text-rva-copper-700 font-semibold hover:text-rva-forest'
     : 'text-alp-gold font-semibold hover:text-alp-navy'
+  const portraitHero = rva && !!heroImage && isPortraitAdventureImage(heroImage)
+  const rvaHeroClass = heroImage
+    ? `relative h-[70svh] md:h-[560px] flex items-end overflow-hidden text-rva-cream ${portraitHero ? 'bg-rva-forest-dark' : ''}`
+    : 'relative h-[280px] flex items-center justify-center text-center px-6 bg-rva-forest text-rva-cream'
 
   return (
     <div className={rva ? 'font-inter text-rva-forest' : 'font-inter text-alp-navy'}>
-      {/* Hero */}
+      {/* Hero. RVA photo heroes share one height. Portraits letterbox; AAL markup stays. */}
       <section
-        className={`relative text-center ${
-          heroImage
-            ? 'min-h-[28rem] flex items-end text-rva-cream'
-            : `py-20 px-6 ${rva ? 'bg-rva-forest text-rva-cream' : 'bg-alp-navy text-alp-pearl'}`
+        className={`text-center ${
+          rva
+            ? rvaHeroClass
+            : heroImage
+              ? 'relative min-h-[28rem] flex items-end text-rva-cream'
+              : 'py-20 px-6 bg-alp-navy text-alp-pearl'
         }`}
       >
         {heroImage && (
@@ -55,15 +63,15 @@ export default function ServicePageTemplate({
               fill
               priority
               unoptimized
-              className="object-cover"
+              className={portraitHero ? 'object-contain' : 'object-cover'}
               style={heroObjectPosition ? { objectPosition: heroObjectPosition } : undefined}
               sizes="100vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-rva-forest-dark/55 via-rva-forest-dark/45 to-rva-forest-dark/80" />
+            <div className={`absolute inset-0 ${portraitHero ? 'bg-gradient-to-b from-rva-forest-dark/35 via-transparent to-rva-forest-dark/75' : 'bg-gradient-to-b from-rva-forest-dark/55 via-rva-forest-dark/45 to-rva-forest-dark/80'}`} />
           </>
         )}
-        <div className={`max-w-3xl mx-auto ${heroImage ? 'relative z-10 px-6 py-20' : ''}`}>
-          <h1 className="font-playfair text-4xl md:text-5xl font-bold mb-4 leading-tight">{title}</h1>
+        <div className={`max-w-3xl mx-auto ${heroImage ? 'relative z-10 px-6 py-16' : ''}`}>
+          <h1 className={rva ? 'font-playfair font-semibold mb-4 leading-[1.1]' : 'font-playfair text-4xl md:text-5xl font-bold mb-4 leading-tight'}>{title}</h1>
           {content.hero_subtitle && (
             <p className="text-lg md:text-xl opacity-80 mt-2">{content.hero_subtitle}</p>
           )}
@@ -167,19 +175,37 @@ export default function ServicePageTemplate({
             <h2 className={`font-playfair text-3xl font-bold mb-10 text-center ${rva ? 'text-rva-forest' : 'text-alp-navy'}`}>
               What's Included
             </h2>
+            {rva ? (
+              <ul className="max-w-3xl mx-auto space-y-4">
+                {content.features.map((f, i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-rva-copper-700 text-white" aria-hidden>
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </span>
+                    <div>
+                      <h3 className="font-playfair text-lg font-semibold text-rva-forest">{f.title}</h3>
+                      {f.description ? <p className="text-[17px] leading-7 text-rva-forest/80">{f.description}</p> : null}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {content.features.map((f, i) => (
-                <div key={i} className={`p-6 rounded-xl border ${rva ? 'border-rva-sage/30 bg-rva-cream' : 'border-alp-slate/20 bg-alp-pearl'}`}>
-                  <div className={`w-8 h-8 rounded-full mb-3 flex items-center justify-center ${rva ? 'bg-rva-copper' : 'bg-alp-gold'}`}>
+                <div key={i} className="p-6 rounded-xl border border-alp-slate/20 bg-alp-pearl">
+                  <div className="w-8 h-8 rounded-full mb-3 flex items-center justify-center bg-alp-gold">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h3 className={`font-semibold text-base mb-1 ${rva ? 'text-rva-forest' : 'text-alp-navy'}`}>{f.title}</h3>
+                  <h3 className="font-semibold text-base mb-1 text-alp-navy">{f.title}</h3>
                   <p className="text-sm opacity-75 leading-relaxed">{f.description}</p>
                 </div>
               ))}
             </div>
+            )}
           </div>
         </section>
       )}
@@ -190,6 +216,11 @@ export default function ServicePageTemplate({
           <div className="max-w-3xl mx-auto space-y-12">
             {content.h2_sections.map((s, i) => (
               <div key={i}>
+                {s.image ? (
+                  <div className="relative mb-5 aspect-[4/3] overflow-hidden rounded-xl border border-rva-forest/15">
+                    <Image src={s.image} alt={s.imageAlt || s.title} fill className="object-cover" unoptimized sizes="(min-width: 768px) 720px, 100vw" />
+                  </div>
+                ) : null}
                 <h2 id={s.id} className={`font-playfair text-2xl md:text-3xl font-bold mb-4 ${rva ? 'text-rva-forest' : 'text-alp-navy'}`}>
                   {s.title}
                 </h2>
@@ -220,7 +251,7 @@ export default function ServicePageTemplate({
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-rva-copper font-medium hover:text-rva-forest underline-offset-2 hover:underline"
+                    className="text-rva-copper-700 font-medium hover:text-rva-forest underline-offset-2 hover:underline"
                   >
                     {l.label}
                   </Link>
@@ -274,8 +305,25 @@ export default function ServicePageTemplate({
         </section>
       )}
 
-      {/* CTA */}
-      <section className={`py-16 px-6 text-center ${rva ? 'bg-rva-copper text-white' : 'bg-alp-gold text-alp-navy-deep'}`}>
+      {/* CTA. RVA uses the forest band and copper-700 buttons. AAL stays on gold. */}
+      {rva ? (
+        <section className="py-16 px-6 text-center bg-rva-forest text-white">
+          <div className="max-w-xl mx-auto">
+            <h2 className="font-playfair text-3xl font-bold mb-4">{content.cta_text || 'Ready to book?'}</h2>
+            {content.cta_note && <p className="mb-4 text-base font-medium">{content.cta_note}</p>}
+            <p className="mb-8 text-white/80">Call or send a note to check availability.</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <RvaButton href={bookingHref || '/contact'} size="lg" tone="on-dark">
+                {RVA_BOOKING_LABEL}
+              </RvaButton>
+              <RvaButton href={`tel:${phone.replace(/\D/g, '')}`} variant="secondary" size="lg" tone="on-dark">
+                {RVA_PHONE_LABEL}
+              </RvaButton>
+            </div>
+          </div>
+        </section>
+      ) : (
+      <section className="py-16 px-6 text-center bg-alp-gold text-alp-navy-deep">
         <div className="max-w-xl mx-auto">
           <h2 className="font-playfair text-3xl font-bold mb-4">{content.cta_text || 'Ready to Book?'}</h2>
           {content.cta_note && <p className="mb-4 text-base font-medium">{content.cta_note}</p>}
@@ -288,7 +336,7 @@ export default function ServicePageTemplate({
             {bookingHref && (
               <Link
                 href={bookingHref}
-                className={`inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 ${rva ? 'bg-white text-rva-forest' : 'bg-alp-navy text-white'}`}
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 bg-alp-navy text-white"
               >
                 {bookingLabel || 'Book online'}
               </Link>
@@ -297,12 +345,8 @@ export default function ServicePageTemplate({
               href={`tel:${phone.replace(/\D/g, '')}`}
               className={`inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 ${
                 bookingHref
-                  ? rva
-                    ? 'border-2 border-white text-white'
-                    : 'border-2 border-alp-navy text-alp-navy-deep'
-                  : rva
-                    ? 'bg-white text-rva-forest'
-                    : 'bg-alp-navy text-white'
+                  ? 'border-2 border-alp-navy text-alp-navy-deep'
+                  : 'bg-alp-navy text-white'
               }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -313,6 +357,7 @@ export default function ServicePageTemplate({
           </div>
         </div>
       </section>
+      )}
     </div>
   )
 }

@@ -1,0 +1,62 @@
+/* RVA type scale. Cormorant stays the eyebrow face. AAL does not import this file. */
+.rva-site {
+  font-family: Inter, sans-serif;
+  font-size: 17px;
+  line-height: 28px;
+}
+
+.rva-site h1 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  line-height: 1.1;
+  font-size: 2.25rem;
+}
+
+@media (min-width: 768px) {
+  .rva-site h1 {
+    font-size: 3.25rem;
+  }
+}
+
+.rva-site h2,
+.rva-site h3 {
+  font-family: "Playfair Display", Georgia, serif;
+  line-height: 1.2;
+}
+
+.rva-site :focus-visible {
+  outline: 2px solid #e8c4a0;
+  outline-offset: 3px;
+}
+
+/* Header row: py-4 plus the logo box. Mobile logo is h-12; desktop logo is h-16.
+   Focus must clear that bar and the mobile sticky bar.
+   Override the site-wide smooth scroll so focus lands before it is measured. */
+html:has(.rva-site) {
+  --rva-header: 6.25rem;
+  scroll-behavior: auto;
+  scroll-padding-top: var(--rva-header);
+  scroll-padding-bottom: 7rem;
+}
+
+@media (min-width: 768px) {
+  html:has(.rva-site) {
+    --rva-header: 7.5rem;
+  }
+}
+
+/* Desktop bar at lg has no bottom sticky CTA. */
+@media (min-width: 1024px) {
+  html:has(.rva-site) {
+    scroll-padding-bottom: 0px;
+  }
+
+  .rva-site :is(a, button, input, select, textarea, summary, [tabindex]) {
+    scroll-margin-bottom: 0px;
+  }
+}
+
+.rva-site :is(a, button, input, select, textarea, summary, [tabindex]) {
+  scroll-margin-top: var(--rva-header, 6.25rem);
+  scroll-margin-bottom: 7rem;
+}

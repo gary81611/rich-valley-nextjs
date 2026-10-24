@@ -1,6 +1,6 @@
 import type { ServiceContent } from '@/lib/pages'
 
-export const flyFishingPageTitle = 'Guided Fly Fishing in Aspen & the Roaring Fork Valley'
+export const flyFishingPageTitle = 'Aspen Fly Fishing'
 
 export const KIDS_FAMILY_FISHING =
   'Kids ages 3 and up can fish. Waders are available for all children 3 and up, and adult sizes go up to size 15 feet. Kids on the full-day float are $175. At the Spring Creek Ranch private ranch and picnic, kids are $250 each (ages 3+). Guests and grandparents with limited mobility can be hosted at the ranch ponds.'
@@ -55,7 +55,7 @@ export const flyFishingServiceContent: ServiceContent = {
       },
     ],
   },
-  intro: `The Roaring Fork Valley is one of the most storied fly fishing destinations in the American West. We guide the Roaring Fork River, Frying Pan River, Colorado River near Glenwood Springs, the Gunnison River on float trips, and exclusive private water — including pond and alpine spring settings, high mountain lakes, and the Old Town Basalt Private Ranch on the Roaring Fork — for anglers who want uncrowded water and a tailored experience.
+  intro: `The Roaring Fork Valley is one of the most storied fly fishing destinations in the American West. We guide the Roaring Fork River, Frying Pan River, Colorado River near Glenwood Springs, the Gunnison River on float trips, and private water — including pond and alpine spring settings, high mountain lakes, and the Old Town Basalt Private Ranch on the Roaring Fork — for anglers who want uncrowded water and a tailored experience.
 
 Rich Valley Adventures has been guiding these waters since 2012. Our guides grew up fishing these drainages and know every productive run, seam, and riffle across seasons. Whether you're picking up a fly rod for the first time or you're a seasoned angler chasing your personal best, we tailor every trip to your experience level and goals.
 
@@ -72,7 +72,7 @@ We offer half-day and full-day guided trips from May through October on our wadi
 Brown trout averaging 14–18 inches are common, with fish over 20 inches taken regularly by our guides. Hatches of PMDs, caddis, green drakes, and Trico spinners make dry fly fishing thrilling from June through September. In the spring and fall, streamers and nymphs produce aggressive strikes from the river's biggest fish.`,
     },
     {
-      title: "The Frying Pan River — Colorado's Premier Tailwater Fishery",
+      title: 'The Frying Pan River — Tailwater below Ruedi Reservoir',
       content: `Just 15 miles from Basalt, the Frying Pan River below Ruedi Reservoir is widely considered one of the top tailwater fisheries in North America. The cold, nutrient-rich water released from the dam creates an almost year-round midge hatch and supports an extraordinary density of large wild trout — browns and rainbows averaging 16–22 inches.
 
 The Frying Pan demands technical precision: long leaders, small flies, and delicate presentations. Our guides excel at teaching the nuances of tailwater nymphing and the art of fishing size-22 midge clusters to selective risers. This river rewards patience and skill — and the payoff is the fish of a lifetime.`,
@@ -100,7 +100,7 @@ Float trips are the right tool here: volume, gradient, and depth favor a drift b
       title: 'Private Water Access — Exclusive Fishing Experiences',
       content: `Private water is how we deliver solitude, higher success rates for beginners and families, and access the public simply cannot replicate on its own. Options include a private pond fed by an alpine spring — ideal for kids, first-time anglers, and groups of up to twenty when you want guaranteed shots at cooperative fish without competing for elbow room along a public bank.
 
-We also offer exclusive river access on the Old Town Basalt Private Ranch on the Roaring Fork: a rare stretch where our guests fish water that is not open to casual walk-in traffic. For guests seeking alpine stillwater, we can arrange hike-in days at high mountain lakes where cutthroats and brookies live in postcard settings far from trailhead crowds. The through-line is simple: fewer people, less noise, more time with your guide, and a day shaped around outcomes you can feel — whether that is a child's first fish on a fly rod or a quiet, uncrowded afternoon on moving water.`,
+We also offer river access on the Old Town Basalt Private Ranch on the Roaring Fork: a rare stretch where our guests fish water that is not open to casual walk-in traffic. For guests seeking alpine stillwater, we can arrange hike-in days at high mountain lakes where cutthroats and brookies live in postcard settings far from trailhead crowds. The through-line is simple: fewer people, less noise, more time with your guide, and a day shaped around outcomes you can feel — whether that is a child's first fish on a fly rod or a quiet, uncrowded afternoon on moving water.`,
     },
   ],
   features: [

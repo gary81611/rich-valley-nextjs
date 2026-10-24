@@ -55,7 +55,7 @@ export default function LocationPageTemplate({ site, title, content, pageSlug }:
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {content.services_available.map((svc, i) => (
                 <div key={i} className={`flex items-center gap-3 p-4 rounded-lg ${rva ? 'bg-rva-cream border border-rva-sage/30' : 'bg-alp-pearl border border-alp-slate/20'}`}>
-                  <div className={`w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center ${rva ? 'bg-rva-copper' : 'bg-alp-gold'}`}>
+                  <div className={`w-6 h-6 rounded-full flex-shrink-0 flex items-center justify-center ${rva ? 'bg-rva-copper-700' : 'bg-alp-gold'}`}>
                     <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                     </svg>
@@ -78,7 +78,7 @@ export default function LocationPageTemplate({ site, title, content, pageSlug }:
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {content.local_tips.map((tip, i) => (
                 <div key={i} className={`p-6 rounded-xl ${rva ? 'bg-white border border-rva-sage/20' : 'bg-white border border-alp-slate/15'}`}>
-                  <h3 className={`font-semibold text-base mb-2 ${rva ? 'text-rva-copper' : 'text-alp-gold'}`}>{tip.title}</h3>
+                  <h3 className={`font-semibold text-base mb-2 ${rva ? 'text-rva-copper-700' : 'text-alp-gold'}`}>{tip.title}</h3>
                   <p className="text-sm leading-relaxed opacity-80">{tip.description}</p>
                 </div>
               ))}
@@ -138,7 +138,7 @@ export default function LocationPageTemplate({ site, title, content, pageSlug }:
       )}
 
       {/* CTA */}
-      <section className={`py-16 px-6 text-center ${rva ? 'bg-rva-copper text-white' : 'bg-alp-gold text-alp-navy-deep'}`}>
+      <section className={`py-16 px-6 text-center ${rva ? 'bg-rva-copper-700 text-white' : 'bg-alp-gold text-alp-navy-deep'}`}>
         <div className="max-w-xl mx-auto">
           <h2 className="font-playfair text-3xl font-bold mb-4">{content.cta_text || 'Ready to Book?'}</h2>
           <p className="mb-8 opacity-90">Get in touch to plan your perfect experience.</p>

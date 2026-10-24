@@ -85,7 +85,7 @@ export default function PrivateRanchFishingPage() {
       '@type': 'TouristTrip',
       name: privateRanchFishingPageTitle,
       description:
-        'The original private ranch fishing experience in the valley. Private ranch and picnic at Spring Creek Ranch in Carbondale, Colorado: ponds, creeks, and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat, and brook trout from 12 to 30 inches.',
+        'Private ranch fly fishing at Spring Creek Ranch, Carbondale. Private ranch and picnic: ponds, creeks, and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat, and brook trout from 12 to 30 inches.',
       url: pageUrl,
       image: ogImageAbsolute,
       touristType: 'Families',

@@ -6,6 +6,7 @@ import { RVA_GLOBAL_PILLAR_BLOG_LINKS } from '@/lib/rva-blog-pillars'
 import { blogImageSrcForNext, filterPublicBlogPosts } from '@/lib/blog-visibility'
 import { seoAlt } from '@/lib/seo/alt-text'
 import type { BlogPost } from '@/lib/types'
+import RvaButton from '@/components/rva/Button'
 
 export const dynamic = 'force-dynamic'
 
@@ -78,15 +79,15 @@ export default async function RVABlogPage() {
         <div className="max-w-4xl mx-auto px-6 text-center text-sm text-rva-forest/85 leading-relaxed">
           <p className="mb-3">
             <span className="font-semibold text-rva-forest">Book &amp; plan: </span>
-            <Link href="/adventures" className="text-rva-copper hover:underline font-medium">
+            <Link href="/adventures" className="text-rva-copper-700 hover:underline font-medium">
               Guided adventures
             </Link>
             {' · '}
-            <Link href="/contact" className="text-rva-copper hover:underline font-medium">
+            <Link href="/contact" className="text-rva-copper-700 hover:underline font-medium">
               Contact &amp; booking
             </Link>
             {' · '}
-            <Link href="/service-areas" className="text-rva-copper hover:underline font-medium">
+            <Link href="/service-areas" className="text-rva-copper-700 hover:underline font-medium">
               Service areas
             </Link>
           </p>
@@ -95,7 +96,7 @@ export default async function RVABlogPage() {
             {RVA_GLOBAL_PILLAR_BLOG_LINKS.map((l, i) => (
               <span key={l.href}>
                 {i > 0 ? ' · ' : null}
-                <Link href={l.href} className="text-rva-copper hover:underline font-medium">
+                <Link href={l.href} className="text-rva-copper-700 hover:underline font-medium">
                   {l.label}
                 </Link>
               </span>
@@ -105,7 +106,7 @@ export default async function RVABlogPage() {
       </section>
 
       {/* Posts grid */}
-      <main className="max-w-5xl mx-auto px-6 py-16" data-blog-visibility="published-at">
+      <section className="max-w-5xl mx-auto px-6 py-16" data-blog-visibility="published-at">
         {posts.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-slate-400 text-lg">No posts published yet. Check back soon!</p>
@@ -134,12 +135,12 @@ export default async function RVABlogPage() {
                     </div>
                   )}
                   <div className="p-6">
-                    <div className="text-xs text-rva-copper font-semibold uppercase tracking-wide mb-2">
+                    <div className="text-xs text-rva-copper-700 font-semibold uppercase tracking-wide mb-2">
                       {post.published_at
                         ? new Date(post.published_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
                         : ''}
                     </div>
-                    <h2 className="font-playfair text-lg font-bold text-rva-forest leading-snug mb-3 group-hover:text-rva-copper transition-colors">
+                    <h2 className="font-playfair text-lg font-bold text-rva-forest leading-snug mb-3 group-hover:text-rva-copper-700 transition-colors">
                       {post.title}
                     </h2>
                     {post.meta_description && (
@@ -147,7 +148,7 @@ export default async function RVABlogPage() {
                         {post.meta_description}
                       </p>
                     )}
-                    <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-rva-copper group-hover:gap-2 transition-all">
+                    <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-rva-copper-700 group-hover:gap-2 transition-all">
                       Read More
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -160,7 +161,7 @@ export default async function RVABlogPage() {
             })}
           </div>
         )}
-      </main>
+      </section>
 
       {/* CTA */}
       <div className="bg-rva-forest-dark py-16 px-6">
@@ -171,18 +172,12 @@ export default async function RVABlogPage() {
             Small groups, expert guides, all gear included.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link
-              href="/adventures"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-rva-copper text-white font-semibold rounded-full hover:bg-rva-copper-light transition-colors"
-            >
+            <RvaButton href="/adventures" size="md" tone="on-dark">
               Browse adventures
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-white/10 text-white font-semibold rounded-full border border-white/30 hover:bg-white/20 transition-colors"
-            >
+            </RvaButton>
+            <RvaButton href="/contact" variant="secondary" size="md" tone="on-dark">
               Contact us
-            </Link>
+            </RvaButton>
           </div>
         </div>
       </div>

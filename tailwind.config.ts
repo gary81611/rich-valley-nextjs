@@ -8,8 +8,13 @@ const config: Config = {
         rva: {
           forest: '#2C3E2D',
           'forest-dark': '#1a2a1b',
-          copper: '#B87333',
+          /** Same as copper-700. The old #B87333 fails WCAG AA on cream. */
+          copper: '#9A5B24',
           'copper-light': '#d4956a',
+          /** Text and filled buttons on cream. The old #B87333 fails WCAG AA at body size. */
+          'copper-300': '#E8C4A0',
+          'copper-700': '#9A5B24',
+          'copper-800': '#7A481C',
           cream: '#F7F4EF',
           'cream-dark': '#E8E2D8',
           sage: '#8BA888',

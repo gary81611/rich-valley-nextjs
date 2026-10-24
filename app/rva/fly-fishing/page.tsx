@@ -12,14 +12,14 @@ export const dynamic = 'force-dynamic'
 const pageUrl = 'https://www.richvalleyadventures.com/fly-fishing'
 
 export const metadata: Metadata = {
-  title: 'Guided Fly Fishing Aspen CO | Roaring Fork River | Rich Valley Adventures',
+  title: 'Aspen Fly Fishing Guides | Roaring Fork, Fryingpan & Private Water | Rich Valley Adventures',
   description:
     'Expert-guided fly fishing on the Roaring Fork, Frying Pan, Colorado, and Gunnison Rivers, plus private water near Aspen, CO. All skill levels. Equipment provided.',
   alternates: { canonical: pageUrl },
   openGraph: {
-    title: 'Guided Fly Fishing in Aspen | Rich Valley Adventures',
+    title: 'Aspen Fly Fishing Guides | Roaring Fork, Fryingpan & Private Water | Rich Valley Adventures',
     description:
-      'Gold Medal waters, Gunnison River floats, and exclusive private water — guided by local experts since 2012.',
+      'Gold Medal waters, Gunnison River floats, and private water — guided by local experts since 2012.',
     type: 'website',
     url: pageUrl,
   },

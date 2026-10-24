@@ -9,7 +9,7 @@ brand: "rva"
 
 If you've ever stood in a cold mountain river with a fly rod in your hand while an eagle circles overhead, you already know why people come back to Colorado year after year. If you haven't had that experience yet — welcome. You're in for something special.
 
-The Roaring Fork Valley is one of the premier fly fishing destinations in North America. The Roaring Fork River, the Crystal River, and the Fryingpan River (just up the road near Basalt) all hold trophy-class trout, and the scenery surrounding every one of those casts is jaw-dropping. After 14 years of guiding here, the team at Rich Valley Adventures still gets excited every time we step into the water. This is our home, and we love sharing it.
+The Roaring Fork Valley is home to Gold Medal fly fishing water. The Roaring Fork River, the Crystal River, and the Fryingpan River (just up the road near Basalt) all hold trophy-class trout, and the scenery surrounding every one of those casts is jaw-dropping. We've been guiding here since 2012, and the team at Rich Valley Adventures still gets excited every time we step into the water. This is our home, and we love sharing it.
 
 ## Why the Roaring Fork Valley is Special
 

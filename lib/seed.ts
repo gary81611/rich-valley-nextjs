@@ -22,7 +22,7 @@ export async function seedAllTables(supabase: SupabaseClient) {
         email: rvaData.email, address: 'Aspen, Colorado 81611', logo_url: rvaData.logo,
         social_links: { Facebook: rvaData.social.facebook, Instagram: rvaData.social.instagram },
         colors: { primary: '#C17A3A', secondary: '#2D3B2D', accent: '#D4A96A', background: '#F5F0EB' },
-        stats: [{ value: '14+', label: 'Years of Experience' }, { value: '3,000+', label: 'Adventures Led' }, { value: '4.9', label: 'Average Rating' }],
+        stats: [{ value: '2012', label: 'Guiding since' }, { value: '3,000+', label: 'Adventures Led' }, { value: '4.9', label: 'Average Rating' }],
       },
       {
         site_key: 'alpenglow', brand_name: alpenglowData.name, tagline: alpenglowData.tagline, phone: alpenglowData.phone,

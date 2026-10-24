@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { seoAlt } from '@/lib/seo/alt-text'
 import { correctAalFleetText } from '@/lib/aal-public-copy'
+import RvaButton, { RVA_PHONE_HREF, RVA_PHONE_LABEL, RVA_BOOKING_LABEL } from '@/components/rva/Button'
 
 export const dynamic = 'force-dynamic'
 
@@ -20,9 +21,9 @@ async function getFleetVehicles() {
   const supabase = await createServerSupabaseClient()
   const { data, error } = await supabase
     .from('fleet_vehicles')
-    .select('id, name, image, passengers, features, description, vehicle_type')
+    .select('id, name, type, capacity, description, image_url')
     .eq('is_active', true)
-    .order('display_order', { ascending: true })
+    .order('name', { ascending: true })
 
   if (error) {
     console.error('Error fetching fleet vehicles:', error)
@@ -80,9 +81,10 @@ export default async function FleetPage() {
                 className="bg-white rounded-3xl shadow-lg overflow-hidden border border-rva-cream-dark"
               >
                 <div className={`grid lg:grid-cols-2 ${i % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''}`}>
+                  {vehicle.image_url ? (
                   <div className="relative h-72 sm:h-96 lg:h-auto min-h-[280px] bg-rva-forest-dark">
                     <Image
-                      src={vehicle.image}
+                      src={vehicle.image_url}
                       alt={seoAlt({
                         subject: vehicle.name,
                         location: 'Aspen, Colorado',
@@ -94,35 +96,27 @@ export default async function FleetPage() {
                       unoptimized
                     />
                   </div>
+                  ) : null}
                   <div className="p-8 sm:p-12 flex flex-col justify-center">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="bg-rva-copper/10 text-rva-copper text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                        {vehicle.vehicle_type ?? (i === 0 ? 'SUV' : 'Van')}
+                      {vehicle.type ? (
+                      <span className="bg-rva-copper-700/10 text-rva-copper-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                        {vehicle.type}
                       </span>
-                      <span className="text-gray-500 text-sm">{correctAalFleetText(String(vehicle.passengers ?? ''))}</span>
+                      ) : null}
+                      {vehicle.capacity ? (
+                      <span className="text-gray-500 text-sm">{correctAalFleetText(`${vehicle.capacity} passengers`)}</span>
+                      ) : null}
                     </div>
                     <h2 className="font-playfair text-3xl sm:text-4xl font-bold text-rva-forest mb-4">
-                      {vehicle.name}
+                      {correctAalFleetText(vehicle.name)}
                     </h2>
                     <p className="text-gray-600 leading-relaxed mb-6">
-                      {vehicle.description ? correctAalFleetText(vehicle.description) : vehicle.description}
+                      {vehicle.description ? correctAalFleetText(vehicle.description) : null}
                     </p>
-                    <ul className="grid grid-cols-2 gap-3 mb-8">
-                      {(vehicle.features as string[])?.map((feature) => (
-                        <li key={feature} className="flex items-center gap-2 text-sm text-rva-forest">
-                          <svg className="w-4 h-4 text-rva-copper flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    <Link
-                      href="/contact"
-                      className="inline-block bg-rva-copper hover:bg-rva-copper-light text-white font-bold px-8 py-3 rounded-full transition-colors text-center w-fit"
-                    >
-                      Book a Ride
-                    </Link>
+                    <RvaButton href="/contact" className="w-fit">
+                      {RVA_BOOKING_LABEL}
+                    </RvaButton>
                   </div>
                 </div>
               </div>
@@ -142,18 +136,12 @@ export default async function FleetPage() {
             Aspen Alpenglow Limousine has you covered.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/contact"
-              className="bg-rva-copper hover:bg-rva-copper-light text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block"
-            >
-              Get a Quote
-            </Link>
-            <a
-              href="tel:+19704563666"
-              className="border-2 border-white text-white hover:bg-white hover:text-rva-forest px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block"
-            >
-              Call 970-456-3666
-            </a>
+            <RvaButton href="/contact" size="lg" tone="on-dark">
+              {RVA_BOOKING_LABEL}
+            </RvaButton>
+            <RvaButton href={RVA_PHONE_HREF} variant="secondary" size="lg" tone="on-dark">
+              {RVA_PHONE_LABEL}
+            </RvaButton>
           </div>
         </div>
       </section>

@@ -11,6 +11,7 @@ import { seoAlt } from '@/lib/seo/alt-text'
 import type { BlogPost } from '@/lib/types'
 import { withPrivateRanchFishingLink, withYearRoundFishingNote } from '@/lib/rva-fly-fishing-content'
 import { blogImageSrcForNext, isBlogPostPubliclyVisible } from '@/lib/blog-visibility'
+import RvaButton from '@/components/rva/Button'
 
 export const dynamic = 'force-dynamic'
 
@@ -74,7 +75,7 @@ function renderInline(text: string): React.ReactNode[] {
       const href = link[2]
       if (href.startsWith('/') && !href.startsWith('//')) {
         return (
-          <Link key={i} href={href} className="text-rva-copper hover:text-rva-forest font-medium underline">
+          <Link key={i} href={href} className="text-rva-copper-700 hover:text-rva-forest font-medium underline">
             {link[1]}
           </Link>
         )
@@ -85,10 +86,11 @@ function renderInline(text: string): React.ReactNode[] {
   })
 }
 
-function renderMarkdown(content: string): React.ReactNode {
+function renderMarkdown(content: string, pageTitle?: string): React.ReactNode {
   const lines = content.split('\n')
   const elements: React.ReactNode[] = []
   let i = 0
+  const normalizedTitle = (pageTitle || '').replace(/\s+/g, ' ').trim().toLowerCase()
 
   while (i < lines.length) {
     const line = lines[i]
@@ -96,19 +98,23 @@ function renderMarkdown(content: string): React.ReactNode {
     if (line.startsWith('## ')) {
       elements.push(
         <h2 key={i} className="font-playfair text-2xl font-bold text-rva-forest mt-10 mb-4">
-          {line.slice(3)}
+          {renderInline(line.slice(3))}
         </h2>
       )
     } else if (line.startsWith('# ')) {
-      elements.push(
-        <h1 key={i} className="font-playfair text-3xl font-bold text-rva-forest mt-8 mb-4">
-          {line.slice(2)}
-        </h1>
-      )
+      const heading = line.slice(2).trim()
+      const sameAsTitle = normalizedTitle.length > 0 && heading.replace(/\s+/g, ' ').toLowerCase() === normalizedTitle
+      if (!sameAsTitle) {
+        elements.push(
+          <h2 key={i} className="font-playfair text-2xl font-bold text-rva-forest mt-8 mb-4">
+            {renderInline(heading)}
+          </h2>
+        )
+      }
     } else if (line.startsWith('### ')) {
       elements.push(
         <h3 key={i} className="font-playfair text-xl font-semibold text-rva-forest mt-6 mb-3">
-          {line.slice(4)}
+          {renderInline(line.slice(4))}
         </h3>
       )
     } else if (line.startsWith('- ') || line.startsWith('* ')) {
@@ -310,7 +316,7 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
 
           {/* Article body */}
           <article className="bg-white rounded-2xl p-8 md:p-12 shadow-sm border border-rva-cream-dark">
-            {articleBody ? renderMarkdown(articleBody) : <p className="text-slate-400">Content coming soon.</p>}
+            {articleBody ? renderMarkdown(articleBody, post.title) : <p className="text-slate-400">This article has no body text yet.</p>}
 
             {/* FAQs inline in article */}
             {sanitizedFaqs.length > 0 && (
@@ -323,7 +329,7 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
                     <details key={i} className="group bg-rva-cream rounded-xl p-5">
                       <summary className="flex items-center justify-between cursor-pointer font-semibold text-rva-forest list-none">
                         <span>{faq.question}</span>
-                        <svg className="w-4 h-4 text-rva-copper flex-shrink-0 ml-3 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 text-rva-copper-700 flex-shrink-0 ml-3 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                       </summary>
@@ -346,7 +352,7 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
                     <li key={i}>
                       <Link
                         href={normalizeRvaLegacyPath(link.url)}
-                        className="flex items-center gap-2 text-sm text-rva-copper hover:text-rva-forest font-medium transition-colors group"
+                        className="flex items-center gap-2 text-sm text-rva-copper-700 hover:text-rva-forest font-medium transition-colors group"
                       >
                         <svg className="w-4 h-4 flex-shrink-0 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -367,18 +373,12 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
               </p>
               <p className="text-rva-copper-light font-semibold text-lg mb-4">970-456-3666</p>
               <div className="flex flex-col gap-2">
-                <Link
-                  href="/adventures"
-                  className="block text-center px-4 py-2.5 bg-rva-copper text-white text-sm font-semibold rounded-xl hover:bg-rva-copper-light transition-colors"
-                >
+                <RvaButton href="/adventures" size="md" tone="on-dark" className="w-full">
                   Browse guided adventures
-                </Link>
-                <Link
-                  href="/contact"
-                  className="block text-center px-4 py-2.5 bg-white/10 text-white text-sm font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/20"
-                >
+                </RvaButton>
+                <RvaButton href="/contact" variant="secondary" size="md" tone="on-dark" className="w-full">
                   Contact us to book
-                </Link>
+                </RvaButton>
               </div>
             </div>
           </aside>
@@ -389,7 +389,7 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
       <div className="max-w-5xl mx-auto px-6 pb-16">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-sm font-medium text-rva-copper hover:text-rva-forest transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-medium text-rva-copper-700 hover:text-rva-forest transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
