@@ -12,7 +12,7 @@ const RVA_URL = 'https://www.richvalleyadventures.com'
 const speakableSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'Rich Valley Adventures | Guided Outdoor Experiences in Aspen, CO',
+  name: 'Outdoor Adventures in Aspen, CO | Guided Fly Fishing, Hiking & More | Rich Valley Adventures',
   url: RVA_URL,
   speakable: {
     '@type': 'SpeakableSpecification',
@@ -21,8 +21,17 @@ const speakableSchema = {
 }
 
 export const metadata: Metadata = {
+  title: 'Outdoor Adventures in Aspen, CO | Guided Fly Fishing, Hiking & More | Rich Valley Adventures',
+  description:
+    'Rich Valley Adventures guides outdoor adventures in Aspen and the Roaring Fork Valley. Fly fishing, hiking, and more, since 2012.',
   alternates: {
     canonical: RVA_URL,
+  },
+  openGraph: {
+    title: 'Outdoor Adventures in Aspen, CO | Guided Fly Fishing, Hiking & More | Rich Valley Adventures',
+    description:
+      'Guided fly fishing, hiking, and more in Aspen and the Roaring Fork Valley. Since 2012.',
+    url: RVA_URL,
   },
 }
 

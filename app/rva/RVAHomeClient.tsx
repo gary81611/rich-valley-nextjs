@@ -4,6 +4,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
+import AdventureCard from '@/components/rva/AdventureCard'
+import RvaButton from '@/components/rva/Button'
+import { rvaPublicStats } from '@/lib/rva-public-claims'
 import { createClient } from '@/lib/supabase'
 import type { Adventure, Testimonial, GalleryImage } from '@/lib/types'
 import {
@@ -76,7 +79,7 @@ export default function RVAHomeClient({
   const [phone, setPhone] = useState('970-456-3666')
   const [phoneHref, setPhoneHref] = useState('tel:+19704563666')
   const [stats, setStats] = useState([
-    { value: '14+', label: 'Years of Experience' },
+    { value: '2012', label: 'Guiding since' },
     { value: '3,000+', label: 'Adventures Led' },
   ])
   const [conditionsPreview, setConditionsPreview] = useState<{ teaser: string; author?: string; date?: string } | null>(null)
@@ -121,9 +124,7 @@ export default function RVAHomeClient({
         setPhoneHref(`tel:+1${settingsRes.data.phone.replace(/\D/g, '')}`)
       }
       if (settingsRes.data?.settings?.stats) {
-        const published = (settingsRes.data.settings.stats as { value: string; label: string }[]).filter(
-          (stat) => !/rating/i.test(stat.label),
-        )
+        const published = rvaPublicStats(settingsRes.data.settings.stats as { value: string; label: string }[])
         if (published.length > 0) setStats(published)
       }
     }
@@ -152,23 +153,23 @@ export default function RVAHomeClient({
           <div className="absolute inset-0 bg-gradient-to-b from-rva-forest-dark/70 via-rva-forest-dark/40 to-rva-forest-dark/80" />
         </div>
         <div className="relative z-10 text-center text-white px-6 max-w-5xl mx-auto pb-28">
-          <p className="font-cormorant text-xl md:text-2xl text-rva-sage tracking-[0.3em] uppercase mb-6">
+          <p className="font-cormorant text-sm md:text-lg text-rva-sage tracking-[0.14em] uppercase mb-6 whitespace-nowrap">
             Aspen · Roaring Fork Valley
           </p>
-          <h1 className="rva-speak-hero font-playfair text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
-            Guided Outdoor Adventures in Aspen, CO{' '}
+          <h1 className="rva-speak-hero font-playfair mb-8">
+            Outdoor Adventures in Aspen{' '}
             <span className="text-rva-copper-light italic">&amp; the Roaring Fork Valley</span>
           </h1>
           <p className="rva-speak-hero-intro text-xl md:text-2xl text-white/85 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
             Rich Valley Adventures is Aspen’s outdoor guide company — expert-led fly fishing, hiking, mountain biking, and elevated camping. Paddleboarding is a rental from $100, not a guided trip. Full-day float trips start at $1,400 for 2 people. Since 2012.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="#adventures" className="bg-rva-copper hover:bg-rva-copper-light text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block">
+            <RvaButton href="#adventures" size="lg" tone="on-dark">
               Explore Adventures
-            </a>
-            <a href="#contact" className="border-2 border-white text-white hover:bg-white hover:text-rva-forest px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
-              Book Your Trip
-            </a>
+            </RvaButton>
+            <RvaButton href="/contact" variant="secondary" size="lg" tone="on-dark">
+              Check availability
+            </RvaButton>
           </div>
           <p className="mt-10 text-white/70 text-sm md:text-base max-w-xl mx-auto">
             Need a ride? Ground transportation via our sister company{' '}
@@ -179,7 +180,7 @@ export default function RVAHomeClient({
           </p>
         </div>
         {/* Stats bar */}
-        <div className="absolute bottom-0 left-0 right-0 bg-rva-forest/90 backdrop-blur-sm border-t border-white/10">
+        <div className="absolute bottom-20 md:bottom-0 left-0 right-0 bg-rva-forest/90 backdrop-blur-sm border-t border-white/10">
           <div className={`max-w-4xl mx-auto px-6 py-5 grid gap-4 text-center ${stats.length >= 3 ? 'grid-cols-3' : 'grid-cols-2'}`}>
             {stats.map((stat) => (
               <div key={stat.label}>
@@ -211,17 +212,12 @@ export default function RVAHomeClient({
           <div>
             <p className="font-cormorant text-rva-copper text-sm tracking-[0.25em] uppercase mb-3">Signature trip</p>
             <h2 className="font-playfair text-3xl md:text-4xl text-rva-forest font-bold mb-4 leading-tight">
-              The original private ranch fishing experience in the valley
+              Private ranch fly fishing at Spring Creek Ranch, Carbondale
             </h2>
             <p className="text-rva-forest/80 text-base md:text-lg leading-relaxed mb-6">
               Spring Creek Ranch in Carbondale is a famous historic ranch owned by the same family since the late 1800s. The private ranch and picnic package is from $800 per adult and $250 per child (ages 3+), on ponds, creeks, and a private section of the Roaring Fork River.
             </p>
-            <Link
-              href="/private-ranch-fishing"
-              className="inline-flex items-center justify-center bg-rva-copper hover:bg-rva-copper-light text-white font-semibold px-6 py-3 rounded-full transition-colors"
-            >
-              Private ranch fishing
-            </Link>
+            <RvaButton href="/private-ranch-fishing">Private ranch fishing</RvaButton>
           </div>
         </div>
       </section>
@@ -239,55 +235,34 @@ export default function RVAHomeClient({
                   : 'Fishing report updated weekly by our guides. Check current conditions →'}
             </p>
           </div>
-          <Link
-            href="/conditions"
-            className="inline-flex items-center justify-center gap-2 shrink-0 bg-rva-copper hover:bg-rva-copper-light text-white font-semibold px-6 py-3 rounded-full transition-colors text-sm md:text-base"
-          >
+          <RvaButton href="/conditions" tone="on-dark" className="shrink-0">
             View Full Conditions Report
-            <span aria-hidden>→</span>
-          </Link>
+          </RvaButton>
         </div>
       </section>
 
       {/* ADVENTURES */}
-      <section id="adventures" className="py-16 bg-rva-forest-dark">
+      <section id="adventures" className="py-16 bg-rva-cream">
         <div className="max-w-7xl mx-auto px-6">
           <ScrollReveal className="text-center mb-10">
-            <p className="font-cormorant text-rva-copper-light text-lg tracking-widest uppercase mb-4">What We Offer</p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold mb-6">Our Adventures</h2>
-            <p className="rva-speak-services-intro text-white/70 text-xl max-w-2xl mx-auto">
+            <p className="font-cormorant text-rva-copper-700 text-lg tracking-widest uppercase mb-4">What We Offer</p>
+            <h2 className="font-playfair text-4xl md:text-5xl text-rva-forest font-bold mb-6">Our Adventures</h2>
+            <p className="rva-speak-services-intro text-rva-forest/80 text-xl max-w-2xl mx-auto">
               Guided trips and rentals across the Roaring Fork Valley, fully equipped.
             </p>
             <div className="mt-8 max-w-3xl mx-auto text-left bg-rva-cream text-rva-forest rounded-2xl p-6 md:p-8">
               <h3 className="font-playfair text-2xl md:text-3xl font-bold mb-3">Kids &amp; Family Fishing</h3>
               <p className="text-base md:text-lg leading-relaxed">{KIDS_FAMILY_FISHING}</p>
               <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
-                <Link href="/fly-fishing" className="inline-flex text-rva-copper font-semibold hover:text-rva-copper-light">
+                <Link href="/fly-fishing" className="inline-flex min-h-11 items-center text-rva-copper-700 font-semibold hover:underline">
                   Fly fishing trips
                 </Link>
-                <Link href="/private-ranch-fishing" className="inline-flex text-rva-copper font-semibold hover:text-rva-copper-light">
+                <Link href="/private-ranch-fishing" className="inline-flex min-h-11 items-center text-rva-copper-700 font-semibold hover:underline">
                   Private ranch fishing
                 </Link>
               </div>
             </div>
-            <ol className="mt-8 grid md:grid-cols-3 gap-6 text-left">
-              {FEATURED_TRIPS.map((trip, index) => (
-                <li key={trip.title} className="bg-rva-forest rounded-2xl border border-white/10 overflow-hidden">
-                  <div className="relative aspect-[4/3]">
-                    <Image src={trip.image} alt={trip.alt} fill className="object-cover" unoptimized />
-                  </div>
-                  <div className="p-6">
-                    <p className="text-rva-copper-light text-sm font-semibold mb-2">{index + 1}</p>
-                    <h3 className="font-playfair text-2xl text-white font-semibold mb-3">{trip.title}</h3>
-                    <p className="text-white/75 text-sm leading-relaxed mb-4">{trip.detail}</p>
-                    <Link href={trip.href} className="text-rva-copper-light text-sm font-semibold hover:text-rva-copper">
-                      Learn more
-                    </Link>
-                  </div>
-                </li>
-              ))}
-            </ol>
-            <div className="flex justify-center gap-3 mt-6">
+            <div className="flex justify-center gap-3 mt-8">
               {[
                 { label: 'All', value: null },
                 { label: 'Summer', value: 'summer' },
@@ -297,10 +272,10 @@ export default function RVAHomeClient({
                 <button
                   key={label}
                   onClick={() => setActiveSeason(value)}
-                  className={`text-xs px-4 py-1.5 rounded-full border transition-colors ${
+                  className={`min-h-11 px-4 rounded-full border text-sm font-medium transition-colors ${
                     activeSeason === value
-                      ? 'bg-rva-copper/20 text-rva-copper-light border-rva-copper/30'
-                      : 'bg-white/10 text-white/60 border-white/10 hover:bg-white/20 hover:text-white/90'
+                      ? 'bg-rva-copper-700 text-white border-rva-copper-700'
+                      : 'bg-white text-rva-forest border-rva-forest/20 hover:border-rva-copper-700'
                   }`}
                 >
                   {label}
@@ -308,54 +283,40 @@ export default function RVAHomeClient({
               ))}
             </div>
           </ScrollReveal>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {(activeSeason ? adventures.filter(a => a.season === activeSeason) : adventures).map((adventure, i) => (
-              <ScrollReveal key={adventure.title} delay={i * 80} className="group">
-                <div className="bg-rva-forest rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <Image
-                      src={adventure.image}
-                      alt={
-                        adventure.imageAlt ||
-                        (adventure.image === PADDLE_PHOTO
-                          ? PADDLE_PHOTO_ALT
-                          : seoAlt({
-                              subject: adventure.title,
-                              location: 'Aspen and the Roaring Fork Valley, Colorado',
-                              context: 'expert-guided outdoor adventure',
-                              brand: 'Rich Valley Adventures',
-                            }))
-                      }
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
-                      style={adventure.objectPosition ? { objectPosition: adventure.objectPosition } : undefined}
-                      loading="eager"
-                      unoptimized
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-rva-forest-dark/70 via-transparent to-transparent" />
-                    <div className="absolute top-4 left-4 flex gap-2">
-                      <span className="bg-rva-copper/90 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full font-medium">{adventure.duration}</span>
-                    </div>
-                    <div className="absolute bottom-4 right-4">
-                      <span className="bg-white/15 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full border border-white/20">{adventure.difficulty}</span>
-                    </div>
-                  </div>
-                  <div className="p-6 flex flex-col flex-1">
-                    <h3 className="font-playfair text-2xl text-rva-copper font-semibold mb-3">{adventure.title}</h3>
-                    {adventure.fromText ? (
-                      <p className="text-rva-copper-light text-sm font-semibold mb-3">{adventure.fromText}</p>
-                    ) : null}
-                    <p className="text-white/75 text-sm leading-relaxed flex-1">{adventure.description}</p>
-                    <Link
-                      href={adventure.href}
-                      className="mt-5 text-rva-copper-light text-sm font-semibold hover:text-rva-copper transition-colors flex items-center gap-2"
-                    >
-                      Learn more
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                    </Link>
-                  </div>
-                </div>
-              </ScrollReveal>
+          <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+            {(activeSeason ? [] : FEATURED_TRIPS).map((trip) => (
+              <AdventureCard
+                key={trip.href}
+                href={trip.href}
+                title={trip.title}
+                image={trip.image}
+                imageAlt={trip.alt}
+                excerpt={trip.detail}
+              />
+            ))}
+            {(activeSeason ? adventures.filter((a) => a.season === activeSeason) : adventures.filter((a) => !FEATURED_TRIPS.some((trip) => trip.href === a.href))).map((adventure) => (
+              <AdventureCard
+                key={adventure.href}
+                href={adventure.href}
+                title={adventure.title}
+                image={adventure.image}
+                imageAlt={
+                  adventure.imageAlt ||
+                  (adventure.image === PADDLE_PHOTO
+                    ? PADDLE_PHOTO_ALT
+                    : seoAlt({
+                        subject: adventure.title,
+                        location: 'Aspen and the Roaring Fork Valley, Colorado',
+                        context: 'expert-guided outdoor adventure',
+                        brand: 'Rich Valley Adventures',
+                      }))
+                }
+                objectPosition={adventure.objectPosition}
+                duration={adventure.duration}
+                level={adventure.difficulty}
+                excerpt={adventure.description}
+                priceNote={adventure.fromText}
+              />
             ))}
           </div>
         </div>
@@ -364,14 +325,14 @@ export default function RVAHomeClient({
       {/* ABOUT — anchor for nav; links to guides (not a bookable adventure card) */}
       <section id="about" className="py-14 bg-rva-cream border-t border-rva-cream-dark">
         <div className="max-w-3xl mx-auto px-6 text-center">
-          <p className="font-cormorant text-rva-copper text-lg tracking-widest uppercase mb-3">Our Team</p>
+          <p className="font-cormorant text-rva-copper-700 text-lg tracking-widest uppercase mb-3">Our Team</p>
           <h2 className="font-playfair text-3xl md:text-4xl text-rva-forest font-bold mb-4">Local Guides, Year-Round</h2>
           <p className="text-gray-600 text-lg mb-6">
             First Aid certified, valley-raised, and passionate about these mountains — meet the people behind your trip.
           </p>
           <Link
             href="/guides"
-            className="inline-flex items-center gap-2 text-rva-copper font-semibold hover:text-rva-copper-light transition-colors text-lg"
+            className="inline-flex min-h-11 items-center gap-2 text-rva-copper-700 font-semibold hover:underline text-lg"
           >
             Meet Our Guides
             <span aria-hidden>→</span>

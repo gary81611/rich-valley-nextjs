@@ -9,7 +9,7 @@ brand: "rva"
 
 Aspen in summer is one of those places that feels almost too good to be real. The wildflower meadows, the cool mountain air, the blue skies that seem impossibly blue at 8,000 feet — it's the kind of place kids remember for the rest of their lives. And unlike the ski season crowds and resort-level pricing that define Aspen's winter reputation, summer here is relaxed, accessible, and genuinely family-friendly.
 
-We've been guiding families through the Roaring Fork Valley for over 14 years at Rich Valley Adventures, and every summer we get to watch kids see a mountain elk up close for the first time, or land their first trout, or summit their first peak. These are the activities that deliver those moments.
+We've been guiding families through the Roaring Fork Valley since 2012 at Rich Valley Adventures, and every summer we get to watch kids see a mountain elk up close for the first time, or land their first trout, or summit their first peak. These are the activities that deliver those moments.
 
 ## 1. Maroon Bells — The Most Photographed Mountains in Colorado
 

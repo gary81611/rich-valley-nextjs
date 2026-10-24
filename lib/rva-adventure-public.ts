@@ -41,6 +41,24 @@ const FISH_FALLBACK_IMAGES = new Set([
   '/images/rva/flyfishing.png',
 ])
 
+/** Known portrait files. Heroes letterbox these instead of cropping them into a wide banner. */
+const PORTRAIT_ADVENTURE_IMAGES = [
+  '/images/adventures/fly-fishing.png',
+  '/images/adventures/hiking.png',
+  '/images/adventures/horseback-riding.png',
+  '/images/adventures/scenic-escalade.png',
+  '/images/adventures/mountain-biking.jpg',
+  '/images/adventures/fishing-catch.jpeg',
+  '/images/adventures/paddle-boarding.jpg',
+  '/images/adventures/fishing-catch-1440.webp',
+  '/images/rva/horseback.png',
+]
+
+export function isPortraitAdventureImage(src: string | null | undefined): boolean {
+  const path = (src || '').split('?')[0]
+  return PORTRAIT_ADVENTURE_IMAGES.some((file) => path === file || path.endsWith(file))
+}
+
 const HREF_BY_SLUG: Record<string, string> = {
   'fly-fishing': '/fly-fishing',
   'paddle-board-rentals': PADDLE_CANONICAL_PATH,
@@ -109,7 +127,7 @@ export function adventurePublicImage(row: {
       src.endsWith('/paddleboarding.jpg')
     return portrait ? { src, objectPosition: PADDLE_PHOTO_POSITION, alt: PADDLE_PHOTO_ALT } : { src }
   }
-  if (raw === '') return { src: '/images/adventures/fly-fishing.png' }
+  if (raw === '') return { src: '' }
   return { src: raw }
 }
 

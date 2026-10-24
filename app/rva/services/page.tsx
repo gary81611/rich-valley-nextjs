@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import type { Adventure } from '@/lib/types'
 import { PADDLE_PHOTO, PADDLE_PHOTO_ALT, isPublicAdventureCard, toPublicAdventureCard } from '@/lib/rva-adventure-public'
+import AdventureCard from '@/components/rva/AdventureCard'
+import RvaButton, { RVA_BOOKING_LABEL, RVA_PHONE_LABEL, RVA_PHONE_HREF } from '@/components/rva/Button'
 
 export const dynamic = 'force-dynamic'
 
@@ -90,44 +91,20 @@ export default async function ServicesPage() {
           {adventures.length === 0 ? (
             <p className="text-center text-gray-500">No adventures available at this time. Check back soon!</p>
           ) : (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
               {adventures.map((adventure) => (
-                <Link
+                <AdventureCard
                   key={adventure.slug}
                   href={adventure.href}
-                  className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-rva-cream-dark hover:-translate-y-1"
-                >
-                  <div className="relative h-48 bg-rva-forest-dark">
-                    <Image
-                      src={adventure.image}
-                      alt={
-                        adventure.imageAlt ||
-                        (adventure.image === PADDLE_PHOTO ? PADDLE_PHOTO_ALT : adventure.title)
-                      }
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      style={adventure.objectPosition ? { objectPosition: adventure.objectPosition } : undefined}
-                      unoptimized
-                    />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="font-playfair text-xl font-bold text-rva-forest group-hover:text-rva-copper transition-colors mb-2">
-                      {adventure.title}
-                    </h3>
-                    {adventure.fromText ? (
-                      <p className="text-rva-copper text-sm font-semibold mb-2">{adventure.fromText}</p>
-                    ) : null}
-                    <p className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-2">
-                      {adventure.description}
-                    </p>
-                    <div className="flex items-center gap-3 text-xs text-gray-500">
-                      <span>{adventure.duration}</span>
-                      <span className="w-1 h-1 bg-gray-300 rounded-full" />
-                      <span>{adventure.difficulty}</span>
-                    </div>
-                    <span className="mt-4 inline-flex text-rva-copper text-sm font-semibold">Learn more</span>
-                  </div>
-                </Link>
+                  title={adventure.title}
+                  image={adventure.image}
+                  imageAlt={adventure.imageAlt || (adventure.image === PADDLE_PHOTO ? PADDLE_PHOTO_ALT : adventure.title)}
+                  objectPosition={adventure.objectPosition}
+                  duration={adventure.duration}
+                  level={adventure.difficulty}
+                  excerpt={adventure.description}
+                  priceNote={adventure.fromText}
+                />
               ))}
             </div>
           )}
@@ -190,18 +167,12 @@ export default async function ServicesPage() {
             Whether you need a guided adventure or a luxury ride, we&apos;ve got you covered.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/adventures"
-              className="bg-rva-copper hover:bg-rva-copper-light text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block"
-            >
-              View Adventures
-            </Link>
-            <Link
-              href="/contact"
-              className="border-2 border-white text-white hover:bg-white hover:text-rva-forest px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block"
-            >
-              Contact Us
-            </Link>
+            <RvaButton href="/contact" size="lg" tone="on-dark">
+              {RVA_BOOKING_LABEL}
+            </RvaButton>
+            <RvaButton href={RVA_PHONE_HREF} variant="secondary" size="lg" tone="on-dark">
+              {RVA_PHONE_LABEL}
+            </RvaButton>
           </div>
         </div>
       </section>

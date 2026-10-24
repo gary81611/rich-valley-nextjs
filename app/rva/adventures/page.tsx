@@ -1,12 +1,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
 import type { Adventure } from '@/lib/types'
 import { PADDLE_PHOTO, PADDLE_PHOTO_ALT, isPublicAdventureCard, toPublicAdventureCard } from '@/lib/rva-adventure-public'
 import { RVA_GLOBAL_PILLAR_BLOG_LINKS } from '@/lib/rva-blog-pillars'
+import AdventureCard from '@/components/rva/AdventureCard'
+import RvaButton, { RVA_BOOKING_LABEL, RVA_PHONE_LABEL, RVA_PHONE_HREF } from '@/components/rva/Button'
 
 type Season = 'all' | 'summer' | 'winter' | 'year-round'
 
@@ -102,18 +103,18 @@ export default function AdventuresPage() {
           {RVA_GLOBAL_PILLAR_BLOG_LINKS.map((l, i) => (
             <span key={l.href}>
               {i > 0 ? ' · ' : null}
-              <Link href={l.href} className="text-rva-copper font-medium hover:underline">
+              <Link href={l.href} className="text-rva-copper-700 font-medium hover:underline">
                 {i === 0 ? 'Fly fishing' : i === 1 ? 'Hiking' : 'Families'}
               </Link>
             </span>
           ))}
           <span className="hidden sm:inline">
             {' · '}
-            <Link href="/service-areas" className="text-rva-copper font-medium hover:underline">
+            <Link href="/service-areas" className="text-rva-copper-700 font-medium hover:underline">
               Where we guide
             </Link>
             {' · '}
-            <Link href="/contact" className="text-rva-copper font-medium hover:underline">
+            <Link href="/contact" className="text-rva-copper-700 font-medium hover:underline">
               Book
             </Link>
           </span>
@@ -128,10 +129,10 @@ export default function AdventuresPage() {
               <button
                 key={tab.value}
                 onClick={() => setActiveSeason(tab.value)}
-                className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all ${
+                className={`min-h-11 px-6 rounded-full text-sm font-medium transition-colors ${
                   activeSeason === tab.value
-                    ? 'bg-rva-copper text-white shadow-md'
-                    : 'bg-rva-cream-dark text-rva-forest hover:bg-rva-copper/10'
+                    ? 'bg-rva-copper-700 text-white'
+                    : 'bg-white text-rva-forest border border-rva-forest/15 hover:border-rva-copper-700'
                 }`}
               >
                 {tab.label}
@@ -151,64 +152,25 @@ export default function AdventuresPage() {
               </p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
               {filtered.map((adventure) => (
-                <Link
+                <AdventureCard
                   key={adventure.slug}
                   href={adventure.href}
-                  className="group"
-                >
-                  <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
-                    <div className="relative aspect-[4/3] overflow-hidden">
-                      <Image
-                        src={adventure.image}
-                        alt={
-                          adventure.imageAlt ||
-                          (adventure.image === PADDLE_PHOTO
-                            ? PADDLE_PHOTO_ALT
-                            : `${adventure.title} — guided adventure in Aspen and the Roaring Fork Valley`)
-                        }
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-700"
-                        style={adventure.objectPosition ? { objectPosition: adventure.objectPosition } : undefined}
-                        unoptimized
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-rva-forest-dark/60 via-transparent to-transparent" />
-                      <div className="absolute top-4 left-4 flex gap-2">
-                        <span className="bg-rva-copper/90 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full font-medium">
-                          {adventure.duration}
-                        </span>
-                      </div>
-                      <div className="absolute bottom-4 right-4">
-                        <span className="bg-white/15 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full border border-white/20">
-                          {adventure.difficulty}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="p-6 flex flex-col flex-1">
-                      <h2 className="font-playfair text-2xl text-rva-forest font-semibold mb-3">
-                        {adventure.title}
-                      </h2>
-                      {adventure.fromText ? (
-                        <p className="text-rva-copper text-sm font-semibold mb-3">{adventure.fromText}</p>
-                      ) : null}
-                      <p className="text-gray-600 text-sm leading-relaxed flex-1">
-                        {adventure.description}
-                      </p>
-                      <span className="mt-5 text-rva-copper text-sm font-semibold group-hover:text-rva-copper-light transition-colors flex items-center gap-2">
-                        Learn more
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M17 8l4 4m0 0l-4 4m4-4H3"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                </Link>
+                  title={adventure.title}
+                  image={adventure.image}
+                  imageAlt={
+                    adventure.imageAlt ||
+                    (adventure.image === PADDLE_PHOTO
+                      ? PADDLE_PHOTO_ALT
+                      : `${adventure.title} — guided adventure in Aspen and the Roaring Fork Valley`)
+                  }
+                  objectPosition={adventure.objectPosition}
+                  duration={adventure.duration}
+                  level={adventure.difficulty}
+                  excerpt={adventure.description}
+                  priceNote={adventure.fromText}
+                />
               ))}
             </div>
           )}
@@ -225,12 +187,10 @@ export default function AdventuresPage() {
             Give us a call and we&apos;ll help you plan the perfect trip based on your group, skill
             level, and interests.
           </p>
-          <Link
-            href="/contact"
-            className="bg-rva-copper hover:bg-rva-copper-light text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block"
-          >
-            Contact Us
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <RvaButton href="/contact" size="lg" tone="on-dark">{RVA_BOOKING_LABEL}</RvaButton>
+            <RvaButton href={RVA_PHONE_HREF} variant="secondary" size="lg" tone="on-dark">{RVA_PHONE_LABEL}</RvaButton>
+          </div>
         </div>
       </section>
     </div>

@@ -125,9 +125,9 @@ export default async function RvaServiceAreaDetailPage({ params }: { params: Pro
           <div className="mt-10 flex flex-wrap gap-4">
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center bg-rva-copper hover:bg-rva-copper-light text-white font-semibold px-6 py-3 rounded-full transition-colors"
+              className="inline-flex items-center justify-center bg-rva-copper-700 hover:bg-rva-copper-800 text-white font-semibold px-6 py-3 rounded-full transition-colors"
             >
-              Book an adventure
+              Check availability
             </Link>
             <Link
               href="/locations"

@@ -117,9 +117,9 @@ export default function LocationDetailView({ loc, backLink }: Props) {
         <div className="text-center">
           <Link
             href="/contact"
-            className="inline-block bg-rva-copper hover:bg-rva-copper-light text-white px-8 py-3 rounded-full font-semibold transition-colors"
+            className="inline-block bg-rva-copper-700 hover:bg-rva-copper-800 text-white px-8 py-3 rounded-full font-semibold transition-colors"
           >
-            Book a {loc.name} Adventure — 970-456-3666
+            Check availability
           </Link>
         </div>
       </div>

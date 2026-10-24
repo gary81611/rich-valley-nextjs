@@ -1,0 +1,30 @@
+/* RVA type scale. Cormorant stays the eyebrow face. AAL does not import this file. */
+.rva-site {
+  font-family: Inter, sans-serif;
+  font-size: 17px;
+  line-height: 28px;
+}
+
+.rva-site h1 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  line-height: 1.1;
+  font-size: 2.25rem;
+}
+
+@media (min-width: 768px) {
+  .rva-site h1 {
+    font-size: 3.25rem;
+  }
+}
+
+.rva-site h2,
+.rva-site h3 {
+  font-family: "Playfair Display", Georgia, serif;
+  line-height: 1.2;
+}
+
+.rva-site :focus-visible {
+  outline: 2px solid #e8c4a0;
+  outline-offset: 3px;
+}

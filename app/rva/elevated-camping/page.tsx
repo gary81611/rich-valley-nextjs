@@ -193,9 +193,9 @@ export default async function ElevatedCampingPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contact"
-              className="bg-rva-copper hover:bg-rva-copper-light text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block"
+              className="bg-rva-copper-700 hover:bg-rva-copper-800 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block"
             >
-              Book Elevated Camping
+              Check availability
             </Link>
             <a
               href="tel:+19704563666"

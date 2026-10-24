@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { seasonForWinterAdventure } from '@/lib/rva-winter-seasons'
+import RvaButton, { RVA_BOOKING_LABEL, RVA_PHONE_LABEL, RVA_PHONE_HREF } from '@/components/rva/Button'
 
 const AAL_LINK = 'https://aspenalpenglowlimousine.com'
 
@@ -30,11 +31,10 @@ interface WinterAdventure {
   description: string
   duration: string
   difficulty: string
-  season: string
-  image: string
+  season?: string | null
+  image_url?: string | null
   is_active: boolean
   display_order: number
-  created_at: string
 }
 
 async function getWinterAdventures(): Promise<WinterAdventure[]> {
@@ -75,10 +75,10 @@ export default async function WinterPage() {
       {/* Header */}
       <section className="py-20 bg-rva-forest-dark text-center">
         <div className="max-w-4xl mx-auto px-6">
-          <p className="font-cormorant text-rva-copper-light text-lg tracking-widest uppercase mb-4">
+          <p className="font-cormorant text-rva-copper-light text-sm md:text-lg tracking-[0.14em] uppercase mb-4 whitespace-nowrap">
             November through April
           </p>
-          <h1 className="font-playfair text-4xl md:text-6xl text-white font-bold mb-6">
+          <h1 className="font-playfair text-white mb-6">
             Winter Offerings
           </h1>
           <p className="text-white/75 text-xl max-w-2xl mx-auto">
@@ -112,7 +112,7 @@ export default async function WinterPage() {
             </li>
             <li>
               <strong className="text-rva-forest">Transportation:</strong> All transportation provided by{' '}
-              <a href={AAL_LINK} className="text-rva-copper font-semibold underline hover:text-rva-copper-light">
+              <a href={AAL_LINK} className="text-rva-copper-700 font-semibold underline hover:text-rva-forest">
                 Aspen Alpenglow Limousine
               </a>
             </li>
@@ -141,16 +141,16 @@ export default async function WinterPage() {
               <p className="text-gray-500 text-lg">No winter adventures available at this time. Check back soon!</p>
             </div>
           )}
-          {winterAdventures.map((adventure, i) => (
+          {winterAdventures.map((adventure, i) => {
+            const imageSrc = (adventure.image_url || '').trim()
+            return (
             <div
               key={adventure.title}
-              className={`grid lg:grid-cols-2 gap-12 items-center ${
-                i % 2 === 1 ? 'lg:direction-rtl' : ''
-              }`}
+              className={imageSrc ? `grid lg:grid-cols-2 gap-12 items-center ${i % 2 === 1 ? 'lg:direction-rtl' : ''}` : ''}
             >
-              <div className={i % 2 === 1 ? 'lg:order-2' : ''}>
+              <div className={imageSrc && i % 2 === 1 ? 'lg:order-2' : ''}>
                 <div className="flex flex-wrap gap-2 mb-4">
-                  <span className="bg-rva-copper/10 text-rva-copper text-sm px-4 py-1.5 rounded-full font-medium">
+                  <span className="bg-rva-copper-700/10 text-rva-copper-700 text-sm px-4 py-1.5 rounded-full font-medium">
                     {adventure.duration}
                   </span>
                   <span className="bg-rva-forest/10 text-rva-forest text-sm px-4 py-1.5 rounded-full">
@@ -173,32 +173,31 @@ export default async function WinterPage() {
                   <li>Groups 1–12 · All gear included</li>
                   <li>
                     Transport:{' '}
-                    <a href={AAL_LINK} className="text-rva-copper font-semibold underline hover:text-rva-copper-light">
+                    <a href={AAL_LINK} className="text-rva-copper-700 font-semibold underline hover:text-rva-forest">
                       Aspen Alpenglow Limousine
                     </a>
                   </li>
                 </ul>
-                <Link
-                  href="/contact"
-                  className="bg-rva-copper hover:bg-rva-copper-light text-white px-8 py-3.5 rounded-full font-semibold transition-all hover:shadow-lg inline-block"
-                >
-                  Book Now — 970-456-3666
-                </Link>
+                <RvaButton href="/contact" size="md">
+                  {RVA_BOOKING_LABEL}
+                </RvaButton>
               </div>
+              {imageSrc ? (
               <div className={`relative ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
-                <div className="relative rounded-2xl overflow-hidden shadow-xl aspect-[4/3]">
+                <div className="relative rounded-xl overflow-hidden aspect-[4/3] border border-rva-forest/15">
                   <Image
-                    src={adventure.image}
+                    src={imageSrc}
                     alt={`${adventure.title} — guided winter adventure near Aspen, Colorado with Rich Valley Adventures`}
                     fill
                     className="object-cover"
                     unoptimized
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-rva-forest-dark/30 via-transparent to-transparent" />
                 </div>
               </div>
+              ) : null}
             </div>
-          ))}
+            )
+          })}
         </div>
       </section>
 
@@ -213,18 +212,12 @@ export default async function WinterPage() {
             the right way — with expert guides, premium gear, and small groups.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/contact"
-              className="bg-rva-copper hover:bg-rva-copper-light text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block"
-            >
-              Book Now
-            </Link>
-            <a
-              href="tel:+19704563666"
-              className="border-2 border-white text-white hover:bg-white hover:text-rva-forest px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block"
-            >
-              Call 970-456-3666
-            </a>
+            <RvaButton href="/contact" size="lg" tone="on-dark">
+              {RVA_BOOKING_LABEL}
+            </RvaButton>
+            <RvaButton href={RVA_PHONE_HREF} variant="secondary" size="lg" tone="on-dark">
+              {RVA_PHONE_LABEL}
+            </RvaButton>
           </div>
         </div>
       </section>

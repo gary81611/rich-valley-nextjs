@@ -85,10 +85,11 @@ function renderInline(text: string): React.ReactNode[] {
   })
 }
 
-function renderMarkdown(content: string): React.ReactNode {
+function renderMarkdown(content: string, pageTitle?: string): React.ReactNode {
   const lines = content.split('\n')
   const elements: React.ReactNode[] = []
   let i = 0
+  const normalizedTitle = (pageTitle || '').replace(/\s+/g, ' ').trim().toLowerCase()
 
   while (i < lines.length) {
     const line = lines[i]
@@ -96,19 +97,23 @@ function renderMarkdown(content: string): React.ReactNode {
     if (line.startsWith('## ')) {
       elements.push(
         <h2 key={i} className="font-playfair text-2xl font-bold text-rva-forest mt-10 mb-4">
-          {line.slice(3)}
+          {renderInline(line.slice(3))}
         </h2>
       )
     } else if (line.startsWith('# ')) {
-      elements.push(
-        <h1 key={i} className="font-playfair text-3xl font-bold text-rva-forest mt-8 mb-4">
-          {line.slice(2)}
-        </h1>
-      )
+      const heading = line.slice(2).trim()
+      const sameAsTitle = normalizedTitle.length > 0 && heading.replace(/\s+/g, ' ').toLowerCase() === normalizedTitle
+      if (!sameAsTitle) {
+        elements.push(
+          <h2 key={i} className="font-playfair text-2xl font-bold text-rva-forest mt-8 mb-4">
+            {renderInline(heading)}
+          </h2>
+        )
+      }
     } else if (line.startsWith('### ')) {
       elements.push(
         <h3 key={i} className="font-playfair text-xl font-semibold text-rva-forest mt-6 mb-3">
-          {line.slice(4)}
+          {renderInline(line.slice(4))}
         </h3>
       )
     } else if (line.startsWith('- ') || line.startsWith('* ')) {
@@ -310,7 +315,7 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
 
           {/* Article body */}
           <article className="bg-white rounded-2xl p-8 md:p-12 shadow-sm border border-rva-cream-dark">
-            {articleBody ? renderMarkdown(articleBody) : <p className="text-slate-400">Content coming soon.</p>}
+            {articleBody ? renderMarkdown(articleBody, post.title) : <p className="text-slate-400">This article has no body text yet.</p>}
 
             {/* FAQs inline in article */}
             {sanitizedFaqs.length > 0 && (

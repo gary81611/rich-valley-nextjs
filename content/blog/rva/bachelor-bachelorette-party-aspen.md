@@ -9,7 +9,7 @@ brand: "rva"
 
 Let's be honest about something: bachelor and bachelorette parties have become their own genre of travel, and most of the usual suspects — Vegas, Nashville, Scottsdale — start to feel like a blur of the same rooftop bars and the same noise. Aspen is different. Not quieter, exactly. But more real. More beautiful. More memorable.
 
-When your group lands here in summer and sees those mountains for the first time, something shifts. There's an energy that comes from being somewhere genuinely spectacular, and that energy produces some of the best group memories of anyone's adult life. We've hosted bachelor and bachelorette parties at Rich Valley Adventures for years, and the feedback is always the same: "That was unlike any trip we've ever done."
+When your group lands here in summer and sees those mountains for the first time, something shifts. There's an energy that comes from being somewhere genuinely spectacular, and that energy produces some of the best group memories of anyone's adult life. We've hosted bachelor and bachelorette parties at Rich Valley Adventures for years.
 
 Here's how to plan it well.
 

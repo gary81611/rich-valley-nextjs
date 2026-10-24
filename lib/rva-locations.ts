@@ -64,7 +64,7 @@ export const LOCATIONS: Location[] = [
   },
   {
     slug: 'marble-redstone', name: 'Marble & Redstone', tagline: 'Historic beauty, pristine waters',
-    description: 'The Crystal River Valley between Carbondale and Marble offers some of the most scenic drives and pristine fishing water in Colorado. Historic Redstone and the marble quarries provide a unique backdrop for adventure.',
+    description: 'The Crystal River Valley between Carbondale and Marble offers some of the most scenic drives and pristine fishing water in Colorado. Historic Redstone and the marble quarries provide the setting for a day on the water.',
     driveFromAspen: '~1 hr',
     rivers: ['Crystal River'],
     activities: ['Fly Fishing', 'Chauffeur Guided Tours', 'Photography', 'Historic Tours'],
@@ -100,7 +100,7 @@ export const LOCATIONS: Location[] = [
   },
   {
     slug: 'twin-lakes', name: 'Twin Lakes', tagline: 'High mountain lake fishing',
-    description: 'Twin Lakes sits at 9,200 feet at the base of Colorado\'s highest peaks. These alpine lakes offer unique fishing for lake trout and brook trout in a stunning high-mountain setting.',
+    description: 'Twin Lakes sits at 9,200 feet at the base of Colorado\'s highest peaks. These alpine lakes offer fishing for lake trout and brook trout in a high-mountain setting.',
     driveFromAspen: '~1.5 hr (summer via Independence Pass)',
     rivers: ['Twin Lakes', 'Lake Creek'],
     activities: ['Lake Fishing', 'Ice Fishing (winter)', 'Hiking', 'Photography'],

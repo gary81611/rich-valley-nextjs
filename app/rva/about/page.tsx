@@ -2,20 +2,24 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import GuideCard from '@/components/rva/GuideCard'
+import RvaButton, { RVA_PHONE_LABEL, RVA_PHONE_HREF } from '@/components/rva/Button'
+import { getActiveGuides } from '@/lib/rva-guides'
+import { replaceRvaYearClaims, rvaPublicStats, type RvaStat } from '@/lib/rva-public-claims'
 
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'About Rich Valley Adventures | Our Story Since 2012 | Aspen, CO',
   description:
-    'Learn about Rich Valley Adventures — founded in 2012 by Kit and a team of local Aspen guides. 14+ years of guided fly fishing, hiking, biking, and more in the Roaring Fork Valley.',
+    'Learn about Rich Valley Adventures — founded in Aspen in 2012 by Kit and a team of local guides. Guided fly fishing, hiking, biking, and more in the Roaring Fork Valley.',
   alternates: {
     canonical: 'https://www.richvalleyadventures.com/about',
   },
   openGraph: {
     title: 'About Rich Valley Adventures | Our Story Since 2012',
     description:
-      'Founded in 2012 by local Aspen guides. 14+ years, 3,000+ adventures. Discover the team behind Rich Valley Adventures.',
+      'Founded in Aspen in 2012 by local guides. Discover the team behind Rich Valley Adventures.',
     type: 'website',
     url: 'https://www.richvalleyadventures.com/about',
     images: [
@@ -38,8 +42,11 @@ export default async function AboutPage() {
     .eq('site_key', 'rva')
     .single()
 
-  const stats = settings?.stats || []
+  const stats = rvaPublicStats((settings?.stats || []) as RvaStat[])
   const about = settings?.about_content || null
+  const guides = await getActiveGuides()
+  const companyNarrative = typeof about?.company_narrative === 'string' ? about.company_narrative.trim() : ''
+  const founderStory = typeof about?.founder_story === 'string' ? replaceRvaYearClaims(about.founder_story).trim() : ''
 
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
@@ -57,7 +64,7 @@ export default async function AboutPage() {
       </div>
 
       {/* Hero */}
-      <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[70svh] md:h-[560px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <Image
             src="/images/about/hero.jpg"
@@ -70,10 +77,10 @@ export default async function AboutPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-rva-forest-dark/70 via-rva-forest-dark/40 to-rva-forest-dark/80" />
         </div>
         <div className="relative z-10 text-center text-white px-6 max-w-4xl mx-auto">
-          <p className="font-cormorant text-rva-sage text-lg tracking-widest uppercase mb-4">
+          <p className="font-cormorant text-rva-sage text-sm md:text-lg tracking-[0.14em] uppercase mb-4 whitespace-nowrap">
             Our Story
           </p>
-          <h1 className="font-playfair text-4xl md:text-6xl font-bold mb-4 leading-tight">
+          <h1 className="font-playfair mb-4">
             About Rich Valley Adventures
           </h1>
           <p className="text-xl text-white/85 max-w-2xl mx-auto">
@@ -93,14 +100,19 @@ export default async function AboutPage() {
               <h2 className="font-playfair text-4xl md:text-5xl text-rva-forest font-bold mb-8 leading-tight">
                 Meet Kit — Founder &amp; Lead Guide
               </h2>
-              {about?.founder_story ? (
-                about.founder_story.split('\n\n').map((paragraph: string, i: number) => (
+              {founderStory ? (
+                founderStory.split('\n\n').map((paragraph: string, i: number) => (
                   <p key={i} className="text-gray-700 text-lg leading-relaxed mb-6">
                     {paragraph}
                   </p>
                 ))
               ) : (
-                <p className="text-gray-500 italic">Story coming soon.</p>
+                <>
+                  {/* [PENDING FROM KIT: founder story] */}
+                  <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                    Rich Valley Adventures was founded in Aspen in 2012 by Kit McLendon.
+                  </p>
+                </>
               )}
               <p className="text-gray-600 text-base leading-relaxed border-l-4 border-rva-copper/30 pl-4">
                 &ldquo;We don&apos;t just guide trips — we share our home with you. Every river bend,
@@ -127,38 +139,24 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* Since 2012 Narrative */}
+      {/* Company narrative stays hidden until Kit writes it. */}
+      {companyNarrative ? (
       <section className="py-24 bg-rva-forest-dark">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <p className="font-cormorant text-rva-copper-light text-lg tracking-widest uppercase mb-4">
             Since 2012
           </p>
           <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold mb-8">
-            A Decade of Adventure
+            Since 2012
           </h2>
-          {about?.company_narrative ? (
-            about.company_narrative.split('\n\n').map((paragraph: string, i: number) => (
-              <p key={i} className="text-white/80 text-lg leading-relaxed mb-6">
-                {paragraph}
-              </p>
-            ))
-          ) : (
-            <p className="text-white/60 italic">Our story is being written...</p>
-          )}
-          {stats.length > 0 && (
-            <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto mt-6">
-              {stats.map((stat: { label: string; value: string }) => (
-                <div key={stat.label} className="text-center">
-                  <div className="font-playfair text-4xl md:text-5xl font-bold text-rva-copper-light">
-                    {stat.value}
-                  </div>
-                  <div className="text-white/60 text-sm uppercase tracking-wide mt-2">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          )}
+          {replaceRvaYearClaims(companyNarrative).split('\n\n').map((paragraph: string, i: number) => (
+            <p key={i} className="text-white/80 text-lg leading-relaxed mb-6">
+              {paragraph}
+            </p>
+          ))}
         </div>
       </section>
+      ) : null}
 
       {/* Meet Your Guides */}
       <section className="py-24 bg-rva-cream">
@@ -173,77 +171,18 @@ export default async function AboutPage() {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'Kit McLendon',
-                title: 'Lead Fly Fishing Guide',
-                tags: [
-                  'Hatch reports',
-                  'Fly recommendations',
-                  'Water clarity assessment',
-                  'River observations',
-                  'Trail information',
-                  'Boat ramp logistics',
-                ],
-                note: 'Primary expert for river conditions reporting',
-              },
-              {
-                name: 'Bart Chandler',
-                title: 'Shooting Guide',
-                tags: ['Sporting clay instruction', 'Hunting guide'],
-              },
-              {
-                name: 'Bobby Regan',
-                title: 'Kids Fishing Guide',
-                tags: ['Introduction to fly fishing', 'Youth instruction', 'Family trips'],
-              },
-              {
-                name: 'Alex Macintyre',
-                title: 'Boat Captain',
-                tags: ['Float trips', 'Gunnison River', 'Colorado River boat operations'],
-              },
-              {
-                name: 'Jason Fagre',
-                title: 'Chef & Hunting Guide',
-                tags: ['Elevated camping chef', 'Hunting guide', 'Field-to-table experiences'],
-              },
-              {
-                name: 'John Mudrey',
-                title: 'Fly Fishing Guide — Dry Fly Specialist',
-                tags: ['Dry fly fishing', 'Nymphing', 'Technical presentation'],
-              },
-            ].map((g) => (
-              <div
-                key={g.name}
-                className="bg-white rounded-2xl border border-rva-sage/20 shadow-sm overflow-hidden flex flex-col"
-              >
-                <div className="aspect-[4/3] bg-gradient-to-br from-rva-cream to-rva-sage/10 flex items-center justify-center px-6">
-                  <p className="text-sm font-medium text-rva-forest/45 tracking-wide text-center">Photo coming soon</p>
-                </div>
-                <div className="p-6 flex flex-col flex-grow">
-                  <h3 className="font-playfair text-xl font-bold text-rva-forest mb-1">{g.name}</h3>
-                  <p className="text-rva-copper text-sm font-semibold mb-4">{g.title}</p>
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {g.tags.map((t) => (
-                      <span
-                        key={t}
-                        className="text-xs bg-rva-forest/5 text-rva-forest px-2.5 py-1 rounded-full border border-rva-sage/20"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="inline-flex self-start mt-auto text-xs font-bold uppercase tracking-wider bg-rva-copper/10 text-rva-copper px-2.5 py-1 rounded">
-                    First Aid certified
-                  </span>
-                  {g.note ? (
-                    <p className="text-xs text-gray-500 mt-3 italic border-t border-rva-sage/10 pt-3">{g.note}</p>
-                  ) : null}
-                </div>
-              </div>
-            ))}
-          </div>
+          {guides.length > 0 ? (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {guides.map((guide) => (
+                <GuideCard key={guide.id} guide={guide} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-rva-forest/70">
+              {/* [PENDING FROM KIT: guide photos and bios if the guides list is empty] */}
+              Guide profiles are on the guides page.
+            </p>
+          )}
 
           <p className="text-center text-gray-600 text-sm mt-12 max-w-2xl mx-auto leading-relaxed">
             All Rich Valley Adventures guides hold current First Aid certification and have extensive experience
@@ -259,7 +198,7 @@ export default async function AboutPage() {
             <div className={`grid grid-cols-2 ${stats.length >= 4 ? 'md:grid-cols-4' : stats.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-8 text-center`}>
               {stats.map((stat: { label: string; value: string }) => (
                 <div key={stat.label}>
-                  <div className="font-playfair text-4xl font-bold text-rva-copper">{stat.value}</div>
+                  <div className="font-playfair text-4xl font-bold text-rva-copper-700">{stat.value}</div>
                   <div className="text-gray-600 text-sm uppercase tracking-wide mt-2">{stat.label}</div>
                 </div>
               ))}
@@ -275,21 +214,15 @@ export default async function AboutPage() {
             Ready to Experience the Valley?
           </h2>
           <p className="text-white/75 text-lg mb-8 max-w-2xl mx-auto">
-            {about?.cta_text || "Whether it's your first visit or your fourteenth, we'll make it unforgettable."}
+            {about?.cta_text || 'Tell us what you want to do in the valley and we will help you plan it.'}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/adventures"
-              className="bg-rva-copper hover:bg-rva-copper-light text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block"
-            >
+            <RvaButton href="/adventures" size="lg" tone="on-dark">
               View Adventures
-            </Link>
-            <Link
-              href="/contact"
-              className="border-2 border-white text-white hover:bg-white hover:text-rva-forest px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block"
-            >
-              Get in Touch
-            </Link>
+            </RvaButton>
+            <RvaButton href={RVA_PHONE_HREF} variant="secondary" size="lg" tone="on-dark">
+              {RVA_PHONE_LABEL}
+            </RvaButton>
           </div>
         </div>
       </section>

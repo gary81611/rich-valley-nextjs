@@ -43,8 +43,8 @@ export default function InquiryForm({ brand, initialServiceId }: Props) {
   const [details, setDetails] = useState('')
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
 
-  const accent = brand === 'rva' ? 'bg-rva-copper hover:bg-rva-copper-light' : 'bg-alp-gold hover:bg-alp-gold-light'
-  const accentText = brand === 'rva' ? 'text-rva-copper' : 'text-alp-gold'
+  const accent = brand === 'rva' ? 'bg-rva-copper-700 hover:bg-rva-copper-800' : 'bg-alp-gold hover:bg-alp-gold-light'
+  const accentText = brand === 'rva' ? 'text-rva-copper-700' : 'text-alp-gold'
   const accentBorder = brand === 'rva' ? 'border-rva-copper' : 'border-alp-gold'
   const accentBg = brand === 'rva' ? 'bg-rva-copper/5' : 'bg-alp-gold/5'
 

@@ -61,7 +61,7 @@ const FISHING_FALLBACK = (
   </p>
 )
 
-const TRAIL_FALLBACK = 'Trail condition updates coming soon.'
+const TRAIL_FALLBACK = 'Trail condition updates are not posted yet.'
 const BIRD_FALLBACK = 'Birdwatching highlights — check back soon.'
 
 function FishingFeedArticle({ item, featured = false }: { item: FishingReportFeedItem; featured?: boolean }) {
@@ -409,8 +409,8 @@ export default function ConditionsPageClient({ feed }: { feed: FishingReportFeed
         <div className="text-center bg-rva-forest-dark rounded-lg p-10">
           <h2 className="font-playfair text-2xl text-white mb-3">Book a Guided Adventure</h2>
           <p className="text-white/60 mb-6">Expert local guides, all gear provided, door-to-door transport by Aspen Alpenglow Limousine.</p>
-          <Link href="/contact" className="inline-block bg-rva-copper hover:bg-rva-copper-light text-white px-8 py-3 rounded-full font-semibold transition-colors">
-            Book Now — 970-456-3666
+          <Link href="/contact" className="inline-block bg-rva-copper-700 hover:bg-rva-copper-800 text-white px-8 py-3 rounded-full font-semibold transition-colors">
+            Check availability
           </Link>
         </div>
       </div>

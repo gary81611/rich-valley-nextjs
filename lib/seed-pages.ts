@@ -267,13 +267,13 @@ const rvaPages: PageSeed[] = [
         {
           type: 'text',
           title: 'Our Story',
-          content: `Rich Valley Adventures was founded in Aspen, Colorado in 2012 by a group of passionate local outdoorspeople who wanted to share the extraordinary wilderness of the Roaring Fork Valley with visitors in a deeper, more personal way than the standard tourist experience allows.\n\nOver the past 14 years, we\'ve guided more than 3,000 adventures across all four seasons — fly fishing the Gold Medal waters of the Roaring Fork and Frying Pan Rivers, mountain biking the 401 Trail and Snowmass Network, paddle boarding on Ruedi Reservoir, hiking to Cathedral Lake and the Maroon Bells Wilderness, snowshoeing through Ashcroft and the Castle Creek Valley.\n\nWe are a small, owner-operated company. Every guide on our team is a year-round Aspen resident who lives, works, and recreates in this valley every day. We don\'t rotate seasonal employees — we build long-term relationships with our guides and our guests.`,
+          content: `Rich Valley Adventures was founded in Aspen, Colorado in 2012 by a group of passionate local outdoorspeople who wanted to share the extraordinary wilderness of the Roaring Fork Valley with visitors in a deeper, more personal way than the standard tourist experience allows.\n\nSince 2012, we\'ve guided adventures across all four seasons — fly fishing the Gold Medal waters of the Roaring Fork and Frying Pan Rivers, mountain biking the 401 Trail and Snowmass Network, paddle boarding on Ruedi Reservoir, hiking to Cathedral Lake and the Maroon Bells Wilderness, snowshoeing through Ashcroft and the Castle Creek Valley.\n\nWe are a small, owner-operated company. Every guide on our team is a year-round Aspen resident who lives, works, and recreates in this valley every day. We don\'t rotate seasonal employees — we build long-term relationships with our guides and our guests.`,
         },
         {
           type: 'features',
           title: 'What Makes Us Different',
           items: [
-            { title: '14+ Years of Local Experience', description: 'We\'ve been operating since 2012 — long enough to know every nuance of the valley\'s weather, seasons, and conditions.' },
+            { title: 'Guiding since 2012', description: 'We\'ve been operating since 2012 — long enough to know every nuance of the valley\'s weather, seasons, and conditions.' },
             { title: 'Small Groups Only', description: 'We cap every trip at 4–8 guests depending on the activity. We\'ll never sacrifice the quality of your experience for volume.' },
             { title: 'Year-Round Local Guides', description: 'Our guides live in the Roaring Fork Valley year-round. They\'re not here for the season — they\'re here for life.' },
             { title: 'Safety Certified', description: 'All guides hold Wilderness First Responder or WFA certification, CPR/AED certification, and activity-specific safety training.' },

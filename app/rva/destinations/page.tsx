@@ -91,9 +91,9 @@ export default async function DestinationsPage() {
                     </div>
                     <Link
                       href="/contact"
-                      className="inline-flex items-center gap-2 bg-rva-copper hover:bg-rva-copper-light text-white font-bold px-6 py-3 rounded-full transition-colors w-fit"
+                      className="inline-flex items-center gap-2 bg-rva-copper-700 hover:bg-rva-copper-800 text-white font-bold px-6 py-3 rounded-full transition-colors w-fit"
                     >
-                      Plan a Trip
+                      Check availability
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
@@ -119,9 +119,9 @@ export default async function DestinationsPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contact"
-              className="bg-rva-copper hover:bg-rva-copper-light text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block"
+              className="bg-rva-copper-700 hover:bg-rva-copper-800 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block"
             >
-              Get a Quote
+              Check availability
             </Link>
             <a
               href="tel:+19704563666"

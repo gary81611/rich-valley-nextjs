@@ -179,7 +179,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === 'sending'}
-        className="w-full bg-rva-copper hover:bg-rva-copper-light disabled:opacity-50 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-lg"
+        className="w-full bg-rva-copper-700 hover:bg-rva-copper-800 disabled:opacity-50 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-lg"
       >
         {status === 'sending' ? 'Sending...' : 'Send Message'}
       </button>

@@ -37,7 +37,7 @@ export default function NewsletterSignup({ siteKey, variant }: NewsletterSignupP
 
   const isAlp = variant === 'alpenglow'
   const bgClass = isAlp ? 'bg-alp-navy' : 'bg-rva-forest'
-  const accentClass = isAlp ? 'bg-alp-gold hover:bg-alp-gold-light text-alp-navy' : 'bg-rva-copper hover:bg-rva-copper-light text-white'
+  const accentClass = isAlp ? 'bg-alp-gold hover:bg-alp-gold-light text-alp-navy' : 'bg-rva-copper-700 hover:bg-rva-copper-800 text-white'
   const labelColor = isAlp ? 'text-alp-gold' : 'text-rva-copper-light'
 
   if (status === 'success') {
