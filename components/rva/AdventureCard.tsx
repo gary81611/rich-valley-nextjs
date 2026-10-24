@@ -57,7 +57,7 @@ export default function AdventureCard({
         ) : null}
       </div>
       <div className="flex flex-1 flex-col p-6">
-        <h3 className="font-playfair text-[22px] font-semibold leading-7 text-rva-forest">{title}</h3>
+        <h2 className="font-playfair text-[22px] font-semibold leading-7 text-rva-forest">{title}</h2>
         {meta ? <p className="mt-2 text-sm text-rva-forest/80">{meta}</p> : null}
         {priceNote ? <p className="mt-2 text-sm font-semibold text-rva-copper-700">{priceNote}</p> : null}
         {excerpt ? <p className="mt-3 line-clamp-3 text-[17px] leading-7 text-rva-forest/80">{excerpt}</p> : null}

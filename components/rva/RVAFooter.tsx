@@ -26,7 +26,7 @@ export default function RVAFooter() {
             <p className="text-white/65 text-sm leading-relaxed">{rvaData.description}</p>
           </div>
           <div>
-            <h4 className="font-playfair text-lg font-semibold mb-5 text-rva-copper-light">Adventures</h4>
+            <p className="font-playfair text-lg font-semibold mb-5 text-rva-copper-light">Adventures</p>
             <ul>
               {RVA_ACTIVITIES.map((a) => (
                 <li key={a.href}>
@@ -36,7 +36,7 @@ export default function RVAFooter() {
             </ul>
           </div>
           <div>
-            <h4 className="font-playfair text-lg font-semibold mb-5 text-rva-copper-light">Quick Links</h4>
+            <p className="font-playfair text-lg font-semibold mb-5 text-rva-copper-light">Quick Links</p>
             <ul>
               <li><a href="/conditions" className={footerLink}>River &amp; Trail Conditions</a></li>
               <li><a href="/guides" className={footerLink}>Meet Our Guides</a></li>
@@ -58,7 +58,7 @@ export default function RVAFooter() {
             </ul>
           </div>
           <div>
-            <h4 className="font-playfair text-lg font-semibold mb-5 text-rva-copper-light">Contact</h4>
+            <p className="font-playfair text-lg font-semibold mb-5 text-rva-copper-light">Contact</p>
             <div className="space-y-3 text-white/70 text-sm">
               <p>{rvaData.location}</p>
               <a href={phoneHref} className={`${footerLink}`}>{phone}</a>
