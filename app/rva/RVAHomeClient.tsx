@@ -161,7 +161,7 @@ export default function RVAHomeClient({
             <span className="text-rva-copper-light italic">&amp; the Roaring Fork Valley</span>
           </h1>
           <p className="rva-speak-hero-intro text-xl md:text-2xl text-white/85 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
-            Rich Valley Adventures is Aspen’s outdoor guide company — expert-led fly fishing, hiking, mountain biking, and elevated camping. Paddleboarding is a rental from $100, not a guided trip. Full-day float trips start at $1,400 for 2 people. Since 2012.
+            Rich Valley Adventures is Aspen’s outdoor guide company — expert-led fly fishing, hiking, mountain biking, and elevated camping. Since 2012.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <RvaButton href="#adventures" size="lg" tone="on-dark">
