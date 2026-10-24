@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import RvaButton from '@/components/rva/Button'
 import { createClient } from '@/lib/supabase'
 import {
   formatFishingReportFeedDate,
@@ -9,10 +10,10 @@ import {
 } from '@/lib/fishing-report-feed'
 
 const CONDITION_COLORS: Record<string, string> = {
-  good: '#16A34A',
-  fair: '#CA8A04',
-  low: '#3B82F6',
-  high: '#DC2626',
+  good: '#15803D',
+  fair: '#A16207',
+  low: '#1D4ED8',
+  high: '#B91C1C',
 }
 
 const CONDITION_LABELS: Record<string, string> = {
@@ -67,10 +68,10 @@ const BIRD_FALLBACK = 'Birdwatching highlights — check back soon.'
 function FishingFeedArticle({ item, featured = false }: { item: FishingReportFeedItem; featured?: boolean }) {
   return (
     <article>
-      <p className="text-xs font-semibold text-rva-copper uppercase tracking-wide mb-1">
+      <p className="text-xs font-semibold text-rva-copper-700 uppercase tracking-wide mb-1">
         {item.source === 'voice' ? 'Guide call-in' : 'Weekly report'}
       </p>
-      <p className={featured ? 'text-sm text-rva-forest/60 mb-1' : 'text-xs text-rva-forest/50'}>
+      <p className={featured ? 'text-sm text-rva-forest/80 mb-1' : 'text-xs text-rva-forest/80'}>
         {formatFishingReportFeedDate(item)}
       </p>
       {item.river ? (
@@ -103,7 +104,7 @@ function FishingFeedArticle({ item, featured = false }: { item: FishingReportFee
         </div>
       )}
       {item.reporter_display ? (
-        <p className="text-sm text-rva-forest/60 mt-4">Reported by {item.reporter_display}</p>
+        <p className="text-sm text-rva-forest/80 mt-4">Reported by {item.reporter_display}</p>
       ) : null}
     </article>
   )
@@ -169,7 +170,7 @@ export default function ConditionsPageClient({ feed }: { feed: FishingReportFeed
     <div className="min-h-screen bg-rva-cream font-inter">
       <div className="bg-rva-forest-dark pt-32 pb-16">
         <div className="max-w-5xl mx-auto px-6 text-center">
-          <p className="text-rva-copper text-sm font-semibold uppercase tracking-[0.2em] mb-3">Live Conditions</p>
+          <p className="text-rva-copper-light text-sm font-semibold uppercase tracking-[0.2em] mb-3">Live Conditions</p>
           <h1 className="font-playfair text-4xl md:text-5xl text-white font-light mb-4">River &amp; Trail Conditions</h1>
           <p className="text-white/60">Real-time USGS flow data for the Roaring Fork Valley</p>
         </div>
@@ -194,23 +195,23 @@ export default function ConditionsPageClient({ feed }: { feed: FishingReportFeed
         <div className="mb-12">
           <div className="flex items-center justify-between mb-6">
             <h2 className="font-playfair text-2xl text-rva-forest-dark">Current Flow Rates</h2>
-            {fetchedAt && <p className="text-xs text-rva-forest/50">Updated: {new Date(fetchedAt).toLocaleString()}</p>}
+            {fetchedAt && <p className="text-xs text-rva-forest/80">Updated: {new Date(fetchedAt).toLocaleString()}</p>}
           </div>
 
           {loading ? (
-            <div className="text-center py-12 text-rva-forest/50">Loading USGS data...</div>
+            <div className="text-center py-12 text-rva-forest/80">Loading USGS data...</div>
           ) : stations.length === 0 ? (
-            <div className="text-center py-12 text-rva-forest/50">Unable to fetch river data. Check back shortly.</div>
+            <div className="text-center py-12 text-rva-forest/80">Unable to fetch river data. Check back shortly.</div>
           ) : (
             <div className="grid md:grid-cols-2 gap-4">
               {stations.map((s) => (
-                <div key={s.siteCode} className="bg-white p-5 rounded-lg border border-rva-copper/10">
+                <div key={s.siteCode} className="bg-white p-5 rounded-lg border border-rva-copper-700/10">
                   <div className="flex items-start justify-between mb-3">
                     <h3 className="font-semibold text-rva-forest-dark text-sm leading-tight">{s.name}</h3>
                     {s.condition && (
                       <span
                         className="text-xs font-semibold px-2 py-0.5 rounded-full"
-                        style={{ background: CONDITION_COLORS[s.condition] + '20', color: CONDITION_COLORS[s.condition] }}
+                        style={{ background: CONDITION_COLORS[s.condition], color: '#fff' }}
                       >
                         {s.condition.toUpperCase()}
                       </span>
@@ -220,31 +221,31 @@ export default function ConditionsPageClient({ feed }: { feed: FishingReportFeed
                     {s.discharge_cfs !== undefined && (
                       <div>
                         <p className="text-2xl font-light text-rva-forest-dark">
-                          {Math.round(s.discharge_cfs)} <span className="text-sm text-rva-forest/50">cfs</span>
+                          {Math.round(s.discharge_cfs)} <span className="text-sm text-rva-forest/80">cfs</span>
                         </p>
-                        <p className="text-xs text-rva-forest/40">Discharge</p>
+                        <p className="text-xs text-rva-forest/80">Discharge</p>
                       </div>
                     )}
                     {s.water_temp_f !== undefined && (
                       <div>
                         <p className="text-2xl font-light text-rva-forest-dark">
-                          {s.water_temp_f}&deg; <span className="text-sm text-rva-forest/50">F</span>
+                          {s.water_temp_f}&deg; <span className="text-sm text-rva-forest/80">F</span>
                         </p>
-                        <p className="text-xs text-rva-forest/40">Water Temp</p>
+                        <p className="text-xs text-rva-forest/80">Water Temp</p>
                       </div>
                     )}
                   </div>
-                  {s.condition && <p className="text-xs text-rva-forest/60 mt-3">{CONDITION_LABELS[s.condition]}</p>}
+                  {s.condition && <p className="text-xs text-rva-forest/80 mt-3">{CONDITION_LABELS[s.condition]}</p>}
                 </div>
               ))}
             </div>
           )}
-          <p className="text-xs text-rva-forest/40 mt-4">Data source: USGS Water Services &middot; Updated hourly</p>
+          <p className="text-xs text-rva-forest/80 mt-4">Data source: USGS Water Services &middot; Updated hourly</p>
         </div>
 
         {/* Latest report meta */}
         {conditionsReport && (
-          <p className="text-sm text-rva-forest/60 mb-6">
+          <p className="text-sm text-rva-forest/80 mb-6">
             Last updated{' '}
             {new Date(conditionsReport.report_date).toLocaleDateString('en-US', {
               month: 'long',
@@ -256,13 +257,13 @@ export default function ConditionsPageClient({ feed }: { feed: FishingReportFeed
         )}
 
         {/* One merged feed: voice call-ins and published CMS reports, newest first. */}
-        <div className="mb-12 bg-white p-8 rounded-lg border border-rva-copper/10">
+        <div className="mb-12 bg-white p-8 rounded-lg border border-rva-copper-700/10">
           <h2 className="font-playfair text-2xl text-rva-forest-dark mb-4">Latest Fishing Report</h2>
           {feed.length > 0 ? (
             <div className="mb-8">
               <FishingFeedArticle item={feed[0]} featured />
               {feed.length > 1 && (
-                <ul className="mt-6 space-y-4 border-t border-rva-copper/10 pt-6">
+                <ul className="mt-6 space-y-4 border-t border-rva-copper-700/10 pt-6">
                   {feed.slice(1).map((item) => (
                     <li key={`${item.source}-${item.id}`}>
                       <FishingFeedArticle item={item} />
@@ -274,7 +275,7 @@ export default function ConditionsPageClient({ feed }: { feed: FishingReportFeed
           ) : (
             <div className="bg-rva-cream p-6 rounded-lg mb-4">
               {FISHING_FALLBACK}
-              <p className="text-xs text-rva-copper mt-4">
+              <p className="text-xs text-rva-copper-700 mt-4">
                 Check back for the latest from the river — or{' '}
                 <Link href="/contact" className="underline">
                   book a guided trip
@@ -322,7 +323,7 @@ export default function ConditionsPageClient({ feed }: { feed: FishingReportFeed
         </div>
 
         {/* Trail / wildlife / birds */}
-        <div className="mb-12 bg-white p-8 rounded-lg border border-rva-copper/10">
+        <div className="mb-12 bg-white p-8 rounded-lg border border-rva-copper-700/10">
           <h2 className="font-playfair text-2xl text-rva-forest-dark mb-4">Trail Conditions</h2>
 
           {conditionsReport?.trail_conditions?.trim() ? (
@@ -340,7 +341,7 @@ export default function ConditionsPageClient({ feed }: { feed: FishingReportFeed
               </ul>
             </div>
           ) : !conditionsReport ? (
-            <p className="text-sm text-rva-forest/50 italic mb-8">{TRAIL_FALLBACK}</p>
+            <p className="text-sm text-rva-forest/80 italic mb-8">{TRAIL_FALLBACK}</p>
           ) : null}
 
           {conditionsReport?.wildlife_notes?.trim() ? (
@@ -363,7 +364,7 @@ export default function ConditionsPageClient({ feed }: { feed: FishingReportFeed
           ) : !conditionsReport ? (
             <div className="mb-8">
               <h3 className="font-semibold text-rva-forest-dark mb-2">Wildlife Awareness</h3>
-              <p className="text-sm text-rva-forest/50 italic">{TRAIL_FALLBACK}</p>
+              <p className="text-sm text-rva-forest/80 italic">{TRAIL_FALLBACK}</p>
             </div>
           ) : null}
 
@@ -387,7 +388,7 @@ export default function ConditionsPageClient({ feed }: { feed: FishingReportFeed
           ) : !conditionsReport ? (
             <div>
               <h3 className="font-semibold text-rva-forest-dark mb-2">Birdwatching Highlights</h3>
-              <p className="text-sm text-rva-forest/50 italic">{BIRD_FALLBACK}</p>
+              <p className="text-sm text-rva-forest/80 italic">{BIRD_FALLBACK}</p>
             </div>
           ) : null}
 
@@ -409,9 +410,9 @@ export default function ConditionsPageClient({ feed }: { feed: FishingReportFeed
         <div className="text-center bg-rva-forest-dark rounded-lg p-10">
           <h2 className="font-playfair text-2xl text-white mb-3">Book a Guided Adventure</h2>
           <p className="text-white/60 mb-6">Expert local guides, all gear provided, door-to-door transport by Aspen Alpenglow Limousine.</p>
-          <Link href="/contact" className="inline-block bg-rva-copper-700 hover:bg-rva-copper-800 text-white px-8 py-3 rounded-full font-semibold transition-colors">
+          <RvaButton href="/contact" tone="on-dark">
             Check availability
-          </Link>
+          </RvaButton>
         </div>
       </div>
     </div>

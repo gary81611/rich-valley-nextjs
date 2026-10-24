@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import RvaButton from '@/components/rva/Button'
 
 /** Row shape from `locations` table — used by /locations/[slug] and /service-areas/[slug] fallback. */
 export type LocationDetailRow = {
@@ -28,7 +29,7 @@ export default function LocationDetailView({ loc, backLink }: Props) {
     <div className="min-h-screen bg-rva-cream font-inter">
       <div className="bg-rva-forest-dark pt-32 pb-16">
         <div className="max-w-5xl mx-auto px-6">
-          <Link href={backLink.href} className="text-rva-copper text-sm hover:underline mb-4 inline-block">
+          <Link href={backLink.href} className="text-rva-copper-700 text-sm hover:underline mb-4 inline-block">
             {backLink.label}
           </Link>
           <h1 className="font-playfair text-4xl md:text-5xl text-white font-light mb-2">{loc.name}</h1>
@@ -48,7 +49,7 @@ export default function LocationDetailView({ loc, backLink }: Props) {
             <ul className="space-y-2">
               {activities.map((a) => (
                 <li key={a} className="flex items-center gap-2 text-sm text-rva-forest/70">
-                  <span className="text-rva-copper">✓</span> {a}
+                  <span className="text-rva-copper-700">✓</span> {a}
                 </li>
               ))}
             </ul>
@@ -58,14 +59,14 @@ export default function LocationDetailView({ loc, backLink }: Props) {
             <ul className="space-y-2">
               {rivers.map((r) => (
                 <li key={r} className="flex items-center gap-2 text-sm text-rva-forest/70">
-                  <span className="text-rva-copper">🎣</span> {r}
+                  <span className="text-rva-copper-700">🎣</span> {r}
                 </li>
               ))}
             </ul>
             <h3 className="font-semibold text-rva-forest-dark mt-6 mb-2 text-sm">Highlights</h3>
             <ul className="space-y-1">
               {highlights.map((h) => (
-                <li key={h} className="text-xs text-rva-forest/60">
+                <li key={h} className="text-xs text-rva-forest/80">
                   • {h}
                 </li>
               ))}
@@ -91,7 +92,7 @@ export default function LocationDetailView({ loc, backLink }: Props) {
             href="https://aspenalpenglowlimousine.com/pricing"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-rva-copper hover:underline"
+            className="text-sm text-rva-copper-700 hover:underline"
           >
             View transport pricing →
           </a>
@@ -105,7 +106,7 @@ export default function LocationDetailView({ loc, backLink }: Props) {
                 ? 'A full-day float trip is from $1,400 for 2 people (1 boat, 1 captain). Additional adults are $375 each and kids are $175. It covers an 8–12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation are included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up.'
                 : f.a
               return (
-              <details key={f.q} className="group mb-3 bg-white rounded-lg border border-rva-copper/10">
+              <details key={f.q} className="group mb-3 bg-white rounded-lg border border-rva-copper-700/10">
                 <summary className="p-4 cursor-pointer font-medium text-rva-forest-dark text-sm">{f.q}</summary>
                 <p className="px-4 pb-4 text-sm text-rva-forest/70">{answer}</p>
               </details>
@@ -115,12 +116,7 @@ export default function LocationDetailView({ loc, backLink }: Props) {
         )}
 
         <div className="text-center">
-          <Link
-            href="/contact"
-            className="inline-block bg-rva-copper-700 hover:bg-rva-copper-800 text-white px-8 py-3 rounded-full font-semibold transition-colors"
-          >
-            Check availability
-          </Link>
+          <RvaButton href="/contact">Check availability</RvaButton>
         </div>
       </div>
 

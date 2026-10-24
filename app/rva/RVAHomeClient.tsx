@@ -102,7 +102,7 @@ export default function RVAHomeClient({
         supabase.from('adventures').select('*').eq('is_active', true).order('display_order'),
         supabase.from('testimonials').select('*').eq('is_active', true).eq('site_key', 'rva'),
         supabase.from('gallery_images').select('*').eq('is_active', true).eq('site_key', 'rva').order('display_order'),
-        supabase.from('site_settings').select('phone, settings').eq('site_key', 'rva').single(),
+        supabase.from('site_settings').select('phone, stats').eq('site_key', 'rva').single(),
       ])
       if (advRes.data && advRes.data.length > 0) {
         setAdventures(
@@ -123,8 +123,8 @@ export default function RVAHomeClient({
         setPhone(settingsRes.data.phone)
         setPhoneHref(`tel:+1${settingsRes.data.phone.replace(/\D/g, '')}`)
       }
-      if (settingsRes.data?.settings?.stats) {
-        const published = rvaPublicStats(settingsRes.data.settings.stats as { value: string; label: string }[])
+      if (Array.isArray(settingsRes.data?.stats)) {
+        const published = rvaPublicStats(settingsRes.data.stats as { value: string; label: string }[])
         if (published.length > 0) setStats(published)
       }
     }
@@ -192,7 +192,7 @@ export default function RVAHomeClient({
         </div>
       </section>
 
-      <section aria-label="Private ranch fishing" className="bg-rva-cream border-b border-rva-copper/20">
+      <section aria-label="Private ranch fishing" className="bg-rva-cream border-b border-rva-copper-700/20">
         <div className="max-w-7xl mx-auto px-6 py-10 md:py-14 grid md:grid-cols-2 gap-8 items-center">
           <div className="relative aspect-[16/10] rounded-2xl overflow-hidden shadow-lg">
             <Image
@@ -210,7 +210,7 @@ export default function RVAHomeClient({
             />
           </div>
           <div>
-            <p className="font-cormorant text-rva-copper text-sm tracking-[0.25em] uppercase mb-3">Signature trip</p>
+            <p className="font-cormorant text-rva-copper-700 text-sm tracking-[0.25em] uppercase mb-3">Signature trip</p>
             <h2 className="font-playfair text-3xl md:text-4xl text-rva-forest font-bold mb-4 leading-tight">
               Private ranch fly fishing at Spring Creek Ranch, Carbondale
             </h2>
@@ -223,7 +223,7 @@ export default function RVAHomeClient({
       </section>
 
       {/* Live conditions — informational strip above adventure cards */}
-      <section className="bg-gradient-to-r from-rva-forest via-rva-forest-dark to-rva-forest border-y border-rva-copper/20" aria-label="Live river conditions">
+      <section className="bg-gradient-to-r from-rva-forest via-rva-forest-dark to-rva-forest border-y border-rva-copper-700/20" aria-label="Live river conditions">
         <div className="max-w-7xl mx-auto px-6 py-8 md:py-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div className="flex-1 min-w-0">
             <p className="font-cormorant text-rva-copper-light text-sm tracking-[0.25em] uppercase mb-2">Live River Conditions</p>
@@ -262,7 +262,7 @@ export default function RVAHomeClient({
                 </Link>
               </div>
             </div>
-            <div className="flex justify-center gap-3 mt-8">
+            <div className="mt-8 flex max-w-full flex-wrap justify-center gap-2">
               {[
                 { label: 'All', value: null },
                 { label: 'Summer', value: 'summer' },
@@ -272,7 +272,7 @@ export default function RVAHomeClient({
                 <button
                   key={label}
                   onClick={() => setActiveSeason(value)}
-                  className={`min-h-11 px-4 rounded-full border text-sm font-medium transition-colors ${
+                  className={`min-h-11 whitespace-nowrap rounded-full border px-4 text-sm font-medium transition-colors ${
                     activeSeason === value
                       ? 'bg-rva-copper-700 text-white border-rva-copper-700'
                       : 'bg-white text-rva-forest border-rva-forest/20 hover:border-rva-copper-700'
@@ -366,7 +366,7 @@ export default function RVAHomeClient({
       <section className="py-16 bg-rva-cream">
         <div className="max-w-3xl mx-auto px-6">
           <ScrollReveal className="text-center mb-10">
-            <p className="font-cormorant text-rva-copper text-lg tracking-widest uppercase mb-4">River Conditions</p>
+            <p className="font-cormorant text-rva-copper-700 text-lg tracking-widest uppercase mb-4">River Conditions</p>
             <h2 className="font-playfair text-4xl md:text-5xl text-rva-forest font-bold">Latest Fishing Report</h2>
           </ScrollReveal>
           <ScrollReveal delay={100}>
@@ -387,13 +387,13 @@ export default function RVAHomeClient({
                   />
                 </div>
               )}
-              <p className="text-xs font-semibold uppercase tracking-wide text-rva-copper mb-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-rva-copper-700 mb-2">
                 {featuredReport.source === 'voice' ? 'Guide call-in' : 'Weekly report'}
               </p>
               <h3 className="font-playfair text-2xl text-rva-forest font-semibold mb-2">
                 {featuredReport.title || featuredReport.river}
               </h3>
-              <p className="text-rva-copper text-sm mb-4">
+              <p className="text-rva-copper-700 text-sm mb-4">
                 {formatFishingReportFeedDate(featuredReport)}
                 {featuredReport.reporter_display ? ` · ${featuredReport.reporter_display}` : ''}
               </p>
@@ -405,7 +405,7 @@ export default function RVAHomeClient({
               </p>
               <Link
                 href="/conditions"
-                className="inline-flex items-center gap-2 text-rva-copper font-semibold hover:text-rva-copper-light transition-colors"
+                className="inline-flex items-center gap-2 text-rva-copper-700 font-semibold hover:text-rva-copper-light transition-colors"
               >
                 Read Full Report
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
@@ -421,18 +421,18 @@ export default function RVAHomeClient({
       <section className="py-16 bg-rva-cream-dark">
         <div className="max-w-5xl mx-auto px-6">
           <ScrollReveal className="text-center mb-10">
-            <p className="font-cormorant text-rva-copper text-lg tracking-widest uppercase mb-4">What Guests Say</p>
+            <p className="font-cormorant text-rva-copper-800 text-lg tracking-widest uppercase mb-4">What Guests Say</p>
             <h2 className="font-playfair text-4xl md:text-5xl text-rva-forest font-bold">Stories from the Valley</h2>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 gap-8">
             {testimonials.map((t, i) => (
               <ScrollReveal key={t.name} delay={i * 150}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm relative">
-                  <div className="font-playfair text-7xl text-rva-copper/20 absolute top-4 left-6 leading-none select-none">&ldquo;</div>
+                  <div className="font-playfair text-7xl text-rva-copper-700/20 absolute top-4 left-6 leading-none select-none" aria-hidden="true">&ldquo;</div>
                   <p className="text-gray-700 text-lg leading-relaxed italic mb-6 pt-6 relative z-10">{t.quote}</p>
                   <div className="border-t border-rva-cream-dark pt-4">
                     <p className="font-semibold text-rva-forest">{t.name}</p>
-                    <p className="text-rva-copper text-sm">{t.location}</p>
+                    <p className="text-rva-copper-700 text-sm">{t.location}</p>
                   </div>
                 </div>
               </ScrollReveal>
@@ -474,12 +474,9 @@ export default function RVAHomeClient({
           </div>
           {gallery.length > 12 && (
             <ScrollReveal className="text-center mt-12">
-              <Link
-                href="/gallery"
-                className="inline-block bg-rva-copper hover:bg-rva-copper-dark text-white font-semibold px-8 py-3 rounded-full transition-colors duration-300"
-              >
+              <RvaButton href="/gallery" size="lg" tone="on-dark">
                 See All Photos
-              </Link>
+              </RvaButton>
             </ScrollReveal>
           )}
         </div>
@@ -490,14 +487,14 @@ export default function RVAHomeClient({
       <section id="contact" className="py-16 bg-rva-cream">
         <div className="max-w-3xl mx-auto px-6">
           <ScrollReveal className="text-center mb-8">
-            <p className="font-cormorant text-rva-copper text-lg tracking-widest uppercase mb-4">Reserve Your Experience</p>
+            <p className="font-cormorant text-rva-copper-700 text-lg tracking-widest uppercase mb-4">Reserve Your Experience</p>
             <h2 className="font-playfair text-4xl md:text-5xl text-rva-forest font-bold mb-4">Book Your Adventure</h2>
             <p className="text-gray-600 text-lg">Tell us what you have in mind and we&apos;ll get back to you quickly with availability and pricing.</p>
           </ScrollReveal>
           <ScrollReveal delay={200}>
             <div className="bg-white rounded-2xl p-8 md:p-12 shadow-lg">
               <BookingPlaceholder
-                accentColor="bg-rva-copper"
+                accentColor="bg-rva-copper-700"
                 accentHover="hover:bg-rva-copper-light"
                 phone={phone}
                 phoneHref={phoneHref}

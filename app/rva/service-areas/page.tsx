@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { rvaData } from '@/lib/site-data'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { RVA_GLOBAL_PILLAR_BLOG_LINKS } from '@/lib/rva-blog-pillars'
+import RvaButton from '@/components/rva/Button'
 
 export const dynamic = 'force-dynamic'
 
@@ -66,11 +67,11 @@ export default async function ServiceAreasPage() {
           <p className="font-playfair text-lg font-bold text-rva-forest mb-3">Trip planning guides</p>
           <p className="leading-relaxed mb-4">
             Fly fishing, hiking, and family summer trips — start here, then{' '}
-            <Link href="/adventures" className="text-rva-copper font-medium hover:underline">
+            <Link href="/adventures" className="text-rva-copper-700 font-medium hover:underline">
               browse adventures
             </Link>{' '}
             or{' '}
-            <Link href="/contact" className="text-rva-copper font-medium hover:underline">
+            <Link href="/contact" className="text-rva-copper-700 font-medium hover:underline">
               contact us to book
             </Link>
             .
@@ -78,7 +79,7 @@ export default async function ServiceAreasPage() {
           <ul className="space-y-2 text-left max-w-xl mx-auto">
             {RVA_GLOBAL_PILLAR_BLOG_LINKS.map((l) => (
               <li key={l.href}>
-                <Link href={l.href} className="text-rva-copper font-medium hover:underline">
+                <Link href={l.href} className="text-rva-copper-700 font-medium hover:underline">
                   {l.label}
                 </Link>
               </li>
@@ -100,13 +101,13 @@ export default async function ServiceAreasPage() {
                   className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-8 border border-rva-cream-dark hover:-translate-y-1"
                 >
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 bg-rva-copper/10 rounded-full flex items-center justify-center">
-                      <svg className="w-5 h-5 text-rva-copper" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-10 h-10 bg-rva-copper-700/10 rounded-full flex items-center justify-center">
+                      <svg className="w-5 h-5 text-rva-copper-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
                     </div>
-                    <h2 className="font-playfair text-xl font-bold text-rva-forest group-hover:text-rva-copper transition-colors">
+                    <h2 className="font-playfair text-xl font-bold text-rva-forest group-hover:text-rva-copper-700 transition-colors">
                       {area.name}
                     </h2>
                   </div>
@@ -131,18 +132,12 @@ export default async function ServiceAreasPage() {
             Contact us to plan your trip.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/adventures"
-              className="bg-rva-copper-700 hover:bg-rva-copper-800 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block"
-            >
+            <RvaButton href="/adventures" size="lg" tone="on-dark">
               View Adventures
-            </Link>
-            <Link
-              href="/contact"
-              className="border-2 border-white text-white hover:bg-white hover:text-rva-forest px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block"
-            >
+            </RvaButton>
+            <RvaButton href="/contact" variant="secondary" size="lg" tone="on-dark">
               Contact Us
-            </Link>
+            </RvaButton>
           </div>
         </div>
       </section>

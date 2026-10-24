@@ -28,3 +28,16 @@
   outline: 2px solid #e8c4a0;
   outline-offset: 3px;
 }
+
+/* Fixed header and the mobile sticky bar. Focus must scroll clear of both.
+   Override the site-wide smooth scroll so focus lands before it is measured. */
+html:has(.rva-site) {
+  scroll-behavior: auto;
+  scroll-padding-top: 6.5rem;
+  scroll-padding-bottom: 7rem;
+}
+
+.rva-site :is(a, button, input, select, textarea, summary, [tabindex]) {
+  scroll-margin-top: 6.5rem;
+  scroll-margin-bottom: 7rem;
+}

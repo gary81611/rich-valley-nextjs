@@ -38,6 +38,7 @@ type Props = {
   external?: boolean
   type?: 'button' | 'submit'
   disabled?: boolean
+  onClick?: () => void
 }
 
 /** RVA buttons: copper-700 fill, darker hover, pill, 48px or 56px. */
@@ -51,9 +52,10 @@ export default function RvaButton({
   external = false,
   type = 'button',
   disabled = false,
+  onClick,
 }: Props) {
   const classes = [
-    'inline-flex items-center justify-center rounded-full font-inter text-[15px] font-semibold transition-colors',
+    'inline-flex items-center justify-center rounded-full font-inter text-[15px] font-semibold transition-colors disabled:opacity-50',
     'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[#E8C4A0]',
     variant === 'text' ? '' : sizeClass[size],
     variantClass[variant][tone],
@@ -64,7 +66,7 @@ export default function RvaButton({
 
   if (!href) {
     return (
-      <button type={type} className={classes} disabled={disabled}>
+      <button type={type} className={classes} disabled={disabled} onClick={onClick}>
         {children}
       </button>
     )

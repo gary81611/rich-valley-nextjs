@@ -58,7 +58,7 @@ export default function LandingPageTemplate({ site, title, content }: Props) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {section.items?.map((item, j) => (
                     <div key={j} className={`p-6 rounded-xl border ${rva ? 'border-rva-sage/30 bg-white' : 'border-alp-slate/20 bg-white'}`}>
-                      <div className={`w-8 h-8 rounded-full mb-3 flex items-center justify-center ${rva ? 'bg-rva-copper' : 'bg-alp-gold'}`}>
+                      <div className={`w-8 h-8 rounded-full mb-3 flex items-center justify-center ${rva ? 'bg-rva-copper-700' : 'bg-alp-gold'}`}>
                         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
@@ -75,7 +75,7 @@ export default function LandingPageTemplate({ site, title, content }: Props) {
 
         if (section.type === 'cta') {
           return (
-            <section key={i} className={`py-16 px-6 text-center ${rva ? 'bg-rva-copper text-white' : 'bg-alp-gold text-alp-navy-deep'}`}>
+            <section key={i} className={`py-16 px-6 text-center ${rva ? 'bg-rva-copper-700 text-white' : 'bg-alp-gold text-alp-navy-deep'}`}>
               <div className="max-w-xl mx-auto">
                 {section.title && (
                   <h2 className="font-playfair text-3xl font-bold mb-4">{section.title}</h2>

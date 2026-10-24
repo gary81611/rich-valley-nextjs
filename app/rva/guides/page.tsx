@@ -19,7 +19,7 @@ export default async function GuidesPage() {
     <div className="min-h-screen bg-rva-cream font-inter">
       <div className="bg-rva-forest-dark pt-32 pb-16">
         <div className="max-w-5xl mx-auto px-6 text-center">
-          <p className="text-rva-copper text-sm font-semibold uppercase tracking-[0.2em] mb-3">Our Team</p>
+          <p className="text-rva-copper-light text-sm font-semibold uppercase tracking-[0.2em] mb-3">Our Team</p>
           <h1 className="font-playfair text-4xl md:text-5xl text-white font-light mb-4">Meet Your Guides</h1>
           <p className="text-white/60">First Aid certified. Local experts. Passionate about the outdoors.</p>
         </div>
@@ -28,7 +28,7 @@ export default async function GuidesPage() {
       <div className="max-w-5xl mx-auto px-6 py-16">
         {guides.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-rva-forest/60 text-lg">Our guide profiles are being updated. Check back soon!</p>
+            <p className="text-rva-forest/80 text-lg">Our guide profiles are being updated. Check back soon!</p>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -39,9 +39,9 @@ export default async function GuidesPage() {
         )}
 
         <div className="mt-16 text-center">
-          <p className="text-rva-forest/60 mb-6">
+          <p className="text-rva-forest/80 mb-6">
             All transportation provided by{' '}
-            <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" className="text-rva-copper-700 hover:underline">
+            <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" className="text-rva-copper-700 underline underline-offset-2 hover:text-rva-forest">
               Aspen Alpenglow Limousine
             </a>
           </p>

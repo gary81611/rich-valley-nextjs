@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import RvaButton from '@/components/rva/Button'
 
 const RVA_SERVICES = [
   { id: 'fly-fishing', label: 'Fly Fishing', icon: '🎣' },
@@ -45,8 +46,8 @@ export default function InquiryForm({ brand, initialServiceId }: Props) {
 
   const accent = brand === 'rva' ? 'bg-rva-copper-700 hover:bg-rva-copper-800' : 'bg-alp-gold hover:bg-alp-gold-light'
   const accentText = brand === 'rva' ? 'text-rva-copper-700' : 'text-alp-gold'
-  const accentBorder = brand === 'rva' ? 'border-rva-copper' : 'border-alp-gold'
-  const accentBg = brand === 'rva' ? 'bg-rva-copper/5' : 'bg-alp-gold/5'
+  const accentBorder = brand === 'rva' ? 'border-rva-copper-700' : 'border-alp-gold'
+  const accentBg = brand === 'rva' ? 'bg-rva-copper-700/5' : 'bg-alp-gold/5'
 
   const handleSubmit = async () => {
     setStatus('sending')
@@ -89,12 +90,12 @@ export default function InquiryForm({ brand, initialServiceId }: Props) {
         {[1, 2, 3].map(s => (
           <div key={s} className="flex items-center gap-2">
             <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
-              s <= step ? `${accent.split(' ')[0]} text-white` : 'bg-gray-100 text-gray-400'
+              s <= step ? `${accent.split(' ')[0]} text-white` : 'bg-gray-100 text-gray-700'
             }`}>{s}</div>
             {s < 3 && <div className={`w-8 h-0.5 ${s < step ? accent.split(' ')[0] : 'bg-gray-200'}`} />}
           </div>
         ))}
-        <span className="text-sm text-gray-400 ml-2">Step {step} of 3</span>
+        <span className="text-sm text-gray-700 ml-2">Step {step} of 3</span>
       </div>
 
       {/* Step 1: Service Selection */}
@@ -142,10 +143,16 @@ export default function InquiryForm({ brand, initialServiceId }: Props) {
                 ))}
               </div>
             </div>
+            {brand === 'rva' ? (
+              <RvaButton type="button" disabled={!date || !groupSize} className="w-full" onClick={() => { if (date && groupSize) setStep(3) }}>
+                Next
+              </RvaButton>
+            ) : (
             <button onClick={() => { if (date && groupSize) setStep(3) }} disabled={!date || !groupSize}
               className={`w-full py-3 rounded-xl text-white font-semibold transition-colors disabled:opacity-40 ${accent}`}>
               Next
             </button>
+            )}
           </div>
         </div>
       )}
@@ -178,10 +185,16 @@ export default function InquiryForm({ brand, initialServiceId }: Props) {
               <textarea value={details} onChange={e => setDetails(e.target.value)} rows={3} placeholder="Anything else we should know?"
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-200 resize-none" />
             </div>
+            {brand === 'rva' ? (
+              <RvaButton type="button" disabled={!name || !email || status === 'sending'} className="w-full" onClick={handleSubmit}>
+                {status === 'sending' ? 'Sending...' : 'Send Request'}
+              </RvaButton>
+            ) : (
             <button onClick={handleSubmit} disabled={!name || !email || status === 'sending'}
               className={`w-full py-3 rounded-xl text-white font-semibold transition-colors disabled:opacity-40 ${accent}`}>
               {status === 'sending' ? 'Sending...' : 'Send Request'}
             </button>
+            )}
             {status === 'error' && <p className="text-sm text-red-600 text-center">Something went wrong. Please try again or call 970-456-3666.</p>}
           </div>
         </div>

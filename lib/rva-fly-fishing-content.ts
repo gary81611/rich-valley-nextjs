@@ -72,7 +72,7 @@ We offer half-day and full-day guided trips from May through October on our wadi
 Brown trout averaging 14–18 inches are common, with fish over 20 inches taken regularly by our guides. Hatches of PMDs, caddis, green drakes, and Trico spinners make dry fly fishing thrilling from June through September. In the spring and fall, streamers and nymphs produce aggressive strikes from the river's biggest fish.`,
     },
     {
-      title: "The Frying Pan River — Colorado's Premier Tailwater Fishery",
+      title: 'The Frying Pan River — Tailwater below Ruedi Reservoir',
       content: `Just 15 miles from Basalt, the Frying Pan River below Ruedi Reservoir is widely considered one of the top tailwater fisheries in North America. The cold, nutrient-rich water released from the dam creates an almost year-round midge hatch and supports an extraordinary density of large wild trout — browns and rainbows averaging 16–22 inches.
 
 The Frying Pan demands technical precision: long leaders, small flies, and delicate presentations. Our guides excel at teaching the nuances of tailwater nymphing and the art of fishing size-22 midge clusters to selective risers. This river rewards patience and skill — and the payoff is the fish of a lifetime.`,

@@ -13,7 +13,7 @@ export default function RVAFooter() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-4 gap-12 mb-12">
           <div>
-            <span className="inline-flex items-center justify-center rounded-xl bg-rva-cream px-3.5 py-2.5 shadow-[0_4px_28px_rgba(0,0,0,0.45)] ring-2 ring-rva-copper/40 mb-4">
+            <span className="inline-flex items-center justify-center rounded-xl bg-rva-cream px-3.5 py-2.5 shadow-[0_4px_28px_rgba(0,0,0,0.45)] ring-2 ring-rva-copper-700/40 mb-4">
               <Image
                 src={rvaData.logo}
                 alt="Rich Valley Adventures"
@@ -64,7 +64,7 @@ export default function RVAFooter() {
               <a href={phoneHref} className={`${footerLink}`}>{phone}</a>
               <div className="pt-3 border-t border-white/10">
                 <p className="text-white/70 text-xs mb-2">Sister Company</p>
-                <a href={rvaData.partnerSite.url} target="_blank" rel="noopener noreferrer" className="text-rva-copper-light hover:text-rva-copper transition-colors">
+                <a href={rvaData.partnerSite.url} target="_blank" rel="noopener noreferrer" className="text-rva-copper-light hover:text-rva-copper-700 transition-colors">
                   {rvaData.partnerSite.name} →
                 </a>
               </div>

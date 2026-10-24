@@ -59,3 +59,71 @@ SET content = replace(
   'Groups hike mountain trails together'
 )
 WHERE site_key = 'rva' AND id = '8af65fe5-b495-4287-adf7-1c776d8f23bd';
+
+-- Round 13b. Still NOT APPLIED. Drops superlatives already removed in code.
+-- "uniquely effective" is the published corporate-team-building post (DB only).
+-- Do not invent a new ranking. The replacement only says the group spends the day on the water.
+
+UPDATE blog_posts
+SET content = replace(
+  content,
+  'guided fly fishing is uniquely effective at creating collaboration across hierarchies',
+  'guided fly fishing is a day on the water with the group'
+)
+WHERE site_key = 'rva'
+  AND slug = 'corporate-team-building-roaring-fork-valley'
+  AND content LIKE '%uniquely effective%';
+
+-- pages.content is jsonb. Cast keeps the row valid. updated_at is set by pages_updated_at.
+-- Heading only. The Frying Pan is the tailwater below Ruedi Reservoir, which the page already says.
+
+UPDATE pages
+SET content = replace(
+  content::text,
+  'The Frying Pan River — Colorado''s Premier Tailwater Fishery',
+  'The Frying Pan River — Tailwater below Ruedi Reservoir'
+)::jsonb
+WHERE site_id = 'rva'
+  AND content::text LIKE '%Colorado''s Premier Tailwater Fishery%';
+
+UPDATE pages
+SET content = replace(
+  content::text,
+  'Ruedi Reservoir — Aspen''s Premier SUP Destination',
+  'Ruedi Reservoir'
+)::jsonb
+WHERE site_id = 'rva'
+  AND content::text LIKE '%Aspen''s Premier SUP Destination%';
+
+UPDATE pages
+SET content = replace(
+  content::text,
+  'Aspen''s Premier SUP Destination',
+  'Ruedi Reservoir'
+)::jsonb
+WHERE site_id = 'rva'
+  AND content::text LIKE '%Aspen''s Premier SUP Destination%';
+
+-- Curly apostrophe, if the stored heading uses one. Then collapse a doubled reservoir name.
+UPDATE pages
+SET content = replace(
+  content::text,
+  'Aspen’s Premier SUP Destination',
+  'Ruedi Reservoir'
+)::jsonb
+WHERE site_id = 'rva'
+  AND content::text LIKE '%Aspen’s Premier SUP Destination%';
+
+UPDATE pages
+SET content = replace(content::text, 'Ruedi Reservoir — Ruedi Reservoir', 'Ruedi Reservoir')::jsonb
+WHERE site_id = 'rva'
+  AND content::text LIKE '%Ruedi Reservoir — Ruedi Reservoir%';
+
+UPDATE pages
+SET content = replace(
+  content::text,
+  'Colorado’s Premier Tailwater Fishery',
+  'Tailwater below Ruedi Reservoir'
+)::jsonb
+WHERE site_id = 'rva'
+  AND content::text LIKE '%Colorado’s Premier Tailwater Fishery%';
