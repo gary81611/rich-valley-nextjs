@@ -77,19 +77,40 @@ WHERE site_key = 'rva'
   AND content ILIKE '%uniquely bonding%';
 
 -- Round 13b. Still NOT APPLIED. Drops superlatives already removed in code.
--- "uniquely effective" is the published corporate-team-building post (DB only).
+-- "uniquely effective" is the published corporate-team-building post.
+-- The sentence is in faqs (jsonb array of {question, answer}), not content.
 -- Do not invent a new ranking. The replacement only says the group spends the day on the water.
 
 UPDATE blog_posts
-SET content = regexp_replace(
-  content,
+SET faqs = regexp_replace(
+  faqs::text,
   'guided fly fishing is uniquely effective at creating collaboration across hierarchies',
   'guided fly fishing is a day on the water with the group',
   'gi'
-)
+)::jsonb
 WHERE site_key = 'rva'
-  AND slug = 'corporate-team-building-roaring-fork-valley'
-  AND content ILIKE '%uniquely effective%';
+  AND id = '0d284cf0-35a2-4775-8b3e-b537d658b9ba'
+  AND faqs::text ILIKE '%uniquely effective%';
+
+-- Draft post only. faqs is jsonb. Public RLS hides drafts, so this file
+-- does not quote an unread FAQ sentence. The stored content heading is
+-- "Aspen's Premier Fly Fishing Guide". Replace that whole phrase, and the
+-- shorter "premier fly fishing", only when this row's faqs still say premier.
+UPDATE blog_posts
+SET faqs = regexp_replace(
+  regexp_replace(
+    faqs::text,
+    'Aspen[''’]s Premier Fly Fishing Guide',
+    'Aspen Fly Fishing Guide',
+    'gi'
+  ),
+  'premier fly fishing',
+  'fly fishing',
+  'gi'
+)::jsonb
+WHERE site_key = 'rva'
+  AND id = '82c805c3-b10e-4158-9f15-4eef693eb150'
+  AND faqs::text ILIKE '%premier%';
 
 -- Family fly-fishing post. "After twelve years…" becomes "since 2012" with no year count.
 UPDATE blog_posts
@@ -151,35 +172,10 @@ SET content = regexp_replace(
 WHERE site_id = 'rva'
   AND content::text ILIKE '%premier sup destination%';
 
-UPDATE pages
-SET content = regexp_replace(
-  content::text,
-  'Aspen[''’]s Premier SUP Destination',
-  'Ruedi Reservoir',
-  'gi'
-)::jsonb
-WHERE site_id = 'rva'
-  AND content::text ILIKE '%premier sup destination%';
-
-UPDATE pages
-SET content = regexp_replace(
-  content::text,
-  'Ruedi Reservoir — Ruedi Reservoir',
-  'Ruedi Reservoir',
-  'gi'
-)::jsonb
-WHERE site_id = 'rva'
-  AND content::text ILIKE '%Ruedi Reservoir — Ruedi Reservoir%';
-
-UPDATE pages
-SET content = regexp_replace(
-  content::text,
-  'Colorado[''’]s Premier Tailwater Fishery',
-  'Tailwater below Ruedi Reservoir',
-  'gi'
-)::jsonb
-WHERE site_id = 'rva'
-  AND content::text ILIKE '%premier tailwater fishery%';
+-- Dropped the three follow-on page updates. The two headings above already
+-- rewrite "The Frying Pan River — Colorado's Premier Tailwater Fishery" and
+-- "Ruedi Reservoir — Aspen's Premier SUP Destination". A second pass on the
+-- shorter phrases matched nothing after those replacements.
 
 -- Corporate team-building post (published slug). "After twelve years of guiding
 -- corporate groups…" becomes since-2012 wording with no year count.

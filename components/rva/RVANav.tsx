@@ -73,7 +73,7 @@ export default function RVANav() {
                       key={page.href}
                       href={page.href}
                       aria-current={active ? 'page' : undefined}
-                      className={`block px-4 py-2 text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rva-copper-300 ${active ? 'text-white underline decoration-rva-copper-light decoration-2 underline-offset-4' : 'text-white/85 hover:text-rva-copper-light hover:bg-white/5'}`}
+                      className={`flex min-h-11 items-center px-4 py-2 text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rva-copper-300 ${active ? 'text-white underline decoration-rva-copper-light decoration-2 underline-offset-4' : 'text-white/85 hover:text-rva-copper-light hover:bg-white/5'}`}
                     >
                       {page.label}
                     </a>
