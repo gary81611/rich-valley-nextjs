@@ -29,15 +29,23 @@
   outline-offset: 3px;
 }
 
-/* Fixed header and the mobile sticky bar. Focus must scroll clear of both.
+/* Header row: py-4 plus the logo box. Mobile logo is h-12; desktop logo is h-16.
+   Focus must clear that bar and the mobile sticky bar.
    Override the site-wide smooth scroll so focus lands before it is measured. */
 html:has(.rva-site) {
+  --rva-header: 6.25rem;
   scroll-behavior: auto;
-  scroll-padding-top: 6.5rem;
+  scroll-padding-top: var(--rva-header);
   scroll-padding-bottom: 7rem;
 }
 
+@media (min-width: 768px) {
+  html:has(.rva-site) {
+    --rva-header: 7.5rem;
+  }
+}
+
 .rva-site :is(a, button, input, select, textarea, summary, [tabindex]) {
-  scroll-margin-top: 6.5rem;
+  scroll-margin-top: var(--rva-header, 6.25rem);
   scroll-margin-bottom: 7rem;
 }

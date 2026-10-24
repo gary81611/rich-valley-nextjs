@@ -32,7 +32,7 @@ export default function ContactPage({
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
       {/* Breadcrumb */}
-      <div className="bg-rva-forest-dark">
+      <div className="scroll-mt-[var(--rva-header,6.25rem)] bg-rva-forest-dark pt-[var(--rva-header,6.25rem)]">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center gap-2 text-sm">
             <Link href="/" className="text-white/60 hover:text-rva-copper-light transition-colors">
