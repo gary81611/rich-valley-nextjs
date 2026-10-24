@@ -5,7 +5,7 @@ import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 const path = '/aspen-airport-closure-2027'
 const title = 'Aspen Airport Closure 2027 | Private Car Alternatives'
 const description =
-  'ASE closes April 4, 2027 at 11:00 p.m. through November 19, 2027 at 7:00 p.m. Eagle $720, Rifle $720, Grand Junction $950, Denver $1,375.'
+  'ASE closes April 4, 2027 at 11:00 p.m. through November 19, 2027 at 7:00 p.m. Rifle $720, Grand Junction $950, Denver $1,375. Eagle is quoted on request.'
 
 export const metadata: Metadata = {
   title,
@@ -33,10 +33,10 @@ export default function AspenAirportClosurePage() {
         {
           heading: 'Alternate airports and one-way rates',
           paragraphs: [
-            'Published one-way rates each way while you are using another airport: Eagle (EGE) $720, Rifle $720, Grand Junction $950, Denver (DEN) $1,375. Holiday pricing may change seasonally.',
+            'Published one-way rates each way while you are using another airport: Rifle $720, Grand Junction $950, Denver (DEN) $1,375. Eagle (EGE) is quoted on request. Holiday pricing may change seasonally.',
           ],
           bullets: [
-            'Eagle (EGE) — $720 each way',
+            'Eagle (EGE) — request a quote',
             'Rifle — $720 each way',
             'Grand Junction — $950 each way',
             'Denver (DEN) — $1,375 each way',
@@ -45,7 +45,7 @@ export default function AspenAirportClosurePage() {
         {
           heading: 'Private FBO service',
           paragraphs: [
-            'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. Rates above are only the four airports with a published one-way price. Buena Vista, Montrose, and Gunnison are FBO service points; call 970-456-3666 for those quotes.',
+            'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. Rifle, Grand Junction, and Denver have a published one-way price. Eagle, Buena Vista, Montrose, and Gunnison are quoted when you book. Call 970-456-3666.',
           ],
         },
         {
@@ -68,7 +68,7 @@ export default function AspenAirportClosurePage() {
         },
         {
           question: 'Which alternate airports have published one-way rates?',
-          answer: 'Eagle $720, Rifle $720, Grand Junction $950, and Denver $1,375, each way. Holiday pricing may change seasonally.',
+          answer: 'Rifle $720, Grand Junction $950, and Denver $1,375, each way. Eagle is quoted on request. Holiday pricing may change seasonally.',
         },
         {
           question: 'Where is private FBO service available?',
@@ -84,7 +84,7 @@ export default function AspenAirportClosurePage() {
         },
       ]}
       links={[
-        { href: '/airport-transfers/eagle-ege-to-aspen', label: 'Eagle Airport (EGE) to Aspen — $720' },
+        { href: '/airport-transfers/eagle-ege-to-aspen', label: 'Eagle Airport (EGE) to Aspen — request a quote' },
         { href: '/airport-transfers/denver-den-to-aspen', label: 'Denver Airport (DEN) to Aspen — $1,375' },
         { href: '/service-areas/rifle', label: 'Rifle airport transfers' },
         { href: '/service-areas/grand-junction', label: 'Grand Junction airport transfers' },

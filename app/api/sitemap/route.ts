@@ -5,6 +5,7 @@
  */
 import { createClient } from '@supabase/supabase-js'
 import { isBlogPostPubliclyVisible } from '@/lib/blog-visibility'
+import { isAalHiddenBlogSlug } from '@/lib/aal-public-copy'
 import { resolveSiteKeyFromHost } from '@/lib/site-from-host'
 import { hrefForServiceArea } from '@/lib/alpenglow-service-areas'
 
@@ -303,6 +304,7 @@ export async function GET(request: Request) {
 
     const blogEntries: SitemapEntry[] = (posts || [])
       .filter((post) => isBlogPostPubliclyVisible(post))
+      .filter((post) => !(siteKey === 'alpenglow' && isAalHiddenBlogSlug(post.slug)))
       .map((post) => ({
         url: `${base}/blog/${post.slug}`,
         lastModified: post.updated_at ? new Date(post.updated_at) : lastModified,

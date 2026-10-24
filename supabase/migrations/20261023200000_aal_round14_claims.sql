@@ -172,4 +172,38 @@ WHERE name ~* 'escalade|sprinter|2025|2026'
    OR coalesce(image_url, '') ~* 'escalade|sprinter'
    OR capacity IN (6, 14);
 
+-- QA round 2. NOT APPLIED. Case-insensitive. KRIL is Rifle Garfield County Airport, not Colorado Springs.
+-- "over 12 years" / "12 years of local expertise" become "since 2012" with no year count.
+UPDATE blog_posts
+SET
+  content = regexp_replace(
+    regexp_replace(
+      regexp_replace(
+        content,
+        'Colorado Springs Airport \(KRIL\)',
+        'Rifle Garfield County Airport (KRIL)',
+        'gi'
+      ),
+      'for over 12 years',
+      'since 2012',
+      'gi'
+    ),
+    'the difference that 12 years of local expertise makes',
+    'the difference that local expertise since 2012 makes',
+    'gi'
+  )
+WHERE site_key = 'alpenglow'
+  AND slug = 'aspen-airport-limo-service-luxury-transfers-since-2012'
+  AND (
+    content ILIKE '%colorado springs%'
+    OR content ILIKE '%12 years%'
+  );
+
+-- RVA closure guide was stored as an Alpenglow post ("Contact Rich Valley Adventures", raw markdown).
+-- Unpublish it from AAL. Do not rewrite it with invented Alpenglow facts. Do not touch other site_keys.
+UPDATE blog_posts
+SET status = 'draft'
+WHERE site_key = 'alpenglow'
+  AND lower(slug) = 'aspen-airport-closure-alternative-transportation-adventures';
+
 DROP FUNCTION public.aal_round14_fix_text(text);

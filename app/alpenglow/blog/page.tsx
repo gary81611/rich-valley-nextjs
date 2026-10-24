@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { blogImageSrcForNext, filterPublicBlogPosts } from '@/lib/blog-visibility'
-import { applyAalBlogPost } from '@/lib/aal-public-copy'
+import { applyAalBlogPost, isAalHiddenBlogSlug } from '@/lib/aal-public-copy'
 import { seoAlt } from '@/lib/seo/alt-text'
 import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 import type { BlogPost } from '@/lib/types'
@@ -36,7 +36,7 @@ async function getPosts(): Promise<BlogPost[]> {
       .eq('site_key', 'alpenglow')
       .eq('status', 'published')
       .order('published_at', { ascending: false })
-    return filterPublicBlogPosts((data as BlogPost[]) || [])
+    return filterPublicBlogPosts((data as BlogPost[]) || []).filter((post) => !isAalHiddenBlogSlug(post.slug))
   } catch {
     return []
   }

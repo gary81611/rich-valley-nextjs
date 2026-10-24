@@ -3,9 +3,17 @@
 import { aalDisplayTitle } from '@/lib/aal-display-title'
 
 export const AAL_ONE_WAY_RATES =
-  'One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.'
+  'One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.'
 
-export const AAL_EAGLE_BOTH_WAYS = 'One-way Aspen to Eagle is $720. Eagle to Aspen is $720.'
+export const AAL_EAGLE_BOTH_WAYS =
+  'Eagle one-way rates are confirmed when you request a quote. Holiday pricing may change seasonally.'
+
+/** RVA closure post that was stored on the Alpenglow blog. Hidden until the round 14 migration drafts it. */
+export const AAL_HIDDEN_BLOG_SLUG = 'aspen-airport-closure-alternative-transportation-adventures'
+
+export function isAalHiddenBlogSlug(slug: string | null | undefined): boolean {
+  return (slug || '').toLowerCase() === AAL_HIDDEN_BLOG_SLUG
+}
 
 /** Drop or rewrite CMS FAQ rows that still describe the past ASE closure as upcoming, or name the sister brand. */
 export function correctAalFaqItem(q: string, a: string): { q: string; a: string } | null {
@@ -128,6 +136,14 @@ export function correctAalPublicText(text: string): string {
   t = t.replace(/\bover 14 years\b/gi, 'since 2012')
   t = t.replace(/Aspen's most trusted luxury car service/gi, 'a private car service built on local drivers and on-time pickups')
   t = t.replace(/Aspen’s most trusted luxury car service/gi, 'a private car service built on local drivers and on-time pickups')
+  // Eagle $120 and $720 are both unpublished until Kit confirms one rate. Rifle $720 stays.
+  t = t.replace(/One-way Aspen to Eagle is \$720\. Eagle to Aspen is \$720\./gi, AAL_EAGLE_BOTH_WAYS)
+  t = t.replace(/Eagle \(EGE\) to Aspen or Snowmass is \$720 one way\. Aspen to Eagle is \$720\./gi, AAL_EAGLE_BOTH_WAYS)
+  t = t.replace(/\bEagle \(EGE\) — \$720 each way\b/g, 'Eagle (EGE) — request a quote')
+  t = t.replace(/\bEagle \(EGE\) \$720\b/g, 'Eagle (EGE), quoted on request')
+  t = t.replace(/\bEagle \$720\b/g, 'Eagle, quoted on request')
+  t = t.replace(/\$120([^.\n]{0,40}\bEagle\b)/gi, 'a quote$1')
+  t = t.replace(/(\bEagle\b[^.\n]{0,40})\$120\b/gi, '$1a quote')
   return t
 }
 
@@ -182,6 +198,15 @@ export function applyAalBlogPost<T extends AalBlogCopy>(post: T): T {
   const ski = post.slug === AAL_SKI_BLOG_SLUG
   const fix = nye ? correctAalNyeText : correctAalPublicText
   let content = post.content ? fix(post.content) : post.content
+  if (post.slug === 'aspen-to-denver-luxury-car-service' && content) {
+    content = content.replace(/Approximately 3\.5[–-]4\.5 hours/g, 'Approximately 3.5–4 hours')
+  }
+  if (post.slug === 'aspen-airport-limo-service-luxury-transfers-since-2012' && content) {
+    content = content
+      .replace(/Colorado Springs Airport \(KRIL\)/gi, 'Rifle Garfield County Airport (KRIL)')
+      .replace(/for over 12 years/gi, 'since 2012')
+      .replace(/the difference that 12 years of local expertise makes/gi, 'the difference that local expertise since 2012 makes')
+  }
   if (nye && content && !content.includes("New Year's Eve 2026")) {
     content = `${AAL_NYE_2026_LEAD}\n\n${content}`
   }

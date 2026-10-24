@@ -74,7 +74,7 @@ Aspen Alpenglow Limousine charges flat-rate transfers for the Aspen-Denver run �
 ## Frequently Asked Questions
 
 **How long does it take to drive from Aspen to Denver?**
-Approximately 3.5–4.5 hours depending on route and conditions. The Independence Pass route (summer only) takes about 4 hours and is more scenic. The Glenwood Canyon / I-70 route is year-round and often faster, taking 3.5–4 hours in good conditions. Winter road conditions can extend either route significantly.
+Approximately 3.5–4 hours depending on route and conditions. The Independence Pass route (summer only) takes about 4 hours and is more scenic. The Glenwood Canyon / I-70 route is year-round and often faster, taking 3.5–4 hours in good conditions. Winter road conditions can extend either route significantly.
 
 **Is driving from Aspen to Denver safe in winter?**
 The route is manageable with proper preparation — a vehicle equipped with mountain tires, chains available, and an experienced driver familiar with mountain road conditions. The I-70 corridor has a high accident rate during winter storms. Many visitors prefer professional car service in winter for this reason. Aspen Alpenglow Limousine's drivers make this run year-round in all conditions.

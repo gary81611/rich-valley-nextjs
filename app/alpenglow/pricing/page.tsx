@@ -19,6 +19,13 @@ type DbPricingRoute = {
 
 const TRANSIT_NOTE = 'Contact for Ford Transit Van quote'
 
+/** Production showed Aspen→EGE at $120 beside EGE→Aspen at $720. Neither is published. */
+function isUnconfirmedEagleRoute(blob: string): boolean {
+  const s = blob.toLowerCase()
+  if (/vail|beaver/.test(s)) return false
+  return /\beagle\b|\bege\b/.test(s)
+}
+
 /** Confirmed owner rates / routes — merged on top of CMS rows so the public page matches the questionnaire. */
 function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
   const list = rows.map((r) => {
@@ -43,8 +50,8 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
     if (p) Object.assign(r, p)
   }
 
-  const pairRate: Record<'eagle' | 'denver' | 'gj' | 'rifle', number> = {
-    eagle: 720,
+  // [PENDING FROM KIT: confirm EGE one-way rate — $120 vs $720]
+  const pairRate: Record<'denver' | 'gj' | 'rifle', number> = {
     denver: 1375,
     gj: 950,
     rifle: 720,
@@ -80,12 +87,16 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
   const seenTo = new Set<'eagle' | 'denver' | 'gj' | 'rifle'>()
   for (const r of list) {
     const outKey = fromAspenKey(r)
-    if (outKey) {
+    if (outKey === 'eagle') {
+      seenFrom.add(outKey)
+    } else if (outKey) {
       r.suv_price = pairRate[outKey]
       seenFrom.add(outKey)
     }
     const inKey = toAspenKey(r)
-    if (inKey) {
+    if (inKey === 'eagle') {
+      seenTo.add(inKey)
+    } else if (inKey) {
       r.suv_price = pairRate[inKey]
       seenTo.add(inKey)
     }
@@ -99,7 +110,7 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
       destination: 'EGE (Eagle)',
       distance: '—',
       drive_time: '—',
-      suv_price: 720,
+      suv_price: 0,
       price_note: TRANSIT_NOTE,
       display_order: 11,
     },
@@ -149,7 +160,7 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
       destination: 'Aspen',
       distance: '—',
       drive_time: '—',
-      suv_price: 720,
+      suv_price: 0,
       price_note: TRANSIT_NOTE,
       display_order: 3,
     },
@@ -229,10 +240,13 @@ function applyConfirmedPolicies(titles: string[]): string[] {
     const t = title.toLowerCase()
     if (t.includes('winter and summer')) return 'Holiday pricing may change seasonally.'
     if (t.includes('7-day') || t.includes('24-hour cancellation') || t.includes('24 hour cancellation')) return diversion
+    if (/eagle/i.test(title) && /\$720|\$120/.test(title)) {
+      return 'One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.'
+    }
     return title
   })
   const extras = [
-    'One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.',
+    'One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.',
     diversion,
     'Corporate charge accounts are billed monthly.',
   ]
@@ -245,12 +259,12 @@ function applyConfirmedPolicies(titles: string[]): string[] {
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Aspen Car Service Prices | ASE $210 · Eagle $720 · DEN $1,375',
+  title: 'Aspen Car Service Prices | ASE $210 · DEN $1,375',
   description:
     'All-inclusive private SUV rates from Aspen: ASE, Eagle, Denver, Rifle, Grand Junction, Snowmass and valley routes. No service charges or added gratuity.',
   alternates: { canonical: 'https://aspenalpenglowlimousine.com/pricing' },
   openGraph: {
-    title: 'Aspen Car Service Prices | ASE $210 · Eagle $720 · DEN $1,375',
+    title: 'Aspen Car Service Prices | ASE $210 · DEN $1,375',
     description:
       'All-inclusive private SUV rates from Aspen: ASE, Eagle, Denver, Rifle, Grand Junction, Snowmass and valley routes. No service charges or added gratuity.',
     url: 'https://aspenalpenglowlimousine.com/pricing',
@@ -289,7 +303,7 @@ function PriceTable({ title, routes }: { title: string; routes: RouteRow[] }) {
               {r.from} <span className="text-alp-navy/40">&rarr;</span> {r.to}
             </p>
             <p className="mt-3 text-lg font-semibold text-alp-gold-700">
-              Chevrolet Suburban · ${r.suvPrice.toLocaleString()}
+              Chevrolet Suburban · {isUnconfirmedEagleRoute(`${r.from} ${r.to} ${r.slug}`) ? 'Request a quote' : `$${r.suvPrice.toLocaleString()}`}
             </p>
             <p className="text-base font-semibold text-alp-navy">Ford Transit passenger van · {r.sprinterPrice}</p>
             <p className="mt-2 text-xs text-alp-navy/60">
@@ -319,7 +333,7 @@ function PriceTable({ title, routes }: { title: string; routes: RouteRow[] }) {
                 </td>
                 <td className="py-3 px-4 text-alp-navy/60">{r.distance}</td>
                 <td className="py-3 px-4 text-alp-navy/60">{r.driveTime}</td>
-                <td className="py-3 px-4 text-right font-semibold text-alp-gold-700">${r.suvPrice.toLocaleString()}</td>
+                <td className="py-3 px-4 text-right font-semibold text-alp-gold-700">{isUnconfirmedEagleRoute(`${r.from} ${r.to} ${r.slug}`) ? 'Request a quote' : `$${r.suvPrice.toLocaleString()}`}</td>
                 <td className="py-3 px-4 text-right text-alp-navy text-sm">{r.sprinterPrice}</td>
               </tr>
             ))}
@@ -412,7 +426,7 @@ export default async function PricingPage() {
           Aviation | GJT — West Star Aviation | KAPA — Centennial Airport Denver.
         </p>
         <p className="text-sm text-alp-navy/70 mb-12 max-w-3xl leading-relaxed">
-          One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.
+          One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.
           Flight diversions to Denver or Grand Junction are handled with 2 hours&apos; notice and no Aspen cancellation penalty.
           General cancellations need 24 hours&apos; notice.
         </p>
@@ -515,14 +529,14 @@ export default async function PricingPage() {
         },
         areaServed: ['Aspen', 'Snowmass', 'Basalt', 'Carbondale', 'Glenwood Springs', 'Vail', 'Denver'],
         offers: [
-          ...AIRPORT_OUTBOUND.filter((r) => /eagle|denver|grand junction|rifle|ege|den|gjt|kril/i.test(`${r.from} ${r.to}`)).map((r) => ({
+          ...AIRPORT_OUTBOUND.filter((r) => /denver|grand junction|rifle|den|gjt|kril/i.test(`${r.from} ${r.to}`) && !isUnconfirmedEagleRoute(`${r.from} ${r.to} ${r.slug}`)).map((r) => ({
             '@type': 'Offer',
             name: `${r.from} to ${r.to}`,
             price: r.suvPrice,
             priceCurrency: 'USD',
             description: 'One-way private SUV rate from Aspen. Holiday pricing may change seasonally.',
           })),
-          ...AIRPORT_INBOUND.slice(0, 5).map(r => ({
+          ...AIRPORT_INBOUND.filter((r) => !isUnconfirmedEagleRoute(`${r.from} ${r.to} ${r.slug}`)).slice(0, 5).map(r => ({
             '@type': 'Offer',
             name: `${r.from} to ${r.to}`,
             price: r.suvPrice,

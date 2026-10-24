@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'FAQ | Aspen Alpenglow Limousine — Transportation Questions Answered',
   description:
-    'Aspen car service FAQs: one-way rates each way (Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720), FBO airports, fleet, and cancellation notice.',
+    'Aspen car service FAQs: one-way rates each way (Denver $1,375, Grand Junction $950, Rifle $720; Eagle quoted on request), FBO airports, fleet, and cancellation notice.',
   alternates: { canonical: 'https://aspenalpenglowlimousine.com/faq' },
 }
 

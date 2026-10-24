@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
+import { redirect } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { alpenglowData } from '@/lib/site-data'
 
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
   description:
     'Photos of our Aspen limo fleet — Chevy Suburbans, Ford Transit Van, ski racks & interiors — plus Colorado landscapes we serve across the Roaring Fork Valley.',
   alternates: { canonical: 'https://aspenalpenglowlimousine.com/gallery' },
+  robots: { index: false, follow: false },
 }
 
 async function fetchGalleryImages() {
@@ -39,8 +41,9 @@ export default async function GalleryPage() {
     return src.length > 0 && !/unsplash\.com|pexels\.com/i.test(src)
   })
 
-  // Fewer than 12 real AAL photos. Render nothing. Do not 301 this URL.
-  if (galleryImages.length < 12) return null
+  // Fewer than 12 real AAL photos. Temporary redirect (Next.js redirect() is 307)
+  // so the URL can come back when a real gallery exists. RVA /gallery is a different route.
+  if (galleryImages.length < 12) redirect('/')
 
   return (
     <div className="min-h-screen bg-alp-pearl font-inter">

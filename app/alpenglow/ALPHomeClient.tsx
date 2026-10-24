@@ -153,7 +153,7 @@ export default function AlpenglowHomeClient() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-alp-navy-deep/80 via-alp-navy-deep/50 to-alp-navy-deep/85" />
         </div>
-        <div className="relative z-10 text-center text-white px-6 max-w-5xl mx-auto pb-28">
+        <div className="aal-on-navy relative z-10 text-center text-white px-6 max-w-5xl mx-auto pb-28">
           <p className="font-cormorant text-xl md:text-2xl text-alp-gold tracking-[0.3em] uppercase mb-6">
             Aspen · Snowmass · Roaring Fork Valley
           </p>
@@ -174,7 +174,7 @@ export default function AlpenglowHomeClient() {
         </div>
         {/* Stats bar */}
         {stats.length > 0 && (
-        <div className="absolute bottom-0 left-0 right-0 bg-alp-navy/90 backdrop-blur-sm border-t border-white/10">
+        <div className="aal-on-navy absolute bottom-0 left-0 right-0 bg-alp-navy/90 backdrop-blur-sm border-t border-white/10">
           <div className="max-w-4xl mx-auto px-6 py-5 grid grid-cols-3 gap-4 text-center">
             {stats.map((stat) => (
               <div key={stat.label}>
@@ -217,7 +217,7 @@ export default function AlpenglowHomeClient() {
               Every detail handled. Every journey seamless.
             </p>
             <p className="alp-speak-services-overview text-alp-slate text-base max-w-3xl mx-auto mt-6 leading-relaxed border-t border-alp-pearl-dark pt-6">
-              Aspen Alpenglow Limousine operates a professional fleet of three late-model vehicles — two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (13 passengers) — with Starlink, ski racks, and roof cargo space. 8 full-time local drivers have 15+ years of mountain driving experience. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison, alongside Aspen/Pitkin County Airport (ASE) and Denver International Airport (DEN). One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.
+              Aspen Alpenglow Limousine operates a professional fleet of three late-model vehicles — two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (13 passengers) — with Starlink, ski racks, and roof cargo space. 8 full-time local drivers have 15+ years of mountain driving experience. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison, alongside Aspen/Pitkin County Airport (ASE) and Denver International Airport (DEN). One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.
             </p>
           </div>
           {services.length > 0 && (
@@ -325,7 +325,7 @@ export default function AlpenglowHomeClient() {
             {testimonials.map((t, i) => (
               <ScrollReveal key={t.name} delay={i * 150}>
                 <div className="bg-alp-navy-deep rounded-2xl p-8 border border-white/5 relative">
-                  <div className="font-playfair text-7xl text-alp-gold/20 absolute top-4 left-6 leading-none select-none">&ldquo;</div>
+                  <div aria-hidden="true" className="font-playfair text-7xl text-alp-gold/20 absolute top-4 left-6 leading-none select-none">&ldquo;</div>
                   <p className="text-white/80 text-lg leading-relaxed italic mb-6 pt-6 relative z-10">{t.quote}</p>
                   <div className="border-t border-white/10 pt-4">
                     <p className="font-semibold text-white">{t.name}</p>

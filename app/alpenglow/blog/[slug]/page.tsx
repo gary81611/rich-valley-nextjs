@@ -6,7 +6,7 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { absolutePublicImageUrl } from '@/lib/seo/canonical'
 import { seoAlt } from '@/lib/seo/alt-text'
 import type { BlogPost } from '@/lib/types'
-import { applyAalBlogPost } from '@/lib/aal-public-copy'
+import { applyAalBlogPost, isAalHiddenBlogSlug } from '@/lib/aal-public-copy'
 import { blogImageSrcForNext, isBlogPostPubliclyVisible } from '@/lib/blog-visibility'
 import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
@@ -25,7 +25,7 @@ async function getPost(slug: string): Promise<BlogPost | null> {
       .eq('slug', slug)
       .eq('status', 'published')
       .single()
-    if (!data || !isBlogPostPubliclyVisible(data as BlogPost)) return null
+    if (!data || isAalHiddenBlogSlug(slug) || !isBlogPostPubliclyVisible(data as BlogPost)) return null
     return data as BlogPost
   } catch {
     return null
@@ -73,7 +73,7 @@ function renderInline(text: string): React.ReactNode[] {
       const href = link[2]
       if (href.startsWith('/') && !href.startsWith('//')) {
         return (
-          <Link key={i} href={href} className="text-alp-gold hover:text-alp-navy font-medium underline">
+          <Link key={i} href={href} className="text-alp-gold-700 hover:text-alp-navy font-medium underline">
             {link[1]}
           </Link>
         )
@@ -85,50 +85,66 @@ function renderInline(text: string): React.ReactNode[] {
 }
 
 function renderMarkdown(content: string): React.ReactNode {
-  const lines = content.split('\n')
+  let source = content.replace(/\r\n/g, '\n')
+  if (!source.includes('\n') && source.includes('\\n')) source = source.replace(/\\n/g, '\n')
+  const lines = source.split('\n')
   const elements: React.ReactNode[] = []
   let i = 0
 
   while (i < lines.length) {
-    const line = lines[i]
+    const line = lines[i].trim()
 
-    if (line.startsWith('## ')) {
+    if (line.startsWith('### ')) {
+      elements.push(
+        <h3 key={i} className="font-playfair text-xl font-semibold text-alp-navy mt-6 mb-3">
+          {renderInline(line.slice(4))}
+        </h3>
+      )
+    } else if (line.startsWith('## ')) {
       elements.push(
         <h2 key={i} className="font-playfair text-2xl font-bold text-alp-navy mt-10 mb-4">
-          {line.slice(3)}
+          {renderInline(line.slice(3))}
         </h2>
       )
     } else if (line.startsWith('# ')) {
       elements.push(
         <h2 key={i} className="font-playfair text-2xl font-bold text-alp-navy mt-10 mb-4">
-          {line.slice(2)}
+          {renderInline(line.slice(2))}
         </h2>
-      )
-    } else if (line.startsWith('### ')) {
-      elements.push(
-        <h3 key={i} className="font-playfair text-xl font-semibold text-alp-navy mt-6 mb-3">
-          {line.slice(4)}
-        </h3>
       )
     } else if (line.startsWith('- ') || line.startsWith('* ')) {
       const items: string[] = []
-      while (i < lines.length && (lines[i].startsWith('- ') || lines[i].startsWith('* '))) {
-        items.push(lines[i].slice(2))
+      while (i < lines.length && (lines[i].trim().startsWith('- ') || lines[i].trim().startsWith('* '))) {
+        items.push(lines[i].trim().slice(2))
         i++
       }
       elements.push(
-        <ul key={`list-${i}`} className="list-disc list-inside space-y-1.5 my-4 text-slate-600">
+        <ul key={`list-${i}`} className="list-disc list-inside space-y-1.5 my-4 text-slate-700">
           {items.map((item, j) => (
             <li key={j} className="leading-relaxed">{renderInline(item)}</li>
           ))}
         </ul>
       )
       continue
-    } else if (line.trim() === '') {
+    } else if (/^\d+\.\s/.test(line)) {
+      const items: string[] = []
+      while (i < lines.length && /^\d+\.\s/.test(lines[i].trim())) {
+        items.push(lines[i].trim().replace(/^\d+\.\s/, ''))
+        i++
+      }
+      elements.push(
+        <ol key={`ol-${i}`} className="list-decimal list-inside space-y-1.5 my-4 text-slate-700">
+          {items.map((item, j) => (
+            <li key={j} className="leading-relaxed">{renderInline(item)}</li>
+          ))}
+        </ol>
+      )
+      continue
+    } else if (line === '') {
       // skip blank lines
     } else {
       elements.push(
-        <p key={i} className="leading-relaxed text-slate-600 mb-4">
+        <p key={i} className="leading-relaxed text-slate-700 mb-4">
           {renderInline(line)}
         </p>
       )

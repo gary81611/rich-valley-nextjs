@@ -151,7 +151,7 @@ export default function ALPNav() {
         </button>
       </div>
       {mobileMenuOpen && (
-        <div className="xl:hidden bg-alp-navy border-t border-white/10 px-6 py-4 space-y-1">
+        <div className="xl:hidden max-h-[calc(100dvh-72px-3.5rem)] overflow-y-auto overscroll-contain bg-alp-navy border-t border-white/10 px-6 py-4 pb-8 space-y-1 md:max-h-[calc(100dvh-72px)]">
           <div>
             <button onClick={() => setMobileServicesOpen(!mobileServicesOpen)} className="flex items-center justify-between w-full text-white/90 hover:text-alp-gold-light text-sm font-medium py-2">
               Services
