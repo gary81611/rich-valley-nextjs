@@ -1,9 +1,16 @@
 -- AAL Round 14. NOT APPLIED by the agent.
 -- Do not run this from CI. A manager applies it in Supabase.
--- AAL only: pages.site_id = 'alpenglow', blog_posts.site_key = 'alpenglow'.
--- Does not touch RVA rows, testimonials (an Escalade mention stays for the owner to review),
--- voice_fishing_reports, or earlier migrations.
+-- AAL only: pages.site_id = 'alpenglow', blog_posts.site_key = 'alpenglow', faqs.site_key = 'alpenglow'.
+-- Does not touch RVA rows, testimonials, voice_fishing_reports, or earlier migrations.
 -- updated_at triggers will stamp the apply time.
+-- Whole sentences and vehicle names only. No "14+ years" -> "since 2012" substring
+-- and no bare "Sprinter" pass that leaves the word Mercedes in front.
+-- Dropped (they match nothing, or the table has no site column):
+--   site_settings (alpenglow tagline / about_content / stats do not contain these phrases; stats is [])
+--   service_areas (Glenwood Springs there is the city or the canyon)
+--   value_propositions (no rows)
+--   services (active rows do not contain these phrases; no site column)
+-- fleet_vehicles has no site column. The only change is capacity on one verified van id.
 
 CREATE OR REPLACE FUNCTION public.aal_round14_fix_text(t text)
 RETURNS text
@@ -17,9 +24,27 @@ BEGIN
     RETURN s;
   END IF;
 
+  -- Whole strings. These run before any shorter year or vehicle replace.
+  s := regexp_replace(s, '14\+[[:space:]]+Years of Excellence', 'Serving Aspen Since 2012', 'gi');
+  s := replace(
+    s,
+    'Over 14 years of operation, we''ve become the trusted transportation partner for Aspen''s most discerning travelers — Fortune 500 executives, international celebrities, Aspen Institute fellows, and families returning year after year because they know their transportation needs are handled with absolute reliability and discretion.',
+    'Operating since 2012, we''ve become the trusted transportation partner for Aspen''s most discerning travelers — Fortune 500 executives, international celebrities, Aspen Institute fellows, and families returning year after year because they know their transportation needs are handled with absolute reliability and discretion.'
+  );
+  s := regexp_replace(s, '4\.9-Star Rated', '5.0 on Google', 'gi');
+  s := replace(
+    s,
+    'Over 150 five-star reviews from guests who trust us with their most important transportation needs.',
+    '5.0 on Google (5 reviews).'
+  );
+
+  -- EGE is in Gypsum. Glenwood Springs as a city, Glenwood Canyon, and the hot springs stay.
+  s := replace(s, 'Eagle County Regional Airport (EGE) in Glenwood Springs', 'Eagle County Regional Airport (EGE) in Gypsum');
+  s := replace(s, 'Eagle County Regional Airport, located in Glenwood Springs', 'Eagle County Regional Airport, located in Gypsum');
+  s := replace(s, 'Eagle County Airport (EGE) near Glenwood Springs', 'Eagle County Airport (EGE) near Gypsum');
+  s := replace(s, 'EGE is located in Glenwood Springs', 'EGE is located in Gypsum');
+
   s := replace(s, 'After 14 years of shuttling', 'Since 2012, driving');
-  s := regexp_replace(s, '14\+[[:space:]]+years', 'since 2012', 'gi');
-  s := regexp_replace(s, 'over 14 years', 'since 2012', 'gi');
   s := regexp_replace(s, 'have 15\+[[:space:]]*years of mountain driving experience', 'have been driving these mountain roads since 2012', 'gi');
   s := regexp_replace(s, 'with 15\+[[:space:]]*years of mountain driving experience', 'who have been driving these mountain roads since 2012', 'gi');
   s := regexp_replace(s, 'with 15\+[[:space:]]*years of mountain driving', 'who have been driving these mountain roads since 2012', 'gi');
@@ -46,28 +71,55 @@ BEGIN
   s := regexp_replace(s, '3\.5[[:space:]]*(–|—|-)[[:space:]]*4\.5[[:space:]]*hours', '3.5–4 hours', 'gi');
   s := regexp_replace(s, 'Aspen''s most trusted luxury car service', 'a private car service built on local drivers and on-time pickups', 'gi');
   s := regexp_replace(s, 'Aspen’s most trusted luxury car service', 'a private car service built on local drivers and on-time pickups', 'gi');
+
+  -- Passenger counts. "4–6 passengers" (a cost comparison) is not one of these phrases.
+  s := regexp_replace(s, '\(6 pax\)', '(7 pax)', 'gi');
+  s := regexp_replace(s, '\(14 pax\)', '(13 pax)', 'gi');
+  s := regexp_replace(s, '14 pax', '13 pax', 'gi');
   s := regexp_replace(s, '14-passenger', '13-passenger', 'gi');
   s := regexp_replace(s, 'up to 14 passengers', 'up to 13 passengers', 'gi');
   s := regexp_replace(s, '14 passengers', '13 passengers', 'gi');
-  s := regexp_replace(s, '14 pax', '13 passengers', 'gi');
+  s := regexp_replace(s, 'up to 14 in the party', 'up to 13 in the party', 'gi');
   s := regexp_replace(s, 'Group Sizes 2–14', 'Group Sizes 2–13', 'g');
-  s := regexp_replace(s, 'groups of 6–14', 'groups of 6–13', 'g');
-  s := regexp_replace(s, '4\.9-Star Rated', '5.0 on Google (5 reviews)', 'gi');
-  s := regexp_replace(s, '4\.9-star', '5.0 on Google (5 reviews)', 'gi');
+  s := regexp_replace(s, 'Group Sizes 2-14', 'Group Sizes 2-13', 'g');
+  s := regexp_replace(s, 'groups of 2–14', 'groups of 2–13', 'gi');
+  s := regexp_replace(s, 'groups of 2-14', 'groups of 2-13', 'gi');
+  s := regexp_replace(s, 'groups of 6–14', 'groups of 6–13', 'gi');
+  s := regexp_replace(s, 'groups of 6-14', 'groups of 6-13', 'gi');
+  s := replace(s, 'for groups up to 14)', 'for groups up to 13)');
+  s := replace(s, 'for groups up to 14.', 'for groups up to 13.');
+  s := regexp_replace(s, 'up to 6 passengers', 'up to 7 passengers', 'gi');
+  s := regexp_replace(s, 'seats 6 passengers', 'seats 7 passengers', 'gi');
 
+  -- Vehicle names, longest first, so "Executive Van" and "Mercedes" are not left behind.
   s := regexp_replace(s, 'Mercedes-Benz Sprinter Executive Vans', 'Ford Transit passenger vans', 'gi');
   s := regexp_replace(s, 'Mercedes-Benz Sprinter Executive Van', 'Ford Transit passenger van', 'gi');
   s := regexp_replace(s, 'Mercedes Sprinter Executive Vans', 'Ford Transit passenger vans', 'gi');
   s := regexp_replace(s, 'Mercedes Sprinter Executive Van', 'Ford Transit passenger van', 'gi');
+  s := regexp_replace(s, 'Mercedes-Benz Sprinter vans', 'Ford Transit passenger vans', 'gi');
+  s := regexp_replace(s, 'Mercedes-Benz Sprinter van', 'Ford Transit passenger van', 'gi');
+  s := regexp_replace(s, 'Mercedes-Benz Sprinters', 'Ford Transit passenger vans', 'gi');
+  s := regexp_replace(s, 'Mercedes-Benz Sprinter', 'Ford Transit passenger van', 'gi');
+  s := regexp_replace(s, 'Mercedes Sprinter vans', 'Ford Transit passenger vans', 'gi');
+  s := regexp_replace(s, 'Mercedes Sprinter van', 'Ford Transit passenger van', 'gi');
+  s := regexp_replace(s, 'Mercedes Sprinters', 'Ford Transit passenger vans', 'gi');
+  s := regexp_replace(s, 'Mercedes Sprinter', 'Ford Transit passenger van', 'gi');
+  s := regexp_replace(s, 'Luxury Sprinter vans', 'Ford Transit passenger vans', 'gi');
+  s := regexp_replace(s, 'Luxury Sprinter van', 'Ford Transit passenger van', 'gi');
+  s := regexp_replace(s, 'Sprinter vans', 'Ford Transit passenger vans', 'gi');
+  s := regexp_replace(s, 'Sprinter van', 'Ford Transit passenger van', 'gi');
+  s := regexp_replace(s, 'Sprinters', 'Ford Transit passenger vans', 'gi');
+  s := regexp_replace(s, 'Sprinter', 'Ford Transit passenger van', 'gi');
   s := regexp_replace(s, 'Cadillac Escalade ESV', 'Chevrolet Suburban', 'gi');
   s := regexp_replace(s, 'Cadillac Escalades', 'Chevrolet Suburbans', 'gi');
   s := regexp_replace(s, 'Cadillac Escalade', 'Chevrolet Suburban', 'gi');
-  s := regexp_replace(s, 'Escalades(?!\.(?:png|jpe?g|webp|gif|svg))', 'Chevrolet Suburbans', 'gi');
-  s := regexp_replace(s, 'Escalade(?!\.(?:png|jpe?g|webp|gif|svg))', 'Chevrolet Suburban', 'gi');
-  s := regexp_replace(s, 'Sprinter vans(?!\.(?:png|jpe?g|webp|gif|svg))', 'Ford Transit passenger vans', 'gi');
-  s := regexp_replace(s, 'Sprinter van(?!\.(?:png|jpe?g|webp|gif|svg))', 'Ford Transit passenger van', 'gi');
-  s := regexp_replace(s, 'Sprinters(?!\.(?:png|jpe?g|webp|gif|svg))', 'Ford Transit passenger vans', 'gi');
-  s := regexp_replace(s, 'Sprinter(?!\.(?:png|jpe?g|webp|gif|svg))', 'Ford Transit passenger van', 'gi');
+  s := regexp_replace(s, 'Escalades', 'Chevrolet Suburbans', 'gi');
+  s := regexp_replace(s, 'Escalade', 'Chevrolet Suburban', 'gi');
+  s := regexp_replace(s, 'Mercedes-Benz Ford Transit', 'Ford Transit', 'gi');
+  s := regexp_replace(s, 'Mercedes Ford Transit', 'Ford Transit', 'gi');
+  s := regexp_replace(s, 'Cadillac Chevrolet Suburban', 'Chevrolet Suburban', 'gi');
+  s := regexp_replace(s, 'Ford Transit passenger van Executive Van', 'Ford Transit passenger van', 'gi');
+  s := regexp_replace(s, 'Ford Transit passenger van van', 'Ford Transit passenger van', 'gi');
 
   RETURN s;
 END;
@@ -85,11 +137,11 @@ SET
   END
 WHERE site_id = 'alpenglow'
   AND (
-    title ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
-    OR coalesce(meta_title, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
-    OR coalesce(meta_description, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
-    OR content::text ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
-    OR coalesce(schema_markup::text, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
+    coalesce(title, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9|6 pax|14 pax|150 five-star|EGE\) in Glenwood Springs|Airport, located in Glenwood Springs|EGE is located in Glenwood|Eagle County Airport \(EGE\) near Glenwood'
+    OR coalesce(meta_title, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9|6 pax|14 pax|150 five-star|EGE\) in Glenwood Springs|Airport, located in Glenwood Springs|EGE is located in Glenwood|Eagle County Airport \(EGE\) near Glenwood'
+    OR coalesce(meta_description, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9|6 pax|14 pax|150 five-star|EGE\) in Glenwood Springs|Airport, located in Glenwood Springs|EGE is located in Glenwood|Eagle County Airport \(EGE\) near Glenwood'
+    OR content::text ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9|6 pax|14 pax|150 five-star|EGE\) in Glenwood Springs|Airport, located in Glenwood Springs|EGE is located in Glenwood|Eagle County Airport \(EGE\) near Glenwood'
+    OR coalesce(schema_markup::text, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9|6 pax|14 pax|150 five-star|EGE\) in Glenwood Springs|Airport, located in Glenwood Springs|EGE is located in Glenwood|Eagle County Airport \(EGE\) near Glenwood'
   );
 
 UPDATE blog_posts
@@ -104,39 +156,11 @@ SET
   END
 WHERE site_key = 'alpenglow'
   AND (
-    coalesce(title, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
-    OR coalesce(content, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
-    OR coalesce(meta_title, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
-    OR coalesce(meta_description, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
-    OR coalesce(faqs::text, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
-  );
-
-UPDATE site_settings
-SET
-  tagline = public.aal_round14_fix_text(tagline),
-  about_content = CASE
-    WHEN about_content IS NULL THEN about_content
-    ELSE public.aal_round14_fix_text(about_content::text)::jsonb
-  END,
-  stats = (
-    SELECT COALESCE(jsonb_agg(
-      CASE
-        WHEN coalesce(elem->>'value', '') = '14+'
-          OR coalesce(elem->>'label', '') ~* '14\+'
-          THEN jsonb_build_object('value', 'Since 2012', 'label', 'Serving Aspen')
-        WHEN coalesce(elem->>'value', '') ~ '4\.9'
-          OR coalesce(elem->>'label', '') ~* 'client rating'
-          THEN jsonb_build_object('value', '5.0', 'label', 'on Google (5 reviews)')
-        ELSE elem
-      END
-    ), '[]'::jsonb)
-    FROM jsonb_array_elements(COALESCE(stats, '[]'::jsonb)) elem
-  )
-WHERE site_key = 'alpenglow'
-  AND (
-    coalesce(tagline, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
-    OR coalesce(about_content::text, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
-    OR coalesce(stats::text, '') ~* '14\+|4\.9|client rating'
+    coalesce(title, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9|6 pax|14 pax|150 five-star|EGE\) in Glenwood Springs|Airport, located in Glenwood Springs|EGE is located in Glenwood|Eagle County Airport \(EGE\) near Glenwood'
+    OR coalesce(content, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9|6 pax|14 pax|150 five-star|EGE\) in Glenwood Springs|Airport, located in Glenwood Springs|EGE is located in Glenwood|Eagle County Airport \(EGE\) near Glenwood'
+    OR coalesce(meta_title, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9|6 pax|14 pax|150 five-star|EGE\) in Glenwood Springs|Airport, located in Glenwood Springs|EGE is located in Glenwood|Eagle County Airport \(EGE\) near Glenwood'
+    OR coalesce(meta_description, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9|6 pax|14 pax|150 five-star|EGE\) in Glenwood Springs|Airport, located in Glenwood Springs|EGE is located in Glenwood|Eagle County Airport \(EGE\) near Glenwood'
+    OR coalesce(faqs::text, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9|6 pax|14 pax|150 five-star|EGE\) in Glenwood Springs|Airport, located in Glenwood Springs|EGE is located in Glenwood|Eagle County Airport \(EGE\) near Glenwood'
   );
 
 UPDATE faqs
@@ -144,59 +168,12 @@ SET
   question = public.aal_round14_fix_text(question),
   answer = public.aal_round14_fix_text(answer)
 WHERE site_key = 'alpenglow'
-  AND (question ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
-    OR answer ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9');
-
-UPDATE service_areas
-SET
-  description = public.aal_round14_fix_text(description),
-  long_description = public.aal_round14_fix_text(long_description)
-WHERE site_key = 'alpenglow'
   AND (
-    coalesce(description, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
-    OR coalesce(long_description, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
+    coalesce(question, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9|6 pax|14 pax|150 five-star|EGE\) in Glenwood Springs|Airport, located in Glenwood Springs|EGE is located in Glenwood|Eagle County Airport \(EGE\) near Glenwood'
+    OR coalesce(answer, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9|6 pax|14 pax|150 five-star|EGE\) in Glenwood Springs|Airport, located in Glenwood Springs|EGE is located in Glenwood|Eagle County Airport \(EGE\) near Glenwood'
   );
 
-UPDATE value_propositions
-SET
-  title = public.aal_round14_fix_text(title),
-  description = public.aal_round14_fix_text(description)
-WHERE site_key = 'alpenglow'
-  AND (
-    title ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
-    OR description ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
-  );
-
-UPDATE services
-SET
-  name = public.aal_round14_fix_text(name),
-  description = public.aal_round14_fix_text(description)
-WHERE name ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9'
-   OR coalesce(description, '') ~* 'escalade|sprinter|14-passenger|14\+|most trusted|after 14 years|4\.9';
-
--- Alpenglow-only table. Clears cutout photos of the wrong vehicles.
-UPDATE fleet_vehicles
-SET
-  name = CASE
-    WHEN name ~* 'transit|sprinter|van' THEN 'Ford Transit passenger van'
-    WHEN name ~* 'suburban|escalade|suv' THEN 'Chevrolet Suburban'
-    ELSE public.aal_round14_fix_text(name)
-  END,
-  capacity = CASE
-    WHEN name ~* 'transit|sprinter|van' OR capacity = 14 THEN 13
-    WHEN name ~* 'suburban|escalade|suv' OR capacity = 6 THEN 7
-    ELSE capacity
-  END,
-  description = public.aal_round14_fix_text(description),
-  image_url = CASE
-    WHEN coalesce(image_url, '') ~* 'escalade|sprinter' THEN ''
-    ELSE image_url
-  END
-WHERE name ~* 'escalade|sprinter|2025|2026'
-   OR coalesce(image_url, '') ~* 'escalade|sprinter'
-   OR capacity IN (6, 14);
-
--- QA round 2. NOT APPLIED. Case-insensitive. KRIL is Rifle Garfield County Airport, not Colorado Springs.
+-- QA round 2. NOT APPLIED. KRIL is Rifle Garfield County Airport, not Colorado Springs.
 -- "over 12 years" / "12 years of local expertise" become "since 2012" with no year count.
 UPDATE blog_posts
 SET
@@ -223,19 +200,14 @@ WHERE site_key = 'alpenglow'
     OR content ILIKE '%12 years%'
   );
 
--- RVA closure guide was stored as an Alpenglow post ("Contact Rich Valley Adventures", raw markdown).
--- Unpublish it from AAL. Do not rewrite it with invented Alpenglow facts. Do not touch other site_keys.
+-- RVA closure guide stored on the Alpenglow blog. Unpublish it. Do not rewrite it.
 UPDATE blog_posts
 SET status = 'draft'
 WHERE site_key = 'alpenglow'
   AND lower(slug) = 'aspen-airport-closure-alternative-transportation-adventures';
 
--- Final cleanup. Still NOT APPLIED. Case-insensitive.
--- "15+ years of mountain driving" becomes since-2012 wording with no year count.
--- Premier wording on Alpenglow rows is dropped. RVA rows are not selected here.
--- Denver "3.5–4.5 hours" (hyphen, en dash, or em dash) becomes "3.5–4 hours".
--- Do not change blog slugs.
-
+-- Premier phrases and Denver "3.5–4.5 hours" on rows the first filter did not select.
+-- Same function. Still site-scoped. Do not change blog slugs.
 UPDATE pages
 SET
   title = public.aal_round14_fix_text(title),
@@ -274,19 +246,6 @@ WHERE site_key = 'alpenglow'
     OR coalesce(faqs::text, '') ~* '15\+[[:space:]]*years of mountain driving|premier|3\.5[[:space:]]*(–|—|-)[[:space:]]*4\.5'
   );
 
-UPDATE site_settings
-SET
-  tagline = public.aal_round14_fix_text(tagline),
-  about_content = CASE
-    WHEN about_content IS NULL THEN about_content
-    ELSE public.aal_round14_fix_text(about_content::text)::jsonb
-  END
-WHERE site_key = 'alpenglow'
-  AND (
-    coalesce(tagline, '') ~* '15\+[[:space:]]*years of mountain driving|premier|3\.5[[:space:]]*(–|—|-)[[:space:]]*4\.5'
-    OR coalesce(about_content::text, '') ~* '15\+[[:space:]]*years of mountain driving|premier|3\.5[[:space:]]*(–|—|-)[[:space:]]*4\.5'
-  );
-
 UPDATE faqs
 SET
   question = public.aal_round14_fix_text(question),
@@ -297,38 +256,11 @@ WHERE site_key = 'alpenglow'
     OR coalesce(answer, '') ~* '15\+[[:space:]]*years of mountain driving|premier|3\.5[[:space:]]*(–|—|-)[[:space:]]*4\.5'
   );
 
-UPDATE service_areas
-SET
-  description = public.aal_round14_fix_text(description),
-  long_description = public.aal_round14_fix_text(long_description)
-WHERE site_key = 'alpenglow'
-  AND (
-    coalesce(description, '') ~* '15\+[[:space:]]*years of mountain driving|premier|3\.5[[:space:]]*(–|—|-)[[:space:]]*4\.5'
-    OR coalesce(long_description, '') ~* '15\+[[:space:]]*years of mountain driving|premier|3\.5[[:space:]]*(–|—|-)[[:space:]]*4\.5'
-  );
-
-UPDATE value_propositions
-SET
-  title = public.aal_round14_fix_text(title),
-  description = public.aal_round14_fix_text(description)
-WHERE site_key = 'alpenglow'
-  AND (
-    coalesce(title, '') ~* '15\+[[:space:]]*years of mountain driving|premier|3\.5[[:space:]]*(–|—|-)[[:space:]]*4\.5'
-    OR coalesce(description, '') ~* '15\+[[:space:]]*years of mountain driving|premier|3\.5[[:space:]]*(–|—|-)[[:space:]]*4\.5'
-  );
-
-UPDATE services
-SET
-  name = public.aal_round14_fix_text(name),
-  description = public.aal_round14_fix_text(description)
-WHERE coalesce(name, '') ~* '15\+[[:space:]]*years of mountain driving|premier|3\.5[[:space:]]*(–|—|-)[[:space:]]*4\.5'
-   OR coalesce(description, '') ~* '15\+[[:space:]]*years of mountain driving|premier|3\.5[[:space:]]*(–|—|-)[[:space:]]*4\.5';
-
+-- Verified active row. Name stays "Luxury Van" because RVA /fleet reads this table.
+-- Capacity 14 contradicts the Ford Transit passenger van limit of 13.
 UPDATE fleet_vehicles
-SET
-  name = public.aal_round14_fix_text(name),
-  description = public.aal_round14_fix_text(description)
-WHERE coalesce(name, '') ~* '15\+[[:space:]]*years of mountain driving|premier|3\.5[[:space:]]*(–|—|-)[[:space:]]*4\.5'
-   OR coalesce(description, '') ~* '15\+[[:space:]]*years of mountain driving|premier|3\.5[[:space:]]*(–|—|-)[[:space:]]*4\.5';
+SET capacity = 13
+WHERE id = '77a5c467-5e5e-43ef-ba96-c3d8af691f6d'
+  AND capacity = 14;
 
 DROP FUNCTION public.aal_round14_fix_text(text);

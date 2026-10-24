@@ -62,6 +62,13 @@ export function correctAalFleetText(text: string): string {
   t = t.replace(/\b2–14 guests\b/g, '2–13 guests')
   t = t.replace(/\b2-14 guests\b/g, '2-13 guests')
   t = t.replace(/\bparty for 14 guests\b/gi, 'party for 13 guests')
+  t = t.replace(/\(6 pax\)/gi, '(7 pax)')
+  t = t.replace(/\(14 pax\)/gi, '(13 pax)')
+  t = t.replace(/\b14 pax\b/gi, '13 pax')
+  t = t.replace(/Group Sizes 2[–-]14/g, 'Group Sizes 2–13')
+  t = t.replace(/\bgroups of 2[–-]14\b/gi, 'groups of 2–13')
+  t = t.replace(/\bgroups of 6[–-]14\b/gi, 'groups of 6–13')
+  t = t.replace(/\bfor groups up to 14\b/gi, 'for groups up to 13')
   t = t.replace(/\bup to 6 passengers\b/gi, 'up to 7 passengers')
   t = t.replace(/\bseats 6 passengers\b/gi, 'seats 7 passengers')
   t = t.replace(/\bseats up to 6 passengers\b/gi, 'seats up to 7 passengers')
@@ -114,6 +121,29 @@ const AAL_DENVER_PRICE_SENTENCE =
 export function correctAalPublicText(text: string): string {
   if (!text) return text
   let t = correctAalFleetText(text)
+  t = t.replace(/14\+\s+Years of Excellence/gi, 'Serving Aspen Since 2012')
+  t = t.replace(
+    /Over 14 years of operation, we've become the trusted transportation partner for Aspen's most discerning travelers — Fortune 500 executives, international celebrities, Aspen Institute fellows, and families returning year after year because they know their transportation needs are handled with absolute reliability and discretion\./g,
+    "Operating since 2012, we've become the trusted transportation partner for Aspen's most discerning travelers — Fortune 500 executives, international celebrities, Aspen Institute fellows, and families returning year after year because they know their transportation needs are handled with absolute reliability and discretion.",
+  )
+  t = t.replace(/4\.9-Star Rated/gi, '5.0 on Google')
+  t = t.replace(
+    /Over 150 five-star reviews from guests who trust us with their most important transportation needs\./gi,
+    '5.0 on Google (5 reviews).',
+  )
+  t = t.replace(
+    /Eagle County Regional Airport \(EGE\) in Glenwood Springs/g,
+    'Eagle County Regional Airport (EGE) in Gypsum',
+  )
+  t = t.replace(
+    /Eagle County Regional Airport, located in Glenwood Springs/g,
+    'Eagle County Regional Airport, located in Gypsum',
+  )
+  t = t.replace(
+    /Eagle County Airport \(EGE\) near Glenwood Springs/g,
+    'Eagle County Airport (EGE) near Gypsum',
+  )
+  t = t.replace(/EGE is located in Glenwood Springs/g, 'EGE is located in Gypsum')
   t = t.replace(
     /Our Aspen to Denver International Airport transfer is quoted at a flat, all-inclusive SUV rate[—–-]contact us for the current published price, [\w\s]+ options, and multi-vehicle needs\./gi,
     AAL_DENVER_PRICE_SENTENCE,
@@ -132,8 +162,6 @@ export function correctAalPublicText(text: string): string {
   t = t.replace(/Aspen Highland's/g, 'Aspen Highlands')
   t = t.replaceAll('/services/ski-resort-transfers', '/ski-resort-transfers')
   t = t.replace(/After 14 years of shuttling/g, 'Since 2012, driving')
-  t = t.replace(/\b14\+\s+years\b/gi, 'since 2012')
-  t = t.replace(/\bover 14 years\b/gi, 'since 2012')
   t = t.replace(/have 15\+\s+years of mountain driving experience/gi, 'have been driving these mountain roads since 2012')
   t = t.replace(/with 15\+\s+years of mountain driving experience/gi, 'who have been driving these mountain roads since 2012')
   t = t.replace(/with 15\+\s+years of mountain driving/gi, 'who have been driving these mountain roads since 2012')

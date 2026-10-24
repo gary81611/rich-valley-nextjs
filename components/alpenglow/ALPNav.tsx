@@ -103,14 +103,19 @@ export default function ALPNav() {
             onMouseEnter={() => { if (closeServicesTimer.current) clearTimeout(closeServicesTimer.current); setServicesOpen(true) }}
             onMouseLeave={() => { closeServicesTimer.current = setTimeout(() => setServicesOpen(false), 300) }}
           >
-            <button className={`flex items-center gap-1 ${linkClass}`}>
+            <button
+              type="button"
+              className={`flex min-h-11 items-center gap-1 ${linkClass}`}
+              aria-expanded={servicesOpen}
+              onClick={() => setServicesOpen((open) => !open)}
+            >
               Services
               <svg className={`w-3.5 h-3.5 transition-transform ${servicesOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
             {servicesOpen && (
               <div className="absolute top-full left-0 mt-1 w-56 rounded-xl shadow-2xl border border-white/10 py-2 z-50" style={{ backgroundColor: '#1b2338', backdropFilter: 'none' }}>
                 {serviceNavItems.map((item) => (
-                  <a key={item.href} href={item.href} className="block px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
+                  <a key={item.href} href={item.href} className="flex min-h-11 items-center px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
                     {item.label}
                   </a>
                 ))}
@@ -124,14 +129,19 @@ export default function ALPNav() {
             onMouseEnter={() => { if (closeAreasTimer.current) clearTimeout(closeAreasTimer.current); setAreasOpen(true) }}
             onMouseLeave={() => { closeAreasTimer.current = setTimeout(() => setAreasOpen(false), 300) }}
           >
-            <button className={`flex items-center gap-1 ${linkClass}`}>
+            <button
+              type="button"
+              className={`flex min-h-11 items-center gap-1 ${linkClass}`}
+              aria-expanded={areasOpen}
+              onClick={() => setAreasOpen((open) => !open)}
+            >
               Service Areas
               <svg className={`w-3.5 h-3.5 transition-transform ${areasOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
             {areasOpen && (
               <div className="absolute top-full left-0 mt-1 w-48 rounded-xl shadow-2xl border border-white/10 py-2 z-50" style={{ backgroundColor: '#1b2338', backdropFilter: 'none' }}>
                 {areaNavItems.map((item) => (
-                  <a key={item.href} href={item.href} className="block px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
+                  <a key={item.href} href={item.href} className="flex min-h-11 items-center px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
                     {item.label}
                   </a>
                 ))}
@@ -153,35 +163,35 @@ export default function ALPNav() {
       {mobileMenuOpen && (
         <div className="xl:hidden max-h-[calc(100dvh-72px-3.5rem)] overflow-y-auto overscroll-contain bg-alp-navy border-t border-white/10 px-6 py-4 pb-8 space-y-1 md:max-h-[calc(100dvh-72px)]">
           <div>
-            <button onClick={() => setMobileServicesOpen(!mobileServicesOpen)} className="flex items-center justify-between w-full text-white/90 hover:text-alp-gold-light text-sm font-medium py-2">
+            <button type="button" onClick={() => setMobileServicesOpen(!mobileServicesOpen)} className="flex min-h-11 items-center justify-between w-full text-white/90 hover:text-alp-gold-light text-sm font-medium" aria-expanded={mobileServicesOpen}>
               Services
               <svg className={`w-3.5 h-3.5 transition-transform ${mobileServicesOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
             {mobileServicesOpen && (
               <div className="pl-4 space-y-1 border-l border-white/20 ml-2 mt-1">
                 {serviceNavItems.map((item) => (
-                  <a key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className="block text-white/75 hover:text-alp-gold-light text-sm py-1.5">
+                  <a key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className="flex min-h-11 items-center text-white/75 hover:text-alp-gold-light text-sm">
                     {item.label}
                   </a>
                 ))}
               </div>
             )}
           </div>
-          <a href="/fleet" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-3">
+          <a href="/fleet" onClick={() => setMobileMenuOpen(false)} className="flex min-h-11 items-center text-white/90 hover:text-alp-gold text-sm font-medium">
             Fleet
           </a>
           <a href="/pricing" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-3">
             Pricing
           </a>
           <div>
-            <button onClick={() => setMobileAreasOpen(!mobileAreasOpen)} className="flex items-center justify-between w-full text-white/90 hover:text-alp-gold-light text-sm font-medium py-2">
+            <button type="button" onClick={() => setMobileAreasOpen(!mobileAreasOpen)} className="flex min-h-11 items-center justify-between w-full text-white/90 hover:text-alp-gold-light text-sm font-medium" aria-expanded={mobileAreasOpen}>
               Service Areas
               <svg className={`w-3.5 h-3.5 transition-transform ${mobileAreasOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
             {mobileAreasOpen && (
               <div className="pl-4 space-y-1 border-l border-white/20 ml-2 mt-1">
                 {areaNavItems.map((item) => (
-                  <a key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className="block text-white/75 hover:text-alp-gold-light text-sm py-1.5">
+                  <a key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className="flex min-h-11 items-center text-white/75 hover:text-alp-gold-light text-sm">
                     {item.label}
                   </a>
                 ))}
