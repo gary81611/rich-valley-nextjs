@@ -463,7 +463,7 @@ const aalPages: PageSeed[] = [
     slug: 'weddings',
     title: 'Wedding Transportation in Aspen, Colorado',
     meta_title: 'Wedding Limo Service Aspen CO | Bridal Transportation | Aspen Alpenglow',
-    meta_description: 'Luxury wedding transportation in Aspen, Colorado. Bridal party transfers, venue shuttles, and wedding day coordination with the Roaring Fork Valley\'s premier limo service.',
+    meta_description: 'Luxury wedding transportation in Aspen, Colorado. Bridal party transfers, venue shuttles, and wedding day coordination with a Roaring Fork Valley limo service.',
     template_type: 'service',
     status: 'published',
     published_at: new Date().toISOString(),
@@ -684,7 +684,7 @@ const aalPages: PageSeed[] = [
     schema_markup: null,
     content: {
       hero_title: 'About Aspen Alpenglow Limousine',
-      hero_subtitle: 'Aspen\'s Premier Private Car & Limousine Service Since 2012',
+      hero_subtitle: 'Aspen\'s Private Car and Limousine Service Since 2012',
       sections: [
         {
           type: 'text',
