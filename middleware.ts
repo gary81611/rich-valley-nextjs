@@ -89,11 +89,25 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  /** AAL ski canonical, including the trailing slash, before the generic slash strip (one hop). */
+  /** AAL duplicate and stub paths. Host-only. One hop, including a trailing slash. */
   if (isAalHost) {
     const bare = pathname.length > 1 && pathname.endsWith('/') ? pathname.replace(/\/+$/, '') : pathname
-    if (bare === '/services/ski-resort-transfers') {
-      return NextResponse.redirect(new URL('/ski-resort-transfers' + search, request.url), 301)
+    const aalCanonical: Record<string, string> = {
+      '/services/ski-resort-transfers': '/ski-resort-transfers',
+      '/services/airport-transfers': '/airport-transfers',
+      '/wedding-transportation': '/weddings',
+      '/corporate-events': '/corporate',
+      '/services/corporate-events': '/corporate',
+      '/services/corporate-travel': '/corporate',
+      '/services/wedding-transportation': '/weddings',
+      '/services/charter-services': '/services/hourly-charter',
+      '/areas/aspen': '/service-areas/aspen',
+      '/areas/snowmass': '/service-areas/snowmass-village',
+      '/areas/vail': '/service-areas/eagle-vail',
+    }
+    const aalTarget = aalCanonical[bare]
+    if (aalTarget) {
+      return NextResponse.redirect(new URL(aalTarget + search, request.url), 301)
     }
   }
 

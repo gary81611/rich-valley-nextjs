@@ -19,19 +19,18 @@ const FALLBACK_SERVICE_PAGES: NavItem[] = [
 ]
 
 const FALLBACK_AREA_PAGES: NavItem[] = [
-  { label: 'Aspen', href: '/areas/aspen' },
-  { label: 'Snowmass Village', href: '/areas/snowmass' },
+  { label: 'Aspen', href: '/service-areas/aspen' },
+  { label: 'Snowmass Village', href: '/service-areas/snowmass-village' },
   { label: 'Basalt', href: '/service-areas/basalt' },
   { label: 'Carbondale', href: '/service-areas/carbondale' },
   { label: 'Glenwood Springs', href: '/service-areas/glenwood-springs' },
-  { label: 'Eagle / Vail', href: '/areas/vail' },
+  { label: 'Eagle / Vail', href: '/service-areas/eagle-vail' },
   { label: 'Denver', href: '/service-areas/denver' },
   { label: 'Rifle', href: '/service-areas/rifle' },
   { label: 'Grand Junction', href: '/service-areas/grand-junction' },
 ]
 
 export default function ALPNav() {
-  const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
   const [areasOpen, setAreasOpen] = useState(false)
@@ -86,157 +85,139 @@ export default function ALPNav() {
     fetchNavData()
   }, [])
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  const linkClass = 'whitespace-nowrap text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide'
 
   return (
-    <nav aria-label="Main navigation" className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'shadow-lg' : 'shadow-lg'}`} style={{ backgroundColor: '#1b2338' }}>
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center">
+    <nav aria-label="Main navigation" className="fixed top-0 left-0 right-0 z-50 shadow-lg" style={{ backgroundColor: '#1b2338' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-[72px] flex items-center gap-4">
         <a href="/" className="flex items-center gap-3 flex-shrink-0" aria-label="Aspen Alpenglow Limousine — home">
-          <Image src={alpenglowData.logo} alt="Aspen Alpenglow Limousine logo" width={160} height={50} className="h-10 md:h-14 w-auto object-contain" unoptimized loading="eager" />
+          <Image src={alpenglowData.logo} alt="Aspen Alpenglow Limousine logo" width={160} height={50} className="h-10 w-auto object-contain" unoptimized loading="eager" />
         </a>
-        <a href={phoneHref} aria-label={`Call Aspen Alpenglow Limousine at ${phone}`} className="ml-3 flex-shrink-0 bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-semibold transition-all hover:shadow-lg">
+        <a href={phoneHref} aria-label={`Call Aspen Alpenglow Limousine at ${phone}`} className="hidden md:inline-flex flex-shrink-0 bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-4 py-2 rounded-full text-sm font-semibold transition-all hover:shadow-lg">
           {phone}
         </a>
-        <div className="hidden md:flex items-center gap-8 ml-auto">
+        <div className="hidden xl:flex items-center gap-6 ml-6 min-w-0">
           {/* Services dropdown */}
           <div
             className="relative"
             onMouseEnter={() => { if (closeServicesTimer.current) clearTimeout(closeServicesTimer.current); setServicesOpen(true) }}
             onMouseLeave={() => { closeServicesTimer.current = setTimeout(() => setServicesOpen(false), 300) }}
           >
-            <button className="flex items-center gap-1 text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
+            <button
+              type="button"
+              className={`flex min-h-11 items-center gap-1 ${linkClass}`}
+              aria-expanded={servicesOpen}
+              onClick={(event) => {
+                if (event.detail === 0) setServicesOpen((open) => !open)
+                else setServicesOpen(true)
+              }}
+            >
               Services
               <svg className={`w-3.5 h-3.5 transition-transform ${servicesOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
             {servicesOpen && (
               <div className="absolute top-full left-0 mt-1 w-56 rounded-xl shadow-2xl border border-white/10 py-2 z-50" style={{ backgroundColor: '#1b2338', backdropFilter: 'none' }}>
                 {serviceNavItems.map((item) => (
-                  <a key={item.href} href={item.href} className="block px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
+                  <a key={item.href} href={item.href} className="flex min-h-11 items-center px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
                     {item.label}
                   </a>
                 ))}
               </div>
             )}
           </div>
-          <a href="/fleet" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
-            Fleet
-          </a>
-          <a href="/destinations" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
-            Destinations
-          </a>
-          <a href="/pricing" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
-            Pricing
-          </a>
-          <a href="/reservations" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
-            Reservations
-          </a>
-          <a href="/gallery" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
-            Gallery
-          </a>
+          <a href="/fleet" className={linkClass}>Fleet</a>
           {/* Service Areas dropdown */}
           <div
             className="relative"
             onMouseEnter={() => { if (closeAreasTimer.current) clearTimeout(closeAreasTimer.current); setAreasOpen(true) }}
             onMouseLeave={() => { closeAreasTimer.current = setTimeout(() => setAreasOpen(false), 300) }}
           >
-            <button className="flex items-center gap-1 text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
+            <button
+              type="button"
+              className={`flex min-h-11 items-center gap-1 ${linkClass}`}
+              aria-expanded={areasOpen}
+              onClick={(event) => {
+                if (event.detail === 0) setAreasOpen((open) => !open)
+                else setAreasOpen(true)
+              }}
+            >
               Service Areas
               <svg className={`w-3.5 h-3.5 transition-transform ${areasOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
             {areasOpen && (
               <div className="absolute top-full left-0 mt-1 w-48 rounded-xl shadow-2xl border border-white/10 py-2 z-50" style={{ backgroundColor: '#1b2338', backdropFilter: 'none' }}>
                 {areaNavItems.map((item) => (
-                  <a key={item.href} href={item.href} className="block px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
+                  <a key={item.href} href={item.href} className="flex min-h-11 items-center px-4 py-2 text-white/85 hover:text-alp-gold-light hover:bg-white/5 text-sm transition-colors">
                     {item.label}
                   </a>
                 ))}
               </div>
             )}
           </div>
-          <a href="/contact" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
-            Contact
-          </a>
-          <a href="/faq" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
-            FAQ
-          </a>
-          <a href="/about" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
-            About
-          </a>
-          <a href="/blog" className="text-white/90 hover:text-alp-gold-light transition-colors text-sm font-medium tracking-wide">
-            Blog
+          <a href="/pricing" className={linkClass}>Pricing</a>
+          <a href="/about" className={linkClass}>About</a>
+          <a href="/reservations" className="whitespace-nowrap bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-4 py-2 rounded-full text-sm font-semibold">
+            Book
           </a>
         </div>
-        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle mobile navigation menu" aria-expanded={mobileMenuOpen} className="md:hidden ml-auto text-white p-2">
+        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle navigation menu" aria-expanded={mobileMenuOpen} className="xl:hidden ml-auto text-white p-2 min-h-[44px] min-w-[44px]">
           <div className="w-6 h-0.5 bg-white mb-1.5"></div>
           <div className="w-6 h-0.5 bg-white mb-1.5"></div>
           <div className="w-6 h-0.5 bg-white"></div>
         </button>
       </div>
       {mobileMenuOpen && (
-        <div className="md:hidden bg-alp-navy border-t border-white/10 px-6 py-4 space-y-3">
+        <div className="xl:hidden max-h-[calc(100dvh-72px-3.5rem)] overflow-y-auto overscroll-contain bg-alp-navy border-t border-white/10 px-6 py-4 pb-8 space-y-1 md:max-h-[calc(100dvh-72px)]">
           <div>
-            <button onClick={() => setMobileServicesOpen(!mobileServicesOpen)} className="flex items-center justify-between w-full text-white/90 hover:text-alp-gold-light text-sm font-medium py-2">
+            <button type="button" onClick={() => setMobileServicesOpen(!mobileServicesOpen)} className="flex min-h-11 items-center justify-between w-full text-white/90 hover:text-alp-gold-light text-sm font-medium" aria-expanded={mobileServicesOpen}>
               Services
               <svg className={`w-3.5 h-3.5 transition-transform ${mobileServicesOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
             {mobileServicesOpen && (
               <div className="pl-4 space-y-1 border-l border-white/20 ml-2 mt-1">
                 {serviceNavItems.map((item) => (
-                  <a key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className="block text-white/75 hover:text-alp-gold-light text-sm py-1.5">
+                  <a key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className="flex min-h-11 items-center text-white/75 hover:text-alp-gold-light text-sm">
                     {item.label}
                   </a>
                 ))}
               </div>
             )}
           </div>
-          <a href="/fleet" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
+          <a href="/fleet" onClick={() => setMobileMenuOpen(false)} className="flex min-h-11 items-center text-white/90 hover:text-alp-gold text-sm font-medium">
             Fleet
           </a>
-          <a href="/destinations" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
-            Destinations
-          </a>
-          <a href="/pricing" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
+          <a href="/pricing" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-3">
             Pricing
           </a>
-          <a href="/reservations" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
-            Reservations
-          </a>
-          <a href="/gallery" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
-            Gallery
-          </a>
           <div>
-            <button onClick={() => setMobileAreasOpen(!mobileAreasOpen)} className="flex items-center justify-between w-full text-white/90 hover:text-alp-gold-light text-sm font-medium py-2">
+            <button type="button" onClick={() => setMobileAreasOpen(!mobileAreasOpen)} className="flex min-h-11 items-center justify-between w-full text-white/90 hover:text-alp-gold-light text-sm font-medium" aria-expanded={mobileAreasOpen}>
               Service Areas
               <svg className={`w-3.5 h-3.5 transition-transform ${mobileAreasOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
             {mobileAreasOpen && (
               <div className="pl-4 space-y-1 border-l border-white/20 ml-2 mt-1">
                 {areaNavItems.map((item) => (
-                  <a key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className="block text-white/75 hover:text-alp-gold-light text-sm py-1.5">
+                  <a key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className="flex min-h-11 items-center text-white/75 hover:text-alp-gold-light text-sm">
                     {item.label}
                   </a>
                 ))}
               </div>
             )}
           </div>
-          <a href="/contact" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
-            Contact
-          </a>
-          <a href="/faq" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
-            FAQ
-          </a>
-          <a href="/about" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
+          <a href="/about" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-3">
             About
           </a>
-          <a href="/blog" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-2">
+          <a href="/faq" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-3">
+            FAQ
+          </a>
+          <a href="/blog" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-3">
             Blog
           </a>
-          <a href={phoneHref} className="block bg-alp-gold text-alp-navy text-center py-3 rounded-full font-semibold mt-2">
-            {phone}
+          <a href="/contact" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-alp-gold text-sm font-medium py-3">
+            Contact
+          </a>
+          <a href="/reservations" onClick={() => setMobileMenuOpen(false)} className="block bg-alp-gold text-alp-navy text-center py-3 rounded-full font-semibold mt-2">
+            Book online
           </a>
         </div>
       )}

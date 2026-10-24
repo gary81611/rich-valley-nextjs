@@ -2,14 +2,16 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import ScrollReveal from '@/components/shared/ScrollReveal'
-import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
+import InquiryForm from '@/components/shared/InquiryForm'
 import NewsletterSignup from '@/components/shared/NewsletterSignup'
+import VehicleCard from '@/components/alpenglow/VehicleCard'
+import { AAL_VEHICLES } from '@/lib/aal-vehicles'
 import { alpenglowData } from '@/lib/site-data'
 import { createClient } from '@/lib/supabase'
 import { hrefForService } from '@/lib/alpenglow-services'
-import type { Service as ServiceType, FleetVehicle, Testimonial } from '@/lib/types'
+import type { Service as ServiceType, Testimonial } from '@/lib/types'
 import { seoAlt } from '@/lib/seo/alt-text'
-import { AAL_ONE_WAY_RATES, correctAalFaqItem, correctAalFleetCapacity, correctAalPublicText } from '@/lib/aal-public-copy'
+import { AAL_ONE_WAY_RATES, correctAalFaqItem, correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
 
 interface GeoBlock {
   id: string
@@ -44,7 +46,6 @@ const ServiceIcon = ({ icon }: { icon: string }) => {
 
 export default function AlpenglowHomeClient() {
   const [services, setServices] = useState<{ title: string; slug: string; description: string; features: string[]; icon: string }[]>([])
-  const [fleet, setFleet] = useState<{ name: string; image: string; passengers: string; features: string[] }[]>([])
   const [testimonials, setTestimonials] = useState<{ quote: string; name: string; location: string }[]>([])
   const [stats, setStats] = useState<{value: string; label: string}[]>([])
   const [whyChooseUs, setWhyChooseUs] = useState<{title: string; description: string}[]>([])
@@ -59,9 +60,8 @@ export default function AlpenglowHomeClient() {
     async function fetchSupabaseData() {
       try {
         const supabase = createClient()
-        const [svcRes, fleetRes, testRes, geoRes, faqRes, settingsRes, vpRes, saRes, destRes] = await Promise.all([
+        const [svcRes, testRes, geoRes, faqRes, settingsRes, vpRes, saRes, destRes] = await Promise.all([
           supabase.from('services').select('*').eq('is_active', true).order('display_order'),
-          supabase.from('fleet_vehicles').select('*').eq('is_active', true),
           supabase.from('testimonials').select('*').eq('is_active', true).eq('site_key', 'alpenglow'),
           supabase.from('geo_content_blocks').select('*').eq('is_active', true).eq('site_key', 'alpenglow').eq('display_on_page', '/').order('display_order'),
           supabase.from('faqs').select('*').eq('is_active', true).eq('site_key', 'alpenglow').order('display_order'),
@@ -80,13 +80,6 @@ export default function AlpenglowHomeClient() {
               icon: s.icon || 'Plane',
             })),
           )
-        }
-        if (fleetRes.data && fleetRes.data.length > 0) {
-          setFleet(fleetRes.data.map((v: FleetVehicle) => ({
-            name: correctAalPublicText(v.name), image: v.image_url || '/images/fleet/escalade.png',
-            passengers: `Up to ${correctAalFleetCapacity(v.name, v.capacity)} Passengers`,
-            features: v.description ? [correctAalPublicText(v.description)] : [],
-          })))
         }
         if (testRes.data && testRes.data.length > 0) {
           setTestimonials(testRes.data.map((t: Testimonial) => ({
@@ -115,7 +108,7 @@ export default function AlpenglowHomeClient() {
           setPhoneHref(`tel:+1${settingsRes.data.phone.replace(/\D/g, '')}`)
         }
         if (settingsRes.data?.stats && Array.isArray(settingsRes.data.stats)) {
-          setStats(settingsRes.data.stats)
+          setStats(settingsRes.data.stats.map((stat: { value: string; label: string }) => normalizeAalStat(stat)))
         }
         if (vpRes.data) {
           setWhyChooseUs(vpRes.data.map((vp: { title: string; description: string }) => ({
@@ -160,29 +153,28 @@ export default function AlpenglowHomeClient() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-alp-navy-deep/80 via-alp-navy-deep/50 to-alp-navy-deep/85" />
         </div>
-        <div className="relative z-10 text-center text-white px-6 max-w-5xl mx-auto pb-28">
+        <div className="aal-on-navy relative z-10 text-center text-white px-6 max-w-5xl mx-auto pb-28">
           <p className="font-cormorant text-xl md:text-2xl text-alp-gold tracking-[0.3em] uppercase mb-6">
             Aspen · Snowmass · Roaring Fork Valley
           </p>
-          <h1 className="alp-speak-hero font-playfair text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
-            Luxury Transportation<br />
-            <span className="text-alp-gold-light italic">in the Roaring <span className="whitespace-nowrap"><span style={{ letterSpacing: '-0.04em' }}>F</span>ork Valley</span></span>
+          <h1 className="alp-speak-hero font-playfair text-5xl md:text-7xl font-bold mb-8 leading-tight">
+            Aspen Car Service &amp; Limousine
           </h1>
           <p className="alp-speak-intro text-xl md:text-2xl text-white/85 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
             Distinguished private car and limousine service — available 24/7 since 2012.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href={alpenglowData.onlineReservationsPath} className="bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block">
-              Reserve Your Ride
+              Book online
             </a>
-            <a href="/services" className="border-2 border-white text-white hover:bg-white hover:text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
-              Our Services
+            <a href="#quote" className="border-2 border-white text-white hover:bg-white hover:text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
+              Request a quote
             </a>
           </div>
         </div>
         {/* Stats bar */}
         {stats.length > 0 && (
-        <div className="absolute bottom-0 left-0 right-0 bg-alp-navy/90 backdrop-blur-sm border-t border-white/10">
+        <div className="aal-on-navy absolute bottom-0 left-0 right-0 bg-alp-navy/90 backdrop-blur-sm border-t border-white/10">
           <div className="max-w-4xl mx-auto px-6 py-5 grid grid-cols-3 gap-4 text-center">
             {stats.map((stat) => (
               <div key={stat.label}>
@@ -196,7 +188,6 @@ export default function AlpenglowHomeClient() {
       </section>
 
       {/* FLEET SHOWCASE */}
-      {fleet.length > 0 && (
       <section id="fleet" className="py-24 bg-alp-navy-deep">
         <div className="max-w-7xl mx-auto px-6">
           <ScrollReveal className="text-center mb-16">
@@ -204,45 +195,17 @@ export default function AlpenglowHomeClient() {
             <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold">Our Fleet</h2>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 gap-10">
-            {fleet.map((vehicle, i) => (
-              <ScrollReveal key={vehicle.name} delay={i * 150}>
-                <div className="bg-alp-navy rounded-2xl overflow-hidden shadow-xl border border-white/5">
-                  <div className="relative aspect-[16/9] bg-alp-navy-deep/50 flex items-center justify-center p-6">
-                    <Image
-                      src={vehicle.image}
-                      alt={seoAlt({
-                        subject: vehicle.name,
-                        location: 'Aspen and the Roaring Fork Valley, Colorado',
-                        context: 'luxury fleet vehicle',
-                        brand: 'Aspen Alpenglow Limousine',
-                      })}
-                      fill
-                      className="object-contain p-8"
-                      loading="eager"
-                      unoptimized
-                    />
-                  </div>
-                  <div className="p-8">
-                    <div className="flex items-start justify-between mb-4">
-                      <h3 className="font-playfair text-2xl text-white font-semibold">{vehicle.name}</h3>
-                      <span className="bg-alp-gold/20 text-alp-gold text-xs px-3 py-1 rounded-full border border-alp-gold/30">{vehicle.passengers}</span>
-                    </div>
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {vehicle.features.map((f) => (
-                        <span key={f} className="bg-white/5 text-white/70 text-xs px-3 py-1.5 rounded-full border border-white/10">{f}</span>
-                      ))}
-                    </div>
-                    <a href={alpenglowData.onlineReservationsPath} className="inline-block bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-8 py-3 rounded-full font-semibold text-sm transition-all hover:shadow-lg">
-                      Reserve Now
-                    </a>
-                  </div>
-                </div>
+            {AAL_VEHICLES.map((vehicle, i) => (
+              <ScrollReveal key={vehicle.id} delay={i * 150}>
+                <VehicleCard vehicle={vehicle} tone="dark" />
               </ScrollReveal>
             ))}
           </div>
+          <p className="mt-10 text-center text-white/70 max-w-3xl mx-auto">
+            Two Chevrolet Suburbans, each seating up to 7, and one Ford Transit passenger van seating up to 13.
+          </p>
         </div>
       </section>
-      )}
 
       {/* TRANSPORTATION SERVICES */}
       <section id="services" className="py-24 bg-alp-pearl">
@@ -254,7 +217,7 @@ export default function AlpenglowHomeClient() {
               Every detail handled. Every journey seamless.
             </p>
             <p className="alp-speak-services-overview text-alp-slate text-base max-w-3xl mx-auto mt-6 leading-relaxed border-t border-alp-pearl-dark pt-6">
-              Aspen Alpenglow Limousine operates a professional fleet of three late-model vehicles — two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (13 passengers) — with Starlink, ski racks, and roof cargo space. 8 full-time local drivers have 15+ years of mountain driving experience. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison, alongside Aspen/Pitkin County Airport (ASE) and Denver International Airport (DEN). One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.
+              Aspen Alpenglow Limousine operates a professional fleet of three late-model vehicles — two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (13 passengers) — with Starlink, ski racks, and roof cargo space. 8 full-time local drivers have been driving these mountain roads since 2012. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison, alongside Aspen/Pitkin County Airport (ASE) and Denver International Airport (DEN). One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.
             </p>
           </div>
           {services.length > 0 && (
@@ -362,7 +325,7 @@ export default function AlpenglowHomeClient() {
             {testimonials.map((t, i) => (
               <ScrollReveal key={t.name} delay={i * 150}>
                 <div className="bg-alp-navy-deep rounded-2xl p-8 border border-white/5 relative">
-                  <div className="font-playfair text-7xl text-alp-gold/20 absolute top-4 left-6 leading-none select-none">&ldquo;</div>
+                  <div aria-hidden="true" className="font-playfair text-7xl text-alp-gold/20 absolute top-4 left-6 leading-none select-none">&ldquo;</div>
                   <p className="text-white/80 text-lg leading-relaxed italic mb-6 pt-6 relative z-10">{t.quote}</p>
                   <div className="border-t border-white/10 pt-4">
                     <p className="font-semibold text-white">{t.name}</p>
@@ -472,37 +435,15 @@ export default function AlpenglowHomeClient() {
         <div className="max-w-4xl mx-auto px-6 text-center">
           <ScrollReveal>
             <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Beyond the Transfer</p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-6">Event Transportation That Feels Like an Adventure</h2>
+            <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-6">Event transportation for weddings and weekends</h2>
             <p className="text-alp-slate text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
-              From corporate retreats to private celebrations, we create seamless, tailor-made transportation itineraries that turn logistics into luxury. Every detail is handled — so you can focus on the experience.
+              Private SUVs and the Ford Transit passenger van for weddings, X Games week, New Year&apos;s Eve, and holiday arrivals. No shared rides are offered.
             </p>
-            <a
-              href="https://www.richvalleyadventures.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-alp-navy hover:bg-alp-navy-deep text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-xl hover:-translate-y-0.5"
-            >
-              View All Adventures →
-            </a>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* PARTNER CALLOUT */}
-      <section className="py-20 bg-gradient-to-r from-alp-navy to-alp-navy-deep">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <ScrollReveal>
-            <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Our Sister Company</p>
-            <h2 className="font-playfair text-3xl md:text-4xl text-white font-bold mb-4">{alpenglowData.partnerSite.name}</h2>
-            <p className="text-white/75 text-lg mb-8 max-w-2xl mx-auto">{alpenglowData.partnerSite.description}</p>
-            <a
-              href={alpenglowData.partnerSite.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-xl hover:-translate-y-0.5"
-            >
-              Explore Adventures →
-            </a>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="/weddings" className="inline-block bg-alp-navy hover:bg-alp-navy-deep text-white px-8 py-3 rounded-full font-semibold">Weddings</a>
+              <a href="/events/x-games-aspen-transportation" className="inline-block border border-alp-navy text-alp-navy px-8 py-3 rounded-full font-semibold">X Games</a>
+              <a href="/events/new-years-eve-aspen" className="inline-block border border-alp-navy text-alp-navy px-8 py-3 rounded-full font-semibold">New Year&apos;s Eve</a>
+            </div>
           </ScrollReveal>
         </div>
       </section>
@@ -511,11 +452,11 @@ export default function AlpenglowHomeClient() {
       <NewsletterSignup siteKey="alpenglow" variant="alpenglow" />
 
       {/* BOOKING / CONTACT */}
-      <section id="contact" className="py-24 bg-alp-pearl">
+      <section id="quote" className="py-24 bg-alp-pearl">
         <div className="max-w-3xl mx-auto px-6">
           <ScrollReveal className="text-center mb-12">
             <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Reserve Your Journey</p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-4">Book Your Ride</h2>
+            <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-4">Request a quote</h2>
             <p className="text-alp-slate text-lg">
               <a href={alpenglowData.onlineReservationsPath} className="text-alp-gold font-semibold hover:underline">
                 Book online
@@ -525,13 +466,7 @@ export default function AlpenglowHomeClient() {
           </ScrollReveal>
           <ScrollReveal delay={200}>
             <div className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border border-alp-pearl-dark">
-              <BookingPlaceholder
-                accentColor="bg-alp-gold"
-                accentHover="hover:bg-alp-gold-light"
-                phone={phone}
-                phoneHref={phoneHref}
-                variant="alpenglow"
-              />
+              <InquiryForm brand="alpenglow" />
             </div>
           </ScrollReveal>
         </div>

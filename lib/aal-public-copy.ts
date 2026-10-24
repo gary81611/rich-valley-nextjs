@@ -1,9 +1,19 @@
 /** Confirmed AAL rate and FAQ corrections. Render-time only; does not write to the database. */
 
-export const AAL_ONE_WAY_RATES =
-  'One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.'
+import { aalDisplayTitle } from '@/lib/aal-display-title'
 
-export const AAL_EAGLE_BOTH_WAYS = 'One-way Aspen to Eagle is $720. Eagle to Aspen is $720.'
+export const AAL_ONE_WAY_RATES =
+  'One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.'
+
+export const AAL_EAGLE_BOTH_WAYS =
+  'Eagle one-way rates are confirmed when you request a quote. Holiday pricing may change seasonally.'
+
+/** RVA closure post that was stored on the Alpenglow blog. Hidden until the round 14 migration drafts it. */
+export const AAL_HIDDEN_BLOG_SLUG = 'aspen-airport-closure-alternative-transportation-adventures'
+
+export function isAalHiddenBlogSlug(slug: string | null | undefined): boolean {
+  return (slug || '').toLowerCase() === AAL_HIDDEN_BLOG_SLUG
+}
 
 /** Drop or rewrite CMS FAQ rows that still describe the past ASE closure as upcoming, or name the sister brand. */
 export function correctAalFaqItem(q: string, a: string): { q: string; a: string } | null {
@@ -52,6 +62,13 @@ export function correctAalFleetText(text: string): string {
   t = t.replace(/\b2–14 guests\b/g, '2–13 guests')
   t = t.replace(/\b2-14 guests\b/g, '2-13 guests')
   t = t.replace(/\bparty for 14 guests\b/gi, 'party for 13 guests')
+  t = t.replace(/\(6 pax\)/gi, '(7 pax)')
+  t = t.replace(/\(14 pax\)/gi, '(13 pax)')
+  t = t.replace(/\b14 pax\b/gi, '13 pax')
+  t = t.replace(/Group Sizes 2[–-]14/g, 'Group Sizes 2–13')
+  t = t.replace(/\bgroups of 2[–-]14\b/gi, 'groups of 2–13')
+  t = t.replace(/\bgroups of 6[–-]14\b/gi, 'groups of 6–13')
+  t = t.replace(/\bfor groups up to 14\b/gi, 'for groups up to 13')
   t = t.replace(/\bup to 6 passengers\b/gi, 'up to 7 passengers')
   t = t.replace(/\bseats 6 passengers\b/gi, 'seats 7 passengers')
   t = t.replace(/\bseats up to 6 passengers\b/gi, 'seats up to 7 passengers')
@@ -103,7 +120,79 @@ const AAL_DENVER_PRICE_SENTENCE =
 /** Fleet names, passenger counts, the published Denver one-way rate, and the ski canonical path. */
 export function correctAalPublicText(text: string): string {
   if (!text) return text
-  let t = correctAalFleetText(text)
+  let t = text
+  t = t.replace(
+    /After 14 years of shuttling Aspen['’]s skiing visitors between slopes, restaurants, airports, and accommodations, Aspen Alpenglow Limousine can tell you with confidence: for most ski trips to the Roaring Fork Valley, private car service is a better experience than a rental car at a comparable total cost\./gi,
+    "Aspen Alpenglow Limousine has been driving Aspen's skiing visitors between slopes, restaurants, airports, and accommodations since 2012, and we can tell you with confidence: for most ski trips to the Roaring Fork Valley, private car service is a better experience than a rental car at a comparable total cost.",
+  )
+  t = t.replace(
+    /Nestled in the heart of the Elk Mountains, Aspen has transformed from a mining town into one of America['’]s premier culinary destinations\./gi,
+    'Nestled in the heart of the Elk Mountains, Aspen has transformed from a mining town into a food and wine destination.',
+  )
+  t = t.replace(
+    /Held each June, the Aspen Food & Wine Classic is one of the premier wine and food events in North America\./gi,
+    'Held each June, the Aspen Food & Wine Classic is a well-known annual food and wine festival.',
+  )
+  t = t.replace(
+    /Let us handle the mountain roads while you sit back, relax, and enjoy the incredible Colorado scenery on your way to one of the world['’]s premier mountain destinations\./gi,
+    'Let us handle the mountain roads while you sit back, relax, and enjoy the incredible Colorado scenery on your way to Aspen.',
+  )
+  t = t.replace(
+    /Our fleet includes a black Executive Cadillac Escalade \(up to 6 passengers\) and a black Luxury Mercedes Sprinter van \(up to 14 passengers\)\./gi,
+    'Our fleet includes a black Chevrolet Suburban (up to 7 passengers) and a black Ford Transit passenger van (up to 13 passengers).',
+  )
+  t = t.replace(
+    /Our Sprinter van fleet can be configured as rolling conference space [–—-] leather seating, climate control, quiet cabin for confidential conversations during transfer\./gi,
+    'Our Ford Transit passenger van can be configured as rolling conference space — leather seating, climate control, quiet cabin for confidential conversations during transfer.',
+  )
+  t = t.replace(
+    /Our luxury Escalade and Sprinter fleet accommodate full ski groups with all equipment [–—-] ski bags, snowboards, helmets, and boot bags [–—-] without the crowding and inconvenience of shared shuttles\./gi,
+    'Our Chevrolet Suburban and Ford Transit passenger van accommodate full ski groups with all equipment — ski bags, snowboards, helmets, and boot bags — without the crowding and inconvenience of shared shuttles.',
+  )
+  t = t.replace(
+    /Eagle County Regional Airport \(EGE\) in Glenwood Springs, 70 miles east of Aspen/g,
+    'Eagle County Regional Airport (EGE) in Gypsum, about 70 miles from Aspen',
+  )
+  t = t.replace(
+    /Eagle County Regional Airport \(EGE\) in Gypsum, 70 miles east of Aspen/g,
+    'Eagle County Regional Airport (EGE) in Gypsum, about 70 miles from Aspen',
+  )
+  t = t.replace(
+    /Eagle County Regional Airport \(EGE\) near Vail is about 70 miles east of Aspen/g,
+    'Eagle County Regional Airport (EGE) near Vail is about 70 miles from Aspen',
+  )
+  t = t.replace(
+    /EGE is located in Glenwood Springs, midway between Aspen and Vail/g,
+    'EGE is located in Gypsum, between Aspen and Vail',
+  )
+  t = t.replace(
+    /EGE is located in Gypsum, midway between Aspen and Vail/g,
+    'EGE is located in Gypsum, between Aspen and Vail',
+  )
+  t = correctAalFleetText(t)
+  t = t.replace(/14\+\s+Years of Excellence/gi, 'Serving Aspen Since 2012')
+  t = t.replace(
+    /Over 14 years of operation, we've become the trusted transportation partner for Aspen's most discerning travelers — Fortune 500 executives, international celebrities, Aspen Institute fellows, and families returning year after year because they know their transportation needs are handled with absolute reliability and discretion\./g,
+    "Operating since 2012, we've become the trusted transportation partner for Aspen's most discerning travelers — Fortune 500 executives, international celebrities, Aspen Institute fellows, and families returning year after year because they know their transportation needs are handled with absolute reliability and discretion.",
+  )
+  t = t.replace(/4\.9-Star Rated/gi, '5.0 on Google')
+  t = t.replace(
+    /Over 150 five-star reviews from guests who trust us with their most important transportation needs\./gi,
+    'Rated 5.0 by guests on Google (5 reviews).',
+  )
+  t = t.replace(
+    /Eagle County Regional Airport \(EGE\) in Glenwood Springs/g,
+    'Eagle County Regional Airport (EGE) in Gypsum',
+  )
+  t = t.replace(
+    /Eagle County Regional Airport, located in Glenwood Springs/g,
+    'Eagle County Regional Airport, located in Gypsum',
+  )
+  t = t.replace(
+    /Eagle County Airport \(EGE\) near Glenwood Springs/g,
+    'Eagle County Airport (EGE) near Gypsum',
+  )
+  t = t.replace(/EGE is located in Glenwood Springs/g, 'EGE is located in Gypsum')
   t = t.replace(
     /Our Aspen to Denver International Airport transfer is quoted at a flat, all-inclusive SUV rate[—–-]contact us for the current published price, [\w\s]+ options, and multi-vehicle needs\./gi,
     AAL_DENVER_PRICE_SENTENCE,
@@ -114,6 +203,9 @@ export function correctAalPublicText(text: string): string {
   t = t.replace(/\bMercedes-Benz\s+(?=Ford Transit)/gi, '')
   t = t.replace(/\bMercedes\s+(?=Ford Transit)/gi, '')
   t = t.replace(/\bCadillac\s+(?=SUVs?\b)/gi, '')
+  t = t.replace(/\bExecutive Chevrolet Suburban\b/gi, 'Chevrolet Suburban')
+  t = t.replace(/\bLuxury Ford Transit\b/gi, 'Ford Transit')
+  t = t.replace(/\bFord Transit passenger van fleet\b/gi, 'Ford Transit passenger van')
   t = t.replace(/\bluxury sedans\b/gi, 'private SUVs')
   t = t.replace(
     /Cloud Nine Alpine Bistro at the top of Aspen Mountain/gi,
@@ -121,6 +213,33 @@ export function correctAalPublicText(text: string): string {
   )
   t = t.replace(/Aspen Highland's/g, 'Aspen Highlands')
   t = t.replaceAll('/services/ski-resort-transfers', '/ski-resort-transfers')
+  t = t.replace(/have 15\+\s+years of mountain driving experience/gi, 'have been driving these mountain roads since 2012')
+  t = t.replace(/with 15\+\s+years of mountain driving experience/gi, 'who have been driving these mountain roads since 2012')
+  t = t.replace(/with 15\+\s+years of mountain driving/gi, 'who have been driving these mountain roads since 2012')
+  t = t.replace(/Colorado['’]s Premier Ski Towns/gi, "Colorado's Ski Towns")
+  t = t.replace(/Colorado['’]s Premier Wine Region/gi, "Colorado's Grand Valley")
+  t = t.replace(/extensive experience with premier venues including/gi, 'extensive experience with venues including')
+  t = t.replace(/Aspen['’]s Premier Private Car & Limousine Service/gi, "Aspen's Private Car and Limousine Service")
+  t = t.replace(/Aspen['’]s Premier Private Car/gi, "Aspen's Private Car Service")
+  t = t.replace(/the Roaring Fork Valley['’]s premier limo service/gi, 'a Roaring Fork Valley limo service')
+  t = t.replace(/one of the world['’]s premier mountain destinations/gi, 'Aspen')
+  t = t.replace(/one of America['’]s premier culinary destinations/gi, 'a food and wine destination')
+  t = t.replace(/virtually every premier venue/gi, 'venues')
+  t = t.replace(/\ba premier ski destination\b/gi, 'a ski destination')
+  t = t.replace(/one of the premier wine and food events in North America/gi, 'a well-known annual food and wine festival')
+  t = t.replace(/\ba premier destination for corporate retreats\b/gi, 'a destination for corporate retreats')
+  t = t.replace(/\ba premier wedding destination\b/gi, 'a wedding destination')
+  t = t.replace(/3\.5\s*[–—-]\s*4\.5\s*hours/gi, '3.5–4 hours')
+  t = t.replace(/Aspen's most trusted luxury car service/gi, 'a private car service built on local drivers and on-time pickups')
+  t = t.replace(/Aspen’s most trusted luxury car service/gi, 'a private car service built on local drivers and on-time pickups')
+  // Eagle $120 and $720 are both unpublished until Kit confirms one rate. Rifle $720 stays.
+  t = t.replace(/One-way Aspen to Eagle is \$720\. Eagle to Aspen is \$720\./gi, AAL_EAGLE_BOTH_WAYS)
+  t = t.replace(/Eagle \(EGE\) to Aspen or Snowmass is \$720 one way\. Aspen to Eagle is \$720\./gi, AAL_EAGLE_BOTH_WAYS)
+  t = t.replace(/\bEagle \(EGE\) — \$720 each way\b/g, 'Eagle (EGE) — request a quote')
+  t = t.replace(/\bEagle \(EGE\) \$720\b/g, 'Eagle (EGE), quoted on request')
+  t = t.replace(/\bEagle \$720\b/g, 'Eagle, quoted on request')
+  t = t.replace(/\$120([^.\n]{0,40}\bEagle\b)/gi, 'a quote$1')
+  t = t.replace(/(\bEagle\b[^.\n]{0,40})\$120\b/gi, '$1a quote')
   return t
 }
 
@@ -175,6 +294,15 @@ export function applyAalBlogPost<T extends AalBlogCopy>(post: T): T {
   const ski = post.slug === AAL_SKI_BLOG_SLUG
   const fix = nye ? correctAalNyeText : correctAalPublicText
   let content = post.content ? fix(post.content) : post.content
+  if (post.slug === 'aspen-to-denver-luxury-car-service' && content) {
+    content = content.replace(/Approximately 3\.5[–-]4\.5 hours/g, 'Approximately 3.5–4 hours')
+  }
+  if (post.slug === 'aspen-airport-limo-service-luxury-transfers-since-2012' && content) {
+    content = content
+      .replace(/Colorado Springs Airport \(KRIL\)/gi, 'Rifle Garfield County Airport (KRIL)')
+      .replace(/for over 12 years/gi, 'since 2012')
+      .replace(/the difference that 12 years of local expertise makes/gi, 'the difference local expertise makes')
+  }
   if (nye && content && !content.includes("New Year's Eve 2026")) {
     content = `${AAL_NYE_2026_LEAD}\n\n${content}`
   }
@@ -190,7 +318,7 @@ export function applyAalBlogPost<T extends AalBlogCopy>(post: T): T {
   }))
   return {
     ...post,
-    title: ski ? AAL_SKI_BLOG_TITLE : nye ? AAL_NYE_BLOG_TITLE : fix(post.title),
+    title: aalDisplayTitle(ski ? AAL_SKI_BLOG_TITLE : nye ? AAL_NYE_BLOG_TITLE : fix(post.title)),
     meta_title: ski ? AAL_SKI_BLOG_TITLE : nye ? AAL_NYE_BLOG_TITLE : post.meta_title ? fix(post.meta_title) : post.meta_title,
     meta_description: ski
       ? AAL_SKI_BLOG_META
@@ -213,4 +341,18 @@ export function correctAalFleetCapacity(name: string, capacity: number): number 
   if (capacity === 14) return 13
   if (capacity === 6) return 7
   return capacity
+}
+
+/** Live site_settings stats still say 14+ and 4.9 until the round 14 migration runs. */
+export function normalizeAalStat(stat: { value: string; label: string }): { value: string; label: string } {
+  const value = String(stat.value ?? '')
+  const label = String(stat.label ?? '')
+  const blob = `${value} ${label}`.toLowerCase()
+  if (value === '14+' || /14\+\s*years/.test(blob) || (blob.includes('14+') && blob.includes('year'))) {
+    return { value: 'Since 2012', label: 'Serving Aspen' }
+  }
+  if (value === '4.9' || blob.includes('4.9') || blob.includes('client rating')) {
+    return { value: '5.0', label: 'on Google (5 reviews)' }
+  }
+  return { value, label }
 }

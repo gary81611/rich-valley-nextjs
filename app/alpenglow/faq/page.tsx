@@ -8,12 +8,12 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'FAQ | Aspen Alpenglow Limousine — Transportation Questions Answered',
   description:
-    'Aspen car service FAQs: one-way rates each way (Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720), FBO airports, fleet, and cancellation notice.',
+    'Aspen car service FAQs: one-way rates each way (Denver $1,375, Grand Junction $950, Rifle $720; Eagle quoted on request), FBO airports, fleet, and cancellation notice.',
   alternates: { canonical: 'https://aspenalpenglowlimousine.com/faq' },
 }
 
 const VEHICLE_ANSWER =
-  '8 full-time local drivers with 15+ years of mountain driving experience. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. The fleet includes two late-model Chevrolet Suburbans (SUVs seat 7) and a Ford Transit Van (the passenger shuttle van seats 13).'
+  '8 full-time local drivers who have been driving these mountain roads since 2012. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. The fleet includes two late-model Chevrolet Suburbans (SUVs seat 7) and a Ford Transit Van (the passenger shuttle van seats 13).'
 
 const DEN_COST_ANSWER =
   `${AAL_ONE_WAY_RATES} Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison.`
@@ -180,10 +180,10 @@ export default async function FAQPage() {
 
   return (
     <div className="min-h-screen bg-white font-inter">
-      <div className="bg-alp-navy pt-32 pb-16">
-        <div className="max-w-4xl mx-auto px-6 text-center">
+      <div className="aal-hero-compact bg-alp-navy text-white">
+        <div className="max-w-4xl mx-auto px-6 text-left w-full">
           <p className="text-alp-gold text-sm font-semibold uppercase tracking-[0.2em] mb-3">Questions &amp; Answers</p>
-          <h1 className="font-playfair text-4xl md:text-5xl text-white font-light mb-4">Frequently Asked Questions</h1>
+          <h1 className="font-playfair text-white font-bold mb-4">Frequently Asked Questions</h1>
           <p className="text-white/60">Everything you need to know about Aspen transportation</p>
         </div>
       </div>

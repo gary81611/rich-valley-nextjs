@@ -14,7 +14,7 @@ export default function ALPFooter() {
             <p className="text-white/65 text-sm leading-relaxed">{alpenglowData.description}</p>
           </div>
           <div>
-            <h4 className="font-playfair text-lg font-semibold mb-5 text-alp-gold">Services</h4>
+            <p className="font-playfair text-lg font-semibold mb-5 text-alp-gold">Services</p>
             <ul className="space-y-2">
               <li><a href="/airport-transfers" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Airport Transfers</a></li>
               <li><a href="/corporate" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Corporate Transportation</a></li>
@@ -29,7 +29,7 @@ export default function ALPFooter() {
             </ul>
           </div>
           <div>
-            <h4 className="font-playfair text-lg font-semibold mb-5 text-alp-gold">Quick Links</h4>
+            <p className="font-playfair text-lg font-semibold mb-5 text-alp-gold">Quick Links</p>
             <ul className="space-y-2">
               <li><a href={alpenglowData.onlineReservationsPath} className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Book Transportation</a></li>
               <li><a href="/destinations" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Colorado Destinations</a></li>
@@ -37,13 +37,14 @@ export default function ALPFooter() {
               <li><a href="/fleet" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Our Fleet</a></li>
               <li><a href="/service-areas" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Service Areas</a></li>
               <li><a href="/about" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">About</a></li>
-              <li><a href="/gallery" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Gallery</a></li>
+              <li><a href="/faq" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">FAQ</a></li>
+              <li><a href="/contact" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Contact</a></li>
               <li><a href="/terms" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Terms & Conditions</a></li>
               <li><a href="/privacy" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Privacy Policy</a></li>
             </ul>
           </div>
           <div>
-            <h4 className="font-playfair text-lg font-semibold mb-5 text-alp-gold">Contact</h4>
+            <p className="font-playfair text-lg font-semibold mb-5 text-alp-gold">Contact</p>
             <div className="space-y-3 text-white/65 text-sm">
               <p>{alpenglowData.location}</p>
               <a href={phoneHref} className="block hover:text-alp-gold-light transition-colors">{phone}</a>
@@ -73,7 +74,7 @@ export default function ALPFooter() {
               href="https://www.adaptedsolutionsco.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/50 hover:text-alp-gold-light transition-colors underline-offset-2 hover:underline"
+              className="text-white/50 hover:text-alp-gold-light transition-colors underline underline-offset-2"
             >
               powered by Adapted Solutions
             </a>

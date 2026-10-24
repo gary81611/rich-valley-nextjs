@@ -46,15 +46,19 @@ export default async function ServiceAreasPage() {
       </div>
 
       {/* Hero */}
-      <section className="bg-alp-navy-deep text-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            Service <span className="text-alp-gold">Areas</span>
+      <section className="aal-hero-photo bg-alp-navy-deep text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left w-full pb-12">
+          <h1 className="font-playfair font-bold mb-6">
+            Service Areas
           </h1>
-          <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl">
             Aspen Alpenglow Limousine proudly serves the entire Roaring Fork Valley and beyond.
             From Aspen to Denver, we provide luxury transportation wherever you need to go.
           </p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+            <Link href="/reservations" className="inline-flex items-center justify-center bg-alp-gold text-alp-navy font-semibold px-6 py-3 rounded-full">Book online</Link>
+            <Link href="/contact" className="inline-flex items-center justify-center border-2 border-alp-gold text-alp-gold font-semibold px-6 py-3 rounded-full">Request a quote</Link>
+          </div>
         </div>
       </section>
 

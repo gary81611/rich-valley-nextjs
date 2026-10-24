@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { alpenglowData } from '@/lib/site-data'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
       'Chauffeured rides to Independence Pass, Maroon Bells, hiking trailheads, Redstone, Marble, and regional highlights.',
     url: 'https://aspenalpenglowlimousine.com/destinations',
     type: 'website',
+    images: [AAL_OG_IMAGE],
   },
 }
 
@@ -37,7 +39,7 @@ async function getDestinations() {
     id: row.id,
     name: row.name,
     description: row.description,
-    image: row.image_url || '/images/destinations/garden-of-the-gods.jpg',
+    image: row.image_url || '',
   }))
 }
 
@@ -91,16 +93,20 @@ export default async function DestinationsPage() {
       </div>
 
       {/* Hero */}
-      <section className="bg-alp-navy-deep text-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            Popular <span className="text-alp-gold">Destinations</span>
+      <section className="aal-hero-photo bg-alp-navy-deep text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left w-full pb-12">
+          <h1 className="font-playfair font-bold mb-6">
+            Popular Destinations
           </h1>
-          <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl">
             Independence Pass, the Grottos, Maroon Bells, Redstone, Marble, Glenwood, and the trailheads
             you read about online — we plan the drive so you focus on the views, not parking or shuttle
             logistics.
           </p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+            <Link href={alpenglowData.onlineReservationsPath} className="inline-flex items-center justify-center bg-alp-gold text-alp-navy font-semibold px-6 py-3 rounded-full">Book online</Link>
+            <Link href="/contact" className="inline-flex items-center justify-center border-2 border-alp-gold text-alp-gold font-semibold px-6 py-3 rounded-full">Request a quote</Link>
+          </div>
         </div>
       </section>
 
@@ -124,7 +130,7 @@ export default async function DestinationsPage() {
                 airport transfer service
               </a>{' '}
               and regional notes for{' '}
-              <a href="/areas/vail" className="text-alp-gold font-semibold hover:underline">
+              <a href="/service-areas/eagle-vail" className="text-alp-gold font-semibold hover:underline">
                 Aspen–Vail moves
               </a>
               .
@@ -155,15 +161,17 @@ export default async function DestinationsPage() {
                 className="bg-white rounded-3xl shadow-md overflow-hidden border border-alp-pearl-dark"
               >
                 <div className={`grid lg:grid-cols-2 ${i % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''}`}>
+                  {dest.image ? (
                   <div className="relative h-64 sm:h-80 lg:h-auto min-h-[280px] bg-alp-navy-deep">
                     <Image
                       src={dest.image}
                       alt={`${dest.name} — Colorado destination with Aspen Alpenglow Limousine private chauffeured SUV and van service from Aspen`}
                       fill
-                      className="object-cover"
+                      className="object-contain"
                       unoptimized
                     />
                   </div>
+                  ) : null}
                   <div className="p-8 sm:p-12 flex flex-col justify-center">
                     <h2 className="font-playfair text-2xl sm:text-3xl font-bold text-alp-navy mb-4">
                       {dest.name}
@@ -175,7 +183,7 @@ export default async function DestinationsPage() {
                       href={alpenglowData.onlineReservationsPath}
                       className="inline-flex items-center gap-2 bg-alp-gold text-alp-navy font-bold px-6 py-3 rounded-full hover:bg-alp-gold-light transition-colors w-fit"
                     >
-                      Book a Ride
+                      Book online
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>

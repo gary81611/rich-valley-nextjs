@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import AalGuidePage from '@/components/alpenglow/AalGuidePage'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 const path = '/events/x-games-aspen-transportation'
 const title = 'X Games Aspen 2027 Transportation | Buttermilk Jan 29–31'
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: `https://aspenalpenglowlimousine.com${path}` },
-  openGraph: { title, description, url: `https://aspenalpenglowlimousine.com${path}`, type: 'website' },
+  openGraph: { title, description, url: `https://aspenalpenglowlimousine.com${path}`, type: 'website', images: [AAL_OG_IMAGE] },
 }
 
 export default function XGamesTransportationPage() {
@@ -20,8 +21,7 @@ export default function XGamesTransportationPage() {
       eyebrow="Buttermilk Mountain"
       title={title}
       lede="X Games Aspen 2027 is January 29–31, 2027 at Buttermilk Mountain. Aspen Alpenglow Limousine runs private SUVs and a 13-passenger Ford Transit van to Buttermilk so your group can skip the parking lot. Pickups can be set after night sessions and concerts. Confirm the session schedule on the X Games event page."
-      imageSrc="/images/about/mountain-view.jpeg"
-      imageAlt="Mountain view above the Roaring Fork Valley near Aspen"
+      facts={['January 29–31, 2027', 'Buttermilk Mountain']}
       source={{ href: 'https://www.xgames.com/events/aspen-2027/', label: 'X Games Aspen 2027' }}
       sections={[
         {

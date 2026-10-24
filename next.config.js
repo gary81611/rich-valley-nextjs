@@ -117,31 +117,24 @@ function aalRedirects() {
   const list = []
   for (const host of aalHosts) {
     const h = [{ type: 'host', value: host }]
-    list.push(
-      {
-        source: '/services/airport-transfers',
-        destination: '/airport-transfers',
-        permanent: true,
-        has: h,
-      },
-      {
-        source: '/wedding-transportation',
-        destination: '/weddings',
-        permanent: true,
-        has: h,
-      },
-      {
-        source: '/corporate-events',
-        destination: '/corporate',
-        permanent: true,
-        has: h,
-      },
-    )
     // statusCode 301. permanent:true would be a 308. Both slash forms, AAL hosts only.
-    list.push(
-      { source: '/services/ski-resort-transfers', destination: '/ski-resort-transfers', statusCode: 301, has: h },
-      { source: '/services/ski-resort-transfers/', destination: '/ski-resort-transfers', statusCode: 301, has: h },
-    )
+    const hops = [
+      ['/services/airport-transfers', '/airport-transfers'],
+      ['/wedding-transportation', '/weddings'],
+      ['/corporate-events', '/corporate'],
+      ['/services/corporate-events', '/corporate'],
+      ['/services/corporate-travel', '/corporate'],
+      ['/services/wedding-transportation', '/weddings'],
+      ['/services/charter-services', '/services/hourly-charter'],
+      ['/areas/aspen', '/service-areas/aspen'],
+      ['/areas/snowmass', '/service-areas/snowmass-village'],
+      ['/areas/vail', '/service-areas/eagle-vail'],
+      ['/services/ski-resort-transfers', '/ski-resort-transfers'],
+    ]
+    for (const [source, destination] of hops) {
+      list.push({ source, destination, statusCode: 301, has: h })
+      list.push({ source: `${source}/`, destination, statusCode: 301, has: h })
+    }
   }
   return list
 }

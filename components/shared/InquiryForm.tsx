@@ -25,6 +25,36 @@ const AAL_SERVICES = [
 
 const GROUP_SIZES = ['1-2', '3-4', '5-6', '7+']
 
+function AalServiceIcon({ id }: { id: string }) {
+  const common = 'w-6 h-6 mb-2 text-alp-navy'
+  if (id === 'airport' || id === 'hourly') {
+    return (
+      <svg className={common} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 19V6m0 0l-4 4m4-4l4 4M4 19h16" />
+      </svg>
+    )
+  }
+  if (id === 'corporate') {
+    return (
+      <svg className={common} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 20h16M6 20V8h12v12M10 20v-4h4v4" />
+      </svg>
+    )
+  }
+  if (id === 'wedding') {
+    return (
+      <svg className={common} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 21s-6-4.4-6-9a4 4 0 016-3 4 4 0 016 3c0 4.6-6 9-6 9z" />
+      </svg>
+    )
+  }
+  return (
+    <svg className={common} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16h16M6 16l1-5h10l1 5M7 11l2-4h6l2 4" />
+    </svg>
+  )
+}
+
 interface Props {
   brand: 'rva' | 'alpenglow'
   /** Matches a service id, for example private-ranch-fishing from /contact?service= */
@@ -45,7 +75,8 @@ export default function InquiryForm({ brand, initialServiceId }: Props) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
 
   const accent = brand === 'rva' ? 'bg-rva-copper-700 hover:bg-rva-copper-800' : 'bg-alp-gold hover:bg-alp-gold-light'
-  const accentText = brand === 'rva' ? 'text-rva-copper-700' : 'text-alp-gold'
+  const accentInk = brand === 'rva' ? 'text-white' : 'text-alp-navy'
+  const accentText = brand === 'rva' ? 'text-rva-copper-700' : 'text-alp-gold-700'
   const accentBorder = brand === 'rva' ? 'border-rva-copper-700' : 'border-alp-gold'
   const accentBg = brand === 'rva' ? 'bg-rva-copper-700/5' : 'bg-alp-gold/5'
 
@@ -75,7 +106,11 @@ export default function InquiryForm({ brand, initialServiceId }: Props) {
   if (status === 'sent') {
     return (
       <div className="text-center py-12">
-        <div className="text-4xl mb-4">✅</div>
+        {brand === 'alpenglow' ? (
+          <svg className="w-10 h-10 mx-auto mb-4 text-alp-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" /></svg>
+        ) : (
+          <div className="text-4xl mb-4">✅</div>
+        )}
         <h3 className="text-xl font-semibold text-gray-900 mb-2">Thank you!</h3>
         <p className="text-gray-600 mb-4">Kit will be in touch within a few hours.</p>
         <p className="text-sm text-gray-500">Want to talk sooner? Call <a href="tel:+19704563666" className={`${accentText} font-semibold`}>970-456-3666</a></p>
@@ -90,7 +125,7 @@ export default function InquiryForm({ brand, initialServiceId }: Props) {
         {[1, 2, 3].map(s => (
           <div key={s} className="flex items-center gap-2">
             <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
-              s <= step ? `${accent.split(' ')[0]} text-white` : 'bg-gray-100 text-gray-700'
+              s <= step ? `${accent.split(' ')[0]} ${accentInk}` : 'bg-gray-100 text-gray-700'
             }`}>{s}</div>
             {s < 3 && <div className={`w-8 h-0.5 ${s < step ? accent.split(' ')[0] : 'bg-gray-200'}`} />}
           </div>
@@ -111,7 +146,7 @@ export default function InquiryForm({ brand, initialServiceId }: Props) {
                   service === s.label ? `${accentBorder} ${accentBg}` : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
-                <span className="text-2xl mb-2 block">{s.icon}</span>
+                {brand === 'alpenglow' ? <AalServiceIcon id={s.id} /> : <span className="text-2xl mb-2 block">{s.icon}</span>}
                 <span className="text-sm font-medium text-gray-800">{s.label}</span>
               </button>
             ))}
@@ -191,8 +226,8 @@ export default function InquiryForm({ brand, initialServiceId }: Props) {
               </RvaButton>
             ) : (
             <button onClick={handleSubmit} disabled={!name || !email || status === 'sending'}
-              className={`w-full py-3 rounded-xl text-white font-semibold transition-colors disabled:opacity-40 ${accent}`}>
-              {status === 'sending' ? 'Sending...' : 'Send Request'}
+              className={`w-full py-3 rounded-xl ${accentInk} font-semibold transition-colors disabled:opacity-40 ${accent}`}>
+              {status === 'sending' ? 'Sending...' : brand === 'alpenglow' ? 'Request a quote' : 'Send Request'}
             </button>
             )}
             {status === 'error' && <p className="text-sm text-red-600 text-center">Something went wrong. Please try again or call 970-456-3666.</p>}

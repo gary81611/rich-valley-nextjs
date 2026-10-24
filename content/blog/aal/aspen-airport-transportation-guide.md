@@ -45,7 +45,7 @@ Taxis operate from ASE and rideshare options (Uber, Lyft) do exist in Aspen, tho
 
 ## Eagle County Airport (EGE) — The Denver Alternative
 
-Eagle County Regional Airport (EGE) near Vail is about 70 miles east of Aspen on I-70, roughly 70–90 minutes by car. During ski season, several major airlines add direct service to EGE that may not serve ASE, and some travelers find better fare options through Eagle.
+Eagle County Regional Airport (EGE) near Vail is about 70 miles from Aspen on I-70, roughly 70–90 minutes by car. During ski season, several major airlines add direct service to EGE that may not serve ASE, and some travelers find better fare options through Eagle.
 
 Aspen Alpenglow Limousine runs regular service between ASE, EGE, and Aspen. The EGE-to-Aspen transfer takes you over the dramatic stretch of I-70 through Glenwood Canyon — one of the most scenic highway drives in America — and is actually a pleasant way to arrive in the valley.
 

@@ -1,0 +1,96 @@
+/*
+ * #C9A84C text on white/pearl is about 2.1–2.3:1. Light surfaces use #6E5516
+ * (about 5.1:1 on pearl-dark #D8DCE3, 7:1 on white). #C9A84C stays on navy
+ * (about 6.8:1 on #1B2338). Navy ink on gold fills is unchanged.
+ */
+.aal-root .text-alp-gold {
+  color: #6e5516;
+}
+
+.aal-root .bg-alp-navy .text-alp-gold,
+.aal-root .bg-alp-navy-deep .text-alp-gold,
+.aal-root .bg-alp-navy\/90 .text-alp-gold,
+.aal-root .aal-on-navy .text-alp-gold,
+.aal-root nav .text-alp-gold,
+.aal-root footer .text-alp-gold {
+  color: #c9a84c;
+}
+
+/* #64748B on pearl is 4.28:1 and 3.46:1 on pearl-dark. #475569 clears both. */
+.aal-root .text-alp-slate {
+  color: #475569;
+}
+
+/* navy/40–/60 on white is 2.4–4.23:1. Opaque navy text clears AA. */
+.aal-root .text-alp-navy\/40,
+.aal-root .text-alp-navy\/50,
+.aal-root .text-alp-navy\/60 {
+  color: #1b2338;
+}
+
+/* white/40 on navy-deep is about 3.8:1. 75% white clears both navy surfaces. */
+.aal-root .text-white\/40 {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.aal-root .placeholder-white\/50::placeholder {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.aal-hero-photo,
+.aal-hero-compact {
+  box-sizing: border-box;
+  text-align: left;
+  /* Fixed 72px bar. Do not add this offset on the home hero. */
+  padding-top: 72px;
+}
+
+.aal-hero-photo {
+  min-height: 70svh;
+  display: flex;
+  align-items: flex-end;
+}
+
+.aal-hero-compact {
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .aal-hero-photo {
+    height: 560px;
+    min-height: 560px;
+  }
+}
+
+.aal-hero-photo .text-center,
+.aal-hero-compact .text-center {
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.aal-hero-photo h1,
+.aal-hero-compact h1 {
+  font-size: 2.25rem !important;
+  line-height: 1.15 !important;
+}
+
+/* Fixed 72px bar at every width. scroll-padding cannot uncover content at y=0. */
+html:has(.aal-root) {
+  scroll-padding-top: 72px;
+}
+
+/* Body-copy links need a non-color cue. Pill buttons and gold fills stay plain. */
+.aal-root p a:not([class*="rounded-full"]):not([class*="bg-alp-gold"]) {
+  text-decoration-line: underline;
+  text-underline-offset: 2px;
+}
+
+@media (min-width: 768px) {
+  .aal-hero-photo h1,
+  .aal-hero-compact h1 {
+    font-size: 3rem !important;
+  }
+}

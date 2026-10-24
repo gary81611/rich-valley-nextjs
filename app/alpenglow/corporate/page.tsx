@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 const pageUrl = 'https://aspenalpenglowlimousine.com/corporate'
 
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
       'Professional executive transfers for business travelers, corporate retreats, and event logistics in Aspen and the Roaring Fork Valley.',
     type: 'website',
     url: pageUrl,
+    images: [AAL_OG_IMAGE],
   },
 }
 
@@ -49,15 +51,19 @@ export default function CorporatePage() {
         </div>
       </div>
 
-      <section className="bg-alp-navy-deep text-white py-16 sm:py-24">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="font-playfair text-4xl sm:text-5xl font-bold mb-6">
+      <section className="aal-hero-photo bg-alp-navy-deep text-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-left w-full pb-12">
+          <h1 className="font-playfair font-bold mb-6">
             Corporate &amp; Executive Transportation
           </h1>
-          <p className="text-lg text-alp-pearl/80 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg text-alp-pearl/80 max-w-3xl leading-relaxed">
             Reliable private transportation for business travelers, leadership teams, and corporate events in Aspen,
             Snowmass, and the Roaring Fork Valley.
           </p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+            <Link href="/reservations" className="inline-flex items-center justify-center bg-alp-gold text-alp-navy font-semibold px-6 py-3 rounded-full">Book online</Link>
+            <Link href="/contact" className="inline-flex items-center justify-center border-2 border-alp-gold text-alp-gold font-semibold px-6 py-3 rounded-full">Request a quote</Link>
+          </div>
         </div>
       </section>
 

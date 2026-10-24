@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 const canonical = 'https://aspenalpenglowlimousine.com/contact'
 
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
     url: canonical,
     siteName: 'Aspen Alpenglow Limousine',
     type: 'website',
+    images: [AAL_OG_IMAGE],
   },
 }
 

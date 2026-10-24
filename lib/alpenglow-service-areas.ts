@@ -13,11 +13,11 @@ export const AAL_SERVICE_AREA_SLUG_MAP: Record<string, string> = {
 }
 
 const AAL_CMS_AREA_PATHS: Record<string, string> = {
-  aspen: '/areas/aspen',
-  snowmass: '/areas/snowmass',
-  'snowmass-village': '/areas/snowmass',
-  vail: '/areas/vail',
-  'eagle-vail': '/areas/vail',
+  aspen: '/service-areas/aspen',
+  snowmass: '/service-areas/snowmass-village',
+  'snowmass-village': '/service-areas/snowmass-village',
+  vail: '/service-areas/eagle-vail',
+  'eagle-vail': '/service-areas/eagle-vail',
 }
 
 export function hrefForServiceArea(area: { name: string; slug: string | null }): string {

@@ -6,6 +6,7 @@ import { slugifyServiceName } from '@/lib/alpenglow-services'
 import { serviceAreaMatchesPathSlug } from '@/lib/alpenglow-service-areas'
 import { alpenglowData } from '@/lib/site-data'
 import { correctAalPublicText } from '@/lib/aal-public-copy'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 export const dynamic = 'force-dynamic'
 
@@ -90,11 +91,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       siteName: 'Aspen Alpenglow Limousine',
       locale: 'en_US',
       type: 'website',
+      images: [AAL_OG_IMAGE],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      images: [AAL_OG_IMAGE.url],
     },
     robots: { index: true, follow: true },
     other: {
@@ -195,12 +198,16 @@ export default async function ServiceAreaDetailPage({ params }: { params: Promis
       </div>
 
       {/* Hero */}
-      <section className="bg-alp-navy-deep text-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
-            <span className="text-alp-gold">{area.name}</span>
+      <section className="aal-hero-photo bg-alp-navy-deep text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left w-full pb-12">
+          <h1 className="font-playfair font-bold mb-4">
+            {area.name}
           </h1>
           <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl">{area.description}</p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+            <Link href={alpenglowData.onlineReservationsPath} className="inline-flex items-center justify-center bg-alp-gold text-alp-navy font-semibold px-6 py-3 rounded-full">Book online</Link>
+            <Link href="/contact" className="inline-flex items-center justify-center border-2 border-alp-gold text-alp-gold font-semibold px-6 py-3 rounded-full">Request a quote</Link>
+          </div>
         </div>
       </section>
 

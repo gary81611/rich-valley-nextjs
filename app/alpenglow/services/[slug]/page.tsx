@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import Image from 'next/image'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { serviceMatchesPathSlug } from '@/lib/alpenglow-services'
 import { alpenglowData } from '@/lib/site-data'
-import { correctAalFleetCapacity, correctAalPublicText } from '@/lib/aal-public-copy'
+import { correctAalPublicText } from '@/lib/aal-public-copy'
+import VehicleCard from '@/components/alpenglow/VehicleCard'
+import { AAL_OG_IMAGE, AAL_VEHICLES } from '@/lib/aal-vehicles'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,14 +18,6 @@ type ServiceRow = {
   long_description?: string | null
   features: string[] | unknown
   icon: string
-}
-
-type FleetVehicle = {
-  id: string
-  name: string
-  capacity: number
-  image_url: string
-  features: string[] | unknown
 }
 
 async function getServiceByPathSlug(pathSlug: string): Promise<ServiceRow | null> {
@@ -55,6 +48,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: `${service.name} in Aspen, CO | Aspen Alpenglow Limousine`,
     description: correctAalPublicText(service.description),
     alternates: { canonical: `https://aspenalpenglowlimousine.com/services/${slug}` },
+    openGraph: {
+      title: `${service.name} in Aspen, CO | Aspen Alpenglow Limousine`,
+      description: correctAalPublicText(service.description),
+      url: `https://aspenalpenglowlimousine.com/services/${slug}`,
+      type: 'website',
+      images: [AAL_OG_IMAGE],
+    },
   }
 }
 
@@ -70,15 +70,6 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
     correctAalPublicText(feature),
   )
   const plainDescription = bodyCopy.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
-
-  const supabase = await createServerSupabaseClient()
-  const { data: fleetVehicles } = await supabase
-    .from('fleet_vehicles')
-    .select('id, name, capacity, image_url, features')
-    .eq('is_active', true)
-    .order('display_order')
-
-  const vehicles: FleetVehicle[] = (fleetVehicles ?? []) as FleetVehicle[]
 
   return (
     <div className="min-h-screen bg-alp-pearl font-inter">
@@ -100,10 +91,14 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
       </div>
 
       {/* Hero */}
-      <section className="bg-alp-navy-deep text-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">{displayTitle}</h1>
+      <section className="aal-hero-photo bg-alp-navy-deep text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left w-full pb-12">
+          <h1 className="font-playfair font-bold mb-6">{displayTitle}</h1>
           <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl">{correctAalPublicText(service.description)}</p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+            <Link href={alpenglowData.onlineReservationsPath} className="inline-flex items-center justify-center bg-alp-gold text-alp-navy font-semibold px-6 py-3 rounded-full">Book online</Link>
+            <Link href="/contact" className="inline-flex items-center justify-center border-2 border-alp-gold text-alp-gold font-semibold px-6 py-3 rounded-full">Request a quote</Link>
+          </div>
         </div>
       </section>
 
@@ -136,36 +131,12 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
             </div>
 
             {/* Fleet Preview */}
-            {vehicles.length > 0 && (
-              <div className="space-y-6">
-                <h3 className="font-playfair text-2xl font-bold text-alp-navy mb-4">Available Vehicles</h3>
-                {vehicles.map((vehicle) => (
-                  <div key={vehicle.id} className="bg-white rounded-2xl shadow-md p-6 border border-alp-pearl-dark">
-                    <div className="relative w-full h-48 mb-4 rounded-xl overflow-hidden bg-alp-navy-deep">
-                      <Image
-                        src={vehicle.image_url || '/images/fleet/default.png'}
-                        alt={correctAalPublicText(vehicle.name)}
-                        fill
-                        className="object-cover"
-                        unoptimized
-                      />
-                    </div>
-                    <h4 className="font-playfair text-xl font-bold text-alp-navy mb-1">{correctAalPublicText(vehicle.name)}</h4>
-                    <p className="text-alp-gold font-semibold text-sm mb-3">Up to {correctAalFleetCapacity(vehicle.name, vehicle.capacity)} Passengers</p>
-                    {Array.isArray(vehicle.features) && vehicle.features.length > 0 && (
-                      <ul className="grid grid-cols-2 gap-1">
-                        {(vehicle.features as string[]).map((f) => (
-                          <li key={f} className="text-sm text-alp-slate flex items-center gap-1">
-                            <span className="w-1 h-1 bg-alp-gold rounded-full flex-shrink-0" />
-                            {correctAalPublicText(f)}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
+            <div className="space-y-6">
+              <h3 className="font-playfair text-2xl font-bold text-alp-navy mb-4">Available Vehicles</h3>
+              {AAL_VEHICLES.map((vehicle) => (
+                <VehicleCard key={vehicle.id} vehicle={vehicle} />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -184,7 +155,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
               href={alpenglowData.onlineReservationsPath}
               className="inline-block bg-alp-gold text-alp-navy font-bold px-8 py-3 rounded-full hover:bg-alp-gold-light transition-colors"
             >
-              Book Now
+              Book online
             </Link>
             <a
               href="tel:+19704563666"

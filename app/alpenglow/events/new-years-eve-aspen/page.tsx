@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import AalGuidePage from '@/components/alpenglow/AalGuidePage'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 const path = '/events/new-years-eve-aspen'
 const title = "New Year's Eve Private Car Service in Aspen"
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: `https://aspenalpenglowlimousine.com${path}` },
-  openGraph: { title, description, url: `https://aspenalpenglowlimousine.com${path}`, type: 'website' },
+  openGraph: { title, description, url: `https://aspenalpenglowlimousine.com${path}`, type: 'website', images: [AAL_OG_IMAGE] },
 }
 
 export default function NewYearsEveCarPage() {
@@ -20,8 +21,6 @@ export default function NewYearsEveCarPage() {
       eyebrow="New Year's Eve 2026"
       title={title}
       lede="Private car service for New Year's Eve 2026 in Aspen. SUVs seat 7 and the Ford Transit passenger van seats 13, so a group can stay in one car from dinner through the ride home. Holiday pricing may change seasonally. This page does not add an event list beyond the planning guide."
-      imageSrc="/images/gallery/bzp1188-pano.jpg"
-      imageAlt="Gallery photo from Aspen Alpenglow Limousine"
       sections={[
         {
           heading: 'A private car for the night',

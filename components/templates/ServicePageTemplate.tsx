@@ -37,7 +37,7 @@ export default function ServicePageTemplate({
   const phone = content.cta_phone || (rva ? '(970) 456-3666' : '(970) 456-3666')
   const linkClass = rva
     ? 'text-rva-copper-700 font-semibold hover:text-rva-forest'
-    : 'text-alp-gold font-semibold hover:text-alp-navy'
+    : 'text-alp-gold-700 font-semibold hover:text-alp-navy'
   const portraitHero = rva && !!heroImage && isPortraitAdventureImage(heroImage)
   const rvaHeroClass = heroImage
     ? `relative h-[70svh] md:h-[560px] flex items-end overflow-hidden text-rva-cream ${portraitHero ? 'bg-rva-forest-dark' : ''}`
@@ -47,13 +47,11 @@ export default function ServicePageTemplate({
     <div className={rva ? 'font-inter text-rva-forest' : 'font-inter text-alp-navy'}>
       {/* Hero. RVA photo heroes share one height. Portraits letterbox; AAL markup stays. */}
       <section
-        className={`text-center ${
+        className={
           rva
-            ? rvaHeroClass
-            : heroImage
-              ? 'relative min-h-[28rem] flex items-end text-rva-cream'
-              : 'py-20 px-6 bg-alp-navy text-alp-pearl'
-        }`}
+            ? `text-center ${rvaHeroClass}`
+            : 'aal-hero-photo relative overflow-hidden bg-alp-navy text-white'
+        }
       >
         {heroImage && (
           <>
@@ -70,10 +68,16 @@ export default function ServicePageTemplate({
             <div className={`absolute inset-0 ${portraitHero ? 'bg-gradient-to-b from-rva-forest-dark/35 via-transparent to-rva-forest-dark/75' : 'bg-gradient-to-b from-rva-forest-dark/55 via-rva-forest-dark/45 to-rva-forest-dark/80'}`} />
           </>
         )}
-        <div className={`max-w-3xl mx-auto ${heroImage ? 'relative z-10 px-6 py-16' : ''}`}>
-          <h1 className={rva ? 'font-playfair font-semibold mb-4 leading-[1.1]' : 'font-playfair text-4xl md:text-5xl font-bold mb-4 leading-tight'}>{title}</h1>
+        <div className={`max-w-7xl mx-auto w-full px-6 pb-10 ${heroImage ? 'relative z-10' : ''} ${rva ? 'max-w-3xl text-center' : 'text-left'}`}>
+          <h1 className={rva ? 'font-playfair font-semibold mb-4 leading-[1.1]' : 'font-playfair font-bold mb-4 leading-tight'}>{title}</h1>
           {content.hero_subtitle && (
             <p className="text-lg md:text-xl opacity-80 mt-2">{content.hero_subtitle}</p>
+          )}
+          {!rva && (
+            <div className="mt-8 flex flex-col sm:flex-row gap-3">
+              <Link href={bookingHref || '/reservations'} className="inline-flex items-center justify-center bg-alp-gold text-alp-navy font-semibold px-6 py-3 rounded-full">Book online</Link>
+              <Link href="/contact" className="inline-flex items-center justify-center border-2 border-alp-gold text-alp-gold font-semibold px-6 py-3 rounded-full">Request a quote</Link>
+            </div>
           )}
         </div>
       </section>

@@ -3,8 +3,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { blogImageSrcForNext, filterPublicBlogPosts } from '@/lib/blog-visibility'
-import { applyAalBlogPost } from '@/lib/aal-public-copy'
+import { applyAalBlogPost, isAalHiddenBlogSlug } from '@/lib/aal-public-copy'
 import { seoAlt } from '@/lib/seo/alt-text'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 import type { BlogPost } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
     description: 'Guides for Aspen airport transfers, mountain driving, and chauffeured Colorado travel.',
     type: 'website',
     url: 'https://aspenalpenglowlimousine.com/blog',
+    images: [AAL_OG_IMAGE],
   },
 }
 
@@ -34,7 +36,7 @@ async function getPosts(): Promise<BlogPost[]> {
       .eq('site_key', 'alpenglow')
       .eq('status', 'published')
       .order('published_at', { ascending: false })
-    return filterPublicBlogPosts((data as BlogPost[]) || [])
+    return filterPublicBlogPosts((data as BlogPost[]) || []).filter((post) => !isAalHiddenBlogSlug(post.slug))
   } catch {
     return []
   }
@@ -57,8 +59,8 @@ export default async function AlpenglowBlogPage() {
       </div>
 
       {/* Hero */}
-      <div className="bg-alp-navy-deep py-16 px-6">
-        <div className="max-w-4xl mx-auto text-center text-white">
+      <div className="aal-hero-compact bg-alp-navy-deep px-6">
+        <div className="max-w-4xl mx-auto text-left text-white w-full">
           <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-3">
             Travel Guides
           </p>
@@ -73,7 +75,7 @@ export default async function AlpenglowBlogPage() {
       </div>
 
       {/* Posts grid */}
-      <main className="max-w-5xl mx-auto px-6 py-16" data-blog-visibility="published-at">
+      <section className="max-w-5xl mx-auto px-6 py-16" data-blog-visibility="published-at">
         {posts.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-slate-400 text-lg">No posts published yet. Check back soon!</p>
@@ -129,7 +131,7 @@ export default async function AlpenglowBlogPage() {
             })}
           </div>
         )}
-      </main>
+      </section>
 
       {/* CTA */}
       <div className="bg-alp-navy-deep py-16 px-6">

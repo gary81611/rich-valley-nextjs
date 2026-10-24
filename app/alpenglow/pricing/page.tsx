@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { alpenglowData } from '@/lib/site-data'
+import VehicleCard from '@/components/alpenglow/VehicleCard'
+import { AAL_OG_IMAGE, AAL_VEHICLES } from '@/lib/aal-vehicles'
 
 type DbPricingRoute = {
   route_name: string
@@ -16,6 +18,13 @@ type DbPricingRoute = {
 }
 
 const TRANSIT_NOTE = 'Contact for Ford Transit Van quote'
+
+/** Production showed Aspen→EGE at $120 beside EGE→Aspen at $720. Neither is published. */
+function isUnconfirmedEagleRoute(blob: string): boolean {
+  const s = blob.toLowerCase()
+  if (/vail|beaver/.test(s)) return false
+  return /\beagle\b|\bege\b/.test(s)
+}
 
 /** Confirmed owner rates / routes — merged on top of CMS rows so the public page matches the questionnaire. */
 function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
@@ -41,8 +50,8 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
     if (p) Object.assign(r, p)
   }
 
-  const pairRate: Record<'eagle' | 'denver' | 'gj' | 'rifle', number> = {
-    eagle: 720,
+  // [PENDING FROM KIT: confirm EGE one-way rate — $120 vs $720]
+  const pairRate: Record<'denver' | 'gj' | 'rifle', number> = {
     denver: 1375,
     gj: 950,
     rifle: 720,
@@ -78,12 +87,16 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
   const seenTo = new Set<'eagle' | 'denver' | 'gj' | 'rifle'>()
   for (const r of list) {
     const outKey = fromAspenKey(r)
-    if (outKey) {
+    if (outKey === 'eagle') {
+      seenFrom.add(outKey)
+    } else if (outKey) {
       r.suv_price = pairRate[outKey]
       seenFrom.add(outKey)
     }
     const inKey = toAspenKey(r)
-    if (inKey) {
+    if (inKey === 'eagle') {
+      seenTo.add(inKey)
+    } else if (inKey) {
       r.suv_price = pairRate[inKey]
       seenTo.add(inKey)
     }
@@ -97,7 +110,7 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
       destination: 'EGE (Eagle)',
       distance: '—',
       drive_time: '—',
-      suv_price: 720,
+      suv_price: 0,
       price_note: TRANSIT_NOTE,
       display_order: 11,
     },
@@ -147,7 +160,7 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
       destination: 'Aspen',
       distance: '—',
       drive_time: '—',
-      suv_price: 720,
+      suv_price: 0,
       price_note: TRANSIT_NOTE,
       display_order: 3,
     },
@@ -227,10 +240,13 @@ function applyConfirmedPolicies(titles: string[]): string[] {
     const t = title.toLowerCase()
     if (t.includes('winter and summer')) return 'Holiday pricing may change seasonally.'
     if (t.includes('7-day') || t.includes('24-hour cancellation') || t.includes('24 hour cancellation')) return diversion
+    if (/eagle/i.test(title) && /\$720|\$120/.test(title)) {
+      return 'One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.'
+    }
     return title
   })
   const extras = [
-    'One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.',
+    'One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.',
     diversion,
     'Corporate charge accounts are billed monthly.',
   ]
@@ -240,23 +256,20 @@ function applyConfirmedPolicies(titles: string[]): string[] {
   return rewritten.filter((title, index) => rewritten.indexOf(title) === index)
 }
 
-const CONFIRMED_FLEET_FOR_PRICING = [
-  { name: '2026 Chevrolet Suburban', seats: 7, features: ['WiFi (Starlink)', 'XM Radio', 'Yakima + ski racks'] },
-  { name: '2025 Chevrolet Suburban', seats: 7, features: ['WiFi (Starlink)', 'XM Radio', 'Yakima + ski racks'] },
-  { name: '2025 Ford Transit Van', seats: 13, features: ['WiFi (Starlink)', 'XM Radio', 'Myers ski rack'] },
-]
-
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Aspen Car Service Prices | ASE $210 · Eagle $720 · DEN $1,375',
+  title: 'Aspen Car Service Prices | ASE $210 · DEN $1,375',
   description:
     'All-inclusive private SUV rates from Aspen: ASE, Eagle, Denver, Rifle, Grand Junction, Snowmass and valley routes. No service charges or added gratuity.',
   alternates: { canonical: 'https://aspenalpenglowlimousine.com/pricing' },
   openGraph: {
-    title: 'Aspen Car Service Prices | ASE $210 · Eagle $720 · DEN $1,375',
+    title: 'Aspen Car Service Prices | ASE $210 · DEN $1,375',
     description:
       'All-inclusive private SUV rates from Aspen: ASE, Eagle, Denver, Rifle, Grand Junction, Snowmass and valley routes. No service charges or added gratuity.',
+    url: 'https://aspenalpenglowlimousine.com/pricing',
+    type: 'website',
+    images: [AAL_OG_IMAGE],
   },
 }
 
@@ -283,15 +296,31 @@ function PriceTable({ title, routes }: { title: string; routes: RouteRow[] }) {
   return (
     <div className="mb-12">
       <h2 className="font-playfair text-2xl font-semibold text-alp-navy mb-6">{title}</h2>
-      <div className="overflow-x-auto">
+      <div className="sm:hidden space-y-4">
+        {routes.map((r) => (
+          <article key={r.slug} className="rounded-2xl border border-alp-pearl-dark p-4">
+            <p className="font-semibold text-alp-navy">
+              {r.from} <span className="text-alp-navy/40">&rarr;</span> {r.to}
+            </p>
+            <p className="mt-3 text-lg font-semibold text-alp-gold-700">
+              Chevrolet Suburban · {isUnconfirmedEagleRoute(`${r.from} ${r.to} ${r.slug}`) ? 'Request a quote' : `$${r.suvPrice.toLocaleString()}`}
+            </p>
+            <p className="text-base font-semibold text-alp-navy">Ford Transit passenger van · {r.sprinterPrice}</p>
+            <p className="mt-2 text-xs text-alp-navy/60">
+              {r.distance} · {r.driveTime}
+            </p>
+          </article>
+        ))}
+      </div>
+      <div className="hidden sm:block overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b-2 border-alp-gold/30">
               <th className="text-left py-3 px-4 font-semibold text-alp-navy">Route</th>
               <th className="text-left py-3 px-4 font-semibold text-alp-navy">Distance</th>
               <th className="text-left py-3 px-4 font-semibold text-alp-navy">Drive Time</th>
-              <th className="text-right py-3 px-4 font-semibold text-alp-navy">SUV (7 pass.)</th>
-              <th className="text-right py-3 px-4 font-semibold text-alp-navy">Ford Transit Van (13 pass.)</th>
+              <th className="text-right py-3 px-4 font-semibold text-alp-navy">Chevrolet Suburban (up to 7)</th>
+              <th className="text-right py-3 px-4 font-semibold text-alp-navy">Ford Transit passenger van (up to 13)</th>
             </tr>
           </thead>
           <tbody>
@@ -304,8 +333,8 @@ function PriceTable({ title, routes }: { title: string; routes: RouteRow[] }) {
                 </td>
                 <td className="py-3 px-4 text-alp-navy/60">{r.distance}</td>
                 <td className="py-3 px-4 text-alp-navy/60">{r.driveTime}</td>
-                <td className="py-3 px-4 text-right font-semibold text-alp-gold">${r.suvPrice.toLocaleString()}</td>
-                <td className="py-3 px-4 text-right text-alp-navy/50 text-xs">{r.sprinterPrice}</td>
+                <td className="py-3 px-4 text-right font-semibold text-alp-gold-700">{isUnconfirmedEagleRoute(`${r.from} ${r.to} ${r.slug}`) ? 'Request a quote' : `$${r.suvPrice.toLocaleString()}`}</td>
+                <td className="py-3 px-4 text-right text-alp-navy text-sm">{r.sprinterPrice}</td>
               </tr>
             ))}
           </tbody>
@@ -318,15 +347,10 @@ function PriceTable({ title, routes }: { title: string; routes: RouteRow[] }) {
 export default async function PricingPage() {
   const supabase = await createServerSupabaseClient()
 
-  const [{ data: rows }, { data: fleetRows }, { data: policyRows }] = await Promise.all([
+  const [{ data: rows }, { data: policyRows }] = await Promise.all([
     supabase
       .from('pricing_routes')
       .select('*')
-      .eq('is_active', true)
-      .order('display_order'),
-    supabase
-      .from('fleet_vehicles')
-      .select('name, capacity, features')
       .eq('is_active', true)
       .order('display_order'),
     supabase
@@ -335,13 +359,6 @@ export default async function PricingPage() {
       .eq('is_active', true)
       .order('display_order'),
   ])
-
-  const FLEET_FROM_DB = (fleetRows || []).map((v: any) => ({
-    name: v.name,
-    seats: v.capacity,
-    features: Array.isArray(v.features) ? (v.features as string[]) : [],
-  }))
-  const FLEET = FLEET_FROM_DB.length > 0 ? FLEET_FROM_DB : CONFIRMED_FLEET_FOR_PRICING
 
   const rawPolicies = policyRows ? policyRows.map((p: { title: string }) => p.title) : []
   const POLICIES = applyConfirmedPolicies(rawPolicies)
@@ -386,11 +403,11 @@ export default async function PricingPage() {
   return (
     <div className="min-h-screen bg-white font-inter">
       {/* Hero */}
-      <div className="bg-alp-navy pt-32 pb-16">
-        <div className="max-w-5xl mx-auto px-6 text-center">
+      <div className="aal-hero-compact bg-alp-navy text-white">
+        <div className="max-w-5xl mx-auto px-6 text-left w-full">
           <p className="text-alp-gold text-sm font-semibold uppercase tracking-[0.2em] mb-3">Transparent Pricing</p>
-          <h1 className="font-playfair text-4xl md:text-5xl text-white font-light mb-4">All-Inclusive Rates</h1>
-          <p className="text-white/60 max-w-2xl mx-auto">No hidden fees, no service charges, no gratuity added. The price you see is the price you pay.</p>
+          <h1 className="font-playfair text-white font-bold mb-4">All-Inclusive Rates</h1>
+          <p className="text-white/60 max-w-2xl">No hidden fees, no service charges, no gratuity added. The price you see is the price you pay.</p>
         </div>
       </div>
 
@@ -409,7 +426,7 @@ export default async function PricingPage() {
           Aviation | GJT — West Star Aviation | KAPA — Centennial Airport Denver.
         </p>
         <p className="text-sm text-alp-navy/70 mb-12 max-w-3xl leading-relaxed">
-          One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.
+          One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.
           Flight diversions to Denver or Grand Junction are handled with 2 hours&apos; notice and no Aspen cancellation penalty.
           General cancellations need 24 hours&apos; notice.
         </p>
@@ -420,23 +437,34 @@ export default async function PricingPage() {
         {HOURLY_SERVICES.length > 0 && (
           <div className="mb-12">
             <h2 className="font-playfair text-2xl font-semibold text-alp-navy mb-6">Hourly Charter &amp; In-Town</h2>
-            <div className="overflow-x-auto">
+            <div className="sm:hidden space-y-4">
+              {HOURLY_SERVICES.map((s) => (
+                <article key={s.service} className="rounded-2xl border border-alp-pearl-dark p-4">
+                  <p className="font-semibold text-alp-navy">{s.service}</p>
+                  <p className="mt-3 text-lg font-semibold text-alp-gold-700">
+                    Chevrolet Suburban · {s.suvPrice ? `$${s.suvPrice}${s.note || ''}` : '\u2014'}
+                  </p>
+                  <p className="text-base font-semibold text-alp-navy">Ford Transit passenger van · {s.sprinterPrice}</p>
+                </article>
+              ))}
+            </div>
+            <div className="hidden sm:block overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b-2 border-alp-gold/30">
                     <th className="text-left py-3 px-4 font-semibold text-alp-navy">Service</th>
-                    <th className="text-right py-3 px-4 font-semibold text-alp-navy">SUV</th>
-                    <th className="text-right py-3 px-4 font-semibold text-alp-navy">Ford Transit Van</th>
+                    <th className="text-right py-3 px-4 font-semibold text-alp-navy">Chevrolet Suburban (up to 7)</th>
+                    <th className="text-right py-3 px-4 font-semibold text-alp-navy">Ford Transit passenger van (up to 13)</th>
                   </tr>
                 </thead>
                 <tbody>
                   {HOURLY_SERVICES.map((s) => (
                     <tr key={s.service} className="border-b border-alp-pearl hover:bg-alp-pearl/50">
                       <td className="py-3 px-4 font-medium text-alp-navy">{s.service}</td>
-                      <td className="py-3 px-4 text-right font-semibold text-alp-gold">
+                      <td className="py-3 px-4 text-right font-semibold text-alp-gold-700">
                         {s.suvPrice ? `$${s.suvPrice}${s.note || ''}` : '\u2014'}
                       </td>
-                      <td className="py-3 px-4 text-right text-alp-navy/50 text-xs">{s.sprinterPrice}</td>
+                      <td className="py-3 px-4 text-right text-alp-navy text-sm">{s.sprinterPrice}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -446,26 +474,14 @@ export default async function PricingPage() {
         )}
 
         {/* Fleet */}
-        {FLEET.length > 0 && (
-          <div className="mb-12 bg-alp-pearl rounded-xl p-8">
-            <h2 className="font-playfair text-2xl font-semibold text-alp-navy mb-6">Our Fleet</h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              {FLEET.map((v) => (
-                <div key={v.name} className="bg-white rounded-lg p-5">
-                  <h3 className="font-semibold text-alp-navy mb-2">{v.name}</h3>
-                  <p className="text-sm text-alp-navy/60 mb-3">{v.seats} passengers</p>
-                  {v.features.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
-                      {v.features.map((f) => (
-                        <span key={f} className="text-xs bg-alp-gold/10 text-alp-gold px-2 py-0.5 rounded">{f}</span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+        <div className="mb-12">
+          <h2 className="font-playfair text-2xl font-semibold text-alp-navy mb-6">Our Fleet</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {AAL_VEHICLES.map((vehicle) => (
+              <VehicleCard key={vehicle.id} vehicle={vehicle} />
+            ))}
           </div>
-        )}
+        </div>
 
         {/* Policies */}
         {POLICIES.length > 0 && (
@@ -513,14 +529,14 @@ export default async function PricingPage() {
         },
         areaServed: ['Aspen', 'Snowmass', 'Basalt', 'Carbondale', 'Glenwood Springs', 'Vail', 'Denver'],
         offers: [
-          ...AIRPORT_OUTBOUND.filter((r) => /eagle|denver|grand junction|rifle|ege|den|gjt|kril/i.test(`${r.from} ${r.to}`)).map((r) => ({
+          ...AIRPORT_OUTBOUND.filter((r) => /denver|grand junction|rifle|den|gjt|kril/i.test(`${r.from} ${r.to}`) && !isUnconfirmedEagleRoute(`${r.from} ${r.to} ${r.slug}`)).map((r) => ({
             '@type': 'Offer',
             name: `${r.from} to ${r.to}`,
             price: r.suvPrice,
             priceCurrency: 'USD',
             description: 'One-way private SUV rate from Aspen. Holiday pricing may change seasonally.',
           })),
-          ...AIRPORT_INBOUND.slice(0, 5).map(r => ({
+          ...AIRPORT_INBOUND.filter((r) => !isUnconfirmedEagleRoute(`${r.from} ${r.to} ${r.slug}`)).slice(0, 5).map(r => ({
             '@type': 'Offer',
             name: `${r.from} to ${r.to}`,
             price: r.suvPrice,
