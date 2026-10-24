@@ -27,7 +27,12 @@ WHERE site_id = 'rva'
 -- Match is case-insensitive (regexp_replace 'gi' plus an ILIKE guard). Still NOT APPLIED.
 
 UPDATE blog_posts
-SET content = regexp_replace(content, 'After 14 years of guiding here', 'Since 2012', 'gi')
+SET content = regexp_replace(
+  content,
+  'After 14 years of guiding here, the team at Rich Valley Adventures still gets excited every time we step into the water\.',
+  'We''ve been guiding here since 2012, and the team at Rich Valley Adventures still gets excited every time we step into the water.',
+  'gi'
+)
 WHERE site_key = 'rva'
   AND id = '7aeef53b-4999-4dd0-9645-c0733ebb3317'
   AND content ILIKE '%after 14 years of guiding here%';
@@ -46,8 +51,8 @@ WHERE site_key = 'rva'
 UPDATE blog_posts
 SET content = regexp_replace(
   content,
-  'in a way that[''’]s uniquely ours\.',
-  'in a small mountain town.',
+  'While other mountain towns have their celebrations, Aspen[''’]s Independence Day festivities combine small-town charm with world-class flair in a way that[''’]s uniquely ours\.',
+  'While other mountain towns have their celebrations, Aspen''s Independence Day festivities combine small-town charm with world-class flair.',
   'gi'
 )
 WHERE site_key = 'rva'
@@ -98,26 +103,21 @@ WHERE site_key = 'rva'
 -- shorter "premier fly fishing", only when this row's faqs still say premier.
 UPDATE blog_posts
 SET faqs = regexp_replace(
-  regexp_replace(
-    faqs::text,
-    'Aspen[''’]s Premier Fly Fishing Guide',
-    'Aspen Fly Fishing Guide',
-    'gi'
-  ),
-  'premier fly fishing',
-  'fly fishing',
+  faqs::text,
+  'Rich Valley Adventures has been Aspen[''’]s premier fly fishing guide since 2012, offering small group trips \(2-6 guests\) on the Gold Medal Roaring Fork River with all gear included\.',
+  'Rich Valley Adventures has guided fly fishing in Aspen since 2012, offering small group trips (2-6 guests) on the Gold Medal Roaring Fork River with all gear included.',
   'gi'
 )::jsonb
 WHERE site_key = 'rva'
   AND id = '82c805c3-b10e-4158-9f15-4eef693eb150'
   AND faqs::text ILIKE '%premier%';
 
--- Family fly-fishing post. "After twelve years…" becomes "since 2012" with no year count.
+-- Family fly-fishing post. Whole sentence. No year count, and no "Since 2012, guiding" opener.
 UPDATE blog_posts
 SET content = regexp_replace(
   content,
-  'After twelve years of guiding families through Colorado[''’]s Gold Medal waters here in Aspen',
-  'Since 2012, guiding families through Colorado''s Gold Medal waters here in Aspen',
+  'After twelve years of guiding families through Colorado[''’]s Gold Medal waters here in Aspen, I can tell you that family fly fishing trips create some of the most cherished outdoor memories you[''’]ll ever make\.',
+  'Having guided families through Colorado''s Gold Medal waters here in Aspen since 2012, I can tell you that family fly fishing trips create some of the most cherished outdoor memories you''ll ever make.',
   'gi'
 )
 WHERE site_key = 'rva'
@@ -129,8 +129,8 @@ WHERE site_key = 'rva'
 UPDATE blog_posts
 SET content = regexp_replace(
   content,
-  'one of the premier fly fishing destinations',
-  'a fly fishing destination',
+  'The Roaring Fork Valley is one of the premier fly fishing destinations in North America\.',
+  'The Roaring Fork Valley is home to Gold Medal fly fishing water.',
   'gi'
 )
 WHERE site_key = 'rva'
@@ -140,8 +140,8 @@ WHERE site_key = 'rva'
 UPDATE blog_posts
 SET content = regexp_replace(
   content,
-  'one of Colorado[''’]s premier wildlife destinations',
-  'a place to see wildlife in Colorado',
+  'Whether you[''’]re seeking photography opportunities, family-friendly nature education, or serious wildlife observation, we[''’]ll create experiences that showcase why Aspen remains one of Colorado[''’]s premier wildlife destinations\.',
+  'Whether you''re seeking photography opportunities, family-friendly nature education, or serious wildlife observation, we''ll create experiences that showcase the wildlife around Aspen.',
   'gi'
 )
 WHERE site_key = 'rva'
@@ -177,14 +177,13 @@ WHERE site_id = 'rva'
 -- "Ruedi Reservoir — Aspen's Premier SUP Destination". A second pass on the
 -- shorter phrases matched nothing after those replacements.
 
--- Corporate team-building post (published slug). "After twelve years of guiding
--- corporate groups…" becomes since-2012 wording with no year count.
+-- Corporate team-building post (published slug). Whole sentence. No year count.
 -- Different sentence from the family post above. Still NOT APPLIED.
 UPDATE blog_posts
 SET content = regexp_replace(
   content,
-  'After twelve years of guiding corporate groups',
-  'Since 2012, while guiding corporate groups',
+  'After twelve years of guiding corporate groups through the Elk Mountains, I[''’]ve witnessed something remarkable: there[''’]s something magical about getting a team outside together in Aspen[''’]s wilderness that simply can[''’]t be replicated in a conference room\.',
+  'Guiding corporate groups through the Elk Mountains since 2012, I''ve witnessed something remarkable: there''s something magical about getting a team outside together in Aspen''s wilderness that simply can''t be replicated in a conference room.',
   'gi'
 )
 WHERE site_key = 'rva'
@@ -195,13 +194,11 @@ WHERE site_key = 'rva'
   AND content ILIKE '%twelve years of guiding corporate groups%';
 
 -- Same corporate post, second sentence. Still NOT APPLIED.
--- "After twelve years of creating transformative outdoor experiences…"
--- becomes since-2012 wording with no year count.
 UPDATE blog_posts
 SET content = regexp_replace(
   content,
-  'After twelve years of creating transformative outdoor experiences',
-  'Since 2012, creating transformative outdoor experiences',
+  'After twelve years of creating transformative outdoor experiences in the Roaring Fork Valley, we know how to design adventures that build stronger, more connected teams\.',
+  'We''ve been creating outdoor experiences in the Roaring Fork Valley since 2012, and we know how to design adventures that build stronger, more connected teams.',
   'gi'
 )
 WHERE site_key = 'rva'
