@@ -23,6 +23,8 @@ const config: Config = {
           'navy-deep': '#111827',
           gold: '#C9A84C',
           'gold-light': '#E0C878',
+          /** Text on white and pearl. #C9A84C is for fills and for text on navy. */
+          'gold-700': '#8A6A1C',
           pearl: '#F1F3F6',
           'pearl-dark': '#D8DCE3',
           slate: '#64748B',

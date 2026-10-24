@@ -14,8 +14,8 @@ const isRva = (site: SiteId) => site === 'rva'
 const AAL_LOCATION_CROSS_LINKS: { href: string; label: string }[] = [
   { href: '/airport-transfers', label: 'Private airport transfers (ASE, EGE & DEN)' },
   { href: '/destinations', label: 'Chauffeured day trips & Colorado destinations' },
-  { href: '/areas/snowmass', label: 'Snowmass Village private car service' },
-  { href: '/areas/vail', label: 'Aspen ↔ Vail & Eagle County transfers' },
+  { href: '/service-areas/snowmass-village', label: 'Snowmass Village private car service' },
+  { href: '/service-areas/eagle-vail', label: 'Aspen to Vail and Eagle County transfers' },
   { href: '/blog', label: 'Transportation guides & travel tips' },
   { href: '/contact', label: 'Request a quote' },
 ]
@@ -27,12 +27,18 @@ export default function LocationPageTemplate({ site, title, content, pageSlug }:
   return (
     <div className={rva ? 'font-inter text-rva-forest' : 'font-inter text-alp-navy'}>
       {/* Hero */}
-      <section className={`py-20 px-6 text-center ${rva ? 'bg-rva-forest text-rva-cream' : 'bg-alp-navy text-alp-pearl'}`}>
-        <div className="max-w-3xl mx-auto">
+      <section className={rva ? 'py-20 px-6 text-center bg-rva-forest text-rva-cream' : 'aal-hero-photo bg-alp-navy text-white px-6'}>
+        <div className={rva ? 'max-w-3xl mx-auto' : 'max-w-7xl mx-auto w-full pb-10 text-left'}>
           <p className={`text-sm font-semibold tracking-widest uppercase mb-3 ${rva ? 'text-rva-copper-light' : 'text-alp-gold-light'}`}>
             {content.area_description}
           </p>
           <h1 className="font-playfair text-4xl md:text-5xl font-bold leading-tight">{title}</h1>
+          {!rva && (
+            <div className="mt-8 flex flex-col sm:flex-row gap-3">
+              <Link href="/reservations" className="inline-flex items-center justify-center bg-alp-gold text-alp-navy font-semibold px-6 py-3 rounded-full">Book online</Link>
+              <Link href="/contact" className="inline-flex items-center justify-center border-2 border-alp-gold text-alp-gold font-semibold px-6 py-3 rounded-full">Request a quote</Link>
+            </div>
+          )}
         </div>
       </section>
 

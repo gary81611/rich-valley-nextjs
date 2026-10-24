@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import AalGuidePage from '@/components/alpenglow/AalGuidePage'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 const path = '/airport-transfers/eagle-ege-to-aspen'
 const title = 'Eagle Airport (EGE) to Aspen Private Car | $720 All-In'
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: `https://aspenalpenglowlimousine.com${path}` },
-  openGraph: { title, description, url: `https://aspenalpenglowlimousine.com${path}`, type: 'website' },
+  openGraph: { title, description, url: `https://aspenalpenglowlimousine.com${path}`, type: 'website', images: [AAL_OG_IMAGE] },
 }
 
 export default function EagleAirportTransferPage() {
@@ -19,15 +20,21 @@ export default function EagleAirportTransferPage() {
       path={path}
       eyebrow="Eagle County Regional Airport"
       title={title}
-      lede="Private one-way car service from Eagle Airport (EGE) to Aspen or Snowmass is $720 each way, all-inclusive. The same rate applies from Aspen back to Eagle. About 1.5–2 hours. Holiday pricing may change seasonally."
-      imageSrc="/images/about/mountain-view.jpeg"
-      imageAlt="Roaring Fork Valley mountains on the drive from Eagle Airport to Aspen"
+      lede="Private one-way car service from Eagle Airport (EGE) to Aspen or Snowmass is $720 each way. The same rate applies from Aspen back to Eagle. Holiday pricing may change seasonally."
+      facts={['$720 each way', 'About 68–70 miles', 'About 1.5 hours', 'SUV up to 7 · Transit up to 13']}
       sections={[
+        {
+          heading: 'The drive',
+          paragraphs: [
+            'Public driving estimates put Eagle County Regional Airport about 68–70 miles from Aspen, roughly 1.5 hours in ordinary conditions. Winter weather can change the timing. This is a private ride, not a shared shuttle.',
+            'SUVs seat 7. The Ford Transit passenger van seats 13. No shared rides are offered.',
+          ],
+        },
         {
           heading: 'What the $720 rate includes',
           paragraphs: [
-            'The Eagle rate is a private ride, not a shared shuttle. SUVs seat 7. The Ford Transit passenger van seats 13. Child car seats and boosters are free. Pets are welcome, with a cleaning fee.',
-            'Vehicles have Starlink, ski racks, and roof cargo space. Drivers are 8 full-time locals with 15+ years of mountain driving.',
+            'The published Eagle rate is $720 each way in a private SUV. A Ford Transit passenger van is available for larger groups. Holiday pricing may change seasonally.',
+            'Child car seats and boosters are free. Pets are welcome, with a cleaning fee. Vehicles have Starlink, ski racks, and roof cargo space. Drivers are 8 full-time locals with 15+ years of mountain driving.',
           ],
         },
         {
@@ -50,7 +57,11 @@ export default function EagleAirportTransferPage() {
         },
         {
           question: 'How long is the Eagle to Aspen drive?',
-          answer: 'About 1.5–2 hours. Winter weather on the highway can change the timing.',
+          answer: 'Public driving estimates put Eagle County Regional Airport about 68–70 miles from Aspen, roughly 1.5 hours in ordinary conditions. Winter weather can change the timing.',
+        },
+        {
+          question: 'Are child seats available?',
+          answer: 'Yes. Child car seats and boosters are free. Tell us the ages when you book.',
         },
         {
           question: 'Do you pick up at the Eagle FBO?',

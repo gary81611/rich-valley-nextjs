@@ -6,6 +6,7 @@
 import { createClient } from '@supabase/supabase-js'
 import { isBlogPostPubliclyVisible } from '@/lib/blog-visibility'
 import { resolveSiteKeyFromHost } from '@/lib/site-from-host'
+import { hrefForServiceArea } from '@/lib/alpenglow-service-areas'
 
 export const dynamic = 'force-dynamic'
 
@@ -171,15 +172,18 @@ const AAL_ROUTE_LASTMOD: Record<string, string> = {
 }
 
 /** Top-level CMS slugs that 308. They must not appear in the AAL sitemap. */
-const AAL_SITEMAP_REDIRECT_SLUGS = new Set(['corporate-events', 'wedding-transportation'])
+const AAL_SITEMAP_REDIRECT_SLUGS = new Set([
+  'corporate-events',
+  'wedding-transportation',
+  'corporate-travel',
+  'charter-services',
+  'airport-transfers',
+])
 
-/** Live /services/* pages that return 200. Redirects and the soft-404 twin stay out. */
+/** Live /services/* pages that return 200. Redirects stay out. */
 const AAL_SERVICE_SITEMAP_PATHS = [
   '/services/hourly-charter',
-  '/services/charter-services',
-  '/services/wedding-transportation',
   '/services/vehicle-concierge-services',
-  '/services/corporate-travel',
 ]
 
 function dated(iso: string): Date {
@@ -221,7 +225,6 @@ export async function GET(request: Request) {
         { url: `${AAL_ORIGIN}/fleet`, lastModified, changeFrequency: 'monthly', priority: 0.85 },
         { url: `${AAL_ORIGIN}/reservations`, lastModified, changeFrequency: 'weekly', priority: 0.92 },
         { url: `${AAL_ORIGIN}/contact`, lastModified, changeFrequency: 'monthly', priority: 0.85 },
-        { url: `${AAL_ORIGIN}/gallery`, lastModified, changeFrequency: 'monthly', priority: 0.65 },
         { url: `${AAL_ORIGIN}/destinations`, lastModified, changeFrequency: 'monthly', priority: 0.72 },
         { url: `${AAL_ORIGIN}/about`, lastModified, changeFrequency: 'monthly', priority: 0.82 },
         { url: `${AAL_ORIGIN}/airport-transfers`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
@@ -229,9 +232,6 @@ export async function GET(request: Request) {
         { url: `${AAL_ORIGIN}/weddings`, lastModified, changeFrequency: 'weekly', priority: 0.86 },
         { url: `${AAL_ORIGIN}/wine-tours`, lastModified, changeFrequency: 'monthly', priority: 0.72 },
         { url: `${AAL_ORIGIN}/night-out`, lastModified, changeFrequency: 'monthly', priority: 0.72 },
-        { url: `${AAL_ORIGIN}/areas/aspen`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
-        { url: `${AAL_ORIGIN}/areas/snowmass`, lastModified, changeFrequency: 'monthly', priority: 0.78 },
-        { url: `${AAL_ORIGIN}/areas/vail`, lastModified, changeFrequency: 'monthly', priority: 0.78 },
         { url: `${AAL_ORIGIN}/service-areas`, lastModified, changeFrequency: 'monthly', priority: 0.65 },
         { url: `${AAL_ORIGIN}/blog`, lastModified, changeFrequency: 'weekly', priority: 0.75 },
         { url: `${AAL_ORIGIN}/terms`, lastModified, changeFrequency: 'yearly', priority: 0.25 },
@@ -325,6 +325,11 @@ export async function GET(request: Request) {
     const pageEntries: SitemapEntry[] = (pages || [])
       .filter((page) => !(siteKey === 'alpenglow' && excludedAalSlugs.has(page.slug)))
       .filter((page) => !(siteKey === 'alpenglow' && AAL_SITEMAP_REDIRECT_SLUGS.has(normalizeAalPageSlug(page.slug))))
+      .filter((page) => {
+        if (siteKey !== 'alpenglow') return true
+        const slug = normalizeAalPageSlug(page.slug)
+        return slug !== 'gallery' && slug !== 'areas' && !slug.startsWith('areas/')
+      })
       .filter((page) => !(siteKey === 'rva' && shouldOmitRvaCmsPageSlug(page.slug)))
       .map((page) => {
         const normalizedSlug =
@@ -362,11 +367,14 @@ export async function GET(request: Request) {
 
     const aalAreaEntries: SitemapEntry[] = isAAL
       ? (serviceAreas || []).flatMap((row) => {
-          const slug = typeof row.slug === 'string' ? row.slug.trim() : ''
-          if (!slug) return []
+          const name = typeof row.name === 'string' ? row.name : ''
+          const slug = typeof row.slug === 'string' ? row.slug : null
+          if (!name && !slug) return []
+          const href = hrefForServiceArea({ name, slug })
+          if (!href.startsWith('/service-areas/')) return []
           return [
             {
-              url: `${AAL_ORIGIN}/service-areas/${slug}`,
+              url: `${AAL_ORIGIN}${href}`,
               lastModified: row.updated_at ? new Date(row.updated_at) : lastModified,
               changeFrequency: 'monthly',
               priority: 0.78,

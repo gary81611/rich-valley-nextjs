@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Image from 'next/image'
-import { alpenglowData } from '@/lib/site-data'
+import { alpenglowData, AAL_GOOGLE_REVIEW_URL } from '@/lib/site-data'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
-import { correctAalFleetCapacity, correctAalPublicText } from '@/lib/aal-public-copy'
+import { correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
+import VehicleCard from '@/components/alpenglow/VehicleCard'
+import { AAL_OG_IMAGE, AAL_VEHICLES } from '@/lib/aal-vehicles'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,13 +19,14 @@ export const metadata: Metadata = {
       'Meet the Aspen-based team behind distinguished airport transfers, ski-day shuttles, weddings, and corporate transport.',
     url: 'https://aspenalpenglowlimousine.com/about',
     type: 'website',
+    images: [AAL_OG_IMAGE],
   },
 }
 
 const defaultStats = [
   { value: '24/7', label: 'Dispatch Available' },
-  { value: '14+', label: 'Years of Service' },
-  { value: '4.9', label: 'Client Rating' },
+  { value: 'Since 2012', label: 'Serving Aspen' },
+  { value: '5.0', label: 'on Google (5 reviews)' },
 ]
 
 const defaultWhyChooseUs = [
@@ -34,37 +36,23 @@ const defaultWhyChooseUs = [
   { title: 'White-Glove Service', description: 'Meet-and-greet, luggage handling, complimentary refreshments — every detail covered.' },
 ]
 
-const defaultFleet = [
-  { name: 'SUV', image: '/images/fleet/escalade.png', passengers: 'Up to 7 Passengers', features: ['Premium leather interior', 'Climate control', 'USB & WiFi', 'Starlink'] },
-  { name: 'Ford Transit passenger van', image: '/images/fleet/sprinter.png', passengers: 'Up to 13 Passengers', features: ['Executive seating', 'Starlink', 'Ski racks', 'Roof cargo space'] },
-]
-
 export default async function AboutPage() {
   let stats = defaultStats
   let whyChooseUs = defaultWhyChooseUs
-  let fleet = defaultFleet
 
   try {
     const supabase = await createServerSupabaseClient()
-    const [settingsRes, vpRes, fleetRes] = await Promise.all([
+    const [settingsRes, vpRes] = await Promise.all([
       supabase.from('site_settings').select('stats').eq('site_key', 'alpenglow').single(),
       supabase.from('value_propositions').select('title, description').eq('site_key', 'alpenglow').eq('is_active', true).order('display_order'),
-      supabase.from('fleet_vehicles').select('*').eq('is_active', true),
     ])
     if (settingsRes.data?.stats && Array.isArray(settingsRes.data.stats) && settingsRes.data.stats.length > 0) {
-      stats = settingsRes.data.stats
+      stats = settingsRes.data.stats.map((stat: { value: string; label: string }) => normalizeAalStat(stat))
     }
     if (vpRes.data && vpRes.data.length > 0) {
       whyChooseUs = vpRes.data.map((vp: { title: string; description: string }) => ({
-        title: vp.title, description: vp.description,
-      }))
-    }
-    if (fleetRes.data && fleetRes.data.length > 0) {
-      fleet = fleetRes.data.map((v: { name: string; image_url: string; capacity: number; description: string }) => ({
-        name: correctAalPublicText(v.name),
-        image: v.image_url || '/images/fleet/escalade.png',
-        passengers: `Up to ${correctAalFleetCapacity(v.name, v.capacity)} Passengers`,
-        features: v.description ? [correctAalPublicText(v.description)] : [],
+        title: correctAalPublicText(vp.title),
+        description: correctAalPublicText(vp.description),
       }))
     }
   } catch {
@@ -119,26 +107,15 @@ export default async function AboutPage() {
       </div>
 
       {/* Hero */}
-      <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/about/pexels-outdoor.png"
-            alt="Aspen Alpenglow Limousine — luxury transportation in the Roaring Fork Valley since 2012"
-            fill
-            className="object-cover"
-            priority
-            unoptimized
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-alp-navy-deep/70 via-alp-navy-deep/40 to-alp-navy-deep/80" />
-        </div>
-        <div className="relative z-10 text-center text-white px-6 max-w-4xl mx-auto">
-          <p className="text-alp-gold text-lg tracking-widest uppercase mb-4 font-medium">
+      <section className="aal-hero-compact bg-alp-navy-deep text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left w-full">
+          <p className="text-alp-gold text-sm tracking-widest uppercase mb-4 font-medium">
             Our Story
           </p>
-          <h1 className="font-playfair text-4xl md:text-6xl font-bold mb-4 leading-tight">
+          <h1 className="font-playfair font-bold mb-4 leading-tight">
             About Aspen Alpenglow Limousine
           </h1>
-          <p className="text-xl text-white/85 max-w-2xl mx-auto">
+          <p className="text-xl text-white/85 max-w-2xl">
             Distinguished private car service since 2012 — where every ride is first class.
           </p>
         </div>
@@ -159,7 +136,7 @@ export default async function AboutPage() {
                 Aspen Alpenglow Limousine was founded in 2012 with a simple promise: deliver the
                 highest standard of private transportation in the Roaring Fork Valley. What began
                 as a single SUV and a dedication to impeccable service has grown into
-                Aspen&apos;s most trusted luxury car service.
+                a private car service built on local drivers and on-time pickups.
               </p>
               <p className="text-alp-slate text-lg leading-relaxed mb-6">
                 We believe that luxury transportation is about more than a nice vehicle — it&apos;s
@@ -180,16 +157,28 @@ export default async function AboutPage() {
               </p>
             </div>
             <div className="grid grid-cols-3 gap-8 text-center">
-              {stats.map((stat) => (
-                <div key={stat.label}>
-                  <div className="font-playfair text-4xl md:text-5xl font-bold text-alp-gold">
+              {stats.map((stat) => {
+                const reviewLink = stat.value === '5.0' && /google/i.test(stat.label)
+                const figure = (
+                  <div className="font-playfair text-4xl md:text-5xl font-bold text-alp-gold-700">
                     {stat.value}
                   </div>
-                  <div className="text-alp-slate text-sm uppercase tracking-wide mt-2">
-                    {stat.label}
+                )
+                return (
+                  <div key={stat.label}>
+                    {reviewLink ? (
+                      <a href={AAL_GOOGLE_REVIEW_URL} className="hover:underline">
+                        {figure}
+                      </a>
+                    ) : (
+                      figure
+                    )}
+                    <div className="text-alp-slate text-sm uppercase tracking-wide mt-2">
+                      {stat.label}
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </div>
@@ -236,41 +225,12 @@ export default async function AboutPage() {
               The Fleet
             </h2>
             <p className="text-alp-slate text-lg max-w-2xl mx-auto">
-              Late-model luxury vehicles, professionally detailed before every ride.
+              Chevrolet Suburban SUVs seat up to 7. The Ford Transit passenger van seats up to 13.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
-            {fleet.map((vehicle) => (
-              <div
-                key={vehicle.name}
-                className="bg-white rounded-2xl shadow-md overflow-hidden border border-alp-pearl-dark"
-              >
-                <div className="relative h-64 bg-alp-navy-deep">
-                  <Image
-                    src={vehicle.image}
-                    alt={`${vehicle.name} — Aspen Alpenglow Limousine fleet vehicle`}
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="font-playfair text-2xl font-bold text-alp-navy mb-1">
-                    {vehicle.name}
-                  </h3>
-                  <p className="text-alp-slate text-sm mb-4">{vehicle.passengers}</p>
-                  <ul className="grid grid-cols-2 gap-2">
-                    {vehicle.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-2 text-sm text-alp-navy">
-                        <svg className="w-4 h-4 text-alp-gold flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+            {AAL_VEHICLES.map((vehicle) => (
+              <VehicleCard key={vehicle.id} vehicle={vehicle} />
             ))}
           </div>
           <div className="text-center mt-8">
@@ -360,12 +320,12 @@ export default async function AboutPage() {
               </Link>
             </li>
             <li>
-              <Link href="/areas/snowmass" className="text-alp-gold font-semibold hover:underline">
+              <Link href="/service-areas/snowmass-village" className="text-alp-gold font-semibold hover:underline">
                 Snowmass Village limo service &amp; Aspen dinner transfers
               </Link>
             </li>
             <li>
-              <Link href="/areas/vail" className="text-alp-gold font-semibold hover:underline">
+              <Link href="/service-areas/eagle-vail" className="text-alp-gold font-semibold hover:underline">
                 Aspen ↔ Vail / Beaver Creek private car service
               </Link>
             </li>
@@ -387,10 +347,11 @@ export default async function AboutPage() {
       <section className="py-16 bg-alp-pearl">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-alp-slate text-lg mb-4">
-            <span className="font-semibold text-alp-navy">Looking for outdoor adventures?</span>{' '}
             Our sister company{' '}
-            <span className="font-semibold text-alp-gold">{alpenglowData.partnerSite.name}</span>{' '}
-            offers guided fly fishing, hiking, mountain biking, and more.
+            <a href={alpenglowData.partnerSite.url} className="font-semibold text-alp-gold-700 hover:underline">
+              {alpenglowData.partnerSite.name}
+            </a>{' '}
+            offers guided fly fishing, hiking, and mountain biking.
           </p>
         </div>
       </section>
@@ -402,14 +363,14 @@ export default async function AboutPage() {
             Experience the <span className="text-alp-gold">Alpenglow Difference</span>
           </h2>
           <p className="text-alp-pearl/80 mb-8 max-w-2xl mx-auto">
-            Book your next ride with Aspen&apos;s most trusted luxury car service.
+            Book your next ride with a private car service built on local drivers and on-time pickups.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href={alpenglowData.onlineReservationsPath}
               className="inline-block bg-alp-gold text-alp-navy font-bold px-8 py-3 rounded-full hover:bg-alp-gold-light transition-colors"
             >
-              Book a Ride
+              Book online
             </Link>
             <a
               href="tel:+19704563666"

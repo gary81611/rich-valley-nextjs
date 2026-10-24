@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import AalGuidePage from '@/components/alpenglow/AalGuidePage'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 const path = '/aspen-airport-closure-2027'
 const title = 'Aspen Airport Closure 2027 | Private Car Alternatives'
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: `https://aspenalpenglowlimousine.com${path}` },
-  openGraph: { title, description, url: `https://aspenalpenglowlimousine.com${path}`, type: 'website' },
+  openGraph: { title, description, url: `https://aspenalpenglowlimousine.com${path}`, type: 'website', images: [AAL_OG_IMAGE] },
 }
 
 export default function AspenAirportClosurePage() {
@@ -20,8 +21,6 @@ export default function AspenAirportClosurePage() {
       eyebrow="Aspen/Pitkin County Airport"
       title={title}
       lede="Aspen/Pitkin County Airport (ASE) closes Sunday, April 4, 2027 at 11:00 p.m. through Friday, November 19, 2027 at 7:00 p.m. for runway reconstruction. There are no commercial or general aviation operations during the closure. Check aspenairport.com for updates before you travel."
-      imageSrc="/images/alpenglow/pikes-peak.jpg"
-      imageAlt="Colorado mountain highway used for private car arrivals when Aspen Airport is closed"
       source={{ href: 'https://www.aspenairport.com/closure/', label: 'Aspen/Pitkin County Airport closure (press release May 28, 2026)' }}
       sections={[
         {

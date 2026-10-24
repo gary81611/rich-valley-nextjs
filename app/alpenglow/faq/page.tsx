@@ -180,10 +180,10 @@ export default async function FAQPage() {
 
   return (
     <div className="min-h-screen bg-white font-inter">
-      <div className="bg-alp-navy pt-32 pb-16">
-        <div className="max-w-4xl mx-auto px-6 text-center">
+      <div className="aal-hero-compact bg-alp-navy text-white">
+        <div className="max-w-4xl mx-auto px-6 text-left w-full">
           <p className="text-alp-gold text-sm font-semibold uppercase tracking-[0.2em] mb-3">Questions &amp; Answers</p>
-          <h1 className="font-playfair text-4xl md:text-5xl text-white font-light mb-4">Frequently Asked Questions</h1>
+          <h1 className="font-playfair text-white font-bold mb-4">Frequently Asked Questions</h1>
           <p className="text-white/60">Everything you need to know about Aspen transportation</p>
         </div>
       </div>

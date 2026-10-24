@@ -55,14 +55,18 @@ export default function ServicesPage() {
         </div>
       </div>
 
-      <section className="bg-alp-navy-deep text-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            Our <span className="text-alp-gold">Services</span>
+      <section className="aal-hero-photo bg-alp-navy-deep text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left w-full pb-12">
+          <h1 className="font-playfair font-bold mb-6">
+            Our Services
           </h1>
-          <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl leading-relaxed">
             Distinguished luxury transportation for airports, boardrooms, weddings, and ski days — one standard of service across every ride.
           </p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+            <Link href={alpenglowData.onlineReservationsPath} className="inline-flex items-center justify-center bg-alp-gold text-alp-navy font-semibold px-6 py-3 rounded-full">Book online</Link>
+            <Link href="/contact" className="inline-flex items-center justify-center border-2 border-alp-gold text-alp-gold font-semibold px-6 py-3 rounded-full">Request a quote</Link>
+          </div>
         </div>
       </section>
 

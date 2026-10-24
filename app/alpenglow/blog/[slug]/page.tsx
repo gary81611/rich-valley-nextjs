@@ -8,6 +8,7 @@ import { seoAlt } from '@/lib/seo/alt-text'
 import type { BlogPost } from '@/lib/types'
 import { applyAalBlogPost } from '@/lib/aal-public-copy'
 import { blogImageSrcForNext, isBlogPostPubliclyVisible } from '@/lib/blog-visibility'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 export const dynamic = 'force-dynamic'
 
@@ -50,11 +51,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       url: canonical,
       publishedTime: post.published_at || undefined,
       modifiedTime: post.updated_at || undefined,
-      ...(ogImage ? { images: [{ url: ogImage }] } : {}),
+      images: ogImage ? [{ url: ogImage }] : [AAL_OG_IMAGE],
     },
-    ...(ogImage
-      ? { twitter: { card: 'summary_large_image' as const, images: [ogImage] } }
-      : {}),
+    twitter: {
+      card: 'summary_large_image' as const,
+      images: ogImage ? [ogImage] : [AAL_OG_IMAGE.url],
+    },
     alternates: { canonical },
   }
 }
@@ -98,9 +100,9 @@ function renderMarkdown(content: string): React.ReactNode {
       )
     } else if (line.startsWith('# ')) {
       elements.push(
-        <h1 key={i} className="font-playfair text-3xl font-bold text-alp-navy mt-8 mb-4">
+        <h2 key={i} className="font-playfair text-2xl font-bold text-alp-navy mt-10 mb-4">
           {line.slice(2)}
-        </h1>
+        </h2>
       )
     } else if (line.startsWith('### ')) {
       elements.push(
@@ -142,8 +144,8 @@ function renderMarkdown(content: string): React.ReactNode {
 /** Merged with Supabase `internal_links` for crawl paths to money pages. */
 const AAL_BLOG_RELATED: Record<string, { text: string; url: string }[]> = {
   'best-ski-resorts-near-aspen-getting-there-in-style': [
-    { text: 'Aspen ↔ Vail private transfers', url: '/areas/vail' },
-    { text: 'Snowmass Village car service', url: '/areas/snowmass' },
+    { text: 'Aspen ↔ Vail private transfers', url: '/service-areas/eagle-vail' },
+    { text: 'Snowmass Village car service', url: '/service-areas/snowmass-village' },
     { text: 'Ski resort & mountain shuttles', url: '/ski-resort-transfers' },
   ],
   'corporate-retreat-transportation-aspen': [
@@ -159,7 +161,7 @@ const AAL_BLOG_RELATED: Record<string, { text: string; url: string }[]> = {
   'airport-transfer-guide-aspen-pitkin-county-airport': [
     { text: 'Book private ASE, EGE & DEN transfers', url: '/airport-transfers' },
     { text: 'Our fleet for airport arrivals', url: '/fleet' },
-    { text: 'Snowmass pickup & Aspen runs', url: '/areas/snowmass' },
+    { text: 'Snowmass pickup & Aspen runs', url: '/service-areas/snowmass-village' },
   ],
   'aspen-airport-transportation-guide': [
     { text: 'Reserve airport car service', url: '/airport-transfers' },
@@ -285,8 +287,8 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
       </div>
 
       {/* Article header */}
-      <div className="bg-alp-navy-deep pb-16 pt-10 px-6">
-        <div className="max-w-3xl mx-auto text-center text-white">
+      <div className="aal-hero-compact bg-alp-navy-deep px-6">
+        <div className="max-w-3xl mx-auto text-left text-white w-full">
           <div className="text-alp-gold text-sm font-medium mb-4 space-y-1">
             {post.published_at && (
               <p>
@@ -307,11 +309,11 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
             {post.title}
           </h1>
           {post.meta_description && (
-            <p className="text-white/70 text-lg leading-relaxed max-w-2xl mx-auto">
+            <p className="text-white/70 text-lg leading-relaxed max-w-2xl">
               {post.meta_description}
             </p>
           )}
-          <div className="mt-6 flex items-center justify-center gap-2 text-sm text-white/50">
+          <div className="mt-6 flex items-center gap-2 text-sm text-white/50">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>

@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { aalDisplayTitle, aalTitlePrice } from '@/lib/aal-display-title'
 
 export type AalGuideSection = {
   heading: string
@@ -16,8 +17,9 @@ type Props = {
   eyebrow: string
   title: string
   lede: string
-  imageSrc: string
-  imageAlt: string
+  imageSrc?: string
+  imageAlt?: string
+  facts?: string[]
   sections: AalGuideSection[]
   faqs: AalGuideFaq[]
   links: AalGuideLink[]
@@ -31,12 +33,16 @@ export default function AalGuidePage({
   lede,
   imageSrc,
   imageAlt,
+  facts,
   sections,
   faqs,
   links,
   source,
 }: Props) {
   const pageUrl = `https://aspenalpenglowlimousine.com${path}`
+  const visibleTitle = aalDisplayTitle(title)
+  const price = aalTitlePrice(title)
+  const factItems = facts && facts.length > 0 ? facts : price ? [price] : []
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -51,7 +57,7 @@ export default function AalGuidePage({
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://aspenalpenglowlimousine.com' },
-      { '@type': 'ListItem', position: 2, name: title, item: pageUrl },
+      { '@type': 'ListItem', position: 2, name: visibleTitle, item: pageUrl },
     ],
   }
 
@@ -66,24 +72,40 @@ export default function AalGuidePage({
               Home
             </Link>
             <span className="mx-2">/</span>
-            <span className="text-alp-gold">{title}</span>
+            <span className="text-alp-gold">{visibleTitle}</span>
           </nav>
         </div>
       </div>
 
-      <section className="bg-alp-navy-deep text-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="aal-hero-photo bg-alp-navy-deep text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 w-full">
           <p className="text-alp-gold text-sm tracking-widest uppercase mb-4 font-semibold">{eyebrow}</p>
-          <h1 className="font-playfair text-4xl sm:text-5xl font-bold mb-6 max-w-4xl">{title}</h1>
-          <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl leading-relaxed">{lede}</p>
+          <h1 className="font-playfair font-bold mb-6 max-w-4xl">{visibleTitle}</h1>
+          <p className="text-lg text-alp-pearl/80 max-w-3xl leading-relaxed">{lede}</p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+            <Link href="/reservations" className="inline-flex items-center justify-center bg-alp-gold text-alp-navy font-semibold px-6 py-3 rounded-full">Book online</Link>
+            <Link href="/contact" className="inline-flex items-center justify-center border-2 border-alp-gold text-alp-gold font-semibold px-6 py-3 rounded-full">Request a quote</Link>
+          </div>
         </div>
       </section>
 
+      {factItems.length > 0 && (
+        <section className="bg-white border-b border-alp-pearl-dark">
+          <ul className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-alp-navy">
+            {factItems.map((fact) => (
+              <li key={fact} className="font-semibold">{fact}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <section className="py-16 sm:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative w-full h-72 sm:h-96 mb-12 rounded-2xl overflow-hidden bg-alp-navy-deep">
-            <Image src={imageSrc} alt={imageAlt} fill className="object-cover" priority unoptimized />
-          </div>
+          {imageSrc && imageAlt && (
+            <div className="mb-12 rounded-2xl bg-alp-navy-deep flex items-center justify-center">
+              <Image src={imageSrc} alt={imageAlt} width={800} height={450} className="max-w-full h-auto object-contain" />
+            </div>
+          )}
           {sections.map((section) => (
             <article key={section.heading} className="mb-12">
               <h2 className="font-playfair text-2xl sm:text-3xl font-bold text-alp-navy mb-4">{section.heading}</h2>

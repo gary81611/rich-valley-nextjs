@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
       'Private wedding day transportation for Aspen and Roaring Fork Valley venues, guests, and airport arrivals.',
     type: 'website',
     url: pageUrl,
+    images: [AAL_OG_IMAGE],
   },
 }
 
@@ -51,15 +53,19 @@ export default function WeddingsPage() {
         </div>
       </div>
 
-      <section className="bg-alp-navy-deep text-white py-16 sm:py-24">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="font-playfair text-4xl sm:text-5xl font-bold mb-6">
-            Wedding Transportation in <span className="text-alp-gold">Aspen</span>
+      <section className="aal-hero-photo bg-alp-navy-deep text-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-left w-full pb-12">
+          <h1 className="font-playfair font-bold mb-6">
+            Wedding Transportation in Aspen
           </h1>
-          <p className="text-lg text-alp-pearl/80 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg text-alp-pearl/80 max-w-3xl leading-relaxed">
             We coordinate reliable, polished transportation for ceremonies, receptions, and guest arrivals
             across Aspen and Snowmass, with clear timelines and proactive communication.
           </p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+            <Link href="/reservations" className="inline-flex items-center justify-center bg-alp-gold text-alp-navy font-semibold px-6 py-3 rounded-full">Book online</Link>
+            <Link href="/contact" className="inline-flex items-center justify-center border-2 border-alp-gold text-alp-gold font-semibold px-6 py-3 rounded-full">Request a quote</Link>
+          </div>
         </div>
       </section>
 

@@ -34,7 +34,13 @@ async function fetchGalleryImages() {
 }
 
 export default async function GalleryPage() {
-  const galleryImages = await fetchGalleryImages()
+  const galleryImages = (await fetchGalleryImages()).filter((img) => {
+    const src = String(img.src || '')
+    return src.length > 0 && !/unsplash\.com|pexels\.com/i.test(src)
+  })
+
+  // Fewer than 12 real AAL photos. Render nothing. Do not 301 this URL.
+  if (galleryImages.length < 12) return null
 
   return (
     <div className="min-h-screen bg-alp-pearl font-inter">
@@ -96,7 +102,7 @@ export default async function GalleryPage() {
                             : `Aspen Alpenglow Limousine fleet or Colorado destination photo ${i + 1}`
                         }
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                        className="object-contain"
                         unoptimized
                       />
                       <div className="absolute inset-0 bg-alp-navy-deep/0 group-hover:bg-alp-navy-deep/30 transition-colors duration-300" />

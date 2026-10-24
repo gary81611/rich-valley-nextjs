@@ -1,5 +1,7 @@
 /** Confirmed AAL rate and FAQ corrections. Render-time only; does not write to the database. */
 
+import { aalDisplayTitle } from '@/lib/aal-display-title'
+
 export const AAL_ONE_WAY_RATES =
   'One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720. Holiday pricing may change seasonally.'
 
@@ -121,6 +123,11 @@ export function correctAalPublicText(text: string): string {
   )
   t = t.replace(/Aspen Highland's/g, 'Aspen Highlands')
   t = t.replaceAll('/services/ski-resort-transfers', '/ski-resort-transfers')
+  t = t.replace(/After 14 years of shuttling/g, 'Since 2012, driving')
+  t = t.replace(/\b14\+\s+years\b/gi, 'since 2012')
+  t = t.replace(/\bover 14 years\b/gi, 'since 2012')
+  t = t.replace(/Aspen's most trusted luxury car service/gi, 'a private car service built on local drivers and on-time pickups')
+  t = t.replace(/Aspen’s most trusted luxury car service/gi, 'a private car service built on local drivers and on-time pickups')
   return t
 }
 
@@ -190,7 +197,7 @@ export function applyAalBlogPost<T extends AalBlogCopy>(post: T): T {
   }))
   return {
     ...post,
-    title: ski ? AAL_SKI_BLOG_TITLE : nye ? AAL_NYE_BLOG_TITLE : fix(post.title),
+    title: aalDisplayTitle(ski ? AAL_SKI_BLOG_TITLE : nye ? AAL_NYE_BLOG_TITLE : fix(post.title)),
     meta_title: ski ? AAL_SKI_BLOG_TITLE : nye ? AAL_NYE_BLOG_TITLE : post.meta_title ? fix(post.meta_title) : post.meta_title,
     meta_description: ski
       ? AAL_SKI_BLOG_META
@@ -213,4 +220,18 @@ export function correctAalFleetCapacity(name: string, capacity: number): number 
   if (capacity === 14) return 13
   if (capacity === 6) return 7
   return capacity
+}
+
+/** Live site_settings stats still say 14+ and 4.9 until the round 14 migration runs. */
+export function normalizeAalStat(stat: { value: string; label: string }): { value: string; label: string } {
+  const value = String(stat.value ?? '')
+  const label = String(stat.label ?? '')
+  const blob = `${value} ${label}`.toLowerCase()
+  if (value === '14+' || /14\+\s*years/.test(blob) || (blob.includes('14+') && blob.includes('year'))) {
+    return { value: 'Since 2012', label: 'Serving Aspen' }
+  }
+  if (value === '4.9' || blob.includes('4.9') || blob.includes('client rating')) {
+    return { value: '5.0', label: 'on Google (5 reviews)' }
+  }
+  return { value, label }
 }

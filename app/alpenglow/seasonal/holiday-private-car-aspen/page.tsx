@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import AalGuidePage from '@/components/alpenglow/AalGuidePage'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 const path = '/seasonal/holiday-private-car-aspen'
 const title = 'Christmas & Holiday Private Car Service in Aspen'
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: `https://aspenalpenglowlimousine.com${path}` },
-  openGraph: { title, description, url: `https://aspenalpenglowlimousine.com${path}`, type: 'website' },
+  openGraph: { title, description, url: `https://aspenalpenglowlimousine.com${path}`, type: 'website', images: [AAL_OG_IMAGE] },
 }
 
 export default function HolidayPrivateCarPage() {
@@ -20,8 +21,6 @@ export default function HolidayPrivateCarPage() {
       eyebrow="Holiday weeks"
       title={title}
       lede="Private chauffeurs for Aspen's holiday weeks: airport arrivals, dinners, church, and ski days. Book early. Holiday pricing may change seasonally. This page does not list a separate holiday rate or a holiday minimum."
-      imageSrc="/images/about/pexels-outdoor.png"
-      imageAlt="Winter light in the Roaring Fork Valley"
       sections={[
         {
           heading: 'What holiday rides cover',

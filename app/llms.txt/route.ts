@@ -107,9 +107,9 @@ https://aspenalpenglowlimousine.com/events/x-games-aspen-transportation
 https://aspenalpenglowlimousine.com/events/new-years-eve-aspen
 https://aspenalpenglowlimousine.com/seasonal/holiday-private-car-aspen
 https://aspenalpenglowlimousine.com/services/hourly-charter
-https://aspenalpenglowlimousine.com/areas/aspen
-https://aspenalpenglowlimousine.com/areas/snowmass
-https://aspenalpenglowlimousine.com/areas/vail
+https://aspenalpenglowlimousine.com/service-areas/aspen
+https://aspenalpenglowlimousine.com/service-areas/snowmass-village
+https://aspenalpenglowlimousine.com/service-areas/eagle-vail
 https://aspenalpenglowlimousine.com/service-areas/basalt
 https://aspenalpenglowlimousine.com/service-areas/carbondale
 https://aspenalpenglowlimousine.com/service-areas/glenwood-springs

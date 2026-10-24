@@ -11,7 +11,7 @@ Every winter, thousands of skiers fly into Aspen/Pitkin County Airport or drive 
 
 This is a solvable problem.
 
-After 14 years of shuttling Aspen's skiing visitors between slopes, restaurants, airports, and accommodations, Aspen Alpenglow Limousine can tell you with confidence: for most ski trips to the Roaring Fork Valley, private car service is a better experience than a rental car at a comparable total cost. Here's why.
+Since 2012, driving Aspen's skiing visitors between slopes, restaurants, airports, and accommodations, Aspen Alpenglow Limousine can tell you with confidence: for most ski trips to the Roaring Fork Valley, private car service is a better experience than a rental car at a comparable total cost. Here's why.
 
 ## The True Cost of a Rental Car in Ski Season
 

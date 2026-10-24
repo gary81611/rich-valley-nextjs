@@ -1,0 +1,59 @@
+/* Gold #C9A84C on white is about 2.3:1. Text links on light surfaces use #8A6A1C. */
+.aal-root a.text-alp-gold {
+  color: #8a6a1c;
+}
+
+.aal-root .bg-alp-navy a.text-alp-gold,
+.aal-root .bg-alp-navy-deep a.text-alp-gold,
+.aal-root nav a.text-alp-gold,
+.aal-root footer a.text-alp-gold,
+.aal-root .text-white a.text-alp-gold {
+  color: #c9a84c;
+}
+
+.aal-hero-photo,
+.aal-hero-compact {
+  box-sizing: border-box;
+  text-align: left;
+  /* Fixed 72px bar. Do not add this offset on the home hero. */
+  padding-top: 72px;
+}
+
+.aal-hero-photo {
+  min-height: 70svh;
+  display: flex;
+  align-items: flex-end;
+}
+
+.aal-hero-compact {
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .aal-hero-photo {
+    height: 560px;
+    min-height: 560px;
+  }
+}
+
+.aal-hero-photo .text-center,
+.aal-hero-compact .text-center {
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.aal-hero-photo h1,
+.aal-hero-compact h1 {
+  font-size: 2.25rem !important;
+  line-height: 1.15 !important;
+}
+
+@media (min-width: 768px) {
+  .aal-hero-photo h1,
+  .aal-hero-compact h1 {
+    font-size: 3rem !important;
+  }
+}

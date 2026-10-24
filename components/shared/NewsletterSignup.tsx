@@ -59,7 +59,11 @@ export default function NewsletterSignup({ siteKey, variant }: NewsletterSignupP
       <div className="max-w-2xl mx-auto px-6 text-center">
         <p className={`font-cormorant text-lg tracking-widest uppercase mb-4 ${labelColor}`}>Stay Connected</p>
         <h3 className="font-playfair text-3xl md:text-4xl text-white font-bold mb-4">Get Exclusive Offers</h3>
-        <p className="text-white/70 mb-8">Sign up for our newsletter and be the first to know about special deals, new adventures, and seasonal offerings.</p>
+        <p className="text-white/70 mb-8">
+          {isAlp
+            ? 'Sign up for airport and seasonal notes from Aspen Alpenglow Limousine.'
+            : 'Sign up for our newsletter and be the first to know about special deals, new adventures, and seasonal offerings.'}
+        </p>
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
           <input
             type="email"

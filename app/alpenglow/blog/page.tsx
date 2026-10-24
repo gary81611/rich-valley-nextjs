@@ -5,6 +5,7 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { blogImageSrcForNext, filterPublicBlogPosts } from '@/lib/blog-visibility'
 import { applyAalBlogPost } from '@/lib/aal-public-copy'
 import { seoAlt } from '@/lib/seo/alt-text'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 import type { BlogPost } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
     description: 'Guides for Aspen airport transfers, mountain driving, and chauffeured Colorado travel.',
     type: 'website',
     url: 'https://aspenalpenglowlimousine.com/blog',
+    images: [AAL_OG_IMAGE],
   },
 }
 
@@ -57,8 +59,8 @@ export default async function AlpenglowBlogPage() {
       </div>
 
       {/* Hero */}
-      <div className="bg-alp-navy-deep py-16 px-6">
-        <div className="max-w-4xl mx-auto text-center text-white">
+      <div className="aal-hero-compact bg-alp-navy-deep px-6">
+        <div className="max-w-4xl mx-auto text-left text-white w-full">
           <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-3">
             Travel Guides
           </p>

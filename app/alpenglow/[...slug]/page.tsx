@@ -9,6 +9,8 @@ import FaqPageTemplate from '@/components/templates/FaqPageTemplate'
 import LandingPageTemplate from '@/components/templates/LandingPageTemplate'
 import type { CmsPage } from '@/lib/pages'
 import { correctAalPublicText } from '@/lib/aal-public-copy'
+import { aalDisplayTitle } from '@/lib/aal-display-title'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 const AAL_FBO =
   'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison.'
@@ -21,7 +23,7 @@ const AAL_CORPORATE = 'Corporate charge accounts are billed monthly.'
 function applyFleetCapacityCopy(page: CmsPage): CmsPage {
   const meta_description = page.meta_description ? correctAalPublicText(page.meta_description) : page.meta_description
   const meta_title = page.meta_title ? correctAalPublicText(page.meta_title) : page.meta_title
-  const title = correctAalPublicText(page.title)
+  const title = aalDisplayTitle(correctAalPublicText(page.title))
   if (page.template_type === 'service' || page.template_type === 'location') {
     const content = { ...(page.content as ServiceContent & LocationContent) }
     content.hero_title = content.hero_title ? correctAalPublicText(content.hero_title) : content.hero_title
@@ -139,7 +141,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: pageUrl,
       siteName: 'Aspen Alpenglow Limousine',
       type: 'website',
-      images: page.og_image ? [{ url: page.og_image }] : undefined,
+      images: page.og_image ? [{ url: page.og_image }] : [AAL_OG_IMAGE],
     },
   }
 }
@@ -322,8 +324,8 @@ export default async function CmsPage({ params }: Props) {
                   { href: '/airport-transfers/eagle-ege-to-aspen', label: 'Eagle Airport (EGE) to Aspen private car — $720' },
                   { href: '/airport-transfers/denver-den-to-aspen', label: 'Denver Airport (DEN) to Aspen private car — $1,375' },
                   { href: '/aspen-airport-closure-2027', label: 'Aspen Airport closure in 2027' },
-                  { href: '/areas/snowmass', label: 'Snowmass Village pickups & Aspen transfers' },
-                  { href: '/areas/vail', label: 'Aspen ↔ Vail / Beaver Creek private car service' },
+                  { href: '/service-areas/snowmass-village', label: 'Snowmass Village pickups & Aspen transfers' },
+                  { href: '/service-areas/eagle-vail', label: 'Aspen ↔ Vail / Beaver Creek private car service' },
                   { href: '/fleet', label: 'SUVs and Ford Transit van for airport arrivals' },
                   { href: '/pricing', label: 'Published private car rates' },
                 ]

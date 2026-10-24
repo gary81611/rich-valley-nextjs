@@ -14,8 +14,8 @@ export default function LandingPageTemplate({ site, title, content }: Props) {
   return (
     <div className={rva ? 'font-inter text-rva-forest' : 'font-inter text-alp-navy'}>
       {/* Hero */}
-      <section className={`py-20 px-6 text-center ${rva ? 'bg-rva-forest text-rva-cream' : 'bg-alp-navy text-alp-pearl'}`}>
-        <div className="max-w-3xl mx-auto">
+      <section className={rva ? 'py-20 px-6 text-center bg-rva-forest text-rva-cream' : 'aal-hero-compact bg-alp-navy text-white px-6'}>
+        <div className={rva ? 'max-w-3xl mx-auto' : 'max-w-7xl mx-auto w-full text-left'}>
           <h1 className="font-playfair text-4xl md:text-5xl font-bold mb-4 leading-tight">{title}</h1>
           {content.hero_subtitle && (
             <p className="text-lg md:text-xl opacity-80 mt-2">{content.hero_subtitle}</p>

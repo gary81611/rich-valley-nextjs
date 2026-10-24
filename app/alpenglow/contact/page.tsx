@@ -19,12 +19,12 @@ export default function ContactPage() {
       </div>
 
       {/* Hero */}
-      <section className="bg-alp-navy-deep text-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            Book Your <span className="text-alp-gold">Ride</span>
+      <section className="aal-hero-compact bg-alp-navy-deep text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left w-full">
+          <h1 className="font-playfair font-bold mb-6">
+            Request a quote
           </h1>
-          <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl">
             Ready to experience luxury transportation? Fill out the form below or call us directly.
             We are available 24 hours a day, 7 days a week.
           </p>

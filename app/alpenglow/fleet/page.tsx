@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { alpenglowData } from '@/lib/site-data'
+import VehicleCard from '@/components/alpenglow/VehicleCard'
+import { AAL_OG_IMAGE, AAL_VEHICLES } from '@/lib/aal-vehicles'
 
 /** Fleet capacities must render from this file, not a stale edge prerender. */
 export const dynamic = 'force-dynamic'
@@ -10,40 +12,15 @@ export const metadata: Metadata = {
   description:
     'Chevrolet Suburban SUVs (7 pax each) & 13-passenger Ford Transit Van — Starlink WiFi, ski racks, Aspen & Snowmass chauffeur service. Child seats are free. No shared rides are offered.',
   alternates: { canonical: 'https://aspenalpenglowlimousine.com/fleet' },
+  openGraph: {
+    title: 'Luxury Fleet | Suburban SUVs & Transit Van | Alpenglow',
+    description:
+      'Chevrolet Suburban SUVs (up to 7) and a Ford Transit passenger van (up to 13). No model years are listed until confirmed.',
+    url: 'https://aspenalpenglowlimousine.com/fleet',
+    type: 'website',
+    images: [AAL_OG_IMAGE],
+  },
 }
-
-const VEHICLES = [
-  {
-    id: 'suburban-2026',
-    title: '2026 Chevrolet Suburban',
-    capacity: 7,
-    amenities: [
-      'WiFi (Starlink)',
-      'XM Radio',
-      'Complimentary Water',
-      'Yakima Roof Rack (luggage)',
-      'Myers 6X Ski Rack',
-    ],
-  },
-  {
-    id: 'suburban-2025',
-    title: '2025 Chevrolet Suburban',
-    capacity: 7,
-    amenities: [
-      'WiFi (Starlink)',
-      'XM Radio',
-      'Complimentary Water',
-      'Yakima Roof Rack (luggage)',
-      'Myers 6X Ski Rack',
-    ],
-  },
-  {
-    id: 'transit-2025',
-    title: '2025 Ford Transit Van',
-    capacity: 13,
-    amenities: ['WiFi (Starlink)', 'XM Radio', 'Complimentary Water', 'Myers 6X Ski Rack'],
-  },
-] as const
 
 const fleetJsonLd = {
   '@context': 'https://schema.org',
@@ -57,11 +34,7 @@ const fleetJsonLd = {
       item: {
         '@type': 'Vehicle',
         name: 'Chevrolet Suburban',
-        vehicleModelDate: '2026',
-        numberOfDoors: 4,
         seatingCapacity: 7,
-        vehicleInteriorColor: 'Black',
-        color: 'Black',
         description:
           'Full-size luxury SUV seating up to 7 passengers. Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. Driven by full-time local drivers with 15+ years of mountain driving experience.',
         offers: {
@@ -76,12 +49,8 @@ const fleetJsonLd = {
       position: 2,
       item: {
         '@type': 'Vehicle',
-        name: 'Ford Transit Van',
-        vehicleModelDate: '2025',
-        numberOfDoors: 4,
+        name: 'Ford Transit passenger van',
         seatingCapacity: 13,
-        vehicleInteriorColor: 'Black',
-        color: 'Black',
         description:
           '13-passenger Ford Transit Van for larger groups, corporate retreats, wedding parties, and ski group transfers. Spacious interior, WiFi, ski racks. Child car seats and boosters are free. No shared rides are offered.',
         offers: {
@@ -110,40 +79,22 @@ export default function FleetPage() {
         </div>
       </div>
 
-      <section className="bg-alp-navy-deep text-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            Our <span className="text-alp-gold">Fleet</span>
+      <section className="aal-hero-compact bg-alp-navy-deep text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left w-full">
+          <h1 className="font-playfair font-bold mb-6">
+            Our Fleet
           </h1>
-          <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl mx-auto">
-            Late-model SUVs and group transport, meticulously maintained and professionally detailed before every ride.
+          <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl">
+            Chevrolet Suburban SUVs seat up to 7. The Ford Transit passenger van seats up to 13.
           </p>
         </div>
       </section>
 
       <section className="py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {VEHICLES.map((v) => (
-              <article
-                key={v.id}
-                className="bg-white rounded-2xl border border-alp-pearl-dark shadow-sm p-8 flex flex-col"
-              >
-                <h2 className="font-playfair text-2xl sm:text-3xl font-bold text-alp-navy mb-3">{v.title}</h2>
-                <p className="text-alp-slate text-sm font-medium mb-6">
-                  Up to <span className="text-alp-gold font-bold">{v.capacity}</span> passengers
-                </p>
-                <div className="flex flex-wrap gap-2 mt-auto">
-                  {v.amenities.map((a) => (
-                    <span
-                      key={a}
-                      className="text-xs font-semibold uppercase tracking-wide bg-alp-gold/10 text-alp-navy px-3 py-1.5 rounded-full border border-alp-gold/20"
-                    >
-                      {a}
-                    </span>
-                  ))}
-                </div>
-              </article>
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {AAL_VEHICLES.map((vehicle) => (
+              <VehicleCard key={vehicle.id} vehicle={vehicle} />
             ))}
           </div>
 
