@@ -31,7 +31,7 @@ export default function RVANav() {
   const adventuresCurrent = RVA_ACTIVITIES.some((page) => rvaNavIsCurrent(pathname, page.href))
 
   return (
-    <nav aria-label="Main navigation" className="fixed top-0 left-0 right-0 z-50 flex max-h-[100dvh] flex-col overflow-hidden border-b border-black/15 bg-rva-forest shadow-lg">
+    <nav aria-label="Main navigation" className="fixed top-0 left-0 right-0 z-50 border-b border-black/15 bg-rva-forest shadow-lg">
       <div className="max-w-7xl mx-auto flex w-full shrink-0 items-center px-6 py-4">
         <a href="/" className="flex items-center gap-3 flex-shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-rva-copper-300" aria-label="Rich Valley Adventures — home">
           <span className="inline-flex items-center justify-center rounded-xl bg-rva-cream px-3 py-2 shadow-[0_4px_24px_rgba(0,0,0,0.35)] ring-2 ring-rva-copper-700/35 md:px-3.5 md:py-2.5">
@@ -106,7 +106,10 @@ export default function RVANav() {
         </button>
       </div>
       {mobileMenuOpen && (
-        <div className="md:hidden min-h-0 flex-1 space-y-1 overflow-y-auto overscroll-contain border-t border-white/10 bg-rva-forest px-6 py-4 pb-8 max-h-[calc(100dvh-6.5rem-3.5rem)]">
+        <div className="md:hidden max-h-[calc(100dvh-6.25rem-3.5rem)] space-y-1 overflow-y-auto overscroll-contain border-t border-white/10 bg-rva-forest px-6 py-4 pb-8">
+          <a href="tel:+19704563666" onClick={() => setMobileMenuOpen(false)} className="mb-2 inline-flex min-h-12 items-center rounded-full bg-rva-copper-700 px-4 text-sm font-semibold text-white hover:bg-rva-copper-800">
+            970-456-3666
+          </a>
           <div>
             <button onClick={() => setMobileAdventuresOpen(!mobileAdventuresOpen)} className="flex items-center justify-between w-full text-white/90 hover:text-rva-copper-light text-sm font-medium min-h-11" aria-expanded={mobileAdventuresOpen}>
               Adventures
