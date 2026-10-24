@@ -107,7 +107,10 @@ export default function ALPNav() {
               type="button"
               className={`flex min-h-11 items-center gap-1 ${linkClass}`}
               aria-expanded={servicesOpen}
-              onClick={() => setServicesOpen((open) => !open)}
+              onClick={(event) => {
+                if (event.detail === 0) setServicesOpen((open) => !open)
+                else setServicesOpen(true)
+              }}
             >
               Services
               <svg className={`w-3.5 h-3.5 transition-transform ${servicesOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
@@ -133,7 +136,10 @@ export default function ALPNav() {
               type="button"
               className={`flex min-h-11 items-center gap-1 ${linkClass}`}
               aria-expanded={areasOpen}
-              onClick={() => setAreasOpen((open) => !open)}
+              onClick={(event) => {
+                if (event.detail === 0) setAreasOpen((open) => !open)
+                else setAreasOpen(true)
+              }}
             >
               Service Areas
               <svg className={`w-3.5 h-3.5 transition-transform ${areasOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
