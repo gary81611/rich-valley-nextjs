@@ -180,3 +180,20 @@ SET content = regexp_replace(
 )::jsonb
 WHERE site_id = 'rva'
   AND content::text ILIKE '%premier tailwater fishery%';
+
+-- Corporate team-building post (published slug). "After twelve years of guiding
+-- corporate groups…" becomes since-2012 wording with no year count.
+-- Different sentence from the family post above. Still NOT APPLIED.
+UPDATE blog_posts
+SET content = regexp_replace(
+  content,
+  'After twelve years of guiding corporate groups',
+  'Since 2012, while guiding corporate groups',
+  'gi'
+)
+WHERE site_key = 'rva'
+  AND (
+    slug = 'corporate-team-building-aspen-outdoor-adventures-rva'
+    OR content ILIKE '%twelve years of guiding corporate groups%'
+  )
+  AND content ILIKE '%twelve years of guiding corporate groups%';
