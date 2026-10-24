@@ -258,7 +258,7 @@ export default async function AboutPage() {
               Professional Chauffeurs, Local Experts
             </h2>
             <p className="text-alp-slate text-lg leading-relaxed mb-6">
-              8 full-time local drivers with 15+ years of mountain driving experience. They live in
+              8 full-time local drivers who have been driving these mountain roads since 2012. They live in
               the Roaring Fork Valley and know the fastest routes, the best restaurants, and every
               back road shortcut. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee.
             </p>

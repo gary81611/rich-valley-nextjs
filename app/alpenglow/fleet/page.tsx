@@ -36,7 +36,7 @@ const fleetJsonLd = {
         name: 'Chevrolet Suburban',
         seatingCapacity: 7,
         description:
-          'Full-size luxury SUV seating up to 7 passengers. Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. Driven by full-time local drivers with 15+ years of mountain driving experience.',
+          'Full-size luxury SUV seating up to 7 passengers. Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. Driven by full-time local drivers who have been driving these mountain roads since 2012.',
         offers: {
           '@type': 'Offer',
           priceCurrency: 'USD',
@@ -99,7 +99,7 @@ export default function FleetPage() {
           </div>
 
           <p className="mt-12 text-center text-alp-slate max-w-3xl mx-auto leading-relaxed">
-            8 full-time local drivers with 15+ years of mountain driving experience. Vehicles have Starlink, ski racks, and roof cargo space. SUVs seat 7 and the passenger shuttle van seats 13. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee.
+            8 full-time local drivers who have been driving these mountain roads since 2012. Vehicles have Starlink, ski racks, and roof cargo space. SUVs seat 7 and the passenger shuttle van seats 13. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee.
           </p>
         </div>
       </section>

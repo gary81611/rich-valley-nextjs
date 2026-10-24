@@ -3,6 +3,7 @@ import Script from 'next/script'
 import Link from 'next/link'
 import { alpenglowData } from '@/lib/site-data'
 import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
+import BookingWidgetTitle from '@/components/alpenglow/BookingWidgetTitle'
 
 export const metadata: Metadata = {
   title: 'Online Reservations | Aspen Alpenglow Limousine',
@@ -54,13 +55,14 @@ export default function ReservationsPage() {
           </a>
           <p className="mt-4 text-sm text-white/55">
             If the booking form does not appear, try disabling strict content blockers or call{' '}
-            <a href={alpenglowData.phoneHref} className="text-alp-gold hover:text-alp-gold-light">
+            <a href={alpenglowData.phoneHref} className="text-alp-gold hover:text-alp-gold-light underline underline-offset-2">
               {alpenglowData.phone}
             </a>
             .
           </p>
         </div>
       </div>
+      <BookingWidgetTitle />
       <Script src="https://book.mylimobiz.com/v4/widgets/widget-loader.js" strategy="afterInteractive" />
     </div>
   )

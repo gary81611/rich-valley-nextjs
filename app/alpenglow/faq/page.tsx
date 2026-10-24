@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 const VEHICLE_ANSWER =
-  '8 full-time local drivers with 15+ years of mountain driving experience. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. The fleet includes two late-model Chevrolet Suburbans (SUVs seat 7) and a Ford Transit Van (the passenger shuttle van seats 13).'
+  '8 full-time local drivers who have been driving these mountain roads since 2012. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. The fleet includes two late-model Chevrolet Suburbans (SUVs seat 7) and a Ford Transit Van (the passenger shuttle van seats 13).'
 
 const DEN_COST_ANSWER =
   `${AAL_ONE_WAY_RATES} Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison.`

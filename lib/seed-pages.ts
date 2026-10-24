@@ -649,7 +649,7 @@ const aalPages: PageSeed[] = [
           content: `Marble Distilling Co. in Marble, Colorado sits 30 miles south of Aspen at the foot of the Elk Mountains, drawing its water from the same pristine source that made Marble\'s famous quarried stone. The distillery produces award-winning bourbon, gin, vodka, and the iconic Marble Colorado Whiskey — all crafted with the same precision and passion that defines this mountain community.\n\nOur Marble Distilling tour includes a private vehicle transfer from Aspen, a guided distillery tour with tasting, and a scenic return through the Crystal River Valley. This is one of the most beautiful drives in Colorado — and one of the best craft spirits experiences in the Mountain West.`,
         },
         {
-          title: 'Palisade Wine Country — Colorado\'s Premier Wine Region',
+          title: 'Palisade Wine Country — a Colorado wine region',
           content: `Palisade, Colorado is the heart of Colorado wine country — 50+ wineries and vineyards clustered in the Grand Valley east of Grand Junction, producing acclaimed Bordeaux varietals, Rhône blends, and sparkling wines that have won national recognition.\n\nOur full-day Palisade wine tour departs Aspen in the morning for the 2-hour drive over the Rockies into the Grand Valley. We customize your itinerary around your wine preferences — selecting from Palisade\'s best estates for private tastings. The return trip over the mountains at sunset is a spectacular conclusion to a world-class day.`,
         },
       ],

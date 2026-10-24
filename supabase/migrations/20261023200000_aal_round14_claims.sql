@@ -20,6 +20,14 @@ BEGIN
   s := replace(s, 'After 14 years of shuttling', 'Since 2012, driving');
   s := regexp_replace(s, '14\+[[:space:]]+years', 'since 2012', 'gi');
   s := regexp_replace(s, 'over 14 years', 'since 2012', 'gi');
+  s := regexp_replace(s, 'have 15\+[[:space:]]*years of mountain driving experience', 'have been driving these mountain roads since 2012', 'gi');
+  s := regexp_replace(s, 'with 15\+[[:space:]]*years of mountain driving experience', 'who have been driving these mountain roads since 2012', 'gi');
+  s := regexp_replace(s, 'with 15\+[[:space:]]*years of mountain driving', 'who have been driving these mountain roads since 2012', 'gi');
+  s := regexp_replace(s, 'Colorado''s Premier Ski Towns', 'Colorado''s Ski Towns', 'gi');
+  s := regexp_replace(s, 'Colorado’s Premier Ski Towns', 'Colorado''s Ski Towns', 'gi');
+  s := regexp_replace(s, 'Colorado''s Premier Wine Region', 'a Colorado wine region', 'gi');
+  s := regexp_replace(s, 'Colorado’s Premier Wine Region', 'a Colorado wine region', 'gi');
+  s := regexp_replace(s, 'extensive experience with premier venues including', 'extensive experience with venues including', 'gi');
   s := regexp_replace(s, 'Aspen''s most trusted luxury car service', 'a private car service built on local drivers and on-time pickups', 'gi');
   s := regexp_replace(s, 'Aspen’s most trusted luxury car service', 'a private car service built on local drivers and on-time pickups', 'gi');
   s := regexp_replace(s, '14-passenger', '13-passenger', 'gi');
@@ -205,5 +213,106 @@ UPDATE blog_posts
 SET status = 'draft'
 WHERE site_key = 'alpenglow'
   AND lower(slug) = 'aspen-airport-closure-alternative-transportation-adventures';
+
+-- Final cleanup. Still NOT APPLIED. Case-insensitive.
+-- "15+ years of mountain driving" becomes since-2012 wording with no year count.
+-- Premier is dropped only from the Vail ski-towns title, the wine-region title,
+-- and the "premier venues including" sentence. Other "premier" wording is left alone.
+-- Do not change blog slugs.
+
+UPDATE pages
+SET
+  title = public.aal_round14_fix_text(title),
+  meta_title = public.aal_round14_fix_text(meta_title),
+  meta_description = public.aal_round14_fix_text(meta_description),
+  content = public.aal_round14_fix_text(content::text)::jsonb,
+  schema_markup = CASE
+    WHEN schema_markup IS NULL THEN NULL
+    ELSE public.aal_round14_fix_text(schema_markup::text)::jsonb
+  END
+WHERE site_id = 'alpenglow'
+  AND (
+    coalesce(title, '') ~* '15\+[[:space:]]*years of mountain driving|premier wine region|premier ski towns|premier venues including'
+    OR coalesce(meta_title, '') ~* '15\+[[:space:]]*years of mountain driving|premier wine region|premier ski towns|premier venues including'
+    OR coalesce(meta_description, '') ~* '15\+[[:space:]]*years of mountain driving|premier wine region|premier ski towns|premier venues including'
+    OR content::text ~* '15\+[[:space:]]*years of mountain driving|premier wine region|premier ski towns|premier venues including'
+    OR coalesce(schema_markup::text, '') ~* '15\+[[:space:]]*years of mountain driving|premier wine region|premier ski towns|premier venues including'
+  );
+
+UPDATE blog_posts
+SET
+  title = public.aal_round14_fix_text(title),
+  content = public.aal_round14_fix_text(content),
+  meta_title = public.aal_round14_fix_text(meta_title),
+  meta_description = public.aal_round14_fix_text(meta_description),
+  faqs = CASE
+    WHEN faqs IS NULL THEN NULL
+    ELSE public.aal_round14_fix_text(faqs::text)::jsonb
+  END
+WHERE site_key = 'alpenglow'
+  AND (
+    coalesce(title, '') ~* '15\+[[:space:]]*years of mountain driving|premier ski towns|premier wine region|premier venues including'
+    OR coalesce(content, '') ~* '15\+[[:space:]]*years of mountain driving|premier ski towns|premier wine region|premier venues including'
+    OR coalesce(meta_title, '') ~* '15\+[[:space:]]*years of mountain driving|premier ski towns|premier wine region|premier venues including'
+    OR coalesce(meta_description, '') ~* '15\+[[:space:]]*years of mountain driving|premier ski towns|premier wine region|premier venues including'
+    OR coalesce(faqs::text, '') ~* '15\+[[:space:]]*years of mountain driving|premier ski towns|premier wine region|premier venues including'
+  );
+
+UPDATE site_settings
+SET
+  tagline = public.aal_round14_fix_text(tagline),
+  about_content = CASE
+    WHEN about_content IS NULL THEN about_content
+    ELSE public.aal_round14_fix_text(about_content::text)::jsonb
+  END
+WHERE site_key = 'alpenglow'
+  AND (
+    coalesce(tagline, '') ~* '15\+[[:space:]]*years of mountain driving|premier wine region|premier ski towns|premier venues including'
+    OR coalesce(about_content::text, '') ~* '15\+[[:space:]]*years of mountain driving|premier wine region|premier ski towns|premier venues including'
+  );
+
+UPDATE faqs
+SET
+  question = public.aal_round14_fix_text(question),
+  answer = public.aal_round14_fix_text(answer)
+WHERE site_key = 'alpenglow'
+  AND (
+    coalesce(question, '') ~* '15\+[[:space:]]*years of mountain driving|premier wine region|premier ski towns|premier venues including'
+    OR coalesce(answer, '') ~* '15\+[[:space:]]*years of mountain driving|premier wine region|premier ski towns|premier venues including'
+  );
+
+UPDATE service_areas
+SET
+  description = public.aal_round14_fix_text(description),
+  long_description = public.aal_round14_fix_text(long_description)
+WHERE site_key = 'alpenglow'
+  AND (
+    coalesce(description, '') ~* '15\+[[:space:]]*years of mountain driving|premier wine region|premier ski towns|premier venues including'
+    OR coalesce(long_description, '') ~* '15\+[[:space:]]*years of mountain driving|premier wine region|premier ski towns|premier venues including'
+  );
+
+UPDATE value_propositions
+SET
+  title = public.aal_round14_fix_text(title),
+  description = public.aal_round14_fix_text(description)
+WHERE site_key = 'alpenglow'
+  AND (
+    coalesce(title, '') ~* '15\+[[:space:]]*years of mountain driving|premier wine region|premier ski towns|premier venues including'
+    OR coalesce(description, '') ~* '15\+[[:space:]]*years of mountain driving|premier wine region|premier ski towns|premier venues including'
+  );
+
+UPDATE services
+SET
+  name = public.aal_round14_fix_text(name),
+  description = public.aal_round14_fix_text(description)
+WHERE coalesce(name, '') ~* '15\+[[:space:]]*years of mountain driving|premier wine region|premier ski towns|premier venues including'
+   OR coalesce(description, '') ~* '15\+[[:space:]]*years of mountain driving|premier wine region|premier ski towns|premier venues including';
+
+UPDATE fleet_vehicles
+SET
+  name = public.aal_round14_fix_text(name),
+  description = public.aal_round14_fix_text(description)
+WHERE coalesce(name, '') ~* '15\+[[:space:]]*years of mountain driving|premier wine region|premier ski towns|premier venues including'
+   OR coalesce(description, '') ~* '15\+[[:space:]]*years of mountain driving|premier wine region|premier ski towns|premier venues including';
 
 DROP FUNCTION public.aal_round14_fix_text(text);

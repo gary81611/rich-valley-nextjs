@@ -73,7 +73,7 @@ Sitemap: https://www.richvalleyadventures.com/sitemap.xml
 - Phone: +1 970-456-3666
 - Founded: 2012
 - Fleet (per site): Chevrolet Suburban SUVs (7 passengers each), Ford Transit Van (13 passengers); Starlink, ski racks, and roof cargo space
-- Drivers: 8 full-time local drivers with 15+ years of mountain driving experience. Child car seats and boosters are free. No shared rides are offered. Pets welcome, with a cleaning fee.
+- Drivers: 8 full-time local drivers who have been driving these mountain roads since 2012. Child car seats and boosters are free. No shared rides are offered. Pets welcome, with a cleaning fee.
 - Private FBO airport service: Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison
 - One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.
 - ASE airport SUV rates on the pricing page include $210. Centennial Airport (KAPA), Telluride, and Crested Butte are $1,475 on that page.

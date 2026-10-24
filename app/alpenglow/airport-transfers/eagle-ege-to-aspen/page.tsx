@@ -36,7 +36,7 @@ export default function EagleAirportTransferPage() {
           heading: 'What a booked Eagle ride includes',
           paragraphs: [
             'Request a quote for the Eagle one-way rate. A Ford Transit passenger van is available for larger groups. Holiday pricing may change seasonally.',
-            'Child car seats and boosters are free. Pets are welcome, with a cleaning fee. Vehicles have Starlink, ski racks, and roof cargo space. Drivers are 8 full-time locals with 15+ years of mountain driving.',
+            'Child car seats and boosters are free. Pets are welcome, with a cleaning fee. Vehicles have Starlink, ski racks, and roof cargo space. Drivers are 8 full-time locals who have been driving these mountain roads since 2012.',
           ],
         },
         {

@@ -15,9 +15,9 @@ export default function VehicleCard({ vehicle, tone = 'light', ctaHref = '/reser
       ? 'bg-alp-navy rounded-2xl border border-white/10 p-8 flex flex-col h-full'
       : 'bg-white rounded-2xl border border-alp-pearl-dark shadow-sm p-8 flex flex-col h-full'}>
       {/* [PENDING FROM KIT: photo of the actual {vehicle.name}. Do not use escalade.png or sprinter.png.] */}
-      <h3 className={`font-playfair text-2xl font-bold mb-2 ${dark ? 'text-white' : 'text-alp-navy'}`}>
+      <h2 className={`font-playfair text-2xl font-bold mb-2 ${dark ? 'text-white' : 'text-alp-navy'}`}>
         {vehicle.name}
-      </h3>
+      </h2>
       <p className={`text-sm font-semibold mb-6 ${dark ? 'text-alp-gold' : 'text-alp-gold-700'}`}>
         {vehicle.capacityLabel}
       </p>

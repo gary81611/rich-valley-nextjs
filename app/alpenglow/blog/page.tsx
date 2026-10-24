@@ -75,7 +75,7 @@ export default async function AlpenglowBlogPage() {
       </div>
 
       {/* Posts grid */}
-      <main className="max-w-5xl mx-auto px-6 py-16" data-blog-visibility="published-at">
+      <section className="max-w-5xl mx-auto px-6 py-16" data-blog-visibility="published-at">
         {posts.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-slate-400 text-lg">No posts published yet. Check back soon!</p>
@@ -131,7 +131,7 @@ export default async function AlpenglowBlogPage() {
             })}
           </div>
         )}
-      </main>
+      </section>
 
       {/* CTA */}
       <div className="bg-alp-navy-deep py-16 px-6">

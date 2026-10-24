@@ -134,6 +134,12 @@ export function correctAalPublicText(text: string): string {
   t = t.replace(/After 14 years of shuttling/g, 'Since 2012, driving')
   t = t.replace(/\b14\+\s+years\b/gi, 'since 2012')
   t = t.replace(/\bover 14 years\b/gi, 'since 2012')
+  t = t.replace(/have 15\+\s+years of mountain driving experience/gi, 'have been driving these mountain roads since 2012')
+  t = t.replace(/with 15\+\s+years of mountain driving experience/gi, 'who have been driving these mountain roads since 2012')
+  t = t.replace(/with 15\+\s+years of mountain driving/gi, 'who have been driving these mountain roads since 2012')
+  t = t.replace(/Colorado['’]s Premier Ski Towns/gi, "Colorado's Ski Towns")
+  t = t.replace(/Colorado['’]s Premier Wine Region/gi, 'a Colorado wine region')
+  t = t.replace(/extensive experience with premier venues including/gi, 'extensive experience with venues including')
   t = t.replace(/Aspen's most trusted luxury car service/gi, 'a private car service built on local drivers and on-time pickups')
   t = t.replace(/Aspen’s most trusted luxury car service/gi, 'a private car service built on local drivers and on-time pickups')
   // Eagle $120 and $720 are both unpublished until Kit confirms one rate. Rifle $720 stays.

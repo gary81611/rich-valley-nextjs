@@ -77,6 +77,17 @@
   line-height: 1.15 !important;
 }
 
+/* Fixed 72px bar at every width. scroll-padding cannot uncover content at y=0. */
+html:has(.aal-root) {
+  scroll-padding-top: 72px;
+}
+
+/* Body-copy links need a non-color cue. Pill buttons and gold fills stay plain. */
+.aal-root p a:not([class*="rounded-full"]):not([class*="bg-alp-gold"]) {
+  text-decoration-line: underline;
+  text-underline-offset: 2px;
+}
+
 @media (min-width: 768px) {
   .aal-hero-photo h1,
   .aal-hero-compact h1 {
