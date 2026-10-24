@@ -78,7 +78,7 @@ export default async function ServicesPage() {
       <section className="py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12">
-            <p className="font-cormorant text-rva-copper text-lg tracking-widest uppercase mb-2">
+            <p className="font-cormorant text-rva-copper-700 text-lg tracking-widest uppercase mb-2">
               Rich Valley Adventures
             </p>
             <h2 className="font-playfair text-3xl md:text-4xl text-rva-forest font-bold mb-4">
@@ -115,7 +115,7 @@ export default async function ServicesPage() {
       <section className="py-16 sm:py-24 bg-rva-cream-dark">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12">
-            <p className="font-cormorant text-rva-copper text-lg tracking-widest uppercase mb-2">
+            <p className="font-cormorant text-rva-copper-800 text-lg tracking-widest uppercase mb-2">
               Aspen Alpenglow Limousine
             </p>
             <h2 className="font-playfair text-3xl md:text-4xl text-rva-forest font-bold mb-4">
@@ -143,7 +143,7 @@ export default async function ServicesPage() {
                   <ul className="space-y-1">
                     {service.features.slice(0, 2).map((feature: string) => (
                       <li key={feature} className="flex items-center gap-2 text-xs text-gray-500">
-                        <svg className="w-3 h-3 text-rva-copper flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-3 h-3 text-rva-copper-700 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
                         {feature}

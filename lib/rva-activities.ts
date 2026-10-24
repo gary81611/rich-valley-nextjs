@@ -12,7 +12,17 @@ export const RVA_ACTIVITIES: { label: string; href: string }[] = [
   { label: 'Winter Adventures', href: '/winter' },
 ]
 
+/** Browser path, or the middleware rewrite path `/rva/...` on client pages. */
+export function rvaPublicPath(pathname: string): string {
+  let path = (pathname || '/').split('?')[0] || '/'
+  if (path.length > 1 && path.endsWith('/')) path = path.slice(0, -1)
+  if (path === '/rva') return '/'
+  if (path.startsWith('/rva/')) path = path.slice(4) || '/'
+  return path || '/'
+}
+
 export function rvaNavIsCurrent(pathname: string, href: string): boolean {
-  if (href === '/') return pathname === '/'
-  return pathname === href || pathname.startsWith(`${href}/`)
+  const path = rvaPublicPath(pathname)
+  if (href === '/') return path === '/'
+  return path === href || path.startsWith(`${href}/`)
 }

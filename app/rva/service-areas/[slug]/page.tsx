@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { serviceAreaMatchesPathSlug } from '@/lib/alpenglow-service-areas'
 import LocationDetailView from '@/components/rva/LocationDetailView'
+import RvaButton from '@/components/rva/Button'
 
 export const dynamic = 'force-dynamic'
 
@@ -114,7 +115,7 @@ export default async function RvaServiceAreaDetailPage({ params }: { params: Pro
               <ul className="space-y-2 text-rva-forest/80">
                 {keyDestinations.map((d: string) => (
                   <li key={d} className="flex gap-2">
-                    <span className="text-rva-copper">•</span>
+                    <span className="text-rva-copper-700">•</span>
                     {d}
                   </li>
                 ))}
@@ -123,18 +124,8 @@ export default async function RvaServiceAreaDetailPage({ params }: { params: Pro
           )}
 
           <div className="mt-10 flex flex-wrap gap-4">
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center bg-rva-copper-700 hover:bg-rva-copper-800 text-white font-semibold px-6 py-3 rounded-full transition-colors"
-            >
-              Check availability
-            </Link>
-            <Link
-              href="/locations"
-              className="inline-flex items-center justify-center border border-rva-forest text-rva-forest font-semibold px-6 py-3 rounded-full hover:bg-rva-cream-dark/50 transition-colors"
-            >
-              Location guides
-            </Link>
+            <RvaButton href="/contact">Check availability</RvaButton>
+            <RvaButton href="/locations" variant="secondary">Location guides</RvaButton>
           </div>
         </div>
       </div>

@@ -28,7 +28,7 @@ const rvaPages: PageSeed[] = [
           content: `The Roaring Fork River flows 70 miles from its headwaters near Independence Pass through Aspen, Basalt, and Carbondale before joining the Colorado River at Glenwood Springs. The stretch through and below Aspen is designated Gold Medal water by Colorado Parks & Wildlife — a designation reserved for waters that consistently produce large wild trout in exceptional numbers.\n\nBrown trout averaging 14–18 inches are common, with fish over 20 inches taken regularly by our guides. Hatches of PMDs, caddis, green drakes, and Trico spinners make dry fly fishing thrilling from June through September. In the spring and fall, streamers and nymphs produce aggressive strikes from the river\'s biggest fish.`,
         },
         {
-          title: 'The Frying Pan River — Colorado\'s Premier Tailwater Fishery',
+          title: 'The Frying Pan River — Tailwater below Ruedi Reservoir',
           content: `Just 15 miles from Basalt, the Frying Pan River below Ruedi Reservoir is widely considered one of the top tailwater fisheries in North America. The cold, nutrient-rich water released from the dam creates an almost year-round midge hatch and supports an extraordinary density of large wild trout — browns and rainbows averaging 16–22 inches.\n\nThe Frying Pan demands technical precision: long leaders, small flies, and delicate presentations. Our guides excel at teaching the nuances of tailwater nymphing and the art of fishing size-22 midge clusters to selective risers. This river rewards patience and skill — and the payoff is the fish of a lifetime.`,
         },
         {
@@ -123,7 +123,7 @@ const rvaPages: PageSeed[] = [
       intro: `Paddleboarding is a rental from $100, not a guided trip.\n\nStand up paddle boarding in the Roaring Fork Valley offers glassy water surrounded by high peaks, including Ruedi Reservoir above Basalt.`,
       h2_sections: [
         {
-          title: 'Ruedi Reservoir — Aspen\'s Premier SUP Destination',
+          title: 'Ruedi Reservoir',
           content: `Ruedi Reservoir sits at 7,700 feet elevation in the Frying Pan Valley, 15 miles east of Basalt. The 1,000-acre lake is fed by snowmelt from the surrounding White River National Forest and stays calm and glassy on most summer mornings — perfect conditions for paddle boarding.\n\nMorning paddles at Ruedi offer mirror reflections of the surrounding peaks and wildlife sightings that are rare anywhere else: osprey hunting the surface, great blue herons wading the shallows, deer drinking at the shoreline. On calm days, you can see 30 feet to the rocky bottom through the crystal-clear water.`,
         },
         {

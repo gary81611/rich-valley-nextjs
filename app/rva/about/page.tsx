@@ -94,7 +94,7 @@ export default async function AboutPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <p className="font-cormorant text-rva-copper text-lg tracking-widest uppercase mb-4">
+              <p className="font-cormorant text-rva-copper-700 text-lg tracking-widest uppercase mb-4">
                 The Beginning
               </p>
               <h2 className="font-playfair text-4xl md:text-5xl text-rva-forest font-bold mb-8 leading-tight">
@@ -114,11 +114,11 @@ export default async function AboutPage() {
                   </p>
                 </>
               )}
-              <p className="text-gray-600 text-base leading-relaxed border-l-4 border-rva-copper/30 pl-4">
+              <p className="text-gray-600 text-base leading-relaxed border-l-4 border-rva-copper-700/30 pl-4">
                 &ldquo;We don&apos;t just guide trips — we share our home with you. Every river bend,
                 every summit, every campfire story. That&apos;s what makes this different.&rdquo;
                 <br />
-                <span className="text-rva-copper font-medium mt-2 inline-block">— Kit, Founder</span>
+                <span className="text-rva-copper-700 font-medium mt-2 inline-block">— Kit, Founder</span>
               </p>
             </div>
             <div className="relative">
@@ -132,7 +132,7 @@ export default async function AboutPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-rva-forest-dark/40 via-transparent to-transparent" />
               </div>
-              <div className="absolute -top-6 -right-6 w-40 h-40 bg-rva-copper/10 rounded-full blur-3xl" />
+              <div className="absolute -top-6 -right-6 w-40 h-40 bg-rva-copper-700/10 rounded-full blur-3xl" />
               <div className="absolute -bottom-6 -left-6 w-48 h-48 bg-rva-sage/10 rounded-full blur-3xl" />
             </div>
           </div>
@@ -162,7 +162,7 @@ export default async function AboutPage() {
       <section className="py-24 bg-rva-cream">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-14">
-            <p className="font-cormorant text-rva-copper text-lg tracking-widest uppercase mb-4">Our Team</p>
+            <p className="font-cormorant text-rva-copper-700 text-lg tracking-widest uppercase mb-4">Our Team</p>
             <h2 className="font-playfair text-4xl md:text-5xl text-rva-forest font-bold mb-6 leading-tight">
               Meet Your Guides
             </h2>

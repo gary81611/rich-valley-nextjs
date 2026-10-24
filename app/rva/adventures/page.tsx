@@ -66,7 +66,7 @@ export default function AdventuresPage() {
       : adventures.filter((a) => a.season === activeSeason)
 
   return (
-    <div className="min-h-screen bg-rva-cream font-inter">
+    <div className="min-h-screen overflow-x-clip bg-rva-cream font-inter">
       {/* Breadcrumb */}
       <div className="bg-rva-forest-dark">
         <div className="max-w-7xl mx-auto px-6 py-4">
@@ -97,8 +97,8 @@ export default function AdventuresPage() {
         </div>
       </section>
 
-      <section className="py-6 bg-white border-b border-rva-cream-dark">
-        <div className="max-w-4xl mx-auto px-6 text-center text-sm text-rva-forest/85">
+      <section className="overflow-x-clip border-b border-rva-cream-dark bg-white py-6">
+        <div className="mx-auto max-w-4xl px-4 text-center text-sm text-rva-forest/85 sm:px-6">
           <span className="font-semibold text-rva-forest">Planning guides: </span>
           {RVA_GLOBAL_PILLAR_BLOG_LINKS.map((l, i) => (
             <span key={l.href}>
@@ -124,12 +124,12 @@ export default function AdventuresPage() {
       {/* Season Tabs */}
       <section className="py-8 bg-rva-cream border-b border-rva-cream-dark">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex justify-center gap-3">
+          <div className="flex max-w-full flex-wrap justify-center gap-2">
             {seasonTabs.map((tab) => (
               <button
                 key={tab.value}
                 onClick={() => setActiveSeason(tab.value)}
-                className={`min-h-11 px-6 rounded-full text-sm font-medium transition-colors ${
+                className={`min-h-11 whitespace-nowrap rounded-full px-4 text-sm font-medium transition-colors ${
                   activeSeason === tab.value
                     ? 'bg-rva-copper-700 text-white'
                     : 'bg-white text-rva-forest border border-rva-forest/15 hover:border-rva-copper-700'

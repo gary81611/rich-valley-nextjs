@@ -220,6 +220,11 @@ export default function ServicePageTemplate({
           <div className="max-w-3xl mx-auto space-y-12">
             {content.h2_sections.map((s, i) => (
               <div key={i}>
+                {s.image ? (
+                  <div className="relative mb-5 aspect-[4/3] overflow-hidden rounded-xl border border-rva-forest/15">
+                    <Image src={s.image} alt={s.imageAlt || s.title} fill className="object-cover" unoptimized sizes="(min-width: 768px) 720px, 100vw" />
+                  </div>
+                ) : null}
                 <h2 id={s.id} className={`font-playfair text-2xl md:text-3xl font-bold mb-4 ${rva ? 'text-rva-forest' : 'text-alp-navy'}`}>
                   {s.title}
                 </h2>

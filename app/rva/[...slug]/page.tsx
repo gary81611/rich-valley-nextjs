@@ -106,6 +106,10 @@ function applyRvaConfirmedFacts(page: CmsPage | null): CmsPage | null {
       .filter((section) => !isPaddleLessonHeading(section.title))
       .map((section) => ({
         ...section,
+        title: section.title
+          .replace(/\s*[—–-]\s*Aspen['’]s Premier SUP Destination/gi, '')
+          .replace(/Aspen['’]s Premier SUP Destination/gi, 'Ruedi Reservoir')
+          .trim(),
         content: stripPaddleLessonCopy(section.content)
           .replace(/Paddleboarding is a rental from \$100, not a guided trip\.?\s*/gi, '')
           .trim(),
@@ -118,6 +122,10 @@ function applyRvaConfirmedFacts(page: CmsPage | null): CmsPage | null {
           ? { title: 'Wind', description: 'Wind is the main variable for SUP.' }
           : {
               ...feature,
+              title: feature.title
+                .replace(/\s*[—–-]\s*Aspen['’]s Premier SUP Destination/gi, '')
+                .replace(/Aspen['’]s Premier SUP Destination/gi, 'Ruedi Reservoir')
+                .trim(),
               description: stripPaddleLessonCopy(feature.description)
                 .replace(/Paddleboarding is a rental from \$100, not a guided trip\.?\s*/gi, '')
                 .trim(),
