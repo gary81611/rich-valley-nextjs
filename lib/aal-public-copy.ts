@@ -120,7 +120,56 @@ const AAL_DENVER_PRICE_SENTENCE =
 /** Fleet names, passenger counts, the published Denver one-way rate, and the ski canonical path. */
 export function correctAalPublicText(text: string): string {
   if (!text) return text
-  let t = correctAalFleetText(text)
+  let t = text
+  t = t.replace(
+    /After 14 years of shuttling Aspen['’]s skiing visitors between slopes, restaurants, airports, and accommodations, Aspen Alpenglow Limousine can tell you with confidence: for most ski trips to the Roaring Fork Valley, private car service is a better experience than a rental car at a comparable total cost\./gi,
+    "Aspen Alpenglow Limousine has been driving Aspen's skiing visitors between slopes, restaurants, airports, and accommodations since 2012, and we can tell you with confidence: for most ski trips to the Roaring Fork Valley, private car service is a better experience than a rental car at a comparable total cost.",
+  )
+  t = t.replace(
+    /Nestled in the heart of the Elk Mountains, Aspen has transformed from a mining town into one of America['’]s premier culinary destinations\./gi,
+    'Nestled in the heart of the Elk Mountains, Aspen has transformed from a mining town into a food and wine destination.',
+  )
+  t = t.replace(
+    /Held each June, the Aspen Food & Wine Classic is one of the premier wine and food events in North America\./gi,
+    'Held each June, the Aspen Food & Wine Classic is a well-known annual food and wine festival.',
+  )
+  t = t.replace(
+    /Let us handle the mountain roads while you sit back, relax, and enjoy the incredible Colorado scenery on your way to one of the world['’]s premier mountain destinations\./gi,
+    'Let us handle the mountain roads while you sit back, relax, and enjoy the incredible Colorado scenery on your way to Aspen.',
+  )
+  t = t.replace(
+    /Our fleet includes a black Executive Cadillac Escalade \(up to 6 passengers\) and a black Luxury Mercedes Sprinter van \(up to 14 passengers\)\./gi,
+    'Our fleet includes a black Chevrolet Suburban (up to 7 passengers) and a black Ford Transit passenger van (up to 13 passengers).',
+  )
+  t = t.replace(
+    /Our Sprinter van fleet can be configured as rolling conference space [–—-] leather seating, climate control, quiet cabin for confidential conversations during transfer\./gi,
+    'Our Ford Transit passenger van can be configured as rolling conference space — leather seating, climate control, quiet cabin for confidential conversations during transfer.',
+  )
+  t = t.replace(
+    /Our luxury Escalade and Sprinter fleet accommodate full ski groups with all equipment [–—-] ski bags, snowboards, helmets, and boot bags [–—-] without the crowding and inconvenience of shared shuttles\./gi,
+    'Our Chevrolet Suburban and Ford Transit passenger van accommodate full ski groups with all equipment — ski bags, snowboards, helmets, and boot bags — without the crowding and inconvenience of shared shuttles.',
+  )
+  t = t.replace(
+    /Eagle County Regional Airport \(EGE\) in Glenwood Springs, 70 miles east of Aspen/g,
+    'Eagle County Regional Airport (EGE) in Gypsum, about 70 miles from Aspen',
+  )
+  t = t.replace(
+    /Eagle County Regional Airport \(EGE\) in Gypsum, 70 miles east of Aspen/g,
+    'Eagle County Regional Airport (EGE) in Gypsum, about 70 miles from Aspen',
+  )
+  t = t.replace(
+    /Eagle County Regional Airport \(EGE\) near Vail is about 70 miles east of Aspen/g,
+    'Eagle County Regional Airport (EGE) near Vail is about 70 miles from Aspen',
+  )
+  t = t.replace(
+    /EGE is located in Glenwood Springs, midway between Aspen and Vail/g,
+    'EGE is located in Gypsum, between Aspen and Vail',
+  )
+  t = t.replace(
+    /EGE is located in Gypsum, midway between Aspen and Vail/g,
+    'EGE is located in Gypsum, between Aspen and Vail',
+  )
+  t = correctAalFleetText(t)
   t = t.replace(/14\+\s+Years of Excellence/gi, 'Serving Aspen Since 2012')
   t = t.replace(
     /Over 14 years of operation, we've become the trusted transportation partner for Aspen's most discerning travelers — Fortune 500 executives, international celebrities, Aspen Institute fellows, and families returning year after year because they know their transportation needs are handled with absolute reliability and discretion\./g,
@@ -129,7 +178,7 @@ export function correctAalPublicText(text: string): string {
   t = t.replace(/4\.9-Star Rated/gi, '5.0 on Google')
   t = t.replace(
     /Over 150 five-star reviews from guests who trust us with their most important transportation needs\./gi,
-    '5.0 on Google (5 reviews).',
+    'Rated 5.0 by guests on Google (5 reviews).',
   )
   t = t.replace(
     /Eagle County Regional Airport \(EGE\) in Glenwood Springs/g,
@@ -154,6 +203,9 @@ export function correctAalPublicText(text: string): string {
   t = t.replace(/\bMercedes-Benz\s+(?=Ford Transit)/gi, '')
   t = t.replace(/\bMercedes\s+(?=Ford Transit)/gi, '')
   t = t.replace(/\bCadillac\s+(?=SUVs?\b)/gi, '')
+  t = t.replace(/\bExecutive Chevrolet Suburban\b/gi, 'Chevrolet Suburban')
+  t = t.replace(/\bLuxury Ford Transit\b/gi, 'Ford Transit')
+  t = t.replace(/\bFord Transit passenger van fleet\b/gi, 'Ford Transit passenger van')
   t = t.replace(/\bluxury sedans\b/gi, 'private SUVs')
   t = t.replace(
     /Cloud Nine Alpine Bistro at the top of Aspen Mountain/gi,
@@ -161,21 +213,20 @@ export function correctAalPublicText(text: string): string {
   )
   t = t.replace(/Aspen Highland's/g, 'Aspen Highlands')
   t = t.replaceAll('/services/ski-resort-transfers', '/ski-resort-transfers')
-  t = t.replace(/After 14 years of shuttling/g, 'Since 2012, driving')
   t = t.replace(/have 15\+\s+years of mountain driving experience/gi, 'have been driving these mountain roads since 2012')
   t = t.replace(/with 15\+\s+years of mountain driving experience/gi, 'who have been driving these mountain roads since 2012')
   t = t.replace(/with 15\+\s+years of mountain driving/gi, 'who have been driving these mountain roads since 2012')
   t = t.replace(/Colorado['’]s Premier Ski Towns/gi, "Colorado's Ski Towns")
-  t = t.replace(/Colorado['’]s Premier Wine Region/gi, 'a Colorado wine region')
+  t = t.replace(/Colorado['’]s Premier Wine Region/gi, "Colorado's Grand Valley")
   t = t.replace(/extensive experience with premier venues including/gi, 'extensive experience with venues including')
   t = t.replace(/Aspen['’]s Premier Private Car & Limousine Service/gi, "Aspen's Private Car and Limousine Service")
   t = t.replace(/Aspen['’]s Premier Private Car/gi, "Aspen's Private Car Service")
   t = t.replace(/the Roaring Fork Valley['’]s premier limo service/gi, 'a Roaring Fork Valley limo service')
-  t = t.replace(/one of the world['’]s premier mountain destinations/gi, 'a mountain destination')
-  t = t.replace(/one of America['’]s premier culinary destinations/gi, 'a culinary destination in America')
+  t = t.replace(/one of the world['’]s premier mountain destinations/gi, 'Aspen')
+  t = t.replace(/one of America['’]s premier culinary destinations/gi, 'a food and wine destination')
   t = t.replace(/virtually every premier venue/gi, 'venues')
   t = t.replace(/\ba premier ski destination\b/gi, 'a ski destination')
-  t = t.replace(/one of the premier wine and food events/gi, 'a wine and food event')
+  t = t.replace(/one of the premier wine and food events in North America/gi, 'a well-known annual food and wine festival')
   t = t.replace(/\ba premier destination for corporate retreats\b/gi, 'a destination for corporate retreats')
   t = t.replace(/\ba premier wedding destination\b/gi, 'a wedding destination')
   t = t.replace(/3\.5\s*[–—-]\s*4\.5\s*hours/gi, '3.5–4 hours')
@@ -250,7 +301,7 @@ export function applyAalBlogPost<T extends AalBlogCopy>(post: T): T {
     content = content
       .replace(/Colorado Springs Airport \(KRIL\)/gi, 'Rifle Garfield County Airport (KRIL)')
       .replace(/for over 12 years/gi, 'since 2012')
-      .replace(/the difference that 12 years of local expertise makes/gi, 'the difference that local expertise since 2012 makes')
+      .replace(/the difference that 12 years of local expertise makes/gi, 'the difference local expertise makes')
   }
   if (nye && content && !content.includes("New Year's Eve 2026")) {
     content = `${AAL_NYE_2026_LEAD}\n\n${content}`

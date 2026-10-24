@@ -424,7 +424,7 @@ const aalPages: PageSeed[] = [
     content: {
       hero_title: 'Luxury Airport Transfers to & from Aspen',
       hero_subtitle: 'Professional Private Car Service from ASE, EGE & DEN Airports',
-      intro: `Aspen Alpenglow Limousine provides the Roaring Fork Valley\'s most reliable private airport transfer service. We meet every client at the gate, monitor flights in real time, and deliver you to your destination — hotel, private residence, or ski chalet — with seamless, white-glove precision.\n\nWe serve three gateway airports: Aspen/Pitkin County Airport (ASE) — just 3 miles from downtown Aspen; Eagle County Regional Airport (EGE) in Gypsum, 70 miles east of Aspen; and Denver International Airport (DEN), the primary hub for all major carriers serving the Rocky Mountain region.\n\nOur luxury fleet includes the Chevrolet Suburban SUVs (up to 7 passengers) and a Ford Transit passenger van (up to 13) — both equipped with leather seating, climate control, complimentary bottled water, and generous cargo capacity for ski bags, golf clubs, and luggage.`,
+      intro: `Aspen Alpenglow Limousine provides the Roaring Fork Valley\'s most reliable private airport transfer service. We meet every client at the gate, monitor flights in real time, and deliver you to your destination — hotel, private residence, or ski chalet — with seamless, white-glove precision.\n\nWe serve three gateway airports: Aspen/Pitkin County Airport (ASE) — just 3 miles from downtown Aspen; Eagle County Regional Airport (EGE) in Gypsum, about 70 miles from Aspen; and Denver International Airport (DEN), the primary hub for all major carriers serving the Rocky Mountain region.\n\nOur luxury fleet includes the Chevrolet Suburban SUVs (up to 7 passengers) and a Ford Transit passenger van (up to 13) — both equipped with leather seating, climate control, complimentary bottled water, and generous cargo capacity for ski bags, golf clubs, and luggage.`,
       h2_sections: [
         {
           title: 'Aspen Airport (ASE) — Private Arrival & Departure Service',
@@ -649,7 +649,7 @@ const aalPages: PageSeed[] = [
           content: `Marble Distilling Co. in Marble, Colorado sits 30 miles south of Aspen at the foot of the Elk Mountains, drawing its water from the same pristine source that made Marble\'s famous quarried stone. The distillery produces award-winning bourbon, gin, vodka, and the iconic Marble Colorado Whiskey — all crafted with the same precision and passion that defines this mountain community.\n\nOur Marble Distilling tour includes a private vehicle transfer from Aspen, a guided distillery tour with tasting, and a scenic return through the Crystal River Valley. This is one of the most beautiful drives in Colorado — and one of the best craft spirits experiences in the Mountain West.`,
         },
         {
-          title: 'Palisade Wine Country — a Colorado wine region',
+          title: 'Palisade Wine Country — Colorado\'s Grand Valley',
           content: `Palisade, Colorado is the heart of Colorado wine country — 50+ wineries and vineyards clustered in the Grand Valley east of Grand Junction, producing acclaimed Bordeaux varietals, Rhône blends, and sparkling wines that have won national recognition.\n\nOur full-day Palisade wine tour departs Aspen in the morning for the 2-hour drive over the Rockies into the Grand Valley. We customize your itinerary around your wine preferences — selecting from Palisade\'s best estates for private tastings. The return trip over the mountains at sunset is a spectacular conclusion to a world-class day.`,
         },
       ],
@@ -700,7 +700,7 @@ const aalPages: PageSeed[] = [
             { title: 'Luxury Fleet', description: 'Chevrolet Suburban SUVs (up to 7 passengers) and a Ford Transit passenger van (up to 13), equipped for every season.' },
             { title: '24/7 Operations', description: 'Early morning airport runs, late-night event returns, and everything in between — we operate when you need us.' },
             { title: 'Confidentiality', description: 'We treat every client with the discretion their privacy deserves. NDAs available for high-profile clients.' },
-            { title: '5.0 on Google (5 reviews)', description: 'The Google rating observed for Aspen Alpenglow Limousine. It changes as new reviews are posted.' },
+            { title: '5.0 on Google', description: 'Rated 5.0 by guests on Google (5 reviews).' },
           ],
         },
       ],
@@ -829,7 +829,7 @@ const aalPages: PageSeed[] = [
       ],
       local_tips: [
         { title: 'I-70 Mountain Conditions', description: 'The Aspen-Vail route uses Glenwood Canyon and I-70, which can close during severe winter storms. We monitor road conditions and communicate proactively for all scheduled transfers.' },
-        { title: 'Eagle County Airport', description: 'EGE is located in Gypsum, midway between Aspen and Vail — convenient for guests flying into the valley who want to split a ski trip between both resorts.' },
+        { title: 'Eagle County Airport', description: 'EGE is located in Gypsum, between Aspen and Vail — convenient for guests flying into the valley who want to split a ski trip between both resorts.' },
         { title: 'Beaver Creek Access', description: 'Beaver Creek resort is 10 miles east of Vail — we provide direct Aspen-to-Beaver-Creek transfers as part of our Vail corridor service.' },
         { title: 'Best Time for the Drive', description: 'Glenwood Canyon closes periodically in winter for rockfall and avalanche control. We recommend scheduling afternoon transfers to avoid morning closures and rush hour congestion on I-70.' },
       ],

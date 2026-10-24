@@ -24,6 +24,55 @@ BEGIN
     RETURN s;
   END IF;
 
+  -- Whole sentences from the prod simulation. These run before any shorter replace.
+  s := regexp_replace(
+    s,
+    'After 14 years of shuttling Aspen[''’]s skiing visitors between slopes, restaurants, airports, and accommodations, Aspen Alpenglow Limousine can tell you with confidence: for most ski trips to the Roaring Fork Valley, private car service is a better experience than a rental car at a comparable total cost\.',
+    'Aspen Alpenglow Limousine has been driving Aspen''s skiing visitors between slopes, restaurants, airports, and accommodations since 2012, and we can tell you with confidence: for most ski trips to the Roaring Fork Valley, private car service is a better experience than a rental car at a comparable total cost.',
+    'gi'
+  );
+  s := regexp_replace(
+    s,
+    'Nestled in the heart of the Elk Mountains, Aspen has transformed from a mining town into one of America[''’]s premier culinary destinations\.',
+    'Nestled in the heart of the Elk Mountains, Aspen has transformed from a mining town into a food and wine destination.',
+    'gi'
+  );
+  s := regexp_replace(
+    s,
+    'Held each June, the Aspen Food & Wine Classic is one of the premier wine and food events in North America\.',
+    'Held each June, the Aspen Food & Wine Classic is a well-known annual food and wine festival.',
+    'gi'
+  );
+  s := regexp_replace(
+    s,
+    'Let us handle the mountain roads while you sit back, relax, and enjoy the incredible Colorado scenery on your way to one of the world[''’]s premier mountain destinations\.',
+    'Let us handle the mountain roads while you sit back, relax, and enjoy the incredible Colorado scenery on your way to Aspen.',
+    'gi'
+  );
+  s := regexp_replace(
+    s,
+    'Our fleet includes a black Executive Cadillac Escalade \(up to 6 passengers\) and a black Luxury Mercedes Sprinter van \(up to 14 passengers\)\.',
+    'Our fleet includes a black Chevrolet Suburban (up to 7 passengers) and a black Ford Transit passenger van (up to 13 passengers).',
+    'gi'
+  );
+  s := regexp_replace(
+    s,
+    'Our Sprinter van fleet can be configured as rolling conference space (–|—|-) leather seating, climate control, quiet cabin for confidential conversations during transfer\.',
+    'Our Ford Transit passenger van can be configured as rolling conference space — leather seating, climate control, quiet cabin for confidential conversations during transfer.',
+    'gi'
+  );
+  s := regexp_replace(
+    s,
+    'Our luxury Escalade and Sprinter fleet accommodate full ski groups with all equipment (–|—|-) ski bags, snowboards, helmets, and boot bags (–|—|-) without the crowding and inconvenience of shared shuttles\.',
+    'Our Chevrolet Suburban and Ford Transit passenger van accommodate full ski groups with all equipment — ski bags, snowboards, helmets, and boot bags — without the crowding and inconvenience of shared shuttles.',
+    'gi'
+  );
+  s := replace(s, 'Eagle County Regional Airport (EGE) in Glenwood Springs, 70 miles east of Aspen', 'Eagle County Regional Airport (EGE) in Gypsum, about 70 miles from Aspen');
+  s := replace(s, 'Eagle County Regional Airport (EGE) in Gypsum, 70 miles east of Aspen', 'Eagle County Regional Airport (EGE) in Gypsum, about 70 miles from Aspen');
+  s := replace(s, 'Eagle County Regional Airport (EGE) near Vail is about 70 miles east of Aspen', 'Eagle County Regional Airport (EGE) near Vail is about 70 miles from Aspen');
+  s := replace(s, 'EGE is located in Glenwood Springs, midway between Aspen and Vail', 'EGE is located in Gypsum, between Aspen and Vail');
+  s := replace(s, 'EGE is located in Gypsum, midway between Aspen and Vail', 'EGE is located in Gypsum, between Aspen and Vail');
+
   -- Whole strings. These run before any shorter year or vehicle replace.
   s := regexp_replace(s, '14\+[[:space:]]+Years of Excellence', 'Serving Aspen Since 2012', 'gi');
   s := replace(
@@ -35,7 +84,7 @@ BEGIN
   s := replace(
     s,
     'Over 150 five-star reviews from guests who trust us with their most important transportation needs.',
-    '5.0 on Google (5 reviews).'
+    'Rated 5.0 by guests on Google (5 reviews).'
   );
 
   -- EGE is in Gypsum. Glenwood Springs as a city, Glenwood Canyon, and the hot springs stay.
@@ -44,14 +93,14 @@ BEGIN
   s := replace(s, 'Eagle County Airport (EGE) near Glenwood Springs', 'Eagle County Airport (EGE) near Gypsum');
   s := replace(s, 'EGE is located in Glenwood Springs', 'EGE is located in Gypsum');
 
-  s := replace(s, 'After 14 years of shuttling', 'Since 2012, driving');
+  -- The ski-season sentence is replaced in full above. Do not leave a "Since 2012, driving" opener.
   s := regexp_replace(s, 'have 15\+[[:space:]]*years of mountain driving experience', 'have been driving these mountain roads since 2012', 'gi');
   s := regexp_replace(s, 'with 15\+[[:space:]]*years of mountain driving experience', 'who have been driving these mountain roads since 2012', 'gi');
   s := regexp_replace(s, 'with 15\+[[:space:]]*years of mountain driving', 'who have been driving these mountain roads since 2012', 'gi');
   s := regexp_replace(s, 'Colorado''s Premier Ski Towns', 'Colorado''s Ski Towns', 'gi');
   s := regexp_replace(s, 'Colorado’s Premier Ski Towns', 'Colorado''s Ski Towns', 'gi');
-  s := regexp_replace(s, 'Colorado''s Premier Wine Region', 'a Colorado wine region', 'gi');
-  s := regexp_replace(s, 'Colorado’s Premier Wine Region', 'a Colorado wine region', 'gi');
+  s := regexp_replace(s, 'Colorado''s Premier Wine Region', 'Colorado''s Grand Valley', 'gi');
+  s := regexp_replace(s, 'Colorado’s Premier Wine Region', 'Colorado''s Grand Valley', 'gi');
   s := regexp_replace(s, 'extensive experience with premier venues including', 'extensive experience with venues including', 'gi');
   s := regexp_replace(s, 'Aspen''s Premier Private Car & Limousine Service', 'Aspen''s Private Car and Limousine Service', 'gi');
   s := regexp_replace(s, 'Aspen’s Premier Private Car & Limousine Service', 'Aspen''s Private Car and Limousine Service', 'gi');
@@ -59,13 +108,13 @@ BEGIN
   s := regexp_replace(s, 'Aspen’s Premier Private Car', 'Aspen''s Private Car Service', 'gi');
   s := regexp_replace(s, 'the Roaring Fork Valley''s premier limo service', 'a Roaring Fork Valley limo service', 'gi');
   s := regexp_replace(s, 'the Roaring Fork Valley’s premier limo service', 'a Roaring Fork Valley limo service', 'gi');
-  s := regexp_replace(s, 'one of the world''s premier mountain destinations', 'a mountain destination', 'gi');
-  s := regexp_replace(s, 'one of the world’s premier mountain destinations', 'a mountain destination', 'gi');
-  s := regexp_replace(s, 'one of America''s premier culinary destinations', 'a culinary destination in America', 'gi');
-  s := regexp_replace(s, 'one of America’s premier culinary destinations', 'a culinary destination in America', 'gi');
+  s := regexp_replace(s, 'one of the world''s premier mountain destinations', 'Aspen', 'gi');
+  s := regexp_replace(s, 'one of the world’s premier mountain destinations', 'Aspen', 'gi');
+  s := regexp_replace(s, 'one of America''s premier culinary destinations', 'a food and wine destination', 'gi');
+  s := regexp_replace(s, 'one of America’s premier culinary destinations', 'a food and wine destination', 'gi');
   s := regexp_replace(s, 'virtually every premier venue', 'venues', 'gi');
   s := regexp_replace(s, 'a premier ski destination', 'a ski destination', 'gi');
-  s := regexp_replace(s, 'one of the premier wine and food events', 'a wine and food event', 'gi');
+  s := regexp_replace(s, 'one of the premier wine and food events in North America', 'a well-known annual food and wine festival', 'gi');
   s := regexp_replace(s, 'a premier destination for corporate retreats', 'a destination for corporate retreats', 'gi');
   s := regexp_replace(s, 'a premier wedding destination', 'a wedding destination', 'gi');
   s := regexp_replace(s, '3\.5[[:space:]]*(–|—|-)[[:space:]]*4\.5[[:space:]]*hours', '3.5–4 hours', 'gi');
@@ -120,6 +169,9 @@ BEGIN
   s := regexp_replace(s, 'Cadillac Chevrolet Suburban', 'Chevrolet Suburban', 'gi');
   s := regexp_replace(s, 'Ford Transit passenger van Executive Van', 'Ford Transit passenger van', 'gi');
   s := regexp_replace(s, 'Ford Transit passenger van van', 'Ford Transit passenger van', 'gi');
+  s := regexp_replace(s, 'Executive Chevrolet Suburban', 'Chevrolet Suburban', 'gi');
+  s := regexp_replace(s, 'Luxury Ford Transit', 'Ford Transit', 'gi');
+  s := regexp_replace(s, 'Ford Transit passenger van fleet', 'Ford Transit passenger van', 'gi');
 
   RETURN s;
 END;
@@ -190,7 +242,7 @@ SET
       'gi'
     ),
     'the difference that 12 years of local expertise makes',
-    'the difference that local expertise since 2012 makes',
+    'the difference local expertise makes',
     'gi'
   )
 WHERE site_key = 'alpenglow'
