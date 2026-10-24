@@ -90,7 +90,7 @@ export default function AdventuresPage() {
             Our Adventures
           </h1>
           <p className="text-white/75 text-xl max-w-2xl mx-auto">
-            Guided days on the water and in the mountains. Paddleboarding is a rental from $100, not a guided trip.
+            Guided days on the water and in the mountains.
             Corporate packages are for groups of 50 or more: a custom mix of fishing and hiking.
             Book at least 2 days in advance. A 50% deposit is due at booking. Cancellations within 72 hours are billed in full.
           </p>
