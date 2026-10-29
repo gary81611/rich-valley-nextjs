@@ -32,32 +32,22 @@ const fleetJsonLd = {
       '@type': 'ListItem',
       position: 1,
       item: {
-        '@type': 'Vehicle',
+        '@type': 'Service',
         name: 'Chevrolet Suburban',
-        seatingCapacity: 7,
+        serviceType: 'Private SUV transportation',
         description:
           'Full-size luxury SUV seating up to 7 passengers. Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee.',
-        offers: {
-          '@type': 'Offer',
-          priceCurrency: 'USD',
-          availability: 'https://schema.org/InStock',
-        },
       },
     },
     {
       '@type': 'ListItem',
       position: 2,
       item: {
-        '@type': 'Vehicle',
+        '@type': 'Service',
         name: 'Ford Transit Passenger Van',
-        seatingCapacity: 13,
+        serviceType: 'Private group transportation',
         description:
           '13-passenger Ford Transit Passenger Van for larger groups, corporate retreats, wedding parties, and ski group transfers. Spacious interior, WiFi, ski racks. Child car seats and boosters are free. No shared rides are offered.',
-        offers: {
-          '@type': 'Offer',
-          priceCurrency: 'USD',
-          availability: 'https://schema.org/InStock',
-        },
       },
     },
   ],

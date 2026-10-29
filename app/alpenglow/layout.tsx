@@ -12,6 +12,7 @@ const ALP_LOGO_HEIGHT = 650
 
 export const metadata: Metadata = {
   metadataBase: new URL(ALP_URL),
+  icons: { icon: '/images/logos/alpenglow-logo.png' },
   title: 'Aspen Alpenglow Limousine | Luxury Transportation in Aspen, CO',
   description: 'Premium private car and limousine service in Aspen, Snowmass, and the Roaring Fork Valley. Airport transfers, hourly charter, corporate travel, wedding transportation. Available 24/7 since 2012.',
   keywords: 'Aspen limo service, Aspen airport transfer, luxury car service Aspen Colorado, private chauffeur Aspen, wedding limo Aspen, Eagle airport to Aspen transportation, Aspen Pitkin County Airport car service, Aspen Snowmass limousine',

@@ -37,10 +37,10 @@ const FEATURED_TRIPS = [
     detail: FLY_FISHING_PUBLIC_DESCRIPTION,
   },
   {
-    title: 'Private ranch family fishing and picnic lunch',
+    title: 'Private Ranch Fishing & Picnic',
     href: '/private-ranch-fishing',
-    image: '/images/rva/kit/drift-boat-launch.webp',
-    alt: 'A drift boat being launched from a trailer into a Colorado river',
+    image: '/images/adventures/fishing-catch-1440.webp',
+    alt: 'A family fly fishing from a dock and canoe on a ranch pond',
     detail:
       'Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+).',
   },
@@ -94,16 +94,21 @@ export default function RVAHomeClient({
   useEffect(() => {
     async function fetchSupabaseData() {
       const supabase = createClient()
-      const [advRes, testRes, galRes, settingsRes] = await Promise.all([
+      const [advRes, galRes, settingsRes] = await Promise.all([
         supabase.from('adventures').select('*').eq('is_active', true).order('display_order'),
-        supabase.from('testimonials').select('*').eq('is_active', true).eq('site_key', 'rva'),
         supabase.from('gallery_images').select('*').eq('is_active', true).eq('site_key', 'rva').order('display_order'),
         supabase.from('site_settings').select('phone').eq('site_key', 'rva').single(),
       ])
+      let testRes: { data: Testimonial[] | null; error: { message?: string } | null } = { data: null, error: null }
+      try {
+        testRes = await supabase.from('testimonials').select('*').eq('is_active', true).eq('verified', true).eq('site_key', 'rva')
+      } catch {
+        testRes = { data: null, error: { message: 'testimonials query failed' } }
+      }
       if (advRes.data && advRes.data.length > 0) {
         setAdventures(
           advRes.data
-            .filter((a: Adventure) => isHomeGridAdventure(a))
+            .filter((a: Adventure) => isHomeGridAdventure(a) && !/ranch/i.test(a.name))
             .map((a: Adventure) => {
               const card = toPublicAdventureCard(a)
               return {
@@ -115,7 +120,9 @@ export default function RVAHomeClient({
             }),
         )
       }
-      if (!testRes.error && testRes.data && testRes.data.length > 0) {
+      if (testRes.error || !testRes.data) {
+        setTestimonials([])
+      } else {
         setTestimonials(
           testRes.data
             .filter((t: Testimonial) => isPublicTestimonial(t))
@@ -178,36 +185,6 @@ export default function RVAHomeClient({
         </div>
       </section>
 
-      <section aria-label="Private ranch fishing" className="bg-rva-cream border-b border-rva-copper-700/20">
-        <div className="max-w-7xl mx-auto px-6 py-10 md:py-14 grid md:grid-cols-2 gap-8 items-center">
-          <div className="relative aspect-[16/10] rounded-2xl overflow-hidden shadow-lg">
-            <Image
-              src="/images/adventures/fishing-catch-1440.webp"
-              alt={seoAlt({
-                subject: 'Angler with a trout',
-                location: 'Roaring Fork Valley, Colorado',
-                context: 'private ranch fly fishing at Spring Creek Ranch',
-                brand: 'Rich Valley Adventures',
-              })}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              unoptimized
-            />
-          </div>
-          <div>
-            <p className="font-cormorant text-rva-copper-700 text-sm tracking-[0.25em] uppercase mb-3">Signature trip</p>
-            <h2 className="font-playfair text-3xl md:text-4xl text-rva-forest font-bold mb-4 leading-tight">
-              Private ranch fly fishing at Spring Creek Ranch, Carbondale
-            </h2>
-            <p className="text-rva-forest/80 text-base md:text-lg leading-relaxed mb-6">
-              Spring Creek Ranch in Carbondale is a famous historic ranch owned by the same family since the late 1800s. The private ranch and picnic package is from $800 per adult and $250 per child (ages 3+), on ponds, creeks, and a private section of the Roaring Fork River.
-            </p>
-            <RvaButton href="/private-ranch-fishing">Private ranch fishing</RvaButton>
-          </div>
-        </div>
-      </section>
-
       {/* Live conditions — informational strip above adventure cards */}
       <section className="bg-gradient-to-r from-rva-forest via-rva-forest-dark to-rva-forest border-y border-rva-copper-700/20" aria-label="Live river conditions">
         <div className="max-w-7xl mx-auto px-6 py-8 md:py-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
@@ -238,13 +215,12 @@ export default function RVAHomeClient({
             </p>
             <div className="mt-8 max-w-3xl mx-auto text-left bg-rva-cream text-rva-forest rounded-2xl p-6 md:p-8">
               <h3 className="font-playfair text-2xl md:text-3xl font-bold mb-3">Kids &amp; Family Fishing</h3>
-              <p className="text-base md:text-lg leading-relaxed">{KIDS_FAMILY_FISHING}</p>
+              <p className="text-base md:text-lg leading-relaxed">
+                {KIDS_FAMILY_FISHING.replace(/ At the Spring Creek Ranch private ranch and picnic, kids are \$250 each \(ages 3\+\)\./, '')}
+              </p>
               <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
                 <Link href="/fly-fishing" className="inline-flex min-h-11 items-center text-rva-copper-700 font-semibold hover:underline">
                   Fly fishing trips
-                </Link>
-                <Link href="/private-ranch-fishing" className="inline-flex min-h-11 items-center text-rva-copper-700 font-semibold hover:underline">
-                  Private ranch fishing
                 </Link>
               </div>
             </div>

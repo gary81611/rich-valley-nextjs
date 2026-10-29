@@ -32,6 +32,15 @@ export async function middleware(request: NextRequest) {
   const pathname = url.pathname
   const search = url.search
 
+  const hostname = (request.headers.get('host') || '').trim().toLowerCase().split(':')[0]
+  const isRvaHost = RVA_HOSTS.has(hostname)
+  const isAalHost = AAL_HOSTS.has(hostname)
+
+  if (pathname === '/favicon.ico') {
+    const icon = isAalHost ? '/images/logos/alpenglow-logo.png' : '/images/logos/rva-logo.png'
+    return NextResponse.rewrite(new URL(icon, request.url))
+  }
+
   if (
     pathname.startsWith('/api') ||
     pathname.startsWith('/_next') ||
@@ -40,10 +49,6 @@ export async function middleware(request: NextRequest) {
   ) {
     return NextResponse.next()
   }
-
-  const hostname = (request.headers.get('host') || '').trim().toLowerCase().split(':')[0]
-  const isRvaHost = RVA_HOSTS.has(hostname)
-  const isAalHost = AAL_HOSTS.has(hostname)
 
   // One 301, including a trailing slash and the internal /rva path. Preview hosts are not RVA_HOSTS,
   // so this cannot wait for the host-scoped next.config hop.
@@ -205,5 +210,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|images).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|images).*)'],
 }

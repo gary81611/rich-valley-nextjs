@@ -137,6 +137,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
   const highlights = Array.isArray(adventure.highlights) ? adventure.highlights : []
   const groupSize = (adventure.group_size || '').trim()
 
+  const scenic = isScenicTourSlug(slug) || isScenicTourSlug(adventureSlug)
   const priceNote = adventurePublicFromText(adventure)
   const facts = [
     priceNote ? { label: 'Price', value: priceNote } : null,
@@ -149,10 +150,12 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
 
   const content: ServiceContent = {
     hero_title: displayName,
-    hero_subtitle: publicDescription,
-    intro: /horse|snowmobile|atv|scenic|raft/i.test(`${adventureSlug} ${displayName}`)
-      ? `${publicDescription}\n\n${RVA_TRIP_OWNERSHIP}`
-      : longDescription,
+    hero_subtitle: scenic ? '' : publicDescription,
+    intro: scenic
+      ? RVA_TRIP_OWNERSHIP
+      : /horse|snowmobile|atv|scenic|raft/i.test(`${adventureSlug} ${displayName}`)
+        ? `${publicDescription}\n\n${RVA_TRIP_OWNERSHIP}`
+        : longDescription,
     lead: facts.length > 0 ? { paragraphs: [], facts } : undefined,
     features: whatsIncluded.filter(Boolean).map((item) => ({ title: item, description: '' })),
     h2_sections:
@@ -170,7 +173,8 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
         content={content}
         heroImage={heroSrc || undefined}
         heroImageAlt={visual.alt || `${displayName} with Rich Valley Adventures in Aspen, Colorado`}
-        heroObjectPosition={visual.objectPosition}
+        heroObjectPosition={scenic ? visual.objectPosition || 'center 18%' : visual.objectPosition}
+        heroHeightClass={scenic ? 'h-[55vh] max-h-[55vh]' : undefined}
         bookingHref="/contact"
       />
       {relatedAdventures.length > 0 && (
