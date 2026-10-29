@@ -67,7 +67,9 @@ function SchemaTab({ supabase }: { supabase: any }) {
       const adventureData = adventures.data || []
       const serviceData = services.data || []
       const fleetData = fleet.data || []
-      const testimonialData = (testimonials.data || []).filter((t: { site_key: string }) => t.site_key === schemaBrand)
+      const testimonialData = (testimonials.data || []).filter(
+        (t: { site_key: string; quote?: string }) => t.site_key === schemaBrand && !/escalade/i.test(t.quote || ''),
+      )
       const faqData = (faqs.data || []).filter((f: { site_key: string }) => f.site_key === schemaBrand)
 
       const avgRating = testimonialData.length

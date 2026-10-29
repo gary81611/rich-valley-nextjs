@@ -12,10 +12,10 @@ WHERE name ILIKE '%escalade%'
 
 UPDATE fleet_vehicles
 SET
-  name = 'Ford Transit passenger van',
+  name = 'Ford Transit Passenger Van',
   type = 'van',
   capacity = 13,
-  description = 'Ford Transit passenger van seating 13. The fleet has one Transit.'
+  description = 'Ford Transit Passenger Van seating 13. The fleet has one Transit.'
 WHERE name ILIKE '%sprinter%'
    OR name ILIKE '%mercedes%'
    OR (name ILIKE '%transit%' AND capacity IS DISTINCT FROM 13);
@@ -77,10 +77,10 @@ FROM generate_series(
 
 INSERT INTO fleet_vehicles (name, type, capacity, description, is_active)
 SELECT
-  'Ford Transit passenger van',
+  'Ford Transit Passenger Van',
   'van',
   13,
-  'Ford Transit passenger van seating 13. The fleet has one Transit.',
+  'Ford Transit Passenger Van seating 13. The fleet has one Transit.',
   true
 WHERE (SELECT count(*) FROM fleet_vehicles WHERE is_active AND name ILIKE '%transit%') = 0;
 

@@ -1,8 +1,59 @@
 -- Forward fix. 20261023200000 is already applied in production (recorded as 20261024052145).
 -- Do not edit that file. This migration is NOT applied by the agent.
--- It removes every Escalade hit in RVA/AAL text and JSON columns, and drops unverified ratings.
+-- It removes Escalade from RVA/AAL text and JSON columns, and drops unverified ratings.
 -- It does not add a review count or a star rating.
--- cc_* tables and customer submissions are left alone.
+-- cc_* tables, customer submissions, and the testimonials table are left out of the sweep.
+-- Slug columns are left out so a path token is not rewritten inside a slug.
+-- Customer quotes are not rewritten. One Escalade testimonial is hidden by is_active.
+
+-- Standalone word only. Same boundary as lib/aal-public-copy.ts:
+-- (?<![\w/.-])Escalades?(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))
+-- Postgres has no lookaround, so the characters on each side are checked here.
+CREATE OR REPLACE FUNCTION public.kit_replace_standalone_escalade(t text)
+RETURNS text
+LANGUAGE plpgsql
+IMMUTABLE
+AS $$
+DECLARE
+  s text := t;
+  i int := 1;
+  n int;
+  len int;
+  prev text;
+  nxt text;
+  tail text;
+  repl text;
+BEGIN
+  IF s IS NULL OR s = '' OR position('escalade' IN lower(s)) = 0 THEN
+    RETURN s;
+  END IF;
+
+  WHILE i <= char_length(s) LOOP
+    n := position('escalade' IN lower(substring(s FROM i)));
+    IF n = 0 THEN
+      EXIT;
+    END IF;
+    n := i + n - 1;
+    len := 8;
+    IF lower(substring(s FROM n FOR 9)) = 'escalades' THEN
+      len := 9;
+    END IF;
+    prev := CASE WHEN n = 1 THEN '' ELSE substring(s FROM n - 1 FOR 1) END;
+    nxt := substring(s FROM n + len FOR 1);
+    tail := substring(s FROM n + len);
+    IF prev ~ '[[:alnum:]/._-]'
+       OR nxt ~ '[[:alnum:]/_-]'
+       OR tail ~* '^\.(png|jpe?g|webp|svg|gif)' THEN
+      i := n + 1;
+      CONTINUE;
+    END IF;
+    repl := CASE WHEN len = 9 THEN 'SUVs' ELSE 'vehicle' END;
+    s := substring(s FROM 1 FOR n - 1) || repl || substring(s FROM n + len);
+    i := n + char_length(repl);
+  END LOOP;
+  RETURN s;
+END;
+$$;
 
 CREATE OR REPLACE FUNCTION public.kit_strip_escalade(t text)
 RETURNS text
@@ -16,6 +67,8 @@ BEGIN
     RETURN s;
   END IF;
 
+  -- Path/slug token first, before any Escalade word replacement.
+  s := regexp_replace(s, 'scenic-escalade-tours', 'scenic-wildlife-tours', 'gi');
   s := replace(s, 'scenic-escalade.png', 'scenic-wildlife-tour.png');
   s := replace(s, '/images/fleet/escalade.png', '/images/logos/alpenglow-logo.png');
   s := replace(s, '/images/alpenglow/escalade.png', '/images/logos/alpenglow-logo.png');
@@ -24,13 +77,13 @@ BEGIN
   s := replace(s, 'scenic Escalade tours', 'scenic and wildlife tours');
   s := replace(s, 'Cadillac Escalade (6 passengers) and Mercedes Sprinter van (14 passengers)', 'Chevrolet Suburban (7 passengers) and a Ford Transit Passenger Van (13 passengers)');
   s := replace(s, 'Cadillac Escalade', 'Chevrolet Suburban');
-  s := regexp_replace(s, 'Escalades', 'SUVs', 'gi');
-  s := regexp_replace(s, 'Escalade', 'vehicle', 'gi');
+  s := public.kit_replace_standalone_escalade(s);
   RETURN s;
 END;
 $$;
 
--- Every public text / jsonb column on RVA and AAL tables (not cc_* and not customer mail).
+-- Every public text / jsonb column on RVA and AAL tables.
+-- Not cc_*, not customer mail, not testimonials, not slug columns.
 DO $$
 DECLARE
   col record;
@@ -40,7 +93,9 @@ BEGIN
     FROM information_schema.columns
     WHERE table_schema = 'public'
       AND table_name NOT LIKE 'cc\_%'
-      AND table_name NOT IN ('contact_submissions', 'newsletter_subscribers')
+      AND table_name NOT IN ('contact_submissions', 'newsletter_subscribers', 'testimonials')
+      AND column_name <> 'slug'
+      AND column_name NOT LIKE '%\_slug' ESCAPE '\'
       AND data_type IN ('text', 'character varying', 'jsonb')
   LOOP
     IF col.data_type = 'jsonb' THEN
@@ -58,13 +113,19 @@ BEGIN
 END $$;
 
 DROP FUNCTION public.kit_strip_escalade(text);
+DROP FUNCTION public.kit_replace_standalone_escalade(text);
+
+-- Hide the Escalade quote. Leave the quote text unchanged.
+UPDATE testimonials
+SET is_active = false
+WHERE id = '4654459d-8e4e-4012-ac91-b21464fd5e3e';
 
 -- Hits this sweep cleans, from a read of production on Oct 29, 2026:
 -- adventures.name, adventures.description, adventures.image_url
 -- blog_posts.content, blog_posts.internal_links, blog_posts.featured_image_url
 -- faqs.answer
 -- geo_content_blocks.answer
--- testimonials.quote
+-- testimonials is not swept. Row 4654459d-8e4e-4012-ac91-b21464fd5e3e is set is_active = false.
 
 -- Scenic tour photo and copy. Row checked in production: 88b4bc72.
 UPDATE adventures
@@ -115,7 +176,7 @@ SET content = replace(
         'Fleet'
       ),
       'Rated 5.0 by guests on Google (5 reviews).',
-      'Two Chevrolet Suburbans (7 passengers each) and one Ford Transit passenger van (13 passengers).'
+      'Two Chevrolet Suburbans (7 passengers each) and one Ford Transit Passenger Van (13 passengers).'
     ),
     '4.9-Star Rated',
     'Licenses'
@@ -133,7 +194,7 @@ SET
   question = replace(replace(replace(question, '5.0 on Google', 'Fleet'), '4.9-Star Rated', 'Licenses'), '(5 reviews)', ''),
   answer = replace(replace(replace(replace(answer,
     'Rated 5.0 by guests on Google (5 reviews).',
-    'Two Chevrolet Suburbans (7 passengers each) and one Ford Transit passenger van (13 passengers).'),
+    'Two Chevrolet Suburbans (7 passengers each) and one Ford Transit Passenger Van (13 passengers).'),
     '5.0 on Google', 'Fleet'),
     '4.9-Star Rated', 'Licenses'),
     'Over 200 five-star reviews from guests who came as visitors and left as friends of the valley.',

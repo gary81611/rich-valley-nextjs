@@ -28,14 +28,14 @@ export default function EagleAirportTransferPage() {
           heading: 'The drive',
           paragraphs: [
             'Eagle County Regional Airport (EGE) is in Gypsum, about 68–70 miles from Aspen, roughly 1.5 hours in ordinary conditions. Winter weather can change the timing. This is a private ride, not a shared shuttle.',
-            'SUVs seat 7. The Ford Transit passenger van seats 13. No shared rides are offered.',
+            'SUVs seat 7. The Ford Transit Passenger Van seats 13. No shared rides are offered.',
           ],
         },
         {
           heading: 'What a booked Eagle ride includes',
           paragraphs: [
             'The Eagle one-way SUV rate is $720. The 13-passenger Ford Transit is $1,200 each way. Holiday pricing may change seasonally.',
-            'Child car seats and boosters are free. Pets are welcome, with a cleaning fee. Vehicles have Starlink, ski racks, and roof cargo space. Drivers are 8 full-time locals who have been driving these mountain roads since 2012.',
+            'Child car seats and boosters are free. Pets are welcome, with a cleaning fee. Vehicles have Starlink, ski racks, and roof cargo space.',
           ],
         },
         {
@@ -70,7 +70,7 @@ export default function EagleAirportTransferPage() {
         },
         {
           question: 'What vehicles are available?',
-          answer: 'SUVs seat 7. The Ford Transit passenger van seats 13. No shared rides are offered. Child car seats and boosters are free.',
+          answer: 'SUVs seat 7. The Ford Transit Passenger Van seats 13. No shared rides are offered. Child car seats and boosters are free.',
         },
         {
           question: 'What is the cancellation notice?',

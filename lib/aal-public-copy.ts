@@ -18,7 +18,7 @@ export const AAL_PUC_PERMIT = 'LL-04725'
 export const AAL_PUC_LINE = `CO PUC permit ${AAL_PUC_PERMIT}.`
 
 export const AAL_FLEET_LINE =
-  'The fleet is two Chevrolet Suburbans (7 passengers each) and one Ford Transit passenger van (13 passengers).'
+  'The fleet is two Chevrolet Suburbans (7 passengers each) and one Ford Transit Passenger Van (13 passengers).'
 
 export const AAL_SERVICE_AREAS = [
   'Aspen',
@@ -115,10 +115,10 @@ export function correctAalFleetText(text: string): string {
 }
 
 const AAL_VEHICLE_REPLACEMENTS: [RegExp, string][] = [
-  [/(?<![\w/.-])Mercedes-Benz Sprinter Executive Vans(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger vans'],
-  [/(?<![\w/.-])Mercedes-Benz Sprinter Executive Van(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger van'],
-  [/(?<![\w/.-])Mercedes Sprinter Executive Vans(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger vans'],
-  [/(?<![\w/.-])Mercedes Sprinter Executive Van(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger van'],
+  [/(?<![\w/.-])Mercedes-Benz Sprinter Executive Vans(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Vans'],
+  [/(?<![\w/.-])Mercedes-Benz Sprinter Executive Van(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Van'],
+  [/(?<![\w/.-])Mercedes Sprinter Executive Vans(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Vans'],
+  [/(?<![\w/.-])Mercedes Sprinter Executive Van(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Van'],
   [/(?<![\w/.-])Cadillac Escalade ESV(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'SUV'],
   [/(?<![\w/.-])Cadillac Escalades(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'SUVs'],
   [/(?<![\w/.-])Cadillac Escalade(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'SUV'],
@@ -126,36 +126,37 @@ const AAL_VEHICLE_REPLACEMENTS: [RegExp, string][] = [
   [/(?<![\w/.-])Executive Escalade(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'SUV'],
   [/(?<![\w/.-])Luxury Escalades(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'SUVs'],
   [/(?<![\w/.-])Luxury Escalade(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'SUV'],
-  [/(?<![\w/.-])Luxury Sprinter vans(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger vans'],
-  [/(?<![\w/.-])Luxury Sprinter van(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger van'],
-  [/(?<![\w/.-])Luxury Sprinters(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger vans'],
-  [/(?<![\w/.-])Luxury Sprinter(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger van'],
-  [/(?<![\w/.-])Mercedes-Benz Sprinter vans(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger vans'],
-  [/(?<![\w/.-])Mercedes-Benz Sprinter van(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger van'],
-  [/(?<![\w/.-])Mercedes-Benz Sprinters(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger vans'],
-  [/(?<![\w/.-])Mercedes-Benz Sprinter(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger van'],
-  [/(?<![\w/.-])Mercedes Sprinter vans(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger vans'],
-  [/(?<![\w/.-])Mercedes Sprinter van(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger van'],
-  [/(?<![\w/.-])Mercedes Sprinters(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger vans'],
-  [/(?<![\w/.-])Mercedes Sprinter(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger van'],
-  [/(?<![\w/.-])Sprinter-style vans(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger vans'],
-  [/(?<![\w/.-])Sprinter-style van(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger van'],
-  [/(?<![\w/.-])Sprinter vans(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger vans'],
-  [/(?<![\w/.-])Sprinter van(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger van'],
-  [/(?<![\w/.-])Sprinter options(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger van options'],
+  [/(?<![\w/.-])Luxury Sprinter vans(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Vans'],
+  [/(?<![\w/.-])Luxury Sprinter van(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Van'],
+  [/(?<![\w/.-])Luxury Sprinters(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Vans'],
+  [/(?<![\w/.-])Luxury Sprinter(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Van'],
+  [/(?<![\w/.-])Mercedes-Benz Sprinter vans(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Vans'],
+  [/(?<![\w/.-])Mercedes-Benz Sprinter van(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Van'],
+  [/(?<![\w/.-])Mercedes-Benz Sprinters(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Vans'],
+  [/(?<![\w/.-])Mercedes-Benz Sprinter(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Van'],
+  [/(?<![\w/.-])Mercedes Sprinter vans(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Vans'],
+  [/(?<![\w/.-])Mercedes Sprinter van(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Van'],
+  [/(?<![\w/.-])Mercedes Sprinters(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Vans'],
+  [/(?<![\w/.-])Mercedes Sprinter(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Van'],
+  [/(?<![\w/.-])Sprinter-style vans(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Vans'],
+  [/(?<![\w/.-])Sprinter-style van(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Van'],
+  [/(?<![\w/.-])Sprinter vans(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Vans'],
+  [/(?<![\w/.-])Sprinter van(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Van'],
+  [/(?<![\w/.-])Sprinter options(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Van options'],
   [/(?<![\w/.-])Escalades(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'SUVs'],
   [/(?<![\w/.-])Escalade(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'SUV'],
-  [/(?<![\w/.-])Sprinters(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger vans'],
-  [/(?<![\w/.-])Sprinter(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit passenger van'],
+  [/(?<![\w/.-])Sprinters(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Vans'],
+  [/(?<![\w/.-])Sprinter(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))/gi, 'Ford Transit Passenger Van'],
 ]
 
 const AAL_DENVER_PRICE_SENTENCE =
-  'Our Aspen to Denver International Airport transfer is $1,375 each way in a private SUV. A Ford Transit passenger van is available for larger groups. Holiday pricing may change seasonally.'
+  'Our Aspen to Denver International Airport transfer is $1,375 each way in a private SUV. A Ford Transit Passenger Van is available for larger groups. Holiday pricing may change seasonally.'
 
 /** Fleet names, passenger counts, the published Denver one-way rate, and the ski canonical path. */
 export function correctAalPublicText(text: string): string {
   if (!text) return text
   let t = text
+  t = t.replace(/scenic-escalade-tours/gi, 'scenic-wildlife-tours')
   t = t.replace(/scenic-escalade\.png/gi, 'scenic-wildlife-tour.png')
   t = t.replace(/\/images\/(?:fleet|alpenglow)\/escalade\.png/gi, '/images/logos/alpenglow-logo.png')
   t = t.replace(/Scenic Escalade Tours/g, 'Scenic and Wildlife Tours')
@@ -178,15 +179,15 @@ export function correctAalPublicText(text: string): string {
   )
   t = t.replace(
     /Our fleet includes a black Executive Cadillac Escalade \(up to 6 passengers\) and a black Luxury Mercedes Sprinter van \(up to 14 passengers\)\./gi,
-    'Our fleet includes a black Chevrolet Suburban (up to 7 passengers) and a black Ford Transit passenger van (up to 13 passengers).',
+    'Our fleet includes a black Chevrolet Suburban (up to 7 passengers) and a black Ford Transit Passenger Van (up to 13 passengers).',
   )
   t = t.replace(
     /Our Sprinter van fleet can be configured as rolling conference space [–—-] leather seating, climate control, quiet cabin for confidential conversations during transfer\./gi,
-    'Our Ford Transit passenger van can be configured as rolling conference space — leather seating, climate control, quiet cabin for confidential conversations during transfer.',
+    'Our Ford Transit Passenger Van can be configured as rolling conference space — leather seating, climate control, quiet cabin for confidential conversations during transfer.',
   )
   t = t.replace(
     /Our luxury Escalade and Sprinter fleet accommodate full ski groups with all equipment [–—-] ski bags, snowboards, helmets, and boot bags [–—-] without the crowding and inconvenience of shared shuttles\./gi,
-    'Our Chevrolet Suburban and Ford Transit passenger van accommodate full ski groups with all equipment — ski bags, snowboards, helmets, and boot bags — without the crowding and inconvenience of shared shuttles.',
+    'Our Chevrolet Suburban and Ford Transit Passenger Van accommodate full ski groups with all equipment — ski bags, snowboards, helmets, and boot bags — without the crowding and inconvenience of shared shuttles.',
   )
   t = t.replace(
     /Eagle County Regional Airport \(EGE\) in Glenwood Springs, 70 miles east of Aspen/g,
@@ -252,7 +253,7 @@ export function correctAalPublicText(text: string): string {
   t = t.replace(/\bCadillac\s+(?=SUVs?\b)/gi, '')
   t = t.replace(/\bExecutive Chevrolet Suburban\b/gi, 'Chevrolet Suburban')
   t = t.replace(/\bLuxury Ford Transit\b/gi, 'Ford Transit')
-  t = t.replace(/\bFord Transit passenger van fleet\b/gi, 'Ford Transit passenger van')
+  t = t.replace(/\bFord Transit Passenger Van fleet\b/gi, 'Ford Transit Passenger Van')
   t = t.replace(/\bluxury sedans\b/gi, 'private SUVs')
   t = t.replace(
     /Cloud Nine Alpine Bistro at the top of Aspen Mountain/gi,
@@ -290,13 +291,16 @@ export function correctAalPublicText(text: string): string {
   t = t.replace(/\$120([^.\n]{0,48}\bEagle\b)/gi, '$720$1')
   t = t.replace(/(\bEagle\b[^.\n]{0,48})\$120\b/gi, '$1$720')
   t = t.replace(/212 Woody Creek Plaza[, ]*/gi, '')
-  t = t.replace(/Mercedes(?:[-\s]+Benz)?\s+Ford Transit passenger van/gi, 'Ford Transit passenger van')
+  t = t.replace(/Mercedes(?:[-\s]+Benz)?\s+Ford Transit Passenger Van/gi, 'Ford Transit Passenger Van')
   t = t.replace(/since 2012 of Excellence/gi, 'Serving Aspen Since 2012')
   t = t.replace(/\bpassenger shuttle vans\b/gi, 'Ford Transit Passenger Vans')
   t = t.replace(/\bpassenger shuttle van\b/gi, 'Ford Transit Passenger Van')
-  t = t.replace(/\bFord Transit passenger vans\b/g, 'Ford Transit Passenger Vans')
-  t = t.replace(/\bFord Transit passenger van\b/g, 'Ford Transit Passenger Van')
-  t = t.replace(/\bFord Transit Van\b/g, 'Ford Transit Passenger Van')
+  t = t.replace(/\b8 full-time local drivers who have been driving these mountain roads since 2012\.?\s*/gi, '')
+  t = t.replace(/\bDrivers are 8 full-time locals who have been driving these mountain roads since 2012\.?\s*/gi, '')
+  t = t.replace(/\bDriven by full-time local drivers who have been driving these mountain roads since 2012\.?\s*/gi, '')
+  t = t.replace(/\bFord Transit passenger vans\b/gi, 'Ford Transit Passenger Vans')
+  t = t.replace(/\bFord Transit passenger van\b/gi, 'Ford Transit Passenger Van')
+  t = t.replace(/\bFord Transit Van\b/gi, 'Ford Transit Passenger Van')
   return t
 }
 

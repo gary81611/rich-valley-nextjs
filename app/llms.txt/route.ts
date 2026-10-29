@@ -77,11 +77,10 @@ Sitemap: https://www.richvalleyadventures.com/sitemap.xml
 - Location: Aspen, Colorado 81611, United States (Roaring Fork Valley & resort corridor)
 - Phone: +1 970-456-3666
 - Founded: 2012
-- Fleet: exactly two Chevrolet Suburbans (7 passengers each) and one Ford Transit passenger van (13 passengers). Starlink, ski racks, and roof cargo space
-- Colorado PUC permit: LL-04725
+- Fleet: exactly two Chevrolet Suburbans (7 passengers each) and one Ford Transit Passenger Van (13 passengers). Starlink, ski racks, and roof cargo space
 - No public street address. Service areas include Aspen, Snowmass Village, Basalt, Carbondale, Glenwood Springs, Gypsum (Eagle County Airport), Rifle, and Denver
 - Eagle County Regional Airport (EGE) is in Gypsum, not Glenwood Springs
-- Drivers: 8 full-time local drivers who have been driving these mountain roads since 2012. Child car seats and boosters are free. No shared rides are offered. Pets welcome, with a cleaning fee.
+- Child car seats and boosters are free. No shared rides are offered. Pets welcome, with a cleaning fee.
 - Private FBO airport service: Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison
 - One-way SUV rates each way: Eagle and Rifle $720, Denver $1,375, Grand Junction $950. The 13-passenger Ford Transit is $1,200 from Eagle or Rifle and $1,600 from Denver. Holiday pricing may change seasonally.
 - ASE airport SUV rates on the pricing page include $210. Centennial Airport (KAPA), Telluride, and Crested Butte are $1,475 on that page.

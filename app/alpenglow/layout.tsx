@@ -89,11 +89,6 @@ const localBusinessSchema = {
     postalCode: '81611',
     addressCountry: 'US',
   },
-  identifier: {
-    '@type': 'PropertyValue',
-    name: 'Colorado PUC permit',
-    value: 'LL-04725',
-  },
   geo: {
     '@type': 'GeoCoordinates',
     latitude: 39.1911,
@@ -278,9 +273,9 @@ const vehicleSchemas = [
   {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    name: 'Ford Transit Van — 13 Passenger Group Transportation',
+    name: 'Ford Transit Passenger Van — 13 Passenger Group Transportation',
     description:
-      'Late-model Ford Transit Van with WiFi (Starlink), XM Radio, and Myers ski rack. Seats up to 13 passengers. Child car seats and boosters are free. No shared rides are offered. Ideal for group airport transfers, wedding parties, and corporate events in Aspen and the Roaring Fork Valley.',
+      'Late-model Ford Transit Passenger Van with WiFi (Starlink), XM Radio, and Myers ski rack. Seats up to 13 passengers. Child car seats and boosters are free. No shared rides are offered. Ideal for group airport transfers, wedding parties, and corporate events in Aspen and the Roaring Fork Valley.',
     serviceType: 'Luxury Group Transportation & Van Service',
     provider: {
       '@type': 'LocalBusiness',

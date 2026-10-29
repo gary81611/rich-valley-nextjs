@@ -4,14 +4,13 @@ import Image from 'next/image'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import InquiryForm from '@/components/shared/InquiryForm'
 import NewsletterSignup from '@/components/shared/NewsletterSignup'
-import VehicleCard from '@/components/alpenglow/VehicleCard'
-import { AAL_VEHICLES } from '@/lib/aal-vehicles'
 import { alpenglowData } from '@/lib/site-data'
 import { createClient } from '@/lib/supabase'
 import { hrefForService } from '@/lib/alpenglow-services'
 import type { Service as ServiceType, Testimonial } from '@/lib/types'
 import { seoAlt } from '@/lib/seo/alt-text'
 import { AAL_ONE_WAY_RATES, correctAalFaqItem, correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
+import { quoteMentionsEscalade } from '@/lib/rva-confirmed'
 
 interface GeoBlock {
   id: string
@@ -82,9 +81,13 @@ export default function AlpenglowHomeClient() {
           )
         }
         if (testRes.data && testRes.data.length > 0) {
-          setTestimonials(testRes.data.map((t: Testimonial) => ({
-            quote: t.quote, name: t.author, location: '',
-          })))
+          setTestimonials(
+            testRes.data
+              .filter((t: Testimonial) => !quoteMentionsEscalade(t.quote))
+              .map((t: Testimonial) => ({
+                quote: t.quote, name: t.author, location: '',
+              })),
+          )
         }
         if (geoRes.data && geoRes.data.length > 0) {
           setGeoBlocks(
@@ -194,20 +197,13 @@ export default function AlpenglowHomeClient() {
       {/* FLEET SHOWCASE */}
       <section id="fleet" className="py-24 bg-alp-navy-deep">
         <div className="max-w-7xl mx-auto px-6">
-          <ScrollReveal className="text-center mb-16">
+          <ScrollReveal className="text-center">
             <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Travel in Style</p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold">Our Fleet</h2>
+            <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold mb-8">Our Fleet</h2>
+            <a href="/fleet" className="text-alp-gold font-semibold text-lg hover:underline">
+              See the fleet
+            </a>
           </ScrollReveal>
-          <div className="grid md:grid-cols-2 gap-10">
-            {AAL_VEHICLES.map((vehicle, i) => (
-              <ScrollReveal key={vehicle.id} delay={i * 150}>
-                <VehicleCard vehicle={vehicle} tone="dark" />
-              </ScrollReveal>
-            ))}
-          </div>
-          <p className="mt-10 text-center text-white/70 max-w-3xl mx-auto">
-            Two Chevrolet Suburbans, each seating up to 7, and one Ford Transit passenger van seating up to 13.
-          </p>
         </div>
       </section>
 
@@ -221,7 +217,7 @@ export default function AlpenglowHomeClient() {
               Every detail handled. Every journey seamless.
             </p>
             <p className="alp-speak-services-overview text-alp-slate text-base max-w-3xl mx-auto mt-6 leading-relaxed border-t border-alp-pearl-dark pt-6">
-              Aspen Alpenglow Limousine operates a professional fleet of three late-model vehicles — two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (13 passengers) — with Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison, alongside Aspen/Pitkin County Airport (ASE) and Denver International Airport (DEN). One-way SUV rates each way: Eagle and Rifle $720, Denver $1,375, Grand Junction $950. The 13-passenger Ford Transit is $1,200 from Eagle or Rifle and $1,600 from Denver. Holiday pricing may change seasonally.
+              Private airport transfers, hourly charters and event transportation across the Roaring Fork Valley.
             </p>
           </div>
           {services.length > 0 && (
@@ -441,7 +437,7 @@ export default function AlpenglowHomeClient() {
             <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Beyond the Transfer</p>
             <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-6">Event transportation for weddings and weekends</h2>
             <p className="text-alp-slate text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
-              Private SUVs and the Ford Transit passenger van for weddings, X Games week, New Year&apos;s Eve, and holiday arrivals. No shared rides are offered.
+              Private SUVs and the Ford Transit Passenger Van for weddings, X Games week, New Year&apos;s Eve, and holiday arrivals. No shared rides are offered.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="/weddings" className="inline-block bg-alp-navy hover:bg-alp-navy-deep text-white px-8 py-3 rounded-full font-semibold">Weddings</a>

@@ -30,7 +30,6 @@ const defaultStats = [
 const defaultWhyChooseUs = [
   { title: 'Flight Tracking', description: 'We monitor your flight in real-time so your ride is waiting, even if plans change.' },
   { title: 'Local Knowledge', description: 'Our drivers live here. They know the fastest routes and the valley inside out.' },
-  { title: 'Impeccable Fleet', description: 'Late-model luxury vehicles, professionally detailed before every ride.' },
   { title: 'White-Glove Service', description: 'Meet-and-greet, luggage handling, complimentary refreshments — every detail covered.' },
 ]
 
@@ -51,10 +50,13 @@ export default async function AboutPage() {
       if (stats.length === 0) stats = defaultStats
     }
     if (vpRes.data && vpRes.data.length > 0) {
-      whyChooseUs = vpRes.data.map((vp: { title: string; description: string }) => ({
-        title: correctAalPublicText(vp.title),
-        description: correctAalPublicText(vp.description),
-      }))
+      whyChooseUs = vpRes.data
+        .map((vp: { title: string; description: string }) => ({
+          title: correctAalPublicText(vp.title),
+          description: correctAalPublicText(vp.description),
+        }))
+        .filter((vp) => !/impeccable fleet/i.test(vp.title))
+      if (whyChooseUs.length === 0) whyChooseUs = defaultWhyChooseUs
     }
   } catch {
     // Use defaults on error
@@ -86,7 +88,6 @@ export default async function AboutPage() {
           postalCode: '81611',
           addressCountry: 'US',
         },
-        identifier: { '@type': 'PropertyValue', name: 'Colorado PUC permit', value: 'LL-04725' },
         areaServed: [...AAL_SERVICE_AREAS],
         foundingDate: '2012',
       },
@@ -201,7 +202,7 @@ export default async function AboutPage() {
             is spotless. Whether it&apos;s a wedding, a corporate event, or a family vacation,
             we treat every ride as the most important one of the day.
           </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {whyChooseUs.map((item) => (
               <div key={item.title} className="text-center">
                 <h3 className="font-playfair text-lg font-bold text-alp-gold mb-2">
@@ -227,9 +228,7 @@ export default async function AboutPage() {
               Professional Chauffeurs, Local Experts
             </h2>
             <p className="text-alp-slate text-lg leading-relaxed mb-6">
-              8 full-time local drivers who have been driving these mountain roads since 2012. They live in
-              the Roaring Fork Valley and know the fastest routes, the best restaurants, and every
-              back road shortcut. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee.
+              Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee.
             </p>
             <p className="text-alp-slate text-lg leading-relaxed">
               When you ride with Alpenglow, you are in the hands of someone who takes pride in making

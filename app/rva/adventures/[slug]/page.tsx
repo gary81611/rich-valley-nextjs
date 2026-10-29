@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import ServicePageTemplate from '@/components/templates/ServicePageTemplate'
 import AdventureCard from '@/components/rva/AdventureCard'
-import RvaButton from '@/components/rva/Button'
 import type { ServiceContent } from '@/lib/pages'
 import {
   PADDLE_OG_IMAGE,
@@ -81,13 +81,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const adventure = await getAdventure(slug)
   if (!adventure || isPaddleTourListing(adventure)) {
-    return {
-      title: 'Adventure Not Found | Rich Valley Adventures',
-      alternates: {
-        canonical: `https://www.richvalleyadventures.com/adventures/${slug}`,
-      },
-      robots: { index: false, follow: true },
-    }
+    notFound()
   }
   const adventureSlug = isScenicTourSlug(slugify(adventure.name)) ? 'scenic-wildlife-tours' : slugify(adventure.name)
   const displayName = rvaPublicAdventureTitle(adventure.name, adventureSlug)
@@ -126,19 +120,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
   const adventure = await getAdventure(slug)
 
   if (!adventure || isPaddleTourListing(adventure)) {
-    return (
-      <div className="min-h-screen bg-rva-cream font-inter flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="font-playfair text-4xl text-rva-forest font-bold mb-4">
-            Adventure Not Found
-          </h1>
-          <p className="text-gray-600 mb-8">
-            We couldn&apos;t find that adventure. Check out all of our offerings below.
-          </p>
-          <RvaButton href="/adventures" size="lg">View All Adventures</RvaButton>
-        </div>
-      </div>
-    )
+    notFound()
   }
 
   const relatedAdventures = await getRelatedAdventures(adventure.id)

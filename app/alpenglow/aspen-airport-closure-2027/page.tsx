@@ -52,7 +52,7 @@ export default function AspenAirportClosurePage() {
           heading: 'Diversions and cancellations',
           paragraphs: [
             "Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice.",
-            'SUVs seat 7. The Ford Transit passenger van seats 13. No shared rides are offered.',
+            'SUVs seat 7. The Ford Transit Passenger Van seats 13. No shared rides are offered.',
           ],
         },
       ]}

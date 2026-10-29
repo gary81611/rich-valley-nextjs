@@ -46,6 +46,7 @@ const RVA_EXACT_ALIAS: Record<string, string> = {
   '/trail-hiking': '/hiking',
   '/scenic-escalade-tours': '/adventures/scenic-wildlife-tours',
   '/adventures/scenic-escalade-tours': '/adventures/scenic-wildlife-tours',
+  '/adventures/rafting': '/rafting',
   '/horseback-riding': '/adventures/horseback-riding',
   '/hunting': '/winter',
   '/adventures/hunting': '/winter',

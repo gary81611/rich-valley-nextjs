@@ -34,7 +34,7 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
   const list = rows.map((r) => {
     const row = { ...r }
     if (row.price_note) {
-      row.price_note = row.price_note.replace(/Sprinter/gi, 'Ford Transit Van')
+      row.price_note = row.price_note.replace(/Sprinter/gi, 'Ford Transit Passenger Van')
     }
     return row
   })
@@ -45,7 +45,7 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
     'Aspen to Telluride': { distance: '~200 mi', drive_time: '4.5 hr' },
     'Aspen to Beaver Creek': { distance: '~105 mi', drive_time: '2 hr', suv_price: 800 },
     'Aspen to Breckenridge': { distance: '~150 mi', drive_time: '3 hr', suv_price: 900 },
-    'Hourly Charter (Limo Coach/Sprinter)': { route_name: 'Hourly Charter (Ford Transit Van)' },
+    'Hourly Charter (Limo Coach/Sprinter)': { route_name: 'Hourly Charter (Ford Transit Passenger Van)' },
   }
 
   for (const r of list) {
@@ -467,10 +467,6 @@ export default async function PricingPage() {
             })),
           ]}
         />
-        <p className="text-sm mb-12">
-          <Link href="/fleet" className="font-semibold text-alp-gold-700 hover:underline">Fleet</Link>
-        </p>
-
         {/* Policies */}
         {POLICIES.length > 0 && (
           <div className="mb-12">

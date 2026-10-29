@@ -45,6 +45,15 @@ export async function middleware(request: NextRequest) {
   const isRvaHost = RVA_HOSTS.has(hostname)
   const isAalHost = AAL_HOSTS.has(hostname)
 
+  // One 301, including a trailing slash and the internal /rva path. Preview hosts are not RVA_HOSTS,
+  // so this cannot wait for the host-scoped next.config hop.
+  if (!isAalHost) {
+    const bare = pathname.length > 1 ? pathname.replace(/\/+$/, '') || '/' : pathname
+    if (bare === '/adventures/rafting' || bare === '/rva/adventures/rafting') {
+      return NextResponse.redirect(new URL('/rafting' + search, request.url), 301)
+    }
+  }
+
   if (pathname === '/home' || pathname === '/home/') {
     return NextResponse.redirect(new URL('/', request.url), 301)
   }

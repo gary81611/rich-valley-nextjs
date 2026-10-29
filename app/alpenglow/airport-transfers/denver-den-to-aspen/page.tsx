@@ -26,9 +26,9 @@ export default function DenverAirportTransferPage() {
         {
           heading: 'The Denver to Aspen ride',
           paragraphs: [
-            'The drive uses I-70. Public driving estimates put Denver International Airport about 3.5–4 hours from Aspen, depending on weather and traffic. This is a private SUV or Ford Transit passenger van, not a shared shuttle.',
-            'SUVs seat 7. The Ford Transit passenger van seats 13. The published one-way SUV rate is $1,375. The 13-passenger Ford Transit is $1,600 each way. Holiday pricing may change seasonally.',
-            'Starlink, ski racks, and roof cargo space are on the vehicles. Drivers are 8 full-time locals who have been driving these mountain roads since 2012. Child car seats and boosters are free. Pets are welcome, with a cleaning fee. No shared rides are offered.',
+            'The drive uses I-70. Public driving estimates put Denver International Airport about 3.5–4 hours from Aspen, depending on weather and traffic. This is a private SUV or Ford Transit Passenger Van, not a shared shuttle.',
+            'SUVs seat 7. The Ford Transit Passenger Van seats 13. The published one-way SUV rate is $1,375. The 13-passenger Ford Transit is $1,600 each way. Holiday pricing may change seasonally.',
+            'Starlink, ski racks, and roof cargo space are on the vehicles. Child car seats and boosters are free. Pets are welcome, with a cleaning fee. No shared rides are offered.',
           ],
         },
         {

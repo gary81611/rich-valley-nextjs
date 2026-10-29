@@ -28,7 +28,7 @@ export default function XGamesTransportationPage() {
           heading: 'Private rides to Buttermilk',
           paragraphs: [
             'Buttermilk is one of the four Aspen Snowmass mountains. Door-to-slope ski transfers already cover Buttermilk, Aspen Mountain, Aspen Highlands, and Snowmass. For X Games week, the same private cars run to Buttermilk.',
-            'SUVs seat 7. The Ford Transit passenger van seats 13. No shared rides are offered. Ski racks and roof cargo space are on the vehicles. Child car seats and boosters are free.',
+            'SUVs seat 7. The Ford Transit Passenger Van seats 13. No shared rides are offered. Ski racks and roof cargo space are on the vehicles. Child car seats and boosters are free.',
           ],
         },
         {
@@ -45,7 +45,7 @@ export default function XGamesTransportationPage() {
         },
         {
           question: 'Can a group ride together to Buttermilk?',
-          answer: 'Yes. SUVs seat 7 and the Ford Transit passenger van seats 13. No shared rides are offered.',
+          answer: 'Yes. SUVs seat 7 and the Ford Transit Passenger Van seats 13. No shared rides are offered.',
         },
         {
           question: 'Do you pick up after night sessions?',
@@ -53,7 +53,7 @@ export default function XGamesTransportationPage() {
         },
         {
           question: 'Is hourly charter available during X Games?',
-          answer: 'Yes. Hourly charter can hold a private SUV or the Ford Transit passenger van for your group. Call 970-456-3666 for the current hourly quote.',
+          answer: 'Yes. Hourly charter can hold a private SUV or the Ford Transit Passenger Van for your group. Call 970-456-3666 for the current hourly quote.',
         },
         {
           question: 'What is the cancellation notice?',
