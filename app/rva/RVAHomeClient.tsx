@@ -37,10 +37,10 @@ const FEATURED_TRIPS = [
     detail: FLY_FISHING_PUBLIC_DESCRIPTION,
   },
   {
-    title: 'Private ranch family fishing and picnic lunch',
+    title: 'Private Ranch Fishing & Picnic',
     href: '/private-ranch-fishing',
-    image: '/images/rva/kit/drift-boat-launch.webp',
-    alt: 'A drift boat being launched from a trailer into a Colorado river',
+    image: '/images/adventures/fishing-catch-1440.webp',
+    alt: 'A family fly fishing from a dock and canoe on a ranch pond',
     detail:
       'Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+).',
   },
