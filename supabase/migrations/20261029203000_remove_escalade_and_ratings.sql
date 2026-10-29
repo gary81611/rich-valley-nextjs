@@ -4,7 +4,9 @@
 -- It does not add a review count or a star rating.
 -- cc_* tables, customer submissions, and the testimonials table are left out of the sweep.
 -- Slug columns are left out so a path token is not rewritten inside a slug.
--- Customer quotes are not rewritten. One Escalade testimonial is hidden by is_active.
+-- Customer quotes are not rewritten.
+-- testimonials.verified defaults false. No row is set verified.
+-- Four unconfirmed quotes are hidden with is_active = false. Their text is left as written.
 
 -- Standalone word only. Same boundary as lib/aal-public-copy.ts:
 -- (?<![\w/.-])Escalades?(?![\w/-])(?!\.(?:png|jpe?g|webp|svg|gif))
@@ -115,17 +117,30 @@ END $$;
 DROP FUNCTION public.kit_strip_escalade(text);
 DROP FUNCTION public.kit_replace_standalone_escalade(text);
 
--- Hide the Escalade quote. Leave the quote text unchanged.
+-- Public pages show a quote only when is_active and verified are both true.
+-- The column is absent until this migration runs. Do not mark any row verified.
+ALTER TABLE testimonials
+  ADD COLUMN IF NOT EXISTS verified boolean NOT NULL DEFAULT false;
+
+-- Hide unconfirmed quotes. Leave the quote text unchanged.
 UPDATE testimonials
 SET is_active = false
-WHERE id = '4654459d-8e4e-4012-ac91-b21464fd5e3e';
+WHERE id IN (
+  '4654459d-8e4e-4012-ac91-b21464fd5e3e',
+  '2f178ca2-cb6a-424d-a90a-50f0782861b1',
+  '6fd684c9-22ea-4b34-8864-b10ad5b89cdc',
+  '39fca401-b360-472d-864d-1c12b9e375cc'
+);
 
 -- Hits this sweep cleans, from a read of production on Oct 29, 2026:
 -- adventures.name, adventures.description, adventures.image_url
 -- blog_posts.content, blog_posts.internal_links, blog_posts.featured_image_url
 -- faqs.answer
 -- geo_content_blocks.answer
--- testimonials is not swept. Row 4654459d-8e4e-4012-ac91-b21464fd5e3e is set is_active = false.
+-- testimonials is not swept. verified stays false for every row.
+-- These ids are set is_active = false, quote text unchanged:
+-- 4654459d-8e4e-4012-ac91-b21464fd5e3e, 2f178ca2-cb6a-424d-a90a-50f0782861b1,
+-- 6fd684c9-22ea-4b34-8864-b10ad5b89cdc, 39fca401-b360-472d-864d-1c12b9e375cc.
 
 -- Scenic tour photo and copy. Row checked in production: 88b4bc72.
 UPDATE adventures

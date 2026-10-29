@@ -8,7 +8,7 @@ import AdventureCard from '@/components/rva/AdventureCard'
 import RvaButton from '@/components/rva/Button'
 import { createClient } from '@/lib/supabase'
 import type { Adventure, Testimonial, GalleryImage } from '@/lib/types'
-import { quoteMentionsEscalade } from '@/lib/rva-confirmed'
+import { isPublicTestimonial } from '@/lib/rva-confirmed'
 import {
   FLY_FISHING_IMAGE,
   FLY_FISHING_IMAGE_ALT,
@@ -115,10 +115,10 @@ export default function RVAHomeClient({
             }),
         )
       }
-      if (testRes.data && testRes.data.length > 0) {
+      if (!testRes.error && testRes.data && testRes.data.length > 0) {
         setTestimonials(
           testRes.data
-            .filter((t: Testimonial) => !quoteMentionsEscalade(t.quote))
+            .filter((t: Testimonial) => isPublicTestimonial(t))
             .map((t: Testimonial) => ({
               quote: t.quote, name: t.author, location: '',
             })),

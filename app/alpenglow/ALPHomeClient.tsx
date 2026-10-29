@@ -10,7 +10,7 @@ import { hrefForService } from '@/lib/alpenglow-services'
 import type { Service as ServiceType, Testimonial } from '@/lib/types'
 import { seoAlt } from '@/lib/seo/alt-text'
 import { AAL_ONE_WAY_RATES, correctAalFaqItem, correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
-import { quoteMentionsEscalade } from '@/lib/rva-confirmed'
+import { isPublicTestimonial } from '@/lib/rva-confirmed'
 
 interface GeoBlock {
   id: string
@@ -33,18 +33,8 @@ function correctAalCopy(question: string, answer: string): string {
   return correctAalPublicText(answer)
 }
 
-const ServiceIcon = ({ icon }: { icon: string }) => {
-  const icons: Record<string, React.ReactNode> = {
-    Plane: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>,
-    Clock: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
-    Briefcase: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>,
-    Heart: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>,
-  }
-  return <div className="text-alp-gold">{icons[icon] ?? null}</div>
-}
-
 export default function AlpenglowHomeClient() {
-  const [services, setServices] = useState<{ title: string; slug: string; description: string; features: string[]; icon: string }[]>([])
+  const [services, setServices] = useState<{ title: string; slug: string; description: string; features: string[] }[]>([])
   const [testimonials, setTestimonials] = useState<{ quote: string; name: string; location: string }[]>([])
   const [stats, setStats] = useState<{value: string; label: string}[]>([])
   const [whyChooseUs, setWhyChooseUs] = useState<{title: string; description: string}[]>([])
@@ -76,14 +66,13 @@ export default function AlpenglowHomeClient() {
               slug: s.slug ?? '',
               description: correctAalPublicText(s.description),
               features: Array.isArray(s.features) ? (s.features as string[]).map((feature) => correctAalPublicText(feature)) : [],
-              icon: s.icon || 'Plane',
             })),
           )
         }
-        if (testRes.data && testRes.data.length > 0) {
+        if (!testRes.error && testRes.data && testRes.data.length > 0) {
           setTestimonials(
             testRes.data
-              .filter((t: Testimonial) => !quoteMentionsEscalade(t.quote))
+              .filter((t: Testimonial) => isPublicTestimonial(t))
               .map((t: Testimonial) => ({
                 quote: t.quote, name: t.author, location: '',
               })),
@@ -160,7 +149,7 @@ export default function AlpenglowHomeClient() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-alp-navy-deep/80 via-alp-navy-deep/50 to-alp-navy-deep/85" />
         </div>
-        <div className="aal-on-navy relative z-10 text-center text-white px-6 max-w-5xl mx-auto pb-28">
+        <div className="aal-on-navy relative z-10 text-center text-white px-6 max-w-5xl mx-auto pb-36 sm:pb-28">
           <p className="font-cormorant text-xl md:text-2xl text-alp-gold tracking-[0.3em] uppercase mb-6">
             Aspen · Snowmass · Roaring Fork Valley
           </p>
@@ -177,6 +166,9 @@ export default function AlpenglowHomeClient() {
             <a href="#quote" className="border-2 border-white text-white hover:bg-white hover:text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
               Request a quote
             </a>
+            <a href="/fleet" className="border-2 border-white text-white hover:bg-white hover:text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
+              See the fleet
+            </a>
           </div>
         </div>
         {/* Stats bar */}
@@ -192,19 +184,6 @@ export default function AlpenglowHomeClient() {
           </div>
         </div>
         )}
-      </section>
-
-      {/* FLEET SHOWCASE */}
-      <section id="fleet" className="py-24 bg-alp-navy-deep">
-        <div className="max-w-7xl mx-auto px-6">
-          <ScrollReveal className="text-center">
-            <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Travel in Style</p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold mb-8">Our Fleet</h2>
-            <a href="/fleet" className="text-alp-gold font-semibold text-lg hover:underline">
-              See the fleet
-            </a>
-          </ScrollReveal>
-        </div>
       </section>
 
       {/* TRANSPORTATION SERVICES */}
@@ -225,24 +204,12 @@ export default function AlpenglowHomeClient() {
             {services.map((service, i) => (
               <ScrollReveal key={service.title} delay={i * 100}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 border border-alp-pearl-dark h-full">
-                  <div className="flex items-start gap-5 mb-6">
-                    <div className="w-16 h-16 bg-alp-navy rounded-2xl flex items-center justify-center flex-shrink-0">
-                      <ServiceIcon icon={service.icon} />
-                    </div>
-                    <div>
-                      <h3 className="font-playfair text-2xl text-alp-navy font-semibold mb-2">{service.title}</h3>
-                      <p className="text-alp-slate text-sm leading-relaxed">{service.description}</p>
-                    </div>
-                  </div>
+                  <h3 className="font-playfair text-2xl text-alp-navy font-semibold mb-2">{service.title}</h3>
+                  <p className="text-alp-slate text-sm leading-relaxed mb-6">{service.description}</p>
                   {service.features.length > 0 && (
                   <ul className="space-y-2">
                     {service.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-3 text-sm text-gray-700">
-                        <div className="w-5 h-5 bg-alp-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
-                          <svg className="w-3 h-3 text-alp-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
-                        </div>
-                        {feature}
-                      </li>
+                      <li key={feature} className="text-sm text-gray-700">{feature}</li>
                     ))}
                   </ul>
                   )}

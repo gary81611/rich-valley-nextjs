@@ -217,27 +217,6 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* Team */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center">
-            <p className="text-alp-gold text-sm tracking-widest uppercase mb-4 font-semibold">
-              Our Team
-            </p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-8">
-              Professional Chauffeurs, Local Experts
-            </h2>
-            <p className="text-alp-slate text-lg leading-relaxed mb-6">
-              Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee.
-            </p>
-            <p className="text-alp-slate text-lg leading-relaxed">
-              When you ride with Alpenglow, you are in the hands of someone who takes pride in making
-              your experience flawless. That is our promise, on every single ride.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* Values */}
       <section className="py-24 bg-alp-pearl-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -60,16 +60,19 @@ function SchemaTab({ supabase }: { supabase: any }) {
         supabase.from('adventures').select('name,description,price,duration').eq('is_active', true),
         supabase.from('services').select('name,description,price_from').eq('is_active', true),
         supabase.from('fleet_vehicles').select('name,description,capacity,type').eq('is_active', true),
-        supabase.from('testimonials').select('author,quote,rating,site_key').limit(20),
+        supabase.from('testimonials').select('author,quote,rating,site_key,is_active,verified').eq('is_active', true).limit(20),
         supabase.from('faqs').select('question,answer,site_key').eq('is_active', true),
       ])
 
       const adventureData = adventures.data || []
       const serviceData = services.data || []
       const fleetData = fleet.data || []
-      const testimonialData = (testimonials.data || []).filter(
-        (t: { site_key: string; quote?: string }) => t.site_key === schemaBrand && !/escalade/i.test(t.quote || ''),
-      )
+      const testimonialData = testimonials.error
+        ? []
+        : (testimonials.data || []).filter(
+            (t: { site_key: string; is_active?: boolean | null; verified?: boolean | null; quote?: string | null }) =>
+              t.site_key === schemaBrand && t.is_active === true && t.verified === true && !/escalade/i.test(t.quote || ''),
+          )
       const faqData = (faqs.data || []).filter((f: { site_key: string }) => f.site_key === schemaBrand)
 
       const avgRating = testimonialData.length
@@ -247,7 +250,7 @@ function SchemaTab({ supabase }: { supabase: any }) {
           { type: 'FAQPage', desc: 'All your FAQs, eligible for Google dropdowns', sites: 'Both sites' },
           { type: 'TouristTrip / Product', desc: 'Adventures (RVA) + fleet vehicles (AAL)', sites: 'Both sites' },
           { type: 'TouristAttraction / LimousineBus', desc: 'Business type classification', sites: 'Both sites' },
-          { type: 'AggregateRating + Review', desc: 'Star ratings from testimonials', sites: 'Both sites' },
+          { type: 'AggregateRating + Review', desc: 'Omitted until a testimonial is active and verified', sites: 'Neither site yet' },
           { type: 'GeoCoordinates', desc: 'Aspen, CO location for map results', sites: 'Both sites' },
         ].map((s) => (
           <div key={s.type} className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
@@ -1043,7 +1046,7 @@ Sitemap: aspenalpenglowlimousine.com/sitemap.xml`}</pre>
           {
             id: 'schema-check', priority: 'MEDIUM' as const,
             title: 'Verify Schema Markup is Complete',
-            desc: 'Check the Schema tab in this admin panel. Make sure FAQ, LocalBusiness, TouristAttraction, AggregateRating, and Offer schema types are all configured for both sites.',
+            desc: 'Check the Schema tab in this admin panel. Make sure FAQ, LocalBusiness, TouristAttraction, and Offer schema types are configured for both sites. Do not add AggregateRating from unverified testimonials.',
             why: 'Structured data gives AI models concrete, citable facts.',
             links: [],
             time: '~30 min',

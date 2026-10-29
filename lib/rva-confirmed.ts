@@ -58,6 +58,18 @@ export function quoteMentionsEscalade(quote: string | null | undefined): boolean
   return /escalade/i.test(quote || '')
 }
 
+/**
+ * Public quotes must be active and verified.
+ * A missing `verified` field (column not migrated yet) is unverified, so nothing is shown.
+ */
+export function isPublicTestimonial(row: {
+  is_active?: boolean | null
+  verified?: boolean | null
+  quote?: string | null
+}): boolean {
+  return row.is_active === true && row.verified === true && !quoteMentionsEscalade(row.quote)
+}
+
 export function rvaPriceNoteForSlug(slug: string): string | null {
   switch (slug) {
     case 'horseback-riding':
