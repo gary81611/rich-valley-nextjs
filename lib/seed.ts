@@ -29,7 +29,7 @@ export async function seedAllTables(supabase: SupabaseClient) {
         email: alpenglowData.email, address: 'Aspen, Colorado 81611', logo_url: alpenglowData.logo,
         social_links: { Facebook: alpenglowData.social.facebook, Instagram: alpenglowData.social.instagram },
         colors: { primary: '#1B2541', secondary: '#C8A96E', accent: '#2A3F6F', background: '#0F1729' },
-        stats: [{ value: '24/7', label: 'Dispatch Available' }, { value: 'Since 2012', label: 'Serving Aspen' }, { value: '2 + 1', label: 'Suburbans and a Transit' }],
+        stats: [{ value: '24/7', label: 'Dispatch Available' }, { value: 'Since 2012', label: 'Serving Aspen' }, { value: 'Two Suburbans', label: 'and one Ford Transit' }],
       },
     ])
     results.push('Site Settings: 2 inserted')

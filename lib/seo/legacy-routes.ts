@@ -210,6 +210,10 @@ export function normalizeRvaLegacyPath(url: string): string {
     // Detail pages stay on /adventures/<slug>. Mapping to themselves skips the /<slug> fallback.
     'scenic-escalade-tours': '/adventures/scenic-wildlife-tours',
     'scenic-wildlife-tours': '/adventures/scenic-wildlife-tours',
+    rafting: '/rafting',
+    'whitewater-rafting': '/rafting',
+    'scenic-river-rafting': '/rafting',
+    'river-rafting': '/rafting',
     'horseback-riding': '/adventures/horseback-riding',
     hunting: '/winter',
     'winter-adventures': '/winter',

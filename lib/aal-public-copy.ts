@@ -156,6 +156,10 @@ const AAL_DENVER_PRICE_SENTENCE =
 export function correctAalPublicText(text: string): string {
   if (!text) return text
   let t = text
+  t = t.replace(/scenic-escalade\.png/gi, 'scenic-wildlife-tour.png')
+  t = t.replace(/\/images\/(?:fleet|alpenglow)\/escalade\.png/gi, '/images/logos/alpenglow-logo.png')
+  t = t.replace(/Scenic Escalade Tours/g, 'Scenic and Wildlife Tours')
+  t = t.replace(/scenic Escalade tours/g, 'scenic and wildlife tours')
   t = t.replace(
     /After 14 years of shuttling Aspen['’]s skiing visitors between slopes, restaurants, airports, and accommodations, Aspen Alpenglow Limousine can tell you with confidence: for most ski trips to the Roaring Fork Valley, private car service is a better experience than a rental car at a comparable total cost\./gi,
     "Aspen Alpenglow Limousine has been driving Aspen's skiing visitors between slopes, restaurants, airports, and accommodations since 2012, and we can tell you with confidence: for most ski trips to the Roaring Fork Valley, private car service is a better experience than a rental car at a comparable total cost.",
@@ -210,8 +214,6 @@ export function correctAalPublicText(text: string): string {
     /Over 14 years of operation, we've become the trusted transportation partner for Aspen's most discerning travelers — Fortune 500 executives, international celebrities, Aspen Institute fellows, and families returning year after year because they know their transportation needs are handled with absolute reliability and discretion\./g,
     "Operating since 2012, we've become the trusted transportation partner for Aspen's most discerning travelers — Fortune 500 executives, international celebrities, Aspen Institute fellows, and families returning year after year because they know their transportation needs are handled with absolute reliability and discretion.",
   )
-  t = t.replace(/4\.9-Star Rated/gi, 'Private car service')
-  t = t.replace(/5\.0 on Google/gi, 'Private car service')
   t = t.replace(/Rated 5\.0 by guests on Google \(5 reviews\)\.?/gi, 'Guests book airport transfers, ski days, weddings, and corporate travel.')
   t = t.replace(
     /Over 150 five-star reviews from guests who trust us with their most important transportation needs\./gi,
@@ -222,6 +224,7 @@ export function correctAalPublicText(text: string): string {
     'Guests book airport transfers, ski days, weddings, and corporate travel.',
   )
   t = t.replace(/4\.9-Star Rated/gi, 'Private car service')
+  t = t.replace(/5\.0 on Google/gi, 'Private car service')
   t = t.replace(
     /Eagle County Regional Airport \(EGE\) in Glenwood Springs/g,
     'Eagle County Regional Airport (EGE) in Gypsum',
@@ -409,7 +412,7 @@ export function normalizeAalStat(stat: { value: string; label: string }): { valu
     blob.includes('review') ||
     blob.includes('star')
   ) {
-    return { value: '2 + 1', label: 'Suburbans and a Transit' }
+    return { value: 'Two Suburbans', label: 'and one Ford Transit' }
   }
   return { value, label }
 }

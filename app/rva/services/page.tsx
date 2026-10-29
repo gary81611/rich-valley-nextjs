@@ -89,7 +89,7 @@ export default async function ServicesPage() {
             </p>
           </div>
           {adventures.length === 0 ? (
-            <p className="text-center text-gray-500">No adventures available at this time. Check back soon!</p>
+            <p className="text-center text-rva-forest">No adventures are listed yet. Call 970-456-3666 and we will help you plan.</p>
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
               {adventures.map((adventure) => (

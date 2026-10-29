@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!post) return { title: 'Post Not Found | Aspen Alpenglow Limousine' }
 
   const canonical = `https://aspenalpenglowlimousine.com/blog/${post.slug}`
-  const ogImage = absolutePublicImageUrl('alpenglow', post.featured_image_url)
+  const ogImage = absolutePublicImageUrl('alpenglow', blogImageSrcForNext(post.featured_image_url))
 
   return {
     title: post.meta_title || post.title,
@@ -208,7 +208,7 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
   const relatedLinks = mergeRelatedLinks(post.slug, post.internal_links)
 
   const defaultArticleImage = 'https://aspenalpenglowlimousine.com/images/logos/alpenglow-logo.png'
-  const coverImageAbsolute = absolutePublicImageUrl('alpenglow', post.featured_image_url)
+  const coverImageAbsolute = absolutePublicImageUrl('alpenglow', blogImageSrcForNext(post.featured_image_url))
   const coverImageSrc = blogImageSrcForNext(post.featured_image_url)
   const schemaImageUrl = coverImageAbsolute || defaultArticleImage
   const articleSchema = {

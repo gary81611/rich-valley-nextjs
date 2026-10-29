@@ -77,7 +77,7 @@ Sitemap: https://www.richvalleyadventures.com/sitemap.xml
 - Location: Aspen, Colorado 81611, United States (Roaring Fork Valley & resort corridor)
 - Phone: +1 970-456-3666
 - Founded: 2012
-- Fleet: exactly two Chevrolet Suburbans (7 passengers each) and one Ford Transit passenger van (13 passengers). No Escalade. Starlink, ski racks, and roof cargo space
+- Fleet: exactly two Chevrolet Suburbans (7 passengers each) and one Ford Transit passenger van (13 passengers). Starlink, ski racks, and roof cargo space
 - Colorado PUC permit: LL-04725
 - No public street address. Service areas include Aspen, Snowmass Village, Basalt, Carbondale, Glenwood Springs, Gypsum (Eagle County Airport), Rifle, and Denver
 - Eagle County Regional Airport (EGE) is in Gypsum, not Glenwood Springs

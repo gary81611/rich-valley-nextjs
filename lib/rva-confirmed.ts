@@ -31,8 +31,23 @@ export const RVA_PRICE_LINES = [
   RVA_RAFTING_PRICE,
 ] as const
 
-/** Public path for the scenic/wildlife tour. The old Escalade slug redirects here. */
+/** Public path for the scenic/wildlife tour. The old slug redirects here. */
 export const RVA_SCENIC_TOUR_PATH = '/adventures/scenic-wildlife-tours'
+export const RVA_SCENIC_TOUR_IMAGE = '/images/adventures/scenic-wildlife-tour.png'
+export const RVA_SCENIC_TOUR_IMAGE_ALT = 'Aspen trees along a dirt road in the Roaring Fork Valley'
+
+/** Drop the retired vehicle name from public copy. Filenames are rewritten first. */
+export function stripEscaladeCopy(text: string): string {
+  if (!text) return text
+  let t = text
+  t = t.replace(/scenic-escalade\.png/gi, 'scenic-wildlife-tour.png')
+  t = t.replace(/\/images\/(?:fleet|alpenglow)\/escalade\.png/gi, '/images/logos/alpenglow-logo.png')
+  t = t.replace(/Scenic Escalade Tours/g, 'Scenic and Wildlife Tours')
+  t = t.replace(/scenic Escalade tours/g, 'scenic and wildlife tours')
+  t = t.replace(/\bEscalades\b/g, 'SUVs')
+  t = t.replace(/\bEscalade\b/g, 'SUV')
+  return t
+}
 
 export function rvaPriceNoteForSlug(slug: string): string | null {
   switch (slug) {

@@ -10,6 +10,7 @@ import { rvaBlogSlugShouldRedirectToBlogIndex } from '@/lib/rva-blog-seo-redirec
 import { seoAlt } from '@/lib/seo/alt-text'
 import type { BlogPost } from '@/lib/types'
 import { withPrivateRanchFishingLink, withYearRoundFishingNote } from '@/lib/rva-fly-fishing-content'
+import { stripEscaladeCopy } from '@/lib/rva-confirmed'
 import { blogImageSrcForNext, isBlogPostPubliclyVisible } from '@/lib/blog-visibility'
 import RvaButton from '@/components/rva/Button'
 
@@ -43,14 +44,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = await getPost(slug)
   if (!post) return { title: 'Post Not Found | Rich Valley Adventures' }
 
-  const ogImage = absolutePublicImageUrl('rva', post.featured_image_url)
+  const ogImage = absolutePublicImageUrl('rva', blogImageSrcForNext(post.featured_image_url))
+  const title = stripEscaladeCopy(post.meta_title || post.title)
+  const description = post.meta_description ? stripEscaladeCopy(post.meta_description) : undefined
 
   return {
-    title: post.meta_title || post.title,
-    description: post.meta_description || undefined,
+    title,
+    description,
     openGraph: {
-      title: post.meta_title || post.title,
-      description: post.meta_description || undefined,
+      title,
+      description,
       type: 'article',
       url: canonicalUrl('rva', `/blog/${post.slug}`),
       publishedTime: post.published_at || undefined,
@@ -164,7 +167,7 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
     sidebarLinks.unshift({ text: 'Private ranch fishing at Spring Creek Ranch', url: '/private-ranch-fishing' })
   }
 
-  const coverImageAbsolute = absolutePublicImageUrl('rva', post.featured_image_url)
+  const coverImageAbsolute = absolutePublicImageUrl('rva', blogImageSrcForNext(post.featured_image_url))
   const coverImageSrc = blogImageSrcForNext(post.featured_image_url)
 
   const articleUrl = canonicalUrl('rva', `/blog/${post.slug}`)
@@ -173,10 +176,10 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
   const heroImageUrl = coverImageAbsolute || defaultArticleImage
   const description =
     post.meta_description ||
-    (post.content ? post.content.replace(/\s+/g, ' ').trim().slice(0, 200) : '') ||
+    (post.content ? stripEscaladeCopy(post.content).replace(/\s+/g, ' ').trim().slice(0, 200) : '') ||
     post.title
   const articleBody = post.content
-    ? withPrivateRanchFishingLink(withYearRoundFishingNote(post.content))
+    ? stripEscaladeCopy(withPrivateRanchFishingLink(withYearRoundFishingNote(post.content)))
     : ''
   const sanitizedFaqs = (post.faqs ?? [])
     .map((f) => ({

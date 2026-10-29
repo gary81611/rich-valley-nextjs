@@ -190,13 +190,19 @@ SET
 WHERE site_key = 'alpenglow'
   AND (question ILIKE '%(6 pax)%' OR answer ILIKE '%(6 pax)%' OR answer ILIKE '%up to 6 passengers%');
 
--- RVA prices and the scenic tour name. The public page also resolves the old Escalade slug.
+-- Scenic tour row 88b4bc72. There is no adventures row whose name contains "raft".
+-- Snowshoeing is a winter_adventures title, not an adventures name.
+-- camping_packages has no rows; overnight price is the Elevated Camping adventure.
 UPDATE adventures
 SET
   name = 'Scenic & Wildlife Tours',
   price = 750,
-  description = 'Half-day scenic and wildlife tour: $750.'
-WHERE name ILIKE '%escalade%' OR name ILIKE '%scenic%wildlife%';
+  description = 'Half-day scenic and wildlife tour: $750.',
+  image_url = '/images/adventures/scenic-wildlife-tour.png',
+  long_description = 'Half-day scenic and wildlife tour: $750.'
+WHERE id = '88b4bc72-49b7-4552-b4e6-5aa9db5ee05a'
+   OR name ILIKE '%escalade%'
+   OR coalesce(image_url, '') ILIKE '%escalade%';
 
 UPDATE adventures
 SET
@@ -210,23 +216,10 @@ SET price = 600
 WHERE name ILIKE '%hik%';
 
 UPDATE adventures
-SET price = 500
-WHERE name ILIKE '%snowshoe%';
-
-UPDATE adventures
 SET price = 1500
-WHERE name ILIKE '%camp%';
-
-UPDATE adventures
-SET price = 1200
-WHERE name ILIKE '%raft%';
+WHERE id = 'd999b4ae-3341-4cab-8c3d-05d6865b01df'
+   OR name ILIKE '%camp%';
 
 UPDATE winter_adventures
 SET price_from = 500
 WHERE title ILIKE '%snowshoe%';
-
-UPDATE camping_packages
-SET price_from = 1500
-WHERE name ILIKE '%overnight%'
-   OR name ILIKE '%camping%'
-   OR name ILIKE '%glamp%';

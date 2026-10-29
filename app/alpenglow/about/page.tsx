@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 const defaultStats = [
   { value: '24/7', label: 'Dispatch Available' },
   { value: 'Since 2012', label: 'Serving Aspen' },
-  { value: '2 + 1', label: 'Suburbans and a Transit' },
+  { value: 'Two Suburbans', label: 'and one Ford Transit' },
 ]
 
 const defaultWhyChooseUs = [

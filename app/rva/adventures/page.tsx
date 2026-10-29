@@ -151,8 +151,10 @@ export default function AdventuresPage() {
         <div className="max-w-7xl mx-auto px-6">
           {filtered.length === 0 ? (
             <div className="text-center py-16">
-              <p className="text-gray-500 text-lg">
-                No adventures found for this season. Check back soon or view all adventures.
+              <p className="text-lg text-rva-forest">
+                {activeSeason === 'all'
+                  ? 'No adventures are listed yet. Call 970-456-3666 and we will help you plan.'
+                  : 'No adventures are listed for this season. Choose All, or call 970-456-3666.'}
               </p>
             </div>
           ) : (

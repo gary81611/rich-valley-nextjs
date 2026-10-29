@@ -33,8 +33,13 @@ export function filterPublicBlogPosts<T extends { published_at?: string | null }
  * Remote URLs already used on the site (for example Unsplash) stay absolute.
  */
 export function blogImageSrcForNext(url: string | null | undefined): string | undefined {
-  const u = typeof url === 'string' ? url.trim() : ''
-  if (!u) return undefined
+  const raw = typeof url === 'string' ? url.trim() : ''
+  if (!raw) return undefined
+  const u = /scenic-escalade/i.test(raw)
+    ? '/images/adventures/scenic-wildlife-tour.png'
+    : /escalade/i.test(raw)
+      ? '/images/logos/alpenglow-logo.png'
+      : raw
   if (u.startsWith('/') && !u.startsWith('//')) return u
   if (u.startsWith('https://') || u.startsWith('http://')) return u
   return `/${u}`

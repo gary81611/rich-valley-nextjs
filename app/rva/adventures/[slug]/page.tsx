@@ -114,7 +114,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
             visual.alt ||
             (isRental
               ? PADDLE_PHOTO_ALT
-              : `${adventure.name} with Rich Valley Adventures in Aspen, Colorado`),
+              : `${displayName} with Rich Valley Adventures in Aspen, Colorado`),
         },
       ],
     },
@@ -187,7 +187,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
         title={displayName}
         content={content}
         heroImage={heroSrc || undefined}
-        heroImageAlt={visual.alt || `${adventure.name} with Rich Valley Adventures in Aspen, Colorado`}
+        heroImageAlt={visual.alt || `${displayName} with Rich Valley Adventures in Aspen, Colorado`}
         heroObjectPosition={visual.objectPosition}
         bookingHref="/contact"
       />
@@ -202,9 +202,14 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
                   <AdventureCard
                     key={related.id}
                     href={adventurePublicHref(related)}
-                    title={related.name}
+                    title={rvaPublicAdventureTitle(related.name, slugify(related.name))}
                     image={relatedVisual.src}
-                    imageAlt={relatedVisual.alt || (relatedVisual.src.endsWith('/paddle-boarding.jpg') ? PADDLE_PHOTO_ALT : related.name)}
+                    imageAlt={
+                      relatedVisual.alt ||
+                      (relatedVisual.src.endsWith('/paddle-boarding.jpg')
+                        ? PADDLE_PHOTO_ALT
+                        : rvaPublicAdventureTitle(related.name, slugify(related.name)))
+                    }
                     objectPosition={relatedVisual.objectPosition}
                     duration={related.duration}
                     level={related.difficulty}

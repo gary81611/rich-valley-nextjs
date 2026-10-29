@@ -1,5 +1,7 @@
 import { isBookableAdventureName, slugFromAdventureName } from '@/lib/rva-adventure-filters'
 import {
+  RVA_SCENIC_TOUR_IMAGE,
+  RVA_SCENIC_TOUR_IMAGE_ALT,
   RVA_SCENIC_TOUR_PATH,
   RVA_TRIP_OWNERSHIP,
   isScenicTourSlug,
@@ -53,7 +55,7 @@ const PORTRAIT_ADVENTURE_IMAGES = [
   '/images/adventures/fly-fishing.png',
   '/images/adventures/hiking.png',
   '/images/adventures/horseback-riding.png',
-  '/images/adventures/scenic-escalade.png',
+  '/images/adventures/scenic-wildlife-tour.png',
   '/images/adventures/mountain-biking.jpg',
   '/images/adventures/fishing-catch.jpeg',
   '/images/adventures/paddle-boarding.jpg',
@@ -125,6 +127,9 @@ export function adventurePublicImage(row: {
   }
   if (row.id === TRAIL_HIKING_ID || slug === 'trail-hiking') {
     return { src: TRAIL_HIKING_IMAGE, alt: TRAIL_HIKING_IMAGE_ALT }
+  }
+  if (isScenicTourSlug(slug) || /escalade/i.test(row.name) || /escalade/i.test(row.image_url || '')) {
+    return { src: RVA_SCENIC_TOUR_IMAGE, alt: RVA_SCENIC_TOUR_IMAGE_ALT }
   }
   const raw = (row.image_url || '').trim()
   const isRental = row.id === PADDLE_RENTAL_ID || slug === 'paddle-board-rentals'
