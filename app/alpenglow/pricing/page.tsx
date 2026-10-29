@@ -2,9 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { alpenglowData } from '@/lib/site-data'
-import VehicleCard from '@/components/alpenglow/VehicleCard'
-import { AAL_OG_IMAGE, AAL_VEHICLES } from '@/lib/aal-vehicles'
-import { AAL_ONE_WAY_RATES, AAL_PUC_LINE, aalTransitPrice } from '@/lib/aal-public-copy'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
+import { aalTransitPrice } from '@/lib/aal-public-copy'
 
 type DbPricingRoute = {
   route_name: string
@@ -18,7 +17,13 @@ type DbPricingRoute = {
   display_order: number | null
 }
 
-const TRANSIT_NOTE = 'Contact for Ford Transit Van quote'
+const TRANSIT_NOTE = ''
+
+function publishedVanPrice(note: string | null | undefined): string {
+  const value = (note || '').trim()
+  if (/^\$[\d,]+$/.test(value)) return value
+  return ''
+}
 
 function transitNoteFor(blob: string): string {
   return aalTransitPrice(blob) || TRANSIT_NOTE
@@ -249,13 +254,10 @@ function applyConfirmedPolicies(titles: string[]): string[] {
     const t = title.toLowerCase()
     if (t.includes('winter and summer')) return 'Holiday pricing may change seasonally.'
     if (t.includes('7-day') || t.includes('24-hour cancellation') || t.includes('24 hour cancellation')) return diversion
-    if (/eagle/i.test(title) && /\$720|\$120|quoted on request|request a quote/i.test(title)) {
-      return AAL_ONE_WAY_RATES
-    }
+    if (/one-way/i.test(title) && /\$|eagle|denver|rifle/i.test(title)) return ''
     return title
-  })
+  }).filter(Boolean)
   const extras = [
-    AAL_ONE_WAY_RATES,
     diversion,
     'Corporate charge accounts are billed monthly.',
   ]
@@ -309,15 +311,18 @@ function PriceTable({ title, routes }: { title: string; routes: RouteRow[] }) {
         {routes.map((r) => (
           <article key={r.slug} className="rounded-2xl border border-alp-pearl-dark p-4">
             <p className="font-semibold text-alp-navy">
-              {r.from} <span className="text-alp-navy/40">&rarr;</span> {r.to}
+              {r.from}{r.to ? <> <span className="text-alp-navy/40">&rarr;</span> {r.to}</> : null}
             </p>
             <p className="mt-3 text-lg font-semibold text-alp-gold-700">
               Chevrolet Suburban · {`$${r.suvPrice.toLocaleString()}`}
             </p>
-            <p className="text-base font-semibold text-alp-navy">Ford Transit passenger van · {r.sprinterPrice}</p>
-            <p className="mt-2 text-xs text-alp-navy/60">
-              {r.distance} · {r.driveTime}
+            <p className="text-base font-semibold text-alp-navy">
+              Ford Transit Passenger Van{publishedVanPrice(r.sprinterPrice) ? ` · ${publishedVanPrice(r.sprinterPrice)}` : ''}
             </p>
+            {(() => {
+              const bits = [r.distance, r.driveTime].filter((part) => part && !/^[—–\-.\s]+$/.test(part))
+              return bits.length > 0 ? <p className="mt-2 text-xs text-alp-navy/60">{bits.join(' · ')}</p> : null
+            })()}
           </article>
         ))}
       </div>
@@ -329,7 +334,7 @@ function PriceTable({ title, routes }: { title: string; routes: RouteRow[] }) {
               <th className="text-left py-3 px-4 font-semibold text-alp-navy">Distance</th>
               <th className="text-left py-3 px-4 font-semibold text-alp-navy">Drive Time</th>
               <th className="text-right py-3 px-4 font-semibold text-alp-navy">Chevrolet Suburban (up to 7)</th>
-              <th className="text-right py-3 px-4 font-semibold text-alp-navy">Ford Transit passenger van (up to 13)</th>
+              <th className="text-right py-3 px-4 font-semibold text-alp-navy">Ford Transit Passenger Van (up to 13). Quote.</th>
             </tr>
           </thead>
           <tbody>
@@ -337,13 +342,17 @@ function PriceTable({ title, routes }: { title: string; routes: RouteRow[] }) {
               <tr key={r.slug} className="border-b border-alp-pearl hover:bg-alp-pearl/50 transition-colors">
                 <td className="py-3 px-4">
                   <span className="font-medium text-alp-navy">{r.from}</span>
-                  <span className="text-alp-navy/40 mx-2">&rarr;</span>
-                  <span className="font-medium text-alp-navy">{r.to}</span>
+                  {r.to ? (
+                    <>
+                      <span className="text-alp-navy/40 mx-2">&rarr;</span>
+                      <span className="font-medium text-alp-navy">{r.to}</span>
+                    </>
+                  ) : null}
                 </td>
                 <td className="py-3 px-4 text-alp-navy/60">{r.distance}</td>
                 <td className="py-3 px-4 text-alp-navy/60">{r.driveTime}</td>
                 <td className="py-3 px-4 text-right font-semibold text-alp-gold-700">{`$${r.suvPrice.toLocaleString()}`}</td>
-                <td className="py-3 px-4 text-right text-alp-navy text-sm">{r.sprinterPrice}</td>
+                <td className="py-3 px-4 text-right text-alp-navy text-sm">{publishedVanPrice(r.sprinterPrice)}</td>
               </tr>
             ))}
           </tbody>
@@ -400,7 +409,7 @@ export default async function PricingPage() {
     distance: r.distance,
     driveTime: r.drive_time,
     suvPrice: r.suv_price,
-    sprinterPrice: (r.price_note || 'Contact for quote').replace(/Sprinter/gi, 'Ford Transit Van'),
+    sprinterPrice: publishedVanPrice((r.price_note || '').replace(/Sprinter/gi, 'Ford Transit Passenger Van')),
     slug: r.route_name,
   })
 
@@ -408,7 +417,7 @@ export default async function PricingPage() {
   const mapHourly = (r: (typeof allRoutes)[0]): HourlyRow => ({
     service: r.route_name,
     suvPrice: r.suv_price,
-    sprinterPrice: (r.price_note || 'Contact for quote').replace(/Sprinter/gi, 'Ford Transit Van'),
+    sprinterPrice: publishedVanPrice((r.price_note || '').replace(/Sprinter/gi, 'Ford Transit Passenger Van')),
     note: r.drive_time,
   })
 
@@ -438,70 +447,29 @@ export default async function PricingPage() {
           </div>
         )}
 
-        <PriceTable title="Airport to Aspen/Snowmass" routes={AIRPORT_INBOUND} />
-        <PriceTable title="Aspen to Airport" routes={AIRPORT_OUTBOUND} />
-        <p className="text-sm text-alp-navy/70 mb-4 max-w-3xl leading-relaxed">
-          <strong className="text-alp-navy">Private FBO airport service:</strong> Eagle, Rifle, and Grand Junction,
-          plus Buena Vista, Montrose, and Gunnison. Existing partners: EGE — Signature Aviation | KRIL (Rifle) — Atlantic
-          Aviation | GJT — West Star Aviation | KAPA — Centennial Airport Denver.
-        </p>
+        <PriceTable title="Airport transfers" routes={[...AIRPORT_INBOUND, ...AIRPORT_OUTBOUND]} />
         <p className="text-sm text-alp-navy/70 mb-12 max-w-3xl leading-relaxed">
-          {AAL_ONE_WAY_RATES} {AAL_PUC_LINE}
-          Flight diversions to Denver or Grand Junction are handled with 2 hours&apos; notice and no Aspen cancellation penalty.
-          General cancellations need 24 hours&apos; notice.
+          FBO partners: EGE — Signature Aviation. KRIL (Rifle) — Atlantic Aviation. GJT — West Star Aviation. KAPA — Centennial Airport Denver.
         </p>
-        <PriceTable title="Local / Roaring Fork Valley" routes={LOCAL_ROUTES} />
-        <PriceTable title="Long-Distance / Resort-to-Resort" routes={LONG_DISTANCE} />
-
-        {/* Hourly & Special Services */}
-        {HOURLY_SERVICES.length > 0 && (
-          <div className="mb-12">
-            <h2 className="font-playfair text-2xl font-semibold text-alp-navy mb-6">Hourly Charter &amp; In-Town</h2>
-            <div className="sm:hidden space-y-4">
-              {HOURLY_SERVICES.map((s) => (
-                <article key={s.service} className="rounded-2xl border border-alp-pearl-dark p-4">
-                  <p className="font-semibold text-alp-navy">{s.service}</p>
-                  <p className="mt-3 text-lg font-semibold text-alp-gold-700">
-                    Chevrolet Suburban · {s.suvPrice ? `$${s.suvPrice}${s.note || ''}` : '\u2014'}
-                  </p>
-                  <p className="text-base font-semibold text-alp-navy">Ford Transit passenger van · {s.sprinterPrice}</p>
-                </article>
-              ))}
-            </div>
-            <div className="hidden sm:block overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b-2 border-alp-gold/30">
-                    <th className="text-left py-3 px-4 font-semibold text-alp-navy">Service</th>
-                    <th className="text-right py-3 px-4 font-semibold text-alp-navy">Chevrolet Suburban (up to 7)</th>
-                    <th className="text-right py-3 px-4 font-semibold text-alp-navy">Ford Transit passenger van (up to 13)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {HOURLY_SERVICES.map((s) => (
-                    <tr key={s.service} className="border-b border-alp-pearl hover:bg-alp-pearl/50">
-                      <td className="py-3 px-4 font-medium text-alp-navy">{s.service}</td>
-                      <td className="py-3 px-4 text-right font-semibold text-alp-gold-700">
-                        {s.suvPrice ? `$${s.suvPrice}${s.note || ''}` : '\u2014'}
-                      </td>
-                      <td className="py-3 px-4 text-right text-alp-navy text-sm">{s.sprinterPrice}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {/* Fleet */}
-        <div className="mb-12">
-          <h2 className="font-playfair text-2xl font-semibold text-alp-navy mb-6">Our Fleet</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {AAL_VEHICLES.map((vehicle) => (
-              <VehicleCard key={vehicle.id} vehicle={vehicle} />
-            ))}
-          </div>
-        </div>
+        <PriceTable
+          title="Local and hourly"
+          routes={[
+            ...LOCAL_ROUTES,
+            ...LONG_DISTANCE,
+            ...HOURLY_SERVICES.map((service) => ({
+              from: service.service,
+              to: '',
+              distance: '',
+              driveTime: '',
+              suvPrice: service.suvPrice || 0,
+              sprinterPrice: service.sprinterPrice,
+              slug: service.service,
+            })),
+          ]}
+        />
+        <p className="text-sm mb-12">
+          <Link href="/fleet" className="font-semibold text-alp-gold-700 hover:underline">Fleet</Link>
+        </p>
 
         {/* Policies */}
         {POLICIES.length > 0 && (

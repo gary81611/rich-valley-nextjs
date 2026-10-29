@@ -22,14 +22,14 @@ export async function seedAllTables(supabase: SupabaseClient) {
         email: rvaData.email, address: 'Aspen, Colorado 81611', logo_url: rvaData.logo,
         social_links: { Facebook: rvaData.social.facebook, Instagram: rvaData.social.instagram },
         colors: { primary: '#C17A3A', secondary: '#2D3B2D', accent: '#D4A96A', background: '#F5F0EB' },
-        stats: [{ value: '2012', label: 'Guiding since' }, { value: '3,000+', label: 'Adventures Led' }, { value: '4.9', label: 'Average Rating' }],
+        stats: [{ value: '2012', label: 'Guiding since' }],
       },
       {
         site_key: 'alpenglow', brand_name: alpenglowData.name, tagline: alpenglowData.tagline, phone: alpenglowData.phone,
         email: alpenglowData.email, address: 'Aspen, Colorado 81611', logo_url: alpenglowData.logo,
         social_links: { Facebook: alpenglowData.social.facebook, Instagram: alpenglowData.social.instagram },
         colors: { primary: '#1B2541', secondary: '#C8A96E', accent: '#2A3F6F', background: '#0F1729' },
-        stats: [{ value: '24/7', label: 'Dispatch Available' }, { value: 'Since 2012', label: 'Serving Aspen' }, { value: 'Two Suburbans', label: 'and one Ford Transit' }],
+        stats: [{ value: '24/7', label: 'Dispatch Available' }, { value: 'Since 2012', label: 'Serving Aspen' }],
       },
     ])
     results.push('Site Settings: 2 inserted')

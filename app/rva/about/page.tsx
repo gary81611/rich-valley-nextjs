@@ -6,7 +6,6 @@ import GuideCard from '@/components/rva/GuideCard'
 import RvaButton, { RVA_PHONE_LABEL, RVA_PHONE_HREF } from '@/components/rva/Button'
 import { getActiveGuides } from '@/lib/rva-guides'
 import { replaceRvaYearClaims, rvaPublicStats, type RvaStat } from '@/lib/rva-public-claims'
-import { RVA_LICENSES_LINE, RVA_TRIP_OWNERSHIP } from '@/lib/rva-confirmed'
 
 export const dynamic = 'force-dynamic'
 
@@ -95,8 +94,6 @@ export default async function AboutPage() {
           <p className="text-xl text-white/85 max-w-2xl mx-auto">
             Born in the valley, built on a love of the outdoors — since 2012.
           </p>
-          <p className="text-white/80 text-base max-w-2xl mx-auto mt-4">{RVA_TRIP_OWNERSHIP}</p>
-          <p className="text-white/90 text-sm max-w-2xl mx-auto mt-3">{RVA_LICENSES_LINE}</p>
         </div>
       </section>
 

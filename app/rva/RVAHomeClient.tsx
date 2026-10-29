@@ -6,7 +6,6 @@ import ScrollReveal from '@/components/shared/ScrollReveal'
 import BookingPlaceholder from '@/components/shared/BookingPlaceholder'
 import AdventureCard from '@/components/rva/AdventureCard'
 import RvaButton from '@/components/rva/Button'
-import { rvaPublicStats } from '@/lib/rva-public-claims'
 import { createClient } from '@/lib/supabase'
 import type { Adventure, Testimonial, GalleryImage } from '@/lib/types'
 import {
@@ -39,8 +38,8 @@ const FEATURED_TRIPS = [
   {
     title: 'Private ranch family fishing and picnic lunch',
     href: '/private-ranch-fishing',
-    image: '/images/adventures/fishing-catch-1440.webp',
-    alt: 'Kids and a canoe at a pond',
+    image: '/images/rva/kit/drift-boat-launch.webp',
+    alt: 'A drift boat being launched from a trailer into a Colorado river',
     detail:
       'Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+).',
   },
@@ -78,10 +77,6 @@ export default function RVAHomeClient({
   const [gallery, setGallery] = useState<string[]>([])
   const [phone, setPhone] = useState('970-456-3666')
   const [phoneHref, setPhoneHref] = useState('tel:+19704563666')
-  const [stats, setStats] = useState([
-    { value: '2012', label: 'Guiding since' },
-    { value: '3,000+', label: 'Adventures Led' },
-  ])
   const [conditionsPreview, setConditionsPreview] = useState<{ teaser: string; author?: string; date?: string } | null>(null)
   const [conditionsPreviewReady, setConditionsPreviewReady] = useState(false)
 
@@ -102,13 +97,21 @@ export default function RVAHomeClient({
         supabase.from('adventures').select('*').eq('is_active', true).order('display_order'),
         supabase.from('testimonials').select('*').eq('is_active', true).eq('site_key', 'rva'),
         supabase.from('gallery_images').select('*').eq('is_active', true).eq('site_key', 'rva').order('display_order'),
-        supabase.from('site_settings').select('phone, stats').eq('site_key', 'rva').single(),
+        supabase.from('site_settings').select('phone').eq('site_key', 'rva').single(),
       ])
       if (advRes.data && advRes.data.length > 0) {
         setAdventures(
           advRes.data
             .filter((a: Adventure) => isHomeGridAdventure(a))
-            .map((a: Adventure) => toPublicAdventureCard(a)),
+            .map((a: Adventure) => {
+              const card = toPublicAdventureCard(a)
+              return {
+                ...card,
+                duration: 'Half day / Full day',
+                difficulty: 'All levels',
+                fromText: null,
+              }
+            }),
         )
       }
       if (testRes.data && testRes.data.length > 0) {
@@ -122,10 +125,6 @@ export default function RVAHomeClient({
       if (settingsRes.data?.phone) {
         setPhone(settingsRes.data.phone)
         setPhoneHref(`tel:+1${settingsRes.data.phone.replace(/\D/g, '')}`)
-      }
-      if (Array.isArray(settingsRes.data?.stats)) {
-        const published = rvaPublicStats(settingsRes.data.stats as { value: string; label: string }[])
-        if (published.length > 0) setStats(published)
       }
     }
     fetchSupabaseData()
@@ -170,24 +169,6 @@ export default function RVAHomeClient({
             <RvaButton href="/contact" variant="secondary" size="lg" tone="on-dark">
               Check availability
             </RvaButton>
-          </div>
-          <p className="mt-10 text-white/70 text-sm md:text-base max-w-xl mx-auto">
-            Need a ride? Ground transportation via our sister company{' '}
-            <a href="https://aspenalpenglowlimousine.com" target="_blank" rel="noopener noreferrer" className="text-rva-copper-light underline hover:text-white transition-colors">
-              Aspen Alpenglow Limousine
-            </a>
-            .
-          </p>
-        </div>
-        {/* Stats bar */}
-        <div className="absolute bottom-20 md:bottom-0 left-0 right-0 bg-rva-forest/90 backdrop-blur-sm border-t border-white/10">
-          <div className={`max-w-4xl mx-auto px-6 py-5 grid gap-4 text-center ${stats.length >= 3 ? 'grid-cols-3' : 'grid-cols-2'}`}>
-            {stats.map((stat) => (
-              <div key={stat.label}>
-                <div className="font-playfair text-3xl font-bold text-rva-copper-light">{stat.value}</div>
-                <div className="text-white/70 text-xs tracking-wide uppercase mt-1">{stat.label}</div>
-              </div>
-            ))}
           </div>
         </div>
       </section>

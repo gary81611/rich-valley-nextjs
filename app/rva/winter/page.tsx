@@ -6,8 +6,6 @@ import type { ServiceContent } from '@/lib/pages'
 import { RVA_SNOWSHOE_PRICE, RVA_TRIP_OWNERSHIP } from '@/lib/rva-confirmed'
 import { RVA_WINTER_HERO_PHOTO } from '@/lib/rva-kit-photos'
 
-const AAL_LINK = 'https://aspenalpenglowlimousine.com'
-
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
@@ -79,7 +77,7 @@ export default async function WinterPage() {
         { label: 'Group sizes', value: '1–12 people' },
         { label: 'Transportation', value: 'All transportation provided by Aspen Alpenglow Limousine' },
       ],
-      links: [{ href: AAL_LINK, label: 'Aspen Alpenglow Limousine' }],
+      links: [],
     },
     h2_sections: winterAdventures.map((adventure) => {
       const season = seasonForWinterAdventure(adventure.title) || adventure.season || ''

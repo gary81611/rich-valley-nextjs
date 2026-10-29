@@ -153,8 +153,11 @@ export function adventurePublicDescription(row: {
   if (isFlyFishingListing(row)) return FLY_FISHING_PUBLIC_DESCRIPTION
   if (isTrailHikingListing(row)) return `${TRAIL_HIKING_PUBLIC_DESCRIPTION} Half-day hike: $600.`
   const slug = slugFromAdventureName(row.name)
+  if (row.id === PADDLE_RENTAL_ID || slug === 'paddle-board-rentals') {
+    return 'We rent High Society paddle boards, and boards can be delivered to you.'
+  }
   if (isScenicTourSlug(slug) || /escalade/i.test(row.name)) {
-    return `Half-day scenic and wildlife tour: $750. ${RVA_TRIP_OWNERSHIP}`
+    return 'Half-day scenic and wildlife tour: $750.'
   }
   if (slug === 'horseback-riding') {
     return `${row.description} Horseback: $600. Horseback rides go through a partner local outfitter.`

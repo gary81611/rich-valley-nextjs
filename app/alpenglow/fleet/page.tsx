@@ -85,7 +85,7 @@ export default function FleetPage() {
             Our Fleet
           </h1>
           <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl">
-            The fleet is two Chevrolet Suburbans, each seating 7, and one Ford Transit passenger van seating 13. CO PUC permit LL-04725.
+            Two Chevrolet Suburbans (7 passengers) and one Ford Transit Passenger Van (13). Starlink, ski racks, and roof cargo. CO PUC permit LL-04725.
           </p>
         </div>
       </section>
@@ -98,9 +98,6 @@ export default function FleetPage() {
             ))}
           </div>
 
-          <p className="mt-12 text-center text-alp-slate max-w-3xl mx-auto leading-relaxed">
-            8 full-time local drivers who have been driving these mountain roads since 2012. Vehicles have Starlink, ski racks, and roof cargo space. SUVs seat 7 and the passenger shuttle van seats 13. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee.
-          </p>
         </div>
       </section>
 

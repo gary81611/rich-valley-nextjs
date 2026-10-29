@@ -159,7 +159,16 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
   const post = await getPost(slug)
   if (!post) notFound()
 
-  const sidebarLinks = mergeRvaBlogSidebarLinks(post.slug, post.internal_links ?? [])
+  const sidebarLinks = mergeRvaBlogSidebarLinks(
+    post.slug,
+    (post.internal_links ?? []).map((link) => ({
+      ...link,
+      text: stripEscaladeCopy(link.text || ''),
+      url: /scenic-drives|escalade/i.test(link.url || '')
+        ? '/adventures/scenic-wildlife-tours'
+        : link.url,
+    })),
+  )
   const ranchMention = /spring creek ranch/i.test(
     [post.content, ...(post.faqs ?? []).flatMap((f) => [f.question, f.answer])].filter(Boolean).join('\n'),
   )
@@ -184,7 +193,7 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
   const sanitizedFaqs = (post.faqs ?? [])
     .map((f) => ({
       question: typeof f.question === 'string' ? f.question.trim() : '',
-      answer: typeof f.answer === 'string' ? withPrivateRanchFishingLink(withYearRoundFishingNote(f.answer.trim()), true) : '',
+      answer: typeof f.answer === 'string' ? stripEscaladeCopy(withPrivateRanchFishingLink(withYearRoundFishingNote(f.answer.trim()), true)) : '',
     }))
     .filter((f) => f.question.length > 0 && f.answer.length > 0)
 

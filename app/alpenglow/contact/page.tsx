@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import InquiryForm from '@/components/shared/InquiryForm'
-import { AAL_PUC_LINE, AAL_SERVICE_AREAS } from '@/lib/aal-public-copy'
+import { AAL_SERVICE_AREAS } from '@/lib/aal-public-copy'
 
 export default function ContactPage() {
 
@@ -88,7 +88,6 @@ export default function ContactPage() {
                     <div>
                       <p className="text-sm text-alp-pearl/60 mb-1">Service areas</p>
                       <p className="text-white font-semibold">{AAL_SERVICE_AREAS.join(' · ')}</p>
-                      <p className="text-alp-pearl/70 text-sm mt-2">{AAL_PUC_LINE}</p>
                     </div>
                   </div>
                 </div>

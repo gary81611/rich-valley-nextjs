@@ -24,7 +24,7 @@ const sections = [
     id: 'corporate',
     title: 'Corporate & Executive Travel',
     href: '/corporate',
-    body: `Discreet, professional transportation for business travelers, corporate retreats, and executive transfers across Aspen and Snowmass. Corporate charge accounts are billed monthly. 8 full-time local drivers who have been driving these mountain roads since 2012. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee.`,
+    body: `Discreet, professional transportation for business travelers, corporate retreats, and executive transfers across Aspen and Snowmass. Corporate charge accounts are billed monthly. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee.`,
   },
   {
     id: 'weddings',

@@ -6,7 +6,6 @@ import {
 } from '@/lib/rva-fly-fishing-content'
 import { rvaServicePageRelatedBlogLinks } from '@/lib/rva-blog-pillars'
 import { RVA_FLOAT_PHOTO } from '@/lib/rva-kit-photos'
-import { RVA_LICENSES_LINE } from '@/lib/rva-confirmed'
 
 /** The prerendered HTML was stuck on the Vercel edge as STALE after the copy change. Render each request from this file. */
 export const dynamic = 'force-dynamic'
@@ -196,7 +195,7 @@ export default function FlyFishingPage() {
         title={flyFishingPageTitle}
         content={{
           ...content,
-          intro: `${content.intro}\n\n${RVA_LICENSES_LINE}`,
+          intro: content.intro,
           h2_sections: [
             {
               title: 'On the river',

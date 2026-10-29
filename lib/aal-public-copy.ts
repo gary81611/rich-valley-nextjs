@@ -292,6 +292,11 @@ export function correctAalPublicText(text: string): string {
   t = t.replace(/212 Woody Creek Plaza[, ]*/gi, '')
   t = t.replace(/Mercedes(?:[-\s]+Benz)?\s+Ford Transit passenger van/gi, 'Ford Transit passenger van')
   t = t.replace(/since 2012 of Excellence/gi, 'Serving Aspen Since 2012')
+  t = t.replace(/\bpassenger shuttle vans\b/gi, 'Ford Transit Passenger Vans')
+  t = t.replace(/\bpassenger shuttle van\b/gi, 'Ford Transit Passenger Van')
+  t = t.replace(/\bFord Transit passenger vans\b/g, 'Ford Transit Passenger Vans')
+  t = t.replace(/\bFord Transit passenger van\b/g, 'Ford Transit Passenger Van')
+  t = t.replace(/\bFord Transit Van\b/g, 'Ford Transit Passenger Van')
   return t
 }
 
@@ -366,7 +371,9 @@ export function applyAalBlogPost<T extends AalBlogCopy>(post: T): T {
   const internal_links = post.internal_links?.map((link) => ({
     ...link,
     text: fix(link.text),
-    url: link.url.replaceAll('/services/ski-resort-transfers', '/ski-resort-transfers'),
+    url: /scenic-drives|escalade/i.test(link.url)
+      ? '/adventures/scenic-wildlife-tours'
+      : link.url.replaceAll('/services/ski-resort-transfers', '/ski-resort-transfers'),
   }))
   return {
     ...post,
@@ -396,7 +403,7 @@ export function correctAalFleetCapacity(name: string, capacity: number): number 
 }
 
 /** Live site_settings stats still say 14+ and 4.9 until the claims migration runs. No invented ratings. */
-export function normalizeAalStat(stat: { value: string; label: string }): { value: string; label: string } {
+export function normalizeAalStat(stat: { value: string; label: string }): { value: string; label: string } | null {
   const value = String(stat.value ?? '')
   const label = String(stat.label ?? '')
   const blob = `${value} ${label}`.toLowerCase()
@@ -412,8 +419,9 @@ export function normalizeAalStat(stat: { value: string; label: string }): { valu
     blob.includes('review') ||
     blob.includes('star')
   ) {
-    return { value: 'Two Suburbans', label: 'and one Ford Transit' }
+    return null
   }
+  if (/suburban|transit|2\s*\+\s*1/.test(blob)) return null
   return { value, label }
 }
 

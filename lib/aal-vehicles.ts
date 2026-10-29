@@ -23,7 +23,7 @@ export const AAL_VEHICLES: AalVehicle[] = [
   },
   {
     id: 'transit',
-    name: 'Ford Transit passenger van',
+    name: 'Ford Transit Passenger Van',
     capacity: 13,
     capacityLabel: 'Up to 13 passengers',
     amenities: ['Starlink', 'Ski racks', 'Roof cargo space', 'Child seats free'],

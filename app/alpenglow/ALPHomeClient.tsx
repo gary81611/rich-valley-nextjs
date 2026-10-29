@@ -108,7 +108,11 @@ export default function AlpenglowHomeClient() {
           setPhoneHref(`tel:+1${settingsRes.data.phone.replace(/\D/g, '')}`)
         }
         if (settingsRes.data?.stats && Array.isArray(settingsRes.data.stats)) {
-          setStats(settingsRes.data.stats.map((stat: { value: string; label: string }) => normalizeAalStat(stat)))
+          setStats(
+            settingsRes.data.stats
+              .map((stat: { value: string; label: string }) => normalizeAalStat(stat))
+              .filter((stat): stat is { value: string; label: string } => stat !== null),
+          )
         }
         if (vpRes.data) {
           setWhyChooseUs(vpRes.data.map((vp: { title: string; description: string }) => ({
@@ -217,7 +221,7 @@ export default function AlpenglowHomeClient() {
               Every detail handled. Every journey seamless.
             </p>
             <p className="alp-speak-services-overview text-alp-slate text-base max-w-3xl mx-auto mt-6 leading-relaxed border-t border-alp-pearl-dark pt-6">
-              Aspen Alpenglow Limousine operates a professional fleet of three late-model vehicles — two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (13 passengers) — with Starlink, ski racks, and roof cargo space. 8 full-time local drivers have been driving these mountain roads since 2012. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison, alongside Aspen/Pitkin County Airport (ASE) and Denver International Airport (DEN). One-way SUV rates each way: Eagle and Rifle $720, Denver $1,375, Grand Junction $950. The 13-passenger Ford Transit is $1,200 from Eagle or Rifle and $1,600 from Denver. Holiday pricing may change seasonally.
+              Aspen Alpenglow Limousine operates a professional fleet of three late-model vehicles — two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (13 passengers) — with Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison, alongside Aspen/Pitkin County Airport (ASE) and Denver International Airport (DEN). One-way SUV rates each way: Eagle and Rifle $720, Denver $1,375, Grand Junction $950. The 13-passenger Ford Transit is $1,200 from Eagle or Rifle and $1,600 from Denver. Holiday pricing may change seasonally.
             </p>
           </div>
           {services.length > 0 && (
