@@ -94,7 +94,7 @@ export default function FleetPage() {
         )}
       </div>
       <AdminFormModal isOpen={modalOpen} title={editing ? 'Edit Vehicle' : 'Add Vehicle'} onSubmit={handleSubmit} onClose={() => setModalOpen(false)} loading={saving}>
-        <FormField label="Name" name="name" value={form.name} onChange={updateForm} required help="Vehicle name as you'd describe it to customers (e.g., 'Executive Escalade')." preview="Fleet showcase on Alpenglow site" />
+        <FormField label="Name" name="name" value={form.name} onChange={updateForm} required help="Vehicle name as you'd describe it to customers (e.g., 'Chevrolet Suburban')." preview="Fleet showcase on Alpenglow site" />
         <FormField label="Type" name="type" value={form.type} onChange={updateForm} placeholder="e.g. SUV, Van" help="Vehicle category: SUV, Van, Sedan, Limousine, etc." preview="Fleet cards + Google schema" />
         <FormField label="Capacity" name="capacity" type="number" value={form.capacity} onChange={updateForm} help="Maximum number of passengers." preview="Fleet cards" />
         <FormField label="Description" name="description" type="textarea" value={form.description} onChange={updateForm} help="Key features and amenities — leather seats, WiFi, climate control, etc." preview="Fleet detail view" />

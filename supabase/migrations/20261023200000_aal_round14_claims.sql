@@ -52,7 +52,7 @@ BEGIN
   s := regexp_replace(
     s,
     'Our fleet includes a black Executive Cadillac Escalade \(up to 6 passengers\) and a black Luxury Mercedes Sprinter van \(up to 14 passengers\)\.',
-    'Our fleet includes a black Chevrolet Suburban (up to 7 passengers) and a black Ford Transit passenger van (up to 13 passengers).',
+    'Our fleet includes two black Chevrolet Suburbans (7 passengers each) and one black Ford Transit passenger van (13 passengers).',
     'gi'
   );
   s := regexp_replace(
@@ -80,11 +80,21 @@ BEGIN
     'Over 14 years of operation, we''ve become the trusted transportation partner for Aspen''s most discerning travelers — Fortune 500 executives, international celebrities, Aspen Institute fellows, and families returning year after year because they know their transportation needs are handled with absolute reliability and discretion.',
     'Operating since 2012, we''ve become the trusted transportation partner for Aspen''s most discerning travelers — Fortune 500 executives, international celebrities, Aspen Institute fellows, and families returning year after year because they know their transportation needs are handled with absolute reliability and discretion.'
   );
-  s := regexp_replace(s, '4\.9-Star Rated', '5.0 on Google', 'gi');
-  s := replace(
+  -- Do not publish a star rating or a review count. Kit allowed quoting real reviews,
+  -- and no review text was supplied. Drop the unverified claims instead of swapping in another number.
+  s := regexp_replace(s, '4\.9-Star Rated', 'Private car service', 'gi');
+  s := regexp_replace(s, '5\.0 on Google', 'Private car service', 'gi');
+  s := regexp_replace(
     s,
-    'Over 150 five-star reviews from guests who trust us with their most important transportation needs.',
-    'Rated 5.0 by guests on Google (5 reviews).'
+    'Rated 5\.0 by guests on Google \(5 reviews\)\.?',
+    'Guests book airport transfers, ski days, weddings, and corporate travel.',
+    'gi'
+  );
+  s := regexp_replace(
+    s,
+    'Over 150 five-star reviews from guests who trust us with their most important transportation needs\.',
+    'Guests book airport transfers, ski days, weddings, and corporate travel.',
+    'gi'
   );
 
   -- EGE is in Gypsum. Glenwood Springs as a city, Glenwood Canyon, and the hot springs stay.
@@ -153,6 +163,8 @@ BEGIN
   s := regexp_replace(s, 'Mercedes Sprinter van', 'Ford Transit passenger van', 'gi');
   s := regexp_replace(s, 'Mercedes Sprinters', 'Ford Transit passenger vans', 'gi');
   s := regexp_replace(s, 'Mercedes Sprinter', 'Ford Transit passenger van', 'gi');
+  s := regexp_replace(s, 'Mercedes[[:space:]-]*Benz[[:space:]]+Sprinter', 'Ford Transit passenger van', 'gi');
+  s := regexp_replace(s, 'Mercedes[[:space:]]+Sprinter', 'Ford Transit passenger van', 'gi');
   s := regexp_replace(s, 'Luxury Sprinter vans', 'Ford Transit passenger vans', 'gi');
   s := regexp_replace(s, 'Luxury Sprinter van', 'Ford Transit passenger van', 'gi');
   s := regexp_replace(s, 'Sprinter vans', 'Ford Transit passenger vans', 'gi');
@@ -172,6 +184,17 @@ BEGIN
   s := regexp_replace(s, 'Executive Chevrolet Suburban', 'Chevrolet Suburban', 'gi');
   s := regexp_replace(s, 'Luxury Ford Transit', 'Ford Transit', 'gi');
   s := regexp_replace(s, 'Ford Transit passenger van fleet', 'Ford Transit passenger van', 'gi');
+
+  -- Verified against this function on 2026-10-29:
+  -- "14+ Years of Excellence" is replaced as a whole phrase above ("Serving Aspen Since 2012"),
+  -- so it does not become "since 2012 of Excellence". The guard below catches that broken
+  -- leftover if a shorter year replace is ever added ahead of the whole phrase.
+  -- Bare "Sprinter" -> "Ford Transit passenger van" can leave "Mercedes" in front when the
+  -- longer Mercedes pattern misses (extra word or a non-ASCII hyphen). Strip that result.
+  s := regexp_replace(s, 'since 2012 of Excellence', 'Serving Aspen Since 2012', 'gi');
+  s := regexp_replace(s, 'Mercedes[[:space:]-]*Benz[[:space:]]+Ford Transit passenger van', 'Ford Transit passenger van', 'gi');
+  s := regexp_replace(s, 'Mercedes[[:space:]]+Ford Transit passenger van', 'Ford Transit passenger van', 'gi');
+  s := regexp_replace(s, '212 Woody Creek Plaza[, ]*', '', 'gi');
 
   RETURN s;
 END;

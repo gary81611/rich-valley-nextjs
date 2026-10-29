@@ -17,11 +17,16 @@ export async function GET(request: Request) {
 - Phone: +1 970-456-3666
 - Email: kit@richvalleyadventures.com
 - Founded: 2012
-- Primary services: guided fly fishing, hiking, mountain biking, elevated camping, winter adventures, hunting from $250 per person, horseback riding, Scenic Escalade tours, whitewater rafting
+- Licenses: CO Licensed Outfitter OUT.0003060. CO River License 620.
+- Guides run fishing, hiking, rafting, and camping in-house. Horseback riding, ATV, and snowmobile trips go through partner local outfitters. Outfitters are not named.
+- Primary services: guided fly fishing, hiking, mountain biking, elevated camping, winter adventures, hunting from $250 per person, horseback riding, scenic and wildlife tours, scenic river rafting
 - Paddleboarding: rental from $100, not a guided trip. Boards can be delivered to you. No delivery hours, areas, or fees are published.
-- Horseback riding: gentle trail rides through meadows and aspen forests. 2–4 hours. All levels. https://www.richvalleyadventures.com/adventures/horseback-riding
-- Scenic Escalade tours: Colorado landmarks from a luxury Escalade, for guests who want the views without the vertical. Half day or full day. Easy — ride along. https://www.richvalleyadventures.com/adventures/scenic-escalade-tours
-- Whitewater rafting is offered. Call +1 970-456-3666 to plan.
+- Horseback riding: $600. Arranged with a partner local outfitter. https://www.richvalleyadventures.com/adventures/horseback-riding
+- Half-day scenic and wildlife tour: $750. https://www.richvalleyadventures.com/adventures/scenic-wildlife-tours
+- Scenic river rafting with picnic: $1,200. Rafting is guided in-house.
+- Half-day hike: $600. https://www.richvalleyadventures.com/hiking
+- Half-day snowshoe: $500. Snowshoeing is guided in-house.
+- Overnight camping: $1,500. Camping is guided in-house. https://www.richvalleyadventures.com/elevated-camping
 - Winter, November through April: https://www.richvalleyadventures.com/winter . From $250 per person. Half-day is 3–4 hours door-to-door with snacks and drinks. Full day is 6–8 hours door-to-door with lunch. Groups are 1–12. All gear is provided. Transportation on winter trips is by Aspen Alpenglow Limousine.
 - Hunting on the winter page, from $250 per person: elk and mule deer (September 1 – December 10), waterfowl (October 1 – January 15), and cast and blast (October 1 – January 15). There is no separate hunting page.
 - Ice fishing, snowshoeing, and cross-country skiing on the winter page need 7 days' notice. The winter listing dates those three December 15 – February 25 (cross-country skiing is marked approximate). Other winter activities: 48-hour advance booking is recommended.
@@ -43,7 +48,7 @@ https://www.richvalleyadventures.com/hiking
 https://www.richvalleyadventures.com/adventures/mountain-biking
 https://www.richvalleyadventures.com/paddle-boarding
 https://www.richvalleyadventures.com/adventures/horseback-riding
-https://www.richvalleyadventures.com/adventures/scenic-escalade-tours
+https://www.richvalleyadventures.com/adventures/scenic-wildlife-tours
 https://www.richvalleyadventures.com/elevated-camping
 https://www.richvalleyadventures.com/winter
 https://www.richvalleyadventures.com/snowshoeing
@@ -72,10 +77,13 @@ Sitemap: https://www.richvalleyadventures.com/sitemap.xml
 - Location: Aspen, Colorado 81611, United States (Roaring Fork Valley & resort corridor)
 - Phone: +1 970-456-3666
 - Founded: 2012
-- Fleet (per site): Chevrolet Suburban SUVs (7 passengers each), Ford Transit Van (13 passengers); Starlink, ski racks, and roof cargo space
+- Fleet: exactly two Chevrolet Suburbans (7 passengers each) and one Ford Transit passenger van (13 passengers). No Escalade. Starlink, ski racks, and roof cargo space
+- Colorado PUC permit: LL-04725
+- No public street address. Service areas include Aspen, Snowmass Village, Basalt, Carbondale, Glenwood Springs, Gypsum (Eagle County Airport), Rifle, and Denver
+- Eagle County Regional Airport (EGE) is in Gypsum, not Glenwood Springs
 - Drivers: 8 full-time local drivers who have been driving these mountain roads since 2012. Child car seats and boosters are free. No shared rides are offered. Pets welcome, with a cleaning fee.
 - Private FBO airport service: Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison
-- One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.
+- One-way SUV rates each way: Eagle and Rifle $720, Denver $1,375, Grand Junction $950. The 13-passenger Ford Transit is $1,200 from Eagle or Rifle and $1,600 from Denver. Holiday pricing may change seasonally.
 - ASE airport SUV rates on the pricing page include $210. Centennial Airport (KAPA), Telluride, and Crested Butte are $1,475 on that page.
 - Flight diversions to Denver or Grand Junction: 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice.
 - Corporate charge accounts billed monthly

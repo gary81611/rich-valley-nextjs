@@ -15,7 +15,7 @@ import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 const AAL_FBO =
   'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison.'
 const AAL_ONE_WAY =
-  'One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.'
+  'One-way SUV rates each way: Eagle and Rifle $720, Denver $1,375, Grand Junction $950. The 13-passenger Ford Transit is $1,200 from Eagle or Rifle and $1,600 from Denver. Holiday pricing may change seasonally.'
 const AAL_CANCEL =
   "Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice."
 const AAL_CORPORATE = 'Corporate charge accounts are billed monthly.'
@@ -219,7 +219,7 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
         '@type': 'Offer',
         priceCurrency: 'USD',
         description:
-          'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally. Flight diversions to Denver or Grand Junction are handled with 2 hours\' notice and no Aspen cancellation penalty.',
+          'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way SUV rates each way: Eagle and Rifle $720, Denver $1,375, Grand Junction $950. The 13-passenger Ford Transit is $1,200 from Eagle or Rifle and $1,600 from Denver. Holiday pricing may change seasonally. Flight diversions to Denver or Grand Junction are handled with 2 hours\' notice and no Aspen cancellation penalty.',
         availability: 'https://schema.org/InStock',
         seller: {
           '@type': 'Organization',
@@ -321,7 +321,7 @@ export default async function CmsPage({ params }: Props) {
           relatedLinks={
             slugStr === 'airport-transfers'
               ? [
-                  { href: '/airport-transfers/eagle-ege-to-aspen', label: 'Eagle Airport (EGE) to Aspen private car — request a quote' },
+                  { href: '/airport-transfers/eagle-ege-to-aspen', label: 'Eagle Airport (EGE) in Gypsum to Aspen — SUV $720' },
                   { href: '/airport-transfers/denver-den-to-aspen', label: 'Denver Airport (DEN) to Aspen private car — $1,375' },
                   { href: '/aspen-airport-closure-2027', label: 'Aspen Airport closure in 2027' },
                   { href: '/service-areas/snowmass-village', label: 'Snowmass Village pickups & Aspen transfers' },

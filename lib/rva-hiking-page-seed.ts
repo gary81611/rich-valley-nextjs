@@ -1,12 +1,13 @@
 import type { ServiceContent, ServiceLead } from './pages'
 
-/** Visible answer block for /hiking. Facts already on this page, the Trail Hiking card, and the site booking rule. */
+/** Visible answer block for /hiking. Half-day price confirmed by Kit on Oct 29, 2026. */
 export const rvaHikingAnswerLead: ServiceLead = {
   heading: 'Guided hiking in Aspen',
   paragraphs: [
-    'Rich Valley Adventures guides hikes in the Elk Mountains and the Roaring Fork Valley, from gentle riparian walks and easy valley miles to strenuous high-alpine days. The Trail Hiking trip is 3–6 hours and moderate. Groups are typically 2–8, and this page lists a maximum of 8.',
-    'Book at least 2 days in advance. A 50% deposit is due at booking. Cancellations within 72 hours are billed in full. For a date, a route, or a plan this page does not list, call 970-456-3666.',
+    'Rich Valley Adventures guides hikes in the Elk Mountains and the Roaring Fork Valley, from gentle riparian walks and easy valley miles to strenuous high-alpine days. The Trail Hiking trip is 3–6 hours and moderate. Groups are typically 2–8, and this page lists a maximum of 8. Hiking is guided in-house.',
+    'A half-day hike is $600. Book at least 2 days in advance. A 50% deposit is due at booking. Cancellations within 72 hours are billed in full. For a date, a route, or a plan this page does not list, call 970-456-3666.',
   ],
+  facts: [{ label: 'Half-day hike', value: '$600' }],
 }
 
 /** Question queries around positions 6–10. No prices, discounts, or unpublished trails. */
@@ -14,7 +15,7 @@ export const rvaHikingAnswerFaqs: { question: string; answer: string }[] = [
   {
     question: 'Do you offer easy or beginner guided hikes in Aspen?',
     answer:
-      'The Trail Hiking trip is 3–6 hours and moderate. This page also describes easier walks: Maroon Lake Scenic Trail is about 1 mile (30–60 minutes) and is a fit for a first day at altitude, the Grottos are short family-friendly paths, and the Rio Grande Trail is a flat rail-trail. We match the route to the group. No hiking price is published. Call 970-456-3666 to plan.',
+      'The Trail Hiking trip is 3–6 hours and moderate. A half-day hike is $600. This page also describes easier walks: Maroon Lake Scenic Trail is about 1 mile (30–60 minutes) and is a fit for a first day at altitude, the Grottos are short family-friendly paths, and the Rio Grande Trail is a flat rail-trail. We match the route to the group. Call 970-456-3666 to plan.',
   },
   {
     question: 'Do you have family-friendly hikes for kids?',

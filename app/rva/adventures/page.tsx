@@ -8,6 +8,7 @@ import { PADDLE_PHOTO, PADDLE_PHOTO_ALT, isPublicAdventureCard, toPublicAdventur
 import { RVA_GLOBAL_PILLAR_BLOG_LINKS } from '@/lib/rva-blog-pillars'
 import AdventureCard from '@/components/rva/AdventureCard'
 import RvaButton, { RVA_BOOKING_LABEL, RVA_PHONE_LABEL, RVA_PHONE_HREF } from '@/components/rva/Button'
+import { RVA_LICENSES_LINE, RVA_PRICE_LINES, RVA_TRIP_OWNERSHIP } from '@/lib/rva-confirmed'
 
 type Season = 'all' | 'summer' | 'winter' | 'year-round'
 
@@ -94,6 +95,9 @@ export default function AdventuresPage() {
             Corporate packages are for groups of 50 or more: a custom mix of fishing and hiking.
             Book at least 2 days in advance. A 50% deposit is due at booking. Cancellations within 72 hours are billed in full.
           </p>
+          <p className="text-white/80 text-base max-w-2xl mx-auto mt-4">{RVA_TRIP_OWNERSHIP}</p>
+          <p className="text-white/70 text-sm max-w-2xl mx-auto mt-3">{RVA_PRICE_LINES.join(' · ')}</p>
+          <p className="text-white/80 text-sm max-w-2xl mx-auto mt-3">{RVA_LICENSES_LINE}</p>
         </div>
       </section>
 

@@ -1,4 +1,11 @@
 import { isBookableAdventureName, slugFromAdventureName } from '@/lib/rva-adventure-filters'
+import {
+  RVA_SCENIC_TOUR_PATH,
+  RVA_TRIP_OWNERSHIP,
+  isScenicTourSlug,
+  rvaPriceNoteForSlug,
+  rvaPublicAdventureTitle,
+} from '@/lib/rva-confirmed'
 
 /** Adventures row "Paddle Boarding" (tour listing). Hidden in code until the manager sets is_active = false. */
 export const PADDLE_TOUR_ID = '480f5980-5b4d-423e-9d71-36d7e8c62506'
@@ -65,7 +72,9 @@ const HREF_BY_SLUG: Record<string, string> = {
   'paddle-boarding': PADDLE_CANONICAL_PATH,
   'mountain-biking': '/adventures/mountain-biking',
   'trail-hiking': '/hiking',
-  'scenic-escalade-tours': '/adventures/scenic-escalade-tours',
+  'scenic-escalade-tours': RVA_SCENIC_TOUR_PATH,
+  'scenic-wildlife-tours': RVA_SCENIC_TOUR_PATH,
+  'scenic-wildlife-tour': RVA_SCENIC_TOUR_PATH,
   'horseback-riding': '/adventures/horseback-riding',
   'elevated-camping': '/elevated-camping',
 }
@@ -137,15 +146,28 @@ export function adventurePublicDescription(row: {
   description: string
 }): string {
   if (isFlyFishingListing(row)) return FLY_FISHING_PUBLIC_DESCRIPTION
-  if (isTrailHikingListing(row)) return TRAIL_HIKING_PUBLIC_DESCRIPTION
+  if (isTrailHikingListing(row)) return `${TRAIL_HIKING_PUBLIC_DESCRIPTION} Half-day hike: $600.`
+  const slug = slugFromAdventureName(row.name)
+  if (isScenicTourSlug(slug) || /escalade/i.test(row.name)) {
+    return `Half-day scenic and wildlife tour: $750. ${RVA_TRIP_OWNERSHIP}`
+  }
+  if (slug === 'horseback-riding') {
+    return `${row.description} Horseback: $600. Horseback rides go through a partner local outfitter.`
+  }
+  if (/snowmobile|atv|snowbike/i.test(row.name)) {
+    return `${row.description} ${RVA_TRIP_OWNERSHIP}`
+  }
+  if (/raft/i.test(row.name)) {
+    return `${row.description} Scenic river rafting with picnic: $1,200. Rafting is guided in-house.`
+  }
   return row.description
 }
 
-/** Confirmed display price. Omits database prices, including the rentals row's 95. */
+/** Confirmed display price. Omits unpublished database prices, including the rentals row's 95. */
 export function adventurePublicFromText(row: { id?: string | null; name: string }): string | null {
   const slug = slugFromAdventureName(row.name)
   if (row.id === PADDLE_RENTAL_ID || slug === 'paddle-board-rentals') return 'From $100'
-  return null
+  return rvaPriceNoteForSlug(slug)
 }
 
 export type PublicAdventureCard = {
@@ -175,7 +197,7 @@ export function toPublicAdventureCard(row: {
   const visual = adventurePublicImage(row)
   return {
     id: row.id,
-    title: row.name,
+    title: rvaPublicAdventureTitle(row.name, slugFromAdventureName(row.name)),
     slug: slugFromAdventureName(row.name),
     description: adventurePublicDescription(row),
     image: visual.src,

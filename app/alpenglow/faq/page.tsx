@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'FAQ | Aspen Alpenglow Limousine — Transportation Questions Answered',
   description:
-    'Aspen car service FAQs: one-way rates each way (Denver $1,375, Grand Junction $950, Rifle $720; Eagle quoted on request), FBO airports, fleet, and cancellation notice.',
+    'Aspen car service FAQs: SUV rates each way (Eagle and Rifle $720, Denver $1,375, Grand Junction $950). Transit van $1,200 Eagle/Rifle, $1,600 Denver. PUC LL-04725.',
   alternates: { canonical: 'https://aspenalpenglowlimousine.com/faq' },
 }
 
@@ -42,7 +42,14 @@ const DEN_TRANSFER_SCHEMA_FAQ = {
 }
 
 async function getFaqsFromDb(): Promise<{ q: string; a: string }[]> {
-  const supabase = await createServerSupabaseClient()
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  if (!url || !url.startsWith('http')) return []
+  let supabase
+  try {
+    supabase = await createServerSupabaseClient()
+  } catch {
+    return []
+  }
   const { data, error } = await supabase
     .from('faqs')
     .select('question, answer')

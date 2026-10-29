@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import ServicePageTemplate from '@/components/templates/ServicePageTemplate'
 import type { ServiceContent } from '@/lib/pages'
+import { RVA_CAMPING_PRICE, RVA_TRIP_OWNERSHIP } from '@/lib/rva-confirmed'
 
 export const dynamic = 'force-dynamic'
 
@@ -30,6 +31,8 @@ export const metadata: Metadata = {
 }
 
 async function fetchCampingPackages(): Promise<{ id: string; name: string; description: string | null }[]> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  if (!url || !url.startsWith('http')) return []
   const supabase = await createServerSupabaseClient()
   const { data, error } = await supabase
     .from('camping_packages')
@@ -54,11 +57,14 @@ export default async function ElevatedCampingPage() {
 
 Each camp is set in a carefully chosen location deep in the Roaring Fork Valley backcountry — far from roads and crowds, close to streams and mountain views. You wake up to fresh coffee and a sunrise over the peaks, spend the day hiking or fishing or simply reading by the creek, and end the evening around a campfire with a gourmet dinner and guided stargazing.
 
-Whether it's a romantic getaway, a family milestone, or a group trip with friends, our elevated camping experiences create memories that last. We handle every detail so you can be fully present in one of the most beautiful places on Earth.`,
+Whether it's a romantic getaway, a family milestone, or a group trip with friends, our elevated camping experiences create memories that last. We handle every detail so you can be fully present in one of the most beautiful places on Earth.
+
+${RVA_CAMPING_PRICE}. Camping is guided in-house. ${RVA_TRIP_OWNERSHIP}`,
     lead: {
       heading: 'This Is Not Roughing It',
       paragraphs: [],
       facts: [
+        { label: 'Overnight camping', value: '$1,500' },
         { label: 'Nights', value: '1-3. Single overnight or multi-day experiences available.' },
         { label: 'Guests', value: '2-8. Perfect for couples, families, and small groups.' },
         { label: 'Availability', value: '4 seasons. Year-round camping with seasonal variations.' },

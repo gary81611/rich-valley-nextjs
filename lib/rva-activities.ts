@@ -6,7 +6,7 @@ export const RVA_ACTIVITIES: { label: string; href: string }[] = [
   { label: 'Mountain Biking', href: '/adventures/mountain-biking' },
   { label: 'Hiking', href: '/hiking' },
   { label: 'Horseback Riding', href: '/adventures/horseback-riding' },
-  { label: 'Scenic Escalade', href: '/adventures/scenic-escalade-tours' },
+  { label: 'Scenic & Wildlife Tours', href: '/adventures/scenic-wildlife-tours' },
   { label: 'Elevated Camping', href: '/elevated-camping' },
   { label: 'Snowshoeing', href: '/snowshoeing' },
   { label: 'Winter Adventures', href: '/winter' },

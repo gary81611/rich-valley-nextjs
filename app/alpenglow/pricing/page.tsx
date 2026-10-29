@@ -4,6 +4,7 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { alpenglowData } from '@/lib/site-data'
 import VehicleCard from '@/components/alpenglow/VehicleCard'
 import { AAL_OG_IMAGE, AAL_VEHICLES } from '@/lib/aal-vehicles'
+import { AAL_ONE_WAY_RATES, AAL_PUC_LINE, aalTransitPrice } from '@/lib/aal-public-copy'
 
 type DbPricingRoute = {
   route_name: string
@@ -19,11 +20,8 @@ type DbPricingRoute = {
 
 const TRANSIT_NOTE = 'Contact for Ford Transit Van quote'
 
-/** Production showed Aspen→EGE at $120 beside EGE→Aspen at $720. Neither is published. */
-function isUnconfirmedEagleRoute(blob: string): boolean {
-  const s = blob.toLowerCase()
-  if (/vail|beaver/.test(s)) return false
-  return /\beagle\b|\bege\b/.test(s)
+function transitNoteFor(blob: string): string {
+  return aalTransitPrice(blob) || TRANSIT_NOTE
 }
 
 /** Confirmed owner rates / routes — merged on top of CMS rows so the public page matches the questionnaire. */
@@ -50,8 +48,8 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
     if (p) Object.assign(r, p)
   }
 
-  // [PENDING FROM KIT: confirm EGE one-way rate — $120 vs $720]
-  const pairRate: Record<'denver' | 'gj' | 'rifle', number> = {
+  const pairRate: Record<'eagle' | 'denver' | 'gj' | 'rifle', number> = {
+    eagle: 720,
     denver: 1375,
     gj: 950,
     rifle: 720,
@@ -87,19 +85,30 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
   const seenTo = new Set<'eagle' | 'denver' | 'gj' | 'rifle'>()
   for (const r of list) {
     const outKey = fromAspenKey(r)
-    if (outKey === 'eagle') {
-      seenFrom.add(outKey)
-    } else if (outKey) {
+    if (outKey) {
       r.suv_price = pairRate[outKey]
+      r.price_note = transitNoteFor(`${r.route_name} ${r.origin} ${r.destination}`)
       seenFrom.add(outKey)
     }
     const inKey = toAspenKey(r)
-    if (inKey === 'eagle') {
-      seenTo.add(inKey)
-    } else if (inKey) {
+    if (inKey) {
       r.suv_price = pairRate[inKey]
+      r.price_note = transitNoteFor(`${r.route_name} ${r.origin} ${r.destination}`)
       seenTo.add(inKey)
     }
+  }
+
+  for (const r of list) {
+    if (!String(r.category || '').startsWith('airport')) continue
+    const blob = `${r.route_name} ${r.origin} ${r.destination}`
+    const key = pairKey(blob.toLowerCase())
+    if (key !== 'eagle' && key !== 'rifle' && key !== 'denver') continue
+    r.suv_price = pairRate[key]
+    r.price_note = transitNoteFor(blob)
+    const intoAspen = (r.destination || '').toLowerCase().includes('aspen') || /\bto aspen\b/i.test(r.route_name)
+    const fromAspen = (r.origin || '').toLowerCase().includes('aspen') || /^aspen to/i.test(r.route_name)
+    if (fromAspen) seenFrom.add(key)
+    if (intoAspen) seenTo.add(key)
   }
 
   const missingOneWay: Record<'eagle' | 'denver' | 'gj' | 'rifle', DbPricingRoute> = {
@@ -110,8 +119,8 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
       destination: 'EGE (Eagle)',
       distance: '—',
       drive_time: '—',
-      suv_price: 0,
-      price_note: TRANSIT_NOTE,
+      suv_price: 720,
+      price_note: '$1,200',
       display_order: 11,
     },
     denver: {
@@ -122,7 +131,7 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
       distance: '—',
       drive_time: '—',
       suv_price: 1375,
-      price_note: TRANSIT_NOTE,
+      price_note: '$1,600',
       display_order: 12,
     },
     gj: {
@@ -144,7 +153,7 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
       distance: '—',
       drive_time: '—',
       suv_price: 720,
-      price_note: TRANSIT_NOTE,
+      price_note: '$1,200',
       display_order: 14,
     },
   }
@@ -160,8 +169,8 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
       destination: 'Aspen',
       distance: '—',
       drive_time: '—',
-      suv_price: 0,
-      price_note: TRANSIT_NOTE,
+      suv_price: 720,
+      price_note: '$1,200',
       display_order: 3,
     },
     denver: {
@@ -172,7 +181,7 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
       distance: '—',
       drive_time: '—',
       suv_price: 1375,
-      price_note: TRANSIT_NOTE,
+      price_note: '$1,600',
       display_order: 4,
     },
     gj: {
@@ -194,7 +203,7 @@ function applyConfirmedPricingRoutes(rows: DbPricingRoute[]): DbPricingRoute[] {
       distance: '—',
       drive_time: '—',
       suv_price: 720,
-      price_note: TRANSIT_NOTE,
+      price_note: '$1,200',
       display_order: 6,
     },
   }
@@ -240,13 +249,13 @@ function applyConfirmedPolicies(titles: string[]): string[] {
     const t = title.toLowerCase()
     if (t.includes('winter and summer')) return 'Holiday pricing may change seasonally.'
     if (t.includes('7-day') || t.includes('24-hour cancellation') || t.includes('24 hour cancellation')) return diversion
-    if (/eagle/i.test(title) && /\$720|\$120/.test(title)) {
-      return 'One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.'
+    if (/eagle/i.test(title) && /\$720|\$120|quoted on request|request a quote/i.test(title)) {
+      return AAL_ONE_WAY_RATES
     }
     return title
   })
   const extras = [
-    'One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.',
+    AAL_ONE_WAY_RATES,
     diversion,
     'Corporate charge accounts are billed monthly.',
   ]
@@ -303,7 +312,7 @@ function PriceTable({ title, routes }: { title: string; routes: RouteRow[] }) {
               {r.from} <span className="text-alp-navy/40">&rarr;</span> {r.to}
             </p>
             <p className="mt-3 text-lg font-semibold text-alp-gold-700">
-              Chevrolet Suburban · {isUnconfirmedEagleRoute(`${r.from} ${r.to} ${r.slug}`) ? 'Request a quote' : `$${r.suvPrice.toLocaleString()}`}
+              Chevrolet Suburban · {`$${r.suvPrice.toLocaleString()}`}
             </p>
             <p className="text-base font-semibold text-alp-navy">Ford Transit passenger van · {r.sprinterPrice}</p>
             <p className="mt-2 text-xs text-alp-navy/60">
@@ -333,7 +342,7 @@ function PriceTable({ title, routes }: { title: string; routes: RouteRow[] }) {
                 </td>
                 <td className="py-3 px-4 text-alp-navy/60">{r.distance}</td>
                 <td className="py-3 px-4 text-alp-navy/60">{r.driveTime}</td>
-                <td className="py-3 px-4 text-right font-semibold text-alp-gold-700">{isUnconfirmedEagleRoute(`${r.from} ${r.to} ${r.slug}`) ? 'Request a quote' : `$${r.suvPrice.toLocaleString()}`}</td>
+                <td className="py-3 px-4 text-right font-semibold text-alp-gold-700">{`$${r.suvPrice.toLocaleString()}`}</td>
                 <td className="py-3 px-4 text-right text-alp-navy text-sm">{r.sprinterPrice}</td>
               </tr>
             ))}
@@ -345,20 +354,31 @@ function PriceTable({ title, routes }: { title: string; routes: RouteRow[] }) {
 }
 
 export default async function PricingPage() {
-  const supabase = await createServerSupabaseClient()
-
-  const [{ data: rows }, { data: policyRows }] = await Promise.all([
-    supabase
-      .from('pricing_routes')
-      .select('*')
-      .eq('is_active', true)
-      .order('display_order'),
-    supabase
-      .from('pricing_policies')
-      .select('title')
-      .eq('is_active', true)
-      .order('display_order'),
-  ])
+  let rows: DbPricingRoute[] | null = []
+  let policyRows: { title: string }[] | null = []
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  if (url && url.startsWith('http')) {
+    try {
+      const supabase = await createServerSupabaseClient()
+      const [routesRes, policiesRes] = await Promise.all([
+        supabase
+          .from('pricing_routes')
+          .select('*')
+          .eq('is_active', true)
+          .order('display_order'),
+        supabase
+          .from('pricing_policies')
+          .select('title')
+          .eq('is_active', true)
+          .order('display_order'),
+      ])
+      rows = routesRes.data as DbPricingRoute[] | null
+      policyRows = policiesRes.data
+    } catch {
+      rows = []
+      policyRows = []
+    }
+  }
 
   const rawPolicies = policyRows ? policyRows.map((p: { title: string }) => p.title) : []
   const POLICIES = applyConfirmedPolicies(rawPolicies)
@@ -426,7 +446,7 @@ export default async function PricingPage() {
           Aviation | GJT — West Star Aviation | KAPA — Centennial Airport Denver.
         </p>
         <p className="text-sm text-alp-navy/70 mb-12 max-w-3xl leading-relaxed">
-          One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.
+          {AAL_ONE_WAY_RATES} {AAL_PUC_LINE}
           Flight diversions to Denver or Grand Junction are handled with 2 hours&apos; notice and no Aspen cancellation penalty.
           General cancellations need 24 hours&apos; notice.
         </p>
@@ -529,14 +549,14 @@ export default async function PricingPage() {
         },
         areaServed: ['Aspen', 'Snowmass', 'Basalt', 'Carbondale', 'Glenwood Springs', 'Vail', 'Denver'],
         offers: [
-          ...AIRPORT_OUTBOUND.filter((r) => /denver|grand junction|rifle|den|gjt|kril/i.test(`${r.from} ${r.to}`) && !isUnconfirmedEagleRoute(`${r.from} ${r.to} ${r.slug}`)).map((r) => ({
+          ...AIRPORT_OUTBOUND.filter((r) => /denver|grand junction|rifle|eagle|den|gjt|kril|ege/i.test(`${r.from} ${r.to}`)).map((r) => ({
             '@type': 'Offer',
             name: `${r.from} to ${r.to}`,
             price: r.suvPrice,
             priceCurrency: 'USD',
             description: 'One-way private SUV rate from Aspen. Holiday pricing may change seasonally.',
           })),
-          ...AIRPORT_INBOUND.filter((r) => !isUnconfirmedEagleRoute(`${r.from} ${r.to} ${r.slug}`)).slice(0, 5).map(r => ({
+          ...AIRPORT_INBOUND.slice(0, 6).map(r => ({
             '@type': 'Offer',
             name: `${r.from} to ${r.to}`,
             price: r.suvPrice,

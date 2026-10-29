@@ -148,9 +148,12 @@ export default function ContactPage({
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="w-1.5 h-1.5 bg-rva-copper-700 rounded-full mt-2 flex-shrink-0" />
-                    Full-day float from $1,400 for 2 people.{' '}
+                    Full-day float $1,400 for 2. Private ranch $800 per adult and $250 per child.
+                    Half-day hike $600. Half-day snowshoe $500. Overnight camping $1,500.
+                    Horseback $600. Half-day scenic and wildlife tour $750.
+                    Scenic river rafting with picnic $1,200.{' '}
                     <Link href="/private-ranch-fishing" className="text-rva-copper-light underline">
-                      Spring Creek Ranch picnic from $800 per adult
+                      Spring Creek Ranch
                     </Link>
                   </li>
                   <li className="flex items-start gap-3">

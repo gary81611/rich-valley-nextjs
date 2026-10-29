@@ -432,7 +432,7 @@ function rvaSitemapExtras(isAAL: boolean): SitemapEntry[] {
   const rows: [string, string, string, number][] = [
     ['/snowshoeing', '2026-04-12T16:09:28-06:00', 'monthly', 0.8],
     ['/adventures/horseback-riding', '2026-10-20T18:00:00-06:00', 'monthly', 0.8],
-    ['/adventures/scenic-escalade-tours', '2026-10-20T18:00:00-06:00', 'monthly', 0.8],
+    ['/adventures/scenic-wildlife-tours', '2026-10-29T12:00:00-06:00', 'monthly', 0.8],
   ]
   return rows.map(([path, iso, changeFrequency, priority]) => ({
     url: `${RVA_ORIGIN}${path}`,

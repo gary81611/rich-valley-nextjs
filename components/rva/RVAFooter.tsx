@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { rvaData } from '@/lib/site-data'
 import { RVA_ACTIVITIES } from '@/lib/rva-activities'
+import { RVA_LICENSES_LINE, RVA_TRIP_OWNERSHIP } from '@/lib/rva-confirmed'
 
 const footerLink = 'inline-flex items-center min-h-11 text-white/70 hover:text-rva-copper-light text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-rva-copper-300'
 
@@ -24,6 +25,8 @@ export default function RVAFooter() {
               />
             </span>
             <p className="text-white/65 text-sm leading-relaxed">{rvaData.description}</p>
+            <p className="text-white/65 text-sm leading-relaxed mt-3">{RVA_TRIP_OWNERSHIP}</p>
+            <p className="text-white/80 text-sm leading-relaxed mt-3">{RVA_LICENSES_LINE}</p>
           </div>
           <div>
             <p className="font-playfair text-lg font-semibold mb-5 text-rva-copper-light">Adventures</p>

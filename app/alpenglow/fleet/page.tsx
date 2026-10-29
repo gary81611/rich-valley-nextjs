@@ -85,7 +85,7 @@ export default function FleetPage() {
             Our Fleet
           </h1>
           <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl">
-            Chevrolet Suburban SUVs seat up to 7. The Ford Transit passenger van seats up to 13.
+            The fleet is two Chevrolet Suburbans, each seating 7, and one Ford Transit passenger van seating 13. CO PUC permit LL-04725.
           </p>
         </div>
       </section>

@@ -11,11 +11,17 @@ import {
   FLY_FISHING_PUBLIC_DESCRIPTION,
   TRAIL_HIKING_PUBLIC_DESCRIPTION,
   adventurePublicDescription,
+  adventurePublicFromText,
   adventurePublicHref,
   adventurePublicImage,
   isPaddleTourListing,
   isPublicAdventureCard,
 } from '@/lib/rva-adventure-public'
+import {
+  RVA_TRIP_OWNERSHIP,
+  isScenicTourSlug,
+  rvaPublicAdventureTitle,
+} from '@/lib/rva-confirmed'
 
 export const dynamic = 'force-dynamic'
 
@@ -50,7 +56,14 @@ async function getAdventure(slug: string): Promise<AdventureRow | null> {
     .order('display_order')
 
   if (!adventures) return null
-  return adventures.find((a: AdventureRow) => slugify(a.name) === slug) || null
+  return (
+    adventures.find((a: AdventureRow) => {
+      const rowSlug = slugify(a.name)
+      if (rowSlug === slug) return true
+      if (isScenicTourSlug(slug) && (isScenicTourSlug(rowSlug) || /escalade/i.test(a.name))) return true
+      return false
+    }) || null
+  )
 }
 
 async function getRelatedAdventures(currentId: string): Promise<AdventureRow[]> {
@@ -76,18 +89,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       robots: { index: false, follow: true },
     }
   }
-  const adventureSlug = slugify(adventure.name)
+  const adventureSlug = isScenicTourSlug(slugify(adventure.name)) ? 'scenic-wildlife-tours' : slugify(adventure.name)
+  const displayName = rvaPublicAdventureTitle(adventure.name, adventureSlug)
   const isRental = adventure.id === PADDLE_RENTAL_ID || adventureSlug === 'paddle-board-rentals'
   const visual = adventurePublicImage(adventure)
   const publicDescription = adventurePublicDescription(adventure)
   return {
-    title: `${adventure.name} | Rich Valley Adventures | Aspen, CO`,
+    title: `${displayName} | Rich Valley Adventures | Aspen, CO`,
     description: publicDescription,
     alternates: {
       canonical: `https://www.richvalleyadventures.com/adventures/${adventureSlug}`,
     },
     openGraph: {
-      title: `${adventure.name} — Guided Adventure in Aspen | Rich Valley Adventures`,
+      title: `${displayName} — Guided Adventure in Aspen | Rich Valley Adventures`,
       description: publicDescription,
       type: 'website',
       url: `https://www.richvalleyadventures.com/adventures/${adventureSlug}`,
@@ -130,6 +144,8 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
   const relatedAdventures = await getRelatedAdventures(adventure.id)
   const visual = adventurePublicImage(adventure)
   const publicDescription = adventurePublicDescription(adventure)
+  const adventureSlug = isScenicTourSlug(slugify(adventure.name)) ? 'scenic-wildlife-tours' : slugify(adventure.name)
+  const displayName = rvaPublicAdventureTitle(adventure.name, adventureSlug)
   const longDescription =
     publicDescription === FLY_FISHING_PUBLIC_DESCRIPTION ||
     publicDescription === TRAIL_HIKING_PUBLIC_DESCRIPTION
@@ -139,7 +155,9 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
   const highlights = Array.isArray(adventure.highlights) ? adventure.highlights : []
   const groupSize = (adventure.group_size || '').trim()
 
+  const priceNote = adventurePublicFromText(adventure)
   const facts = [
+    priceNote ? { label: 'Price', value: priceNote } : null,
     adventure.duration ? { label: 'Duration', value: adventure.duration } : null,
     adventure.difficulty ? { label: 'Level', value: adventure.difficulty } : null,
     groupSize ? { label: 'Group size', value: groupSize } : null,
@@ -148,9 +166,11 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
   ].filter((fact): fact is { label: string; value: string } => fact !== null)
 
   const content: ServiceContent = {
-    hero_title: adventure.name,
+    hero_title: displayName,
     hero_subtitle: publicDescription,
-    intro: longDescription,
+    intro: /horse|snowmobile|atv|scenic|raft/i.test(`${adventureSlug} ${displayName}`)
+      ? `${publicDescription}\n\n${RVA_TRIP_OWNERSHIP}`
+      : longDescription,
     lead: facts.length > 0 ? { paragraphs: [], facts } : undefined,
     features: whatsIncluded.filter(Boolean).map((item) => ({ title: item, description: '' })),
     h2_sections:
@@ -164,7 +184,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
     <div className="min-h-screen bg-rva-cream font-inter">
       <ServicePageTemplate
         site="rva"
-        title={adventure.name}
+        title={displayName}
         content={content}
         heroImage={heroSrc || undefined}
         heroImageAlt={visual.alt || `${adventure.name} with Rich Valley Adventures in Aspen, Colorado`}

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { alpenglowData, AAL_GOOGLE_REVIEW_URL } from '@/lib/site-data'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
-import { correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
+import { AAL_FLEET_LINE, AAL_PUC_LINE, AAL_SERVICE_AREAS, correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
 import VehicleCard from '@/components/alpenglow/VehicleCard'
 import { AAL_OG_IMAGE, AAL_VEHICLES } from '@/lib/aal-vehicles'
 
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 const defaultStats = [
   { value: '24/7', label: 'Dispatch Available' },
   { value: 'Since 2012', label: 'Serving Aspen' },
-  { value: '5.0', label: 'on Google (5 reviews)' },
+  { value: '2 + 1', label: 'Suburbans and a Transit' },
 ]
 
 const defaultWhyChooseUs = [
@@ -85,7 +85,8 @@ export default async function AboutPage() {
           postalCode: '81611',
           addressCountry: 'US',
         },
-        areaServed: ['Aspen', 'Snowmass Village', 'Roaring Fork Valley', 'Eagle County', 'Denver metro connections'],
+        identifier: { '@type': 'PropertyValue', name: 'Colorado PUC permit', value: 'LL-04725' },
+        areaServed: [...AAL_SERVICE_AREAS],
         foundingDate: '2012',
       },
     ],
