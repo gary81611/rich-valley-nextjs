@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import ALPNav from '@/components/alpenglow/ALPNav'
 import ALPFooter from '@/components/alpenglow/ALPFooter'
 import { alpenglowData } from '@/lib/site-data'
+import { AAL_PUC_PERMIT } from '@/lib/aal-public-copy'
 import './aal-type.css'
 
 const ALP_URL = 'https://aspenalpenglowlimousine.com'
@@ -89,6 +90,7 @@ const localBusinessSchema = {
     postalCode: '81611',
     addressCountry: 'US',
   },
+  identifier: { '@type': 'PropertyValue', name: 'Colorado PUC Permit', value: AAL_PUC_PERMIT },
   geo: {
     '@type': 'GeoCoordinates',
     latitude: 39.1911,

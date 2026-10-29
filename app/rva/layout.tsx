@@ -123,8 +123,8 @@ const localBusinessSchema = {
   hasMap: rvaData.googleMapsPlaceUrl,
   identifier: [
     { '@type': 'PropertyValue', name: 'Google Place ID', value: rvaData.googlePlaceId },
-    { '@type': 'PropertyValue', name: 'Colorado Licensed Outfitter', value: 'OUT.0003060' },
-    { '@type': 'PropertyValue', name: 'Colorado River License', value: '620' },
+    { '@type': 'PropertyValue', name: 'CO Licensed Outfitter', value: 'OUT.0003060' },
+    { '@type': 'PropertyValue', name: 'CO River License', value: '620' },
   ],
   brand: {
     '@type': 'Brand',
