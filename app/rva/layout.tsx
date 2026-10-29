@@ -12,6 +12,7 @@ const RVA_LOGO_HEIGHT = 212
 
 export const metadata: Metadata = {
   metadataBase: new URL(RVA_URL),
+  icons: { icon: '/images/logos/rva-logo.png' },
   title: 'Rich Valley Adventures | Guided Outdoor Experiences in Aspen, CO',
   description:
     'Rich Valley Adventures offers expert-guided fly fishing, hiking, mountain biking, and elevated camping in Aspen, Colorado. Small groups, all gear included. Book your Roaring Fork Valley adventure today.',

@@ -51,7 +51,7 @@ export default function AlpenglowHomeClient() {
         const supabase = createClient()
         const [svcRes, testRes, geoRes, faqRes, settingsRes, vpRes, saRes, destRes] = await Promise.all([
           supabase.from('services').select('*').eq('is_active', true).order('display_order'),
-          supabase.from('testimonials').select('*').eq('is_active', true).eq('site_key', 'alpenglow'),
+          supabase.from('testimonials').select('*').eq('is_active', true).eq('verified', true).eq('site_key', 'alpenglow'),
           supabase.from('geo_content_blocks').select('*').eq('is_active', true).eq('site_key', 'alpenglow').eq('display_on_page', '/').order('display_order'),
           supabase.from('faqs').select('*').eq('is_active', true).eq('site_key', 'alpenglow').order('display_order'),
           supabase.from('site_settings').select('phone, stats').eq('site_key', 'alpenglow').single(),
@@ -69,7 +69,9 @@ export default function AlpenglowHomeClient() {
             })),
           )
         }
-        if (!testRes.error && testRes.data && testRes.data.length > 0) {
+        if (testRes.error || !testRes.data) {
+          setTestimonials([])
+        } else {
           setTestimonials(
             testRes.data
               .filter((t: Testimonial) => isPublicTestimonial(t))
@@ -166,10 +168,13 @@ export default function AlpenglowHomeClient() {
             <a href="#quote" className="border-2 border-white text-white hover:bg-white hover:text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
               Request a quote
             </a>
-            <a href="/fleet" className="border-2 border-white text-white hover:bg-white hover:text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
+            <a href="/fleet" className="hidden md:inline-block border-2 border-white text-white hover:bg-white hover:text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all">
               See the fleet
             </a>
           </div>
+          <a href="/fleet" className="md:hidden mt-5 inline-block text-white text-lg underline underline-offset-4">
+            See the fleet
+          </a>
         </div>
         {/* Stats bar */}
         {stats.length > 0 && (

@@ -145,13 +145,12 @@ function SchemaTab({ supabase }: { supabase: any }) {
       } else {
         // AAL schema
         const vehicleItems = fleetData.map((v: { name: string; description: string; capacity?: number; type?: string }) => ({
-          '@type': 'Product',
+          '@type': 'Service',
           name: v.name,
           description: v.description,
+          serviceType: v.type || 'Private transportation',
           ...(v.capacity && { additionalProperty: { '@type': 'PropertyValue', name: 'Passenger Capacity', value: v.capacity } }),
-          ...(v.type && { category: v.type }),
-          brand: { '@type': 'Brand', name: 'Aspen Alpenglow Limousine' },
-          offers: { '@type': 'Offer', availability: 'https://schema.org/InStock', priceCurrency: 'USD' },
+          provider: { '@type': 'LocalBusiness', name: 'Aspen Alpenglow Limousine' },
         }))
 
         const serviceItems = serviceData.map((s: { name: string; description: string; price_from?: number }) => ({
@@ -248,7 +247,7 @@ function SchemaTab({ supabase }: { supabase: any }) {
         {[
           { type: 'LocalBusiness', desc: 'Business name, phone, address, hours', sites: 'Both sites' },
           { type: 'FAQPage', desc: 'All your FAQs, eligible for Google dropdowns', sites: 'Both sites' },
-          { type: 'TouristTrip / Product', desc: 'Adventures (RVA) + fleet vehicles (AAL)', sites: 'Both sites' },
+          { type: 'TouristTrip / Service', desc: 'Adventures (RVA) and fleet rides as Service (AAL). No Product or Offer on vehicles.', sites: 'Both sites' },
           { type: 'TouristAttraction / LimousineBus', desc: 'Business type classification', sites: 'Both sites' },
           { type: 'AggregateRating + Review', desc: 'Omitted until a testimonial is active and verified', sites: 'Neither site yet' },
           { type: 'GeoCoordinates', desc: 'Aspen, CO location for map results', sites: 'Both sites' },
