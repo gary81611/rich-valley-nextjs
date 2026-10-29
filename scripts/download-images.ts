@@ -7,15 +7,14 @@ const images: Record<string, string> = {
   // Logos
   'https://lirp.cdn-website.com/312dda6a/dms3rep/multi/opt/richvalleylogo-1920w.png': 'logos/rva-logo.png',
   'https://lirp.cdn-website.com/312dda6a/dms3rep/multi/opt/logo4-1920w.png': 'logos/alpenglow-logo.png',
-  // Fleet
-  'https://lirp.cdn-website.com/312dda6a/dms3rep/multi/opt/pngimg.com---cadillac_PNG74-748w.png': 'fleet/escalade.png',
+  // Fleet cutouts of retired vehicles are not downloaded.
   'https://lirp.cdn-website.com/312dda6a/dms3rep/multi/opt/2025-Mercedes-Benz-Sprinter-3500-Cargo-front_53095_032_2400x1800_040-790w.png': 'fleet/sprinter.png',
   // Adventures
   'https://lirp.cdn-website.com/312dda6a/dms3rep/multi/opt/flyfishing-1920w.png': 'adventures/fly-fishing.png',
   'https://lirp.cdn-website.com/312dda6a/dms3rep/multi/opt/IMG_0110-1920w.jpg': 'adventures/paddle-boarding.jpg',
   'https://lirp.cdn-website.com/312dda6a/dms3rep/multi/opt/mountainbbiking-1920w.jpg': 'adventures/mountain-biking.jpg',
   'https://lirp.cdn-website.com/312dda6a/dms3rep/multi/opt/hiking-1920w.png': 'adventures/hiking.png',
-  'https://lirp.cdn-website.com/312dda6a/dms3rep/multi/opt/scenicdrive-1920w.png': 'adventures/scenic-escalade.png',
+  'https://lirp.cdn-website.com/312dda6a/dms3rep/multi/opt/scenicdrive-1920w.png': 'adventures/scenic-wildlife-tour.png',
 'https://lirp.cdn-website.com/312dda6a/dms3rep/multi/opt/Rich-Valley-Ranch-October-2022-8725-1920w.jpeg': 'adventures/elevated-camping.jpeg',
   'https://lirp.cdn-website.com/312dda6a/dms3rep/multi/opt/IMG_4226-3863d226-1920w.jpeg': 'adventures/fly-fishing-action.jpeg',
   'https://lirp.cdn-website.com/312dda6a/dms3rep/multi/opt/image+%281%29-1920w.png': 'adventures/paddle-boarding-lake.png',

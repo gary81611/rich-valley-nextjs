@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { PHONE, PHONE_HREF, LOCATION } from '@/lib/site-data'
+import { RVA_LICENSES_LINE } from '@/lib/rva-confirmed'
 import InquiryForm from '@/components/shared/InquiryForm'
 import { RVA_GLOBAL_PILLAR_BLOG_LINKS } from '@/lib/rva-blog-pillars'
 
@@ -136,22 +137,13 @@ export default function ContactPage({
                 <ul className="space-y-3 text-white/80 text-sm">
                   <li className="flex items-start gap-3">
                     <span className="w-1.5 h-1.5 bg-rva-copper-700 rounded-full mt-2 flex-shrink-0" />
-                    Book at least 2 days in advance. A 50% deposit is due at booking. Cancellations within 72 hours are billed in full.
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 bg-rva-copper-700 rounded-full mt-2 flex-shrink-0" />
-                    Corporate packages: groups of 50+, a custom mix of fishing and hiking
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 bg-rva-copper-700 rounded-full mt-2 flex-shrink-0" />
-                    Paddleboarding is a rental from $100, not a guided trip
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 bg-rva-copper-700 rounded-full mt-2 flex-shrink-0" />
-                    Full-day float from $1,400 for 2 people.{' '}
-                    <Link href="/private-ranch-fishing" className="text-rva-copper-light underline">
-                      Spring Creek Ranch picnic from $800 per adult
+                    <Link href="/adventures" className="text-rva-copper-light underline">
+                      See all trips and prices →
                     </Link>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="w-1.5 h-1.5 bg-rva-copper-700 rounded-full mt-2 flex-shrink-0" />
+                    Book at least 2 days in advance. A 50% deposit is due at booking. Cancellations within 72 hours are billed in full.
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="w-1.5 h-1.5 bg-rva-copper-700 rounded-full mt-2 flex-shrink-0" />
@@ -166,6 +158,7 @@ export default function ContactPage({
                     We typically respond within 2-4 hours
                   </li>
                 </ul>
+                <p className="text-white/70 text-xs mt-4">{RVA_LICENSES_LINE}</p>
               </div>
             </div>
           </div>

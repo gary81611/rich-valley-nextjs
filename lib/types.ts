@@ -74,6 +74,8 @@ export interface Testimonial {
   rating: number
   site_key: 'rva' | 'alpenglow'
   is_active: boolean
+  /** Absent until migration 20261029203000. Missing means unverified. */
+  verified?: boolean | null
   created_at: string
   updated_at: string
 }

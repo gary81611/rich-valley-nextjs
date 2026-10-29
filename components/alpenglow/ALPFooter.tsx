@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { alpenglowData } from '@/lib/site-data'
+import { AAL_PUC_LINE, AAL_SERVICE_AREAS } from '@/lib/aal-public-copy'
 
 export default function ALPFooter() {
   const phone = alpenglowData.phone
@@ -47,6 +48,8 @@ export default function ALPFooter() {
             <p className="font-playfair text-lg font-semibold mb-5 text-alp-gold">Contact</p>
             <div className="space-y-3 text-white/65 text-sm">
               <p>{alpenglowData.location}</p>
+              <p>Service areas: {AAL_SERVICE_AREAS.join(', ')}.</p>
+              <p>{AAL_PUC_LINE}</p>
               <a href={phoneHref} className="block hover:text-alp-gold-light transition-colors">{phone}</a>
               <a
                 href={alpenglowData.googleReviewUrl}

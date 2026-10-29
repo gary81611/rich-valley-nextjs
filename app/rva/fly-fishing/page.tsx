@@ -5,6 +5,7 @@ import {
   flyFishingServiceContent,
 } from '@/lib/rva-fly-fishing-content'
 import { rvaServicePageRelatedBlogLinks } from '@/lib/rva-blog-pillars'
+import { RVA_FLOAT_PHOTO } from '@/lib/rva-kit-photos'
 
 /** The prerendered HTML was stuck on the Vercel edge as STALE after the copy change. Render each request from this file. */
 export const dynamic = 'force-dynamic'
@@ -192,7 +193,19 @@ export default function FlyFishingPage() {
       <ServicePageTemplate
         site="rva"
         title={flyFishingPageTitle}
-        content={content}
+        content={{
+          ...content,
+          intro: content.intro,
+          h2_sections: [
+            {
+              title: 'On the river',
+              content: 'Full-day float trip: $1,400 for 2. Fishing is guided in-house.',
+              image: RVA_FLOAT_PHOTO.src,
+              imageAlt: RVA_FLOAT_PHOTO.alt,
+            },
+            ...(content.h2_sections || []),
+          ],
+        }}
         relatedLinks={rvaServicePageRelatedBlogLinks('fly-fishing')}
       />
     </>

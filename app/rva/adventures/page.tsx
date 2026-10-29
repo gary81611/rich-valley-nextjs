@@ -8,6 +8,7 @@ import { PADDLE_PHOTO, PADDLE_PHOTO_ALT, isPublicAdventureCard, toPublicAdventur
 import { RVA_GLOBAL_PILLAR_BLOG_LINKS } from '@/lib/rva-blog-pillars'
 import AdventureCard from '@/components/rva/AdventureCard'
 import RvaButton, { RVA_BOOKING_LABEL, RVA_PHONE_LABEL, RVA_PHONE_HREF } from '@/components/rva/Button'
+import { RVA_PRICE_LINES } from '@/lib/rva-confirmed'
 
 type Season = 'all' | 'summer' | 'winter' | 'year-round'
 
@@ -94,6 +95,7 @@ export default function AdventuresPage() {
             Corporate packages are for groups of 50 or more: a custom mix of fishing and hiking.
             Book at least 2 days in advance. A 50% deposit is due at booking. Cancellations within 72 hours are billed in full.
           </p>
+          <p className="text-white/70 text-sm max-w-2xl mx-auto mt-3">{RVA_PRICE_LINES.join(' · ')}</p>
         </div>
       </section>
 
@@ -147,8 +149,10 @@ export default function AdventuresPage() {
         <div className="max-w-7xl mx-auto px-6">
           {filtered.length === 0 ? (
             <div className="text-center py-16">
-              <p className="text-gray-500 text-lg">
-                No adventures found for this season. Check back soon or view all adventures.
+              <p className="text-lg text-rva-forest">
+                {activeSeason === 'all'
+                  ? 'No adventures are listed yet. Call 970-456-3666 and we will help you plan.'
+                  : 'No adventures are listed for this season. Choose All, or call 970-456-3666.'}
               </p>
             </div>
           ) : (

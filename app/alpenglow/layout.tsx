@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import ALPNav from '@/components/alpenglow/ALPNav'
 import ALPFooter from '@/components/alpenglow/ALPFooter'
 import { alpenglowData } from '@/lib/site-data'
+import { AAL_PUC_PERMIT } from '@/lib/aal-public-copy'
 import './aal-type.css'
 
 const ALP_URL = 'https://aspenalpenglowlimousine.com'
@@ -89,6 +90,7 @@ const localBusinessSchema = {
     postalCode: '81611',
     addressCountry: 'US',
   },
+  identifier: { '@type': 'PropertyValue', name: 'Colorado PUC Permit', value: AAL_PUC_PERMIT },
   geo: {
     '@type': 'GeoCoordinates',
     latitude: 39.1911,
@@ -108,6 +110,7 @@ const localBusinessSchema = {
     { '@type': 'City', name: 'Basalt' },
     { '@type': 'City', name: 'Carbondale' },
     { '@type': 'City', name: 'Glenwood Springs' },
+    { '@type': 'City', name: 'Gypsum' },
     { '@type': 'City', name: 'Vail' },
     { '@type': 'City', name: 'Denver' },
     {
@@ -119,6 +122,7 @@ const localBusinessSchema = {
       '@type': 'Airport',
       name: 'Eagle County Regional Airport',
       iataCode: 'EGE',
+      address: { '@type': 'PostalAddress', addressLocality: 'Gypsum', addressRegion: 'CO', addressCountry: 'US' },
     },
     {
       '@type': 'Airport',
@@ -159,7 +163,7 @@ const localBusinessSchema = {
           '@type': 'Service',
           name: 'Airport Transfer — Aspen/Pitkin County Airport & Eagle County Airport',
           description:
-            'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.',
+            'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way SUV rates each way: Eagle and Rifle $720, Denver $1,375, Grand Junction $950. The 13-passenger Ford Transit is $1,200 from Eagle or Rifle and $1,600 from Denver. Holiday pricing may change seasonally.',
         },
       },
       {
@@ -178,6 +182,24 @@ const localBusinessSchema = {
         '@type': 'Offer',
         name: 'One-way from Rifle to Aspen',
         price: '720',
+        priceCurrency: 'USD',
+      },
+      {
+        '@type': 'Offer',
+        name: 'One-way SUV from Eagle (Gypsum) to Aspen',
+        price: '720',
+        priceCurrency: 'USD',
+      },
+      {
+        '@type': 'Offer',
+        name: '13-passenger Ford Transit from Eagle or Rifle to Aspen',
+        price: '1200',
+        priceCurrency: 'USD',
+      },
+      {
+        '@type': 'Offer',
+        name: '13-passenger Ford Transit from Denver to Aspen',
+        price: '1600',
         priceCurrency: 'USD',
       },
       {
@@ -253,9 +275,9 @@ const vehicleSchemas = [
   {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    name: 'Ford Transit Van — 13 Passenger Group Transportation',
+    name: 'Ford Transit Passenger Van — 13 Passenger Group Transportation',
     description:
-      'Late-model Ford Transit Van with WiFi (Starlink), XM Radio, and Myers ski rack. Seats up to 13 passengers. Child car seats and boosters are free. No shared rides are offered. Ideal for group airport transfers, wedding parties, and corporate events in Aspen and the Roaring Fork Valley.',
+      'Late-model Ford Transit Passenger Van with WiFi (Starlink), XM Radio, and Myers ski rack. Seats up to 13 passengers. Child car seats and boosters are free. No shared rides are offered. Ideal for group airport transfers, wedding parties, and corporate events in Aspen and the Roaring Fork Valley.',
     serviceType: 'Luxury Group Transportation & Van Service',
     provider: {
       '@type': 'LocalBusiness',

@@ -2,9 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { alpenglowData, AAL_GOOGLE_REVIEW_URL } from '@/lib/site-data'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
-import { correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
-import VehicleCard from '@/components/alpenglow/VehicleCard'
-import { AAL_OG_IMAGE, AAL_VEHICLES } from '@/lib/aal-vehicles'
+import { AAL_SERVICE_AREAS, correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 export const dynamic = 'force-dynamic'
 
@@ -26,13 +25,11 @@ export const metadata: Metadata = {
 const defaultStats = [
   { value: '24/7', label: 'Dispatch Available' },
   { value: 'Since 2012', label: 'Serving Aspen' },
-  { value: '5.0', label: 'on Google (5 reviews)' },
 ]
 
 const defaultWhyChooseUs = [
   { title: 'Flight Tracking', description: 'We monitor your flight in real-time so your ride is waiting, even if plans change.' },
   { title: 'Local Knowledge', description: 'Our drivers live here. They know the fastest routes and the valley inside out.' },
-  { title: 'Impeccable Fleet', description: 'Late-model luxury vehicles, professionally detailed before every ride.' },
   { title: 'White-Glove Service', description: 'Meet-and-greet, luggage handling, complimentary refreshments — every detail covered.' },
 ]
 
@@ -47,13 +44,19 @@ export default async function AboutPage() {
       supabase.from('value_propositions').select('title, description').eq('site_key', 'alpenglow').eq('is_active', true).order('display_order'),
     ])
     if (settingsRes.data?.stats && Array.isArray(settingsRes.data.stats) && settingsRes.data.stats.length > 0) {
-      stats = settingsRes.data.stats.map((stat: { value: string; label: string }) => normalizeAalStat(stat))
+      stats = settingsRes.data.stats
+        .map((stat: { value: string; label: string }) => normalizeAalStat(stat))
+        .filter((stat): stat is { value: string; label: string } => stat !== null)
+      if (stats.length === 0) stats = defaultStats
     }
     if (vpRes.data && vpRes.data.length > 0) {
-      whyChooseUs = vpRes.data.map((vp: { title: string; description: string }) => ({
-        title: correctAalPublicText(vp.title),
-        description: correctAalPublicText(vp.description),
-      }))
+      whyChooseUs = vpRes.data
+        .map((vp: { title: string; description: string }) => ({
+          title: correctAalPublicText(vp.title),
+          description: correctAalPublicText(vp.description),
+        }))
+        .filter((vp) => !/impeccable fleet/i.test(vp.title))
+      if (whyChooseUs.length === 0) whyChooseUs = defaultWhyChooseUs
     }
   } catch {
     // Use defaults on error
@@ -85,7 +88,7 @@ export default async function AboutPage() {
           postalCode: '81611',
           addressCountry: 'US',
         },
-        areaServed: ['Aspen', 'Snowmass Village', 'Roaring Fork Valley', 'Eagle County', 'Denver metro connections'],
+        areaServed: [...AAL_SERVICE_AREAS],
         foundingDate: '2012',
       },
     ],
@@ -156,7 +159,7 @@ export default async function AboutPage() {
                 That&apos;s the Alpenglow difference.&rdquo;
               </p>
             </div>
-            <div className="grid grid-cols-3 gap-8 text-center">
+            <div className="grid grid-cols-2 gap-8 text-center">
               {stats.map((stat) => {
                 const reviewLink = stat.value === '5.0' && /google/i.test(stat.label)
                 const figure = (
@@ -199,7 +202,7 @@ export default async function AboutPage() {
             is spotless. Whether it&apos;s a wedding, a corporate event, or a family vacation,
             we treat every ride as the most important one of the day.
           </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {whyChooseUs.map((item) => (
               <div key={item.title} className="text-center">
                 <h3 className="font-playfair text-lg font-bold text-alp-gold mb-2">
@@ -210,62 +213,6 @@ export default async function AboutPage() {
                 </p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Fleet Overview */}
-      <section className="py-24 bg-alp-pearl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="text-alp-gold text-sm tracking-widest uppercase mb-4 font-semibold">
-              Our Vehicles
-            </p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-4">
-              The Fleet
-            </h2>
-            <p className="text-alp-slate text-lg max-w-2xl mx-auto">
-              Chevrolet Suburban SUVs seat up to 7. The Ford Transit passenger van seats up to 13.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            {AAL_VEHICLES.map((vehicle) => (
-              <VehicleCard key={vehicle.id} vehicle={vehicle} />
-            ))}
-          </div>
-          <div className="text-center mt-8">
-            <Link
-              href="/fleet"
-              className="inline-flex items-center gap-2 text-alp-gold font-semibold hover:text-alp-gold-light transition-colors"
-            >
-              View Full Fleet Details
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Team */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center">
-            <p className="text-alp-gold text-sm tracking-widest uppercase mb-4 font-semibold">
-              Our Team
-            </p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-8">
-              Professional Chauffeurs, Local Experts
-            </h2>
-            <p className="text-alp-slate text-lg leading-relaxed mb-6">
-              8 full-time local drivers who have been driving these mountain roads since 2012. They live in
-              the Roaring Fork Valley and know the fastest routes, the best restaurants, and every
-              back road shortcut. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee.
-            </p>
-            <p className="text-alp-slate text-lg leading-relaxed">
-              When you ride with Alpenglow, you are in the hands of someone who takes pride in making
-              your experience flawless. That is our promise, on every single ride.
-            </p>
           </div>
         </div>
       </section>
@@ -303,56 +250,6 @@ export default async function AboutPage() {
               </p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Internal links — transportation planning */}
-      <section className="py-20 bg-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-playfair text-3xl md:text-4xl text-alp-navy font-bold mb-4">Plan your transportation</h2>
-          <p className="text-alp-slate text-lg leading-relaxed mb-8">
-            Explore dedicated guides for airports, regional routes, Colorado day trips, and travel stories from our team.
-          </p>
-          <ul className="text-left max-w-xl mx-auto space-y-3 text-alp-navy">
-            <li>
-              <Link href="/airport-transfers" className="text-alp-gold font-semibold hover:underline">
-                Private airport transfers — ASE, EGE &amp; Denver (DEN)
-              </Link>
-            </li>
-            <li>
-              <Link href="/service-areas/snowmass-village" className="text-alp-gold font-semibold hover:underline">
-                Snowmass Village limo service &amp; Aspen dinner transfers
-              </Link>
-            </li>
-            <li>
-              <Link href="/service-areas/eagle-vail" className="text-alp-gold font-semibold hover:underline">
-                Aspen ↔ Vail / Beaver Creek private car service
-              </Link>
-            </li>
-            <li>
-              <Link href="/destinations" className="text-alp-gold font-semibold hover:underline">
-                Chauffeured Colorado destinations — Red Rocks, Garden of the Gods &amp; more
-              </Link>
-            </li>
-            <li>
-              <Link href="/blog" className="text-alp-gold font-semibold hover:underline">
-                Blog — ski-season travel tips, airport guides, and event logistics
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      {/* Sister Company */}
-      <section className="py-16 bg-alp-pearl">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-alp-slate text-lg mb-4">
-            Our sister company{' '}
-            <a href={alpenglowData.partnerSite.url} className="font-semibold text-alp-gold-700 hover:underline">
-              {alpenglowData.partnerSite.name}
-            </a>{' '}
-            offers guided fly fishing, hiking, and mountain biking.
-          </p>
         </div>
       </section>
 

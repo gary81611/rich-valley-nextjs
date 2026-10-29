@@ -22,14 +22,14 @@ export async function seedAllTables(supabase: SupabaseClient) {
         email: rvaData.email, address: 'Aspen, Colorado 81611', logo_url: rvaData.logo,
         social_links: { Facebook: rvaData.social.facebook, Instagram: rvaData.social.instagram },
         colors: { primary: '#C17A3A', secondary: '#2D3B2D', accent: '#D4A96A', background: '#F5F0EB' },
-        stats: [{ value: '2012', label: 'Guiding since' }, { value: '3,000+', label: 'Adventures Led' }, { value: '4.9', label: 'Average Rating' }],
+        stats: [{ value: '2012', label: 'Guiding since' }],
       },
       {
         site_key: 'alpenglow', brand_name: alpenglowData.name, tagline: alpenglowData.tagline, phone: alpenglowData.phone,
         email: alpenglowData.email, address: 'Aspen, Colorado 81611', logo_url: alpenglowData.logo,
         social_links: { Facebook: alpenglowData.social.facebook, Instagram: alpenglowData.social.instagram },
         colors: { primary: '#1B2541', secondary: '#C8A96E', accent: '#2A3F6F', background: '#0F1729' },
-        stats: [{ value: '24/7', label: 'Dispatch Available' }, { value: 'Since 2012', label: 'Serving Aspen' }, { value: '5.0', label: 'on Google (5 reviews)' }],
+        stats: [{ value: '24/7', label: 'Dispatch Available' }, { value: 'Since 2012', label: 'Serving Aspen' }],
       },
     ])
     results.push('Site Settings: 2 inserted')
@@ -52,7 +52,7 @@ export async function seedAllTables(supabase: SupabaseClient) {
       { site_key: 'rva', block_type: 'fact', question: 'What is Rich Valley Adventures?', answer: 'Rich Valley Adventures is a guided outdoor adventure company based in Aspen, Colorado, operating since 2012. Paddleboarding is a rental from $100, not a guided trip. A full-day float trip starts at $1,400 for 2 people.', display_on_page: '/', display_order: 0 },
       { site_key: 'rva', block_type: 'local_info', question: 'Where is the best fly fishing near Aspen?', answer: 'The Roaring Fork River near Aspen is designated a Gold Medal trout fishery by Colorado Parks and Wildlife. Guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady.', display_on_page: '/', display_order: 1 },
       { site_key: 'rva', block_type: 'statistic', question: 'How many adventures does Rich Valley offer?', answer: 'Rich Valley Adventures offers guided fly fishing, mountain biking, trail hiking, elevated camping, and scenic Chauffeur Guided Tours. Paddleboarding is a rental from $100, not a guided trip.', display_on_page: '/', display_order: 2 },
-      { site_key: 'alpenglow', block_type: 'fact', question: 'What is Aspen Alpenglow Limousine?', answer: 'Aspen Alpenglow Limousine is a luxury private car and limousine service in Aspen, Colorado, operating 24/7 since 2012 with two Chevrolet Suburbans and a Ford Transit Van.', display_on_page: '/', display_order: 0 },
+      { site_key: 'alpenglow', block_type: 'fact', question: 'What is Aspen Alpenglow Limousine?', answer: 'Aspen Alpenglow Limousine is a luxury private car and limousine service in Aspen, Colorado, operating 24/7 since 2012 with two Chevrolet Suburbans and a Ford Transit Passenger Van.', display_on_page: '/', display_order: 0 },
       { site_key: 'alpenglow', block_type: 'local_info', question: 'How far is Aspen from Denver airport?', answer: 'Aspen is approximately 200 miles from Denver International Airport (DEN), a 3.5-4 hour drive. Aspen Alpenglow Limousine provides direct private transfers on this route.', display_on_page: '/', display_order: 1 },
       { site_key: 'alpenglow', block_type: 'fact', question: 'What airports serve Aspen, Colorado?', answer: 'Aspen is served by Aspen/Pitkin County Airport (ASE) and Eagle County Regional Airport (EGE, 70 miles away). Denver International Airport (DEN) is the nearest major hub.', display_on_page: '/', display_order: 2 },
     ]

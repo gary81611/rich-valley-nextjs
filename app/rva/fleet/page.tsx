@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { seoAlt } from '@/lib/seo/alt-text'
-import { correctAalFleetText } from '@/lib/aal-public-copy'
+import { AAL_FLEET_LINE, correctAalFleetCapacity, correctAalFleetText, correctAalPublicText } from '@/lib/aal-public-copy'
 import RvaButton, { RVA_PHONE_HREF, RVA_PHONE_LABEL, RVA_BOOKING_LABEL } from '@/components/rva/Button'
 
 export const dynamic = 'force-dynamic'
@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Fleet | Rich Valley Adventures',
   description:
-    'Our sister company Aspen Alpenglow Limousine provides luxury transportation in Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (13 passengers) for Chauffeur Guided Tours and Excursions and transfers. Child seats are free. No shared rides are offered.',
+    'Our sister company Aspen Alpenglow Limousine provides luxury transportation in Chevrolet Suburbans (7 passengers each) and a Ford Transit Passenger Van (13 passengers) for Chauffeur Guided Tours and Excursions and transfers. Child seats are free. No shared rides are offered.',
   alternates: {
     canonical: 'https://aspenalpenglowlimousine.com/fleet',
   },
@@ -33,7 +33,14 @@ async function getFleetVehicles() {
 }
 
 export default async function FleetPage() {
-  const vehicles = await getFleetVehicles()
+  const vehicles = (await getFleetVehicles())
+    .filter((vehicle) => !/escalade|cadillac/i.test(`${vehicle.name} ${vehicle.type} ${vehicle.image_url || ''}`))
+    .map((vehicle) => ({
+      ...vehicle,
+      name: correctAalPublicText(vehicle.name),
+      description: vehicle.description ? correctAalPublicText(vehicle.description) : vehicle.description,
+      capacity: correctAalFleetCapacity(vehicle.name, vehicle.capacity || 0),
+    }))
 
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
@@ -62,7 +69,7 @@ export default async function FleetPage() {
           <p className="text-white/75 text-xl max-w-2xl mx-auto">
             Through our sister company{' '}
             <span className="text-rva-copper-light font-semibold">Aspen Alpenglow Limousine</span>,
-            we offer luxury vehicles for scenic tours, airport transfers, and special occasions.
+            we offer luxury vehicles for scenic tours, airport transfers, and special occasions. {AAL_FLEET_LINE}
           </p>
         </div>
       </section>

@@ -20,7 +20,7 @@ export default function NewYearsEveCarPage() {
       path={path}
       eyebrow="New Year's Eve 2026"
       title={title}
-      lede="Private car service for New Year's Eve 2026 in Aspen. SUVs seat 7 and the Ford Transit passenger van seats 13, so a group can stay in one car from dinner through the ride home. Holiday pricing may change seasonally. This page does not add an event list beyond the planning guide."
+      lede="Private car service for New Year's Eve 2026 in Aspen. SUVs seat 7 and the Ford Transit Passenger Van seats 13, so a group can stay in one car from dinner through the ride home. Holiday pricing may change seasonally. This page does not add an event list beyond the planning guide."
       sections={[
         {
           heading: 'A private car for the night',
@@ -43,7 +43,7 @@ export default function NewYearsEveCarPage() {
         },
         {
           question: 'Can a group of more than seven ride together?',
-          answer: 'Yes. The Ford Transit passenger van seats 13. SUVs seat 7.',
+          answer: 'Yes. The Ford Transit Passenger Van seats 13. SUVs seat 7.',
         },
         {
           question: 'Where is Cloud Nine Alpine Bistro?',

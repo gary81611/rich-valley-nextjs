@@ -121,11 +121,11 @@ const localBusinessSchema = {
     rvaData.googleReviewUrl,
   ],
   hasMap: rvaData.googleMapsPlaceUrl,
-  identifier: {
-    '@type': 'PropertyValue',
-    name: 'Google Place ID',
-    value: rvaData.googlePlaceId,
-  },
+  identifier: [
+    { '@type': 'PropertyValue', name: 'Google Place ID', value: rvaData.googlePlaceId },
+    { '@type': 'PropertyValue', name: 'CO Licensed Outfitter', value: 'OUT.0003060' },
+    { '@type': 'PropertyValue', name: 'CO River License', value: '620' },
+  ],
   brand: {
     '@type': 'Brand',
     name: 'Rich Valley Adventures',

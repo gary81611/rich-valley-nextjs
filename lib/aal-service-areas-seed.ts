@@ -59,7 +59,7 @@ From the Aspen core to Red Mountain, Starwood, and West Aspen addresses, we plan
       {
         question: 'What vehicles serve Aspen?',
         answer:
-          'Our fleet includes two late-model Chevrolet Suburbans (up to seven passengers each) and a Ford Transit Van (up to thirteen passengers), all with WiFi, XM Radio, complimentary water, and ski/luggage racks as equipped.',
+          'Our fleet includes two late-model Chevrolet Suburbans (up to seven passengers each) and a Ford Transit Passenger Van (up to thirteen passengers), all with WiFi, XM Radio, complimentary water, and ski/luggage racks as equipped.',
       },
     ],
   },
@@ -74,7 +74,7 @@ From the Aspen core to Red Mountain, Starwood, and West Aspen addresses, we plan
       'Luxury SUV and van service to Snowmass Village, CO—Aspen airport transfers, Base Village, ski condos, weddings. All-inclusive pricing. Call 970-456-3666.',
     description:
       'Reliable private transportation to Snowmass Village from ASE, Aspen, and regional airports—perfect for ski trips, weddings, and family groups.',
-    long_description: `Snowmass Village sits minutes west of Aspen and deserves the same polished arrival experience as downtown. Aspen Alpenglow Limousine provides private Chevrolet Suburban and Ford Transit Van service to Base Village, Snowmass Mall, luxury residences, and rental communities throughout the upper valley.
+    long_description: `Snowmass Village sits minutes west of Aspen and deserves the same polished arrival experience as downtown. Aspen Alpenglow Limousine provides private Chevrolet Suburban and Ford Transit Passenger Van service to Base Village, Snowmass Mall, luxury residences, and rental communities throughout the upper valley.
 
 We coordinate timing around ski-school drop-offs, wedding weekends, and multi-generational travel. Drivers know seasonal traffic on Brush Creek Road and Snowmass Creek Divide alternatives, helping you avoid unnecessary delays during peak winter Saturdays and holiday festivals.
 
@@ -95,7 +95,7 @@ Service is available 24 hours a day for early-morning powder days, late après-s
       {
         question: 'Can you transport ski gear and large groups in Snowmass?',
         answer:
-          'Yes. Suburbans include ski racks and generous cargo space; the Ford Transit Van carries up to thirteen passengers for larger families and corporate retreats.',
+          'Yes. Suburbans include ski racks and generous cargo space; the Ford Transit Passenger Van carries up to thirteen passengers for larger families and corporate retreats.',
       },
       {
         question: 'Are Snowmass transfers all-inclusive?',
@@ -238,7 +238,7 @@ Whether you need a direct transfer to Aspen or a multi-stop day that pairs Glenw
       'Private transfers between Aspen and Vail, Beaver Creek, and Eagle County Airport (EGE). Luxury Suburbans & 13-pass van. All-inclusive mountain pricing.',
     description:
       'Long-distance private car service connecting the Roaring Fork Valley with Vail, Beaver Creek, and Eagle County Regional Airport (EGE).',
-    long_description: `Aspen Alpenglow Limousine operates experienced mountain-road chauffeurs for the high-demand corridor between Aspen and the Vail Valley. We serve Eagle County Regional Airport (EGE), Vail Village, Lionshead, Avon, and Beaver Creek with Chevrolet Suburbans and our thirteen-passenger Ford Transit Van.
+    long_description: `Aspen Alpenglow Limousine operates experienced mountain-road chauffeurs for the high-demand corridor between Aspen and the Vail Valley. We serve Eagle County Regional Airport (EGE), Vail Village, Lionshead, Avon, and Beaver Creek with Chevrolet Suburbans and our thirteen-passenger Ford Transit Passenger Van.
 
 These transfers cross high mountain passes and can be affected by snow, wind, and I-70 incidents. We build padding into itineraries, monitor CDOT alerts, and communicate proactively if timing needs to shift.
 
@@ -263,7 +263,7 @@ Ideal for split-resort ski weeks, corporate incentives, and wedding parties movi
       {
         question: 'Can larger groups travel between Aspen and Vail in one vehicle?',
         answer:
-          'Groups up to thirteen passengers can ride in our Ford Transit Van; smaller parties typically choose dual Suburbans for extra luggage capacity.',
+          'Groups up to thirteen passengers can ride in our Ford Transit Passenger Van; smaller parties typically choose dual Suburbans for extra luggage capacity.',
       },
     ],
   },
@@ -357,7 +357,7 @@ Share tail numbers, crew manifests, or production schedules when booking so we c
       'Private car service from Grand Junction Regional Airport (GJT) to Aspen and Snowmass—diversion support, wine country, all-inclusive SUV & van rates.',
     description:
       'Long-distance private transportation from Grand Junction Regional Airport (GJT), downtown Grand Junction, and Colorado wine country to Aspen.',
-    long_description: `Grand Junction Regional Airport (GJT) is a key alternate when mountain weather affects ASE or when travelers explore Colorado’s wine country before heading to Aspen. Aspen Alpenglow Limousine provides private Chevrolet Suburban and Ford Transit Van service for the roughly two-and-a-half-hour mountain transition into the Roaring Fork Valley.
+    long_description: `Grand Junction Regional Airport (GJT) is a key alternate when mountain weather affects ASE or when travelers explore Colorado’s wine country before heading to Aspen. Aspen Alpenglow Limousine provides private Chevrolet Suburban and Ford Transit Passenger Van service for the roughly two-and-a-half-hour mountain transition into the Roaring Fork Valley.
 
 We support airline diversions, multi-day itineraries that start in Palisade or Grand Junction, and corporate groups needing predictable, all-inclusive pricing. Chauffeurs monitor road conditions over the Grand Mesa and along Highway 82, adjusting departure times when warranted.
 

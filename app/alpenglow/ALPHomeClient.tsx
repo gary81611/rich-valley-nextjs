@@ -4,14 +4,13 @@ import Image from 'next/image'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import InquiryForm from '@/components/shared/InquiryForm'
 import NewsletterSignup from '@/components/shared/NewsletterSignup'
-import VehicleCard from '@/components/alpenglow/VehicleCard'
-import { AAL_VEHICLES } from '@/lib/aal-vehicles'
 import { alpenglowData } from '@/lib/site-data'
 import { createClient } from '@/lib/supabase'
 import { hrefForService } from '@/lib/alpenglow-services'
 import type { Service as ServiceType, Testimonial } from '@/lib/types'
 import { seoAlt } from '@/lib/seo/alt-text'
 import { AAL_ONE_WAY_RATES, correctAalFaqItem, correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
+import { isPublicTestimonial } from '@/lib/rva-confirmed'
 
 interface GeoBlock {
   id: string
@@ -34,18 +33,8 @@ function correctAalCopy(question: string, answer: string): string {
   return correctAalPublicText(answer)
 }
 
-const ServiceIcon = ({ icon }: { icon: string }) => {
-  const icons: Record<string, React.ReactNode> = {
-    Plane: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>,
-    Clock: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
-    Briefcase: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>,
-    Heart: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>,
-  }
-  return <div className="text-alp-gold">{icons[icon] ?? null}</div>
-}
-
 export default function AlpenglowHomeClient() {
-  const [services, setServices] = useState<{ title: string; slug: string; description: string; features: string[]; icon: string }[]>([])
+  const [services, setServices] = useState<{ title: string; slug: string; description: string; features: string[] }[]>([])
   const [testimonials, setTestimonials] = useState<{ quote: string; name: string; location: string }[]>([])
   const [stats, setStats] = useState<{value: string; label: string}[]>([])
   const [whyChooseUs, setWhyChooseUs] = useState<{title: string; description: string}[]>([])
@@ -77,14 +66,17 @@ export default function AlpenglowHomeClient() {
               slug: s.slug ?? '',
               description: correctAalPublicText(s.description),
               features: Array.isArray(s.features) ? (s.features as string[]).map((feature) => correctAalPublicText(feature)) : [],
-              icon: s.icon || 'Plane',
             })),
           )
         }
-        if (testRes.data && testRes.data.length > 0) {
-          setTestimonials(testRes.data.map((t: Testimonial) => ({
-            quote: t.quote, name: t.author, location: '',
-          })))
+        if (!testRes.error && testRes.data && testRes.data.length > 0) {
+          setTestimonials(
+            testRes.data
+              .filter((t: Testimonial) => isPublicTestimonial(t))
+              .map((t: Testimonial) => ({
+                quote: t.quote, name: t.author, location: '',
+              })),
+          )
         }
         if (geoRes.data && geoRes.data.length > 0) {
           setGeoBlocks(
@@ -108,7 +100,11 @@ export default function AlpenglowHomeClient() {
           setPhoneHref(`tel:+1${settingsRes.data.phone.replace(/\D/g, '')}`)
         }
         if (settingsRes.data?.stats && Array.isArray(settingsRes.data.stats)) {
-          setStats(settingsRes.data.stats.map((stat: { value: string; label: string }) => normalizeAalStat(stat)))
+          setStats(
+            settingsRes.data.stats
+              .map((stat: { value: string; label: string }) => normalizeAalStat(stat))
+              .filter((stat): stat is { value: string; label: string } => stat !== null),
+          )
         }
         if (vpRes.data) {
           setWhyChooseUs(vpRes.data.map((vp: { title: string; description: string }) => ({
@@ -153,7 +149,7 @@ export default function AlpenglowHomeClient() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-alp-navy-deep/80 via-alp-navy-deep/50 to-alp-navy-deep/85" />
         </div>
-        <div className="aal-on-navy relative z-10 text-center text-white px-6 max-w-5xl mx-auto pb-28">
+        <div className="aal-on-navy relative z-10 text-center text-white px-6 max-w-5xl mx-auto pb-36 sm:pb-28">
           <p className="font-cormorant text-xl md:text-2xl text-alp-gold tracking-[0.3em] uppercase mb-6">
             Aspen · Snowmass · Roaring Fork Valley
           </p>
@@ -169,6 +165,9 @@ export default function AlpenglowHomeClient() {
             </a>
             <a href="#quote" className="border-2 border-white text-white hover:bg-white hover:text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
               Request a quote
+            </a>
+            <a href="/fleet" className="border-2 border-white text-white hover:bg-white hover:text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
+              See the fleet
             </a>
           </div>
         </div>
@@ -187,26 +186,6 @@ export default function AlpenglowHomeClient() {
         )}
       </section>
 
-      {/* FLEET SHOWCASE */}
-      <section id="fleet" className="py-24 bg-alp-navy-deep">
-        <div className="max-w-7xl mx-auto px-6">
-          <ScrollReveal className="text-center mb-16">
-            <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Travel in Style</p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold">Our Fleet</h2>
-          </ScrollReveal>
-          <div className="grid md:grid-cols-2 gap-10">
-            {AAL_VEHICLES.map((vehicle, i) => (
-              <ScrollReveal key={vehicle.id} delay={i * 150}>
-                <VehicleCard vehicle={vehicle} tone="dark" />
-              </ScrollReveal>
-            ))}
-          </div>
-          <p className="mt-10 text-center text-white/70 max-w-3xl mx-auto">
-            Two Chevrolet Suburbans, each seating up to 7, and one Ford Transit passenger van seating up to 13.
-          </p>
-        </div>
-      </section>
-
       {/* TRANSPORTATION SERVICES */}
       <section id="services" className="py-24 bg-alp-pearl">
         <div className="max-w-7xl mx-auto px-6">
@@ -217,7 +196,7 @@ export default function AlpenglowHomeClient() {
               Every detail handled. Every journey seamless.
             </p>
             <p className="alp-speak-services-overview text-alp-slate text-base max-w-3xl mx-auto mt-6 leading-relaxed border-t border-alp-pearl-dark pt-6">
-              Aspen Alpenglow Limousine operates a professional fleet of three late-model vehicles — two Chevrolet Suburbans (7 passengers each) and a Ford Transit Van (13 passengers) — with Starlink, ski racks, and roof cargo space. 8 full-time local drivers have been driving these mountain roads since 2012. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison, alongside Aspen/Pitkin County Airport (ASE) and Denver International Airport (DEN). One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally.
+              Private airport transfers, hourly charters and event transportation across the Roaring Fork Valley.
             </p>
           </div>
           {services.length > 0 && (
@@ -225,24 +204,12 @@ export default function AlpenglowHomeClient() {
             {services.map((service, i) => (
               <ScrollReveal key={service.title} delay={i * 100}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 border border-alp-pearl-dark h-full">
-                  <div className="flex items-start gap-5 mb-6">
-                    <div className="w-16 h-16 bg-alp-navy rounded-2xl flex items-center justify-center flex-shrink-0">
-                      <ServiceIcon icon={service.icon} />
-                    </div>
-                    <div>
-                      <h3 className="font-playfair text-2xl text-alp-navy font-semibold mb-2">{service.title}</h3>
-                      <p className="text-alp-slate text-sm leading-relaxed">{service.description}</p>
-                    </div>
-                  </div>
+                  <h3 className="font-playfair text-2xl text-alp-navy font-semibold mb-2">{service.title}</h3>
+                  <p className="text-alp-slate text-sm leading-relaxed mb-6">{service.description}</p>
                   {service.features.length > 0 && (
                   <ul className="space-y-2">
                     {service.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-3 text-sm text-gray-700">
-                        <div className="w-5 h-5 bg-alp-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
-                          <svg className="w-3 h-3 text-alp-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
-                        </div>
-                        {feature}
-                      </li>
+                      <li key={feature} className="text-sm text-gray-700">{feature}</li>
                     ))}
                   </ul>
                   )}
@@ -437,7 +404,7 @@ export default function AlpenglowHomeClient() {
             <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Beyond the Transfer</p>
             <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-6">Event transportation for weddings and weekends</h2>
             <p className="text-alp-slate text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
-              Private SUVs and the Ford Transit passenger van for weddings, X Games week, New Year&apos;s Eve, and holiday arrivals. No shared rides are offered.
+              Private SUVs and the Ford Transit Passenger Van for weddings, X Games week, New Year&apos;s Eve, and holiday arrivals. No shared rides are offered.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="/weddings" className="inline-block bg-alp-navy hover:bg-alp-navy-deep text-white px-8 py-3 rounded-full font-semibold">Weddings</a>

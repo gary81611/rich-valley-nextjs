@@ -1,4 +1,13 @@
 import { isBookableAdventureName, slugFromAdventureName } from '@/lib/rva-adventure-filters'
+import {
+  RVA_SCENIC_TOUR_IMAGE,
+  RVA_SCENIC_TOUR_IMAGE_ALT,
+  RVA_SCENIC_TOUR_PATH,
+  RVA_TRIP_OWNERSHIP,
+  isScenicTourSlug,
+  rvaPriceNoteForSlug,
+  rvaPublicAdventureTitle,
+} from '@/lib/rva-confirmed'
 
 /** Adventures row "Paddle Boarding" (tour listing). Hidden in code until the manager sets is_active = false. */
 export const PADDLE_TOUR_ID = '480f5980-5b4d-423e-9d71-36d7e8c62506'
@@ -46,7 +55,7 @@ const PORTRAIT_ADVENTURE_IMAGES = [
   '/images/adventures/fly-fishing.png',
   '/images/adventures/hiking.png',
   '/images/adventures/horseback-riding.png',
-  '/images/adventures/scenic-escalade.png',
+  '/images/adventures/scenic-wildlife-tour.png',
   '/images/adventures/mountain-biking.jpg',
   '/images/adventures/fishing-catch.jpeg',
   '/images/adventures/paddle-boarding.jpg',
@@ -65,7 +74,9 @@ const HREF_BY_SLUG: Record<string, string> = {
   'paddle-boarding': PADDLE_CANONICAL_PATH,
   'mountain-biking': '/adventures/mountain-biking',
   'trail-hiking': '/hiking',
-  'scenic-escalade-tours': '/adventures/scenic-escalade-tours',
+  'scenic-escalade-tours': RVA_SCENIC_TOUR_PATH,
+  'scenic-wildlife-tours': RVA_SCENIC_TOUR_PATH,
+  'scenic-wildlife-tour': RVA_SCENIC_TOUR_PATH,
   'horseback-riding': '/adventures/horseback-riding',
   'elevated-camping': '/elevated-camping',
 }
@@ -117,6 +128,9 @@ export function adventurePublicImage(row: {
   if (row.id === TRAIL_HIKING_ID || slug === 'trail-hiking') {
     return { src: TRAIL_HIKING_IMAGE, alt: TRAIL_HIKING_IMAGE_ALT }
   }
+  if (isScenicTourSlug(slug) || /escalade/i.test(row.name) || /escalade/i.test(row.image_url || '')) {
+    return { src: RVA_SCENIC_TOUR_IMAGE, alt: RVA_SCENIC_TOUR_IMAGE_ALT }
+  }
   const raw = (row.image_url || '').trim()
   const isRental = row.id === PADDLE_RENTAL_ID || slug === 'paddle-board-rentals'
   if (isRental) {
@@ -137,15 +151,31 @@ export function adventurePublicDescription(row: {
   description: string
 }): string {
   if (isFlyFishingListing(row)) return FLY_FISHING_PUBLIC_DESCRIPTION
-  if (isTrailHikingListing(row)) return TRAIL_HIKING_PUBLIC_DESCRIPTION
+  if (isTrailHikingListing(row)) return `${TRAIL_HIKING_PUBLIC_DESCRIPTION} Half-day hike: $600.`
+  const slug = slugFromAdventureName(row.name)
+  if (row.id === PADDLE_RENTAL_ID || slug === 'paddle-board-rentals') {
+    return 'We rent High Society paddle boards, and boards can be delivered to you.'
+  }
+  if (isScenicTourSlug(slug) || /escalade/i.test(row.name)) {
+    return 'Half-day scenic and wildlife tour: $750.'
+  }
+  if (slug === 'horseback-riding') {
+    return `${row.description} Horseback: $600. Horseback rides go through a partner local outfitter.`
+  }
+  if (/snowmobile|atv|snowbike/i.test(row.name)) {
+    return `${row.description} ${RVA_TRIP_OWNERSHIP}`
+  }
+  if (/raft/i.test(row.name)) {
+    return `${row.description} Scenic river rafting with picnic: $1,200. Rafting is guided in-house.`
+  }
   return row.description
 }
 
-/** Confirmed display price. Omits database prices, including the rentals row's 95. */
+/** Confirmed display price. Omits unpublished database prices, including the rentals row's 95. */
 export function adventurePublicFromText(row: { id?: string | null; name: string }): string | null {
   const slug = slugFromAdventureName(row.name)
   if (row.id === PADDLE_RENTAL_ID || slug === 'paddle-board-rentals') return 'From $100'
-  return null
+  return rvaPriceNoteForSlug(slug)
 }
 
 export type PublicAdventureCard = {
@@ -175,7 +205,7 @@ export function toPublicAdventureCard(row: {
   const visual = adventurePublicImage(row)
   return {
     id: row.id,
-    title: row.name,
+    title: rvaPublicAdventureTitle(row.name, slugFromAdventureName(row.name)),
     slug: slugFromAdventureName(row.name),
     description: adventurePublicDescription(row),
     image: visual.src,

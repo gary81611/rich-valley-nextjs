@@ -8,12 +8,12 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'FAQ | Aspen Alpenglow Limousine — Transportation Questions Answered',
   description:
-    'Aspen car service FAQs: one-way rates each way (Denver $1,375, Grand Junction $950, Rifle $720; Eagle quoted on request), FBO airports, fleet, and cancellation notice.',
+    'Aspen car service FAQs: SUV rates each way (Eagle and Rifle $720, Denver $1,375, Grand Junction $950). Ford Transit Passenger Van $1,200 Eagle/Rifle, $1,600 Denver.',
   alternates: { canonical: 'https://aspenalpenglowlimousine.com/faq' },
 }
 
 const VEHICLE_ANSWER =
-  '8 full-time local drivers who have been driving these mountain roads since 2012. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. The fleet includes two late-model Chevrolet Suburbans (SUVs seat 7) and a Ford Transit Van (the passenger shuttle van seats 13).'
+  'Two Chevrolet Suburbans seat 7. One Ford Transit Passenger Van seats 13. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee.'
 
 const DEN_COST_ANSWER =
   `${AAL_ONE_WAY_RATES} Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison.`
@@ -42,7 +42,14 @@ const DEN_TRANSFER_SCHEMA_FAQ = {
 }
 
 async function getFaqsFromDb(): Promise<{ q: string; a: string }[]> {
-  const supabase = await createServerSupabaseClient()
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  if (!url || !url.startsWith('http')) return []
+  let supabase
+  try {
+    supabase = await createServerSupabaseClient()
+  } catch {
+    return []
+  }
   const { data, error } = await supabase
     .from('faqs')
     .select('question, answer')

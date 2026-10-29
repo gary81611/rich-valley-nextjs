@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Photo Gallery | Aspen Alpenglow Limousine Fleet & Valley',
   description:
-    'Photos of our Aspen limo fleet — Chevy Suburbans, Ford Transit Van, ski racks & interiors — plus Colorado landscapes we serve across the Roaring Fork Valley.',
+    'Photos of our Aspen limo fleet — Chevy Suburbans, Ford Transit Passenger Van, ski racks & interiors — plus Colorado landscapes we serve across the Roaring Fork Valley.',
   alternates: { canonical: 'https://aspenalpenglowlimousine.com/gallery' },
   robots: { index: false, follow: false },
 }

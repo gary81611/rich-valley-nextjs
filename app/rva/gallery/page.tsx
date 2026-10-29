@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
 import type { GalleryImage } from '@/lib/types'
 import RvaButton from '@/components/rva/Button'
+import { RVA_KIT_PHOTOS } from '@/lib/rva-kit-photos'
 
 interface GalleryItem {
   url: string
@@ -13,8 +14,14 @@ interface GalleryItem {
   caption: string
 }
 
+const KIT_GALLERY: GalleryItem[] = RVA_KIT_PHOTOS.map((photo) => ({
+  url: photo.src,
+  alt: photo.alt,
+  caption: photo.caption,
+}))
+
 export default function GalleryPage() {
-  const [images, setImages] = useState<GalleryItem[]>([])
+  const [images, setImages] = useState<GalleryItem[]>(KIT_GALLERY)
 
   useEffect(() => {
     async function fetchGallery() {
@@ -27,14 +34,16 @@ export default function GalleryPage() {
           .eq('site_key', 'rva')
           .order('display_order')
 
+        const kit = KIT_GALLERY
         if (data && data.length > 0) {
-          setImages(
-            data.map((g: GalleryImage) => ({
-              url: g.url,
-              alt: g.alt_text || 'Rich Valley Adventures gallery image',
-              caption: g.caption || '',
-            }))
-          )
+          const fromDb = data.map((g: GalleryImage) => ({
+            url: g.url,
+            alt: g.alt_text || 'Rich Valley Adventures gallery image',
+            caption: g.caption || '',
+          }))
+          setImages([...kit, ...fromDb.filter((img) => !kit.some((photo) => photo.url === img.url))])
+        } else {
+          setImages(kit)
         }
       } catch {
         // Use static fallback

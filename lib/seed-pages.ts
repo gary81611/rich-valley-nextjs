@@ -220,7 +220,7 @@ const rvaPages: PageSeed[] = [
     content: {
       hero_title: 'Private Transportation Services in Aspen, Colorado',
       hero_subtitle: 'Comfortable, Reliable Transport for Every Adventure',
-      intro: `Getting around Aspen — and getting to the wilderness trailheads, rivers, and lakes that make this valley special — requires local knowledge and reliable transportation. Rich Valley Adventures provides private transportation services that connect you seamlessly to every adventure we offer, and to the broader Roaring Fork Valley.\n\nOur primary transport partner is Aspen Alpenglow Limousine — late-model Chevrolet Suburbans and a Ford Transit Van, spacious and capable on Aspen\'s mountain roads in any season. Whether you need an airport pickup from Aspen/Pitkin County Airport or Eagle County Regional Airport, a shuttle to the Maroon Bells Wilderness trailhead, or transport between adventures across the valley, we provide professional door-to-door service.\n\nTransportation can be booked as a standalone service or bundled with any guided adventure. Bundle bookings receive discounted transport pricing.`,
+      intro: `Getting around Aspen — and getting to the wilderness trailheads, rivers, and lakes that make this valley special — requires local knowledge and reliable transportation. Rich Valley Adventures provides private transportation services that connect you seamlessly to every adventure we offer, and to the broader Roaring Fork Valley.\n\nOur primary transport partner is Aspen Alpenglow Limousine — late-model Chevrolet Suburbans and a Ford Transit Passenger Van, spacious and capable on Aspen\'s mountain roads in any season. Whether you need an airport pickup from Aspen/Pitkin County Airport or Eagle County Regional Airport, a shuttle to the Maroon Bells Wilderness trailhead, or transport between adventures across the valley, we provide professional door-to-door service.\n\nTransportation can be booked as a standalone service or bundled with any guided adventure. Bundle bookings receive discounted transport pricing.`,
       h2_sections: [
         {
           title: 'Airport Transfers — Aspen & Eagle County Airports',
@@ -232,7 +232,7 @@ const rvaPages: PageSeed[] = [
         },
       ],
       features: [
-        { title: 'Aspen Alpenglow Limousine fleet', description: 'Chevrolet Suburbans (7 passengers) and Ford Transit Van (13 passengers), climate-controlled and equipped for mountain roads in any season.' },
+        { title: 'Aspen Alpenglow Limousine fleet', description: 'Chevrolet Suburbans (7 passengers) and Ford Transit Passenger Van (13 passengers), climate-controlled and equipped for mountain roads in any season.' },
         { title: 'Airport Pickups & Drop-offs', description: 'ASE and EGE airport transfers with real-time flight monitoring — we\'re there when you land, every time.' },
         { title: 'Adventure Shuttles', description: 'Trailhead drops, fishing river access, SUP gear transport — we handle the logistics so you don\'t have to.' },
         { title: 'Valley-Wide Coverage', description: 'Aspen, Snowmass Village, Basalt, Carbondale, and beyond — we know every road in the Roaring Fork Valley.' },
@@ -278,7 +278,7 @@ const rvaPages: PageSeed[] = [
             { title: 'Year-Round Local Guides', description: 'Our guides live in the Roaring Fork Valley year-round. They\'re not here for the season — they\'re here for life.' },
             { title: 'Safety Certified', description: 'All guides hold Wilderness First Responder or WFA certification, CPR/AED certification, and activity-specific safety training.' },
             { title: 'Leave No Trace', description: 'We practice and teach Leave No Trace principles on every trip. Protecting this landscape is why we do what we do.' },
-            { title: '4.9-Star Rated', description: 'Over 200 five-star reviews from guests who came as visitors and left as friends of the valley.' },
+            { title: 'CO Licensed Outfitter OUT.0003060', description: 'CO River License 620. Guides run fishing, hiking, rafting, and camping in-house. Horseback, ATV, and snowmobile trips go through partner local outfitters.' },
           ],
         },
       ],
@@ -424,7 +424,7 @@ const aalPages: PageSeed[] = [
     content: {
       hero_title: 'Luxury Airport Transfers to & from Aspen',
       hero_subtitle: 'Professional Private Car Service from ASE, EGE & DEN Airports',
-      intro: `Aspen Alpenglow Limousine provides the Roaring Fork Valley\'s most reliable private airport transfer service. We meet every client at the gate, monitor flights in real time, and deliver you to your destination — hotel, private residence, or ski chalet — with seamless, white-glove precision.\n\nWe serve three gateway airports: Aspen/Pitkin County Airport (ASE) — just 3 miles from downtown Aspen; Eagle County Regional Airport (EGE) in Gypsum, about 70 miles from Aspen; and Denver International Airport (DEN), the primary hub for all major carriers serving the Rocky Mountain region.\n\nOur luxury fleet includes the Chevrolet Suburban SUVs (up to 7 passengers) and a Ford Transit passenger van (up to 13) — both equipped with leather seating, climate control, complimentary bottled water, and generous cargo capacity for ski bags, golf clubs, and luggage.`,
+      intro: `Aspen Alpenglow Limousine provides the Roaring Fork Valley\'s most reliable private airport transfer service. We meet every client at the gate, monitor flights in real time, and deliver you to your destination — hotel, private residence, or ski chalet — with seamless, white-glove precision.\n\nWe serve three gateway airports: Aspen/Pitkin County Airport (ASE) — just 3 miles from downtown Aspen; Eagle County Regional Airport (EGE) in Gypsum, about 70 miles from Aspen; and Denver International Airport (DEN), the primary hub for all major carriers serving the Rocky Mountain region.\n\nOur luxury fleet includes the Chevrolet Suburban SUVs (up to 7 passengers) and a Ford Transit Passenger Van (up to 13) — both equipped with leather seating, climate control, complimentary bottled water, and generous cargo capacity for ski bags, golf clubs, and luggage.`,
       h2_sections: [
         {
           title: 'Aspen Airport (ASE) — Private Arrival & Departure Service',
@@ -436,13 +436,13 @@ const aalPages: PageSeed[] = [
         },
         {
           title: 'Denver International Airport (DEN) — Direct Private Transfers',
-          content: `Denver International Airport is 200 miles from Aspen — a 3.5 to 4-hour drive through the Rocky Mountains via I-70 and Highway 82. For clients who prefer driving to flying, or when weather closes mountain airports, our DEN transfer service provides the most comfortable and efficient way to complete the journey.\n\nThe DEN-to-Aspen route traverses some of the most stunning mountain scenery in North America — the Continental Divide, Vail Pass, Glenwood Canyon, and the Roaring Fork Valley approach into Aspen. In a Chevrolet Suburban or Ford Transit passenger van, the drive becomes a luxury part of the Aspen experience rather than a logistical hurdle.`,
+          content: `Denver International Airport is 200 miles from Aspen — a 3.5 to 4-hour drive through the Rocky Mountains via I-70 and Highway 82. For clients who prefer driving to flying, or when weather closes mountain airports, our DEN transfer service provides the most comfortable and efficient way to complete the journey.\n\nThe DEN-to-Aspen route traverses some of the most stunning mountain scenery in North America — the Continental Divide, Vail Pass, Glenwood Canyon, and the Roaring Fork Valley approach into Aspen. In a Chevrolet Suburban or Ford Transit Passenger Van, the drive becomes a luxury part of the Aspen experience rather than a logistical hurdle.`,
         },
       ],
       features: [
         { title: 'Real-Time Flight Tracking', description: 'We monitor your flight from departure to touchdown and adjust pickup timing for all delays, early arrivals, or gate changes.' },
         { title: 'Meet & Greet at Arrivals', description: 'Your driver meets you at the arrivals hall with a name sign — no searching for a car, no apps to navigate.' },
-        { title: 'Luxury Fleet', description: 'Chevrolet Suburban SUVs (up to 7 passengers) and a Ford Transit passenger van (up to 13 passengers) — both with leather seating and ample luggage space.' },
+        { title: 'Luxury Fleet', description: 'Chevrolet Suburban SUVs (up to 7 passengers) and a Ford Transit Passenger Van (up to 13 passengers) — both with leather seating and ample luggage space.' },
         { title: 'Ski Bag & Luggage Capacity', description: 'Both vehicles accommodate ski bags, snowboards, golf clubs, and oversized luggage without additional fees.' },
         { title: '24/7 Availability', description: 'We operate around the clock — for early morning departures, late-night arrivals, and everything in between.' },
         { title: 'Complimentary Amenities', description: 'Bottled water, phone chargers, and local knowledge about Aspen\'s best dining, activities, and hidden gems.' },
@@ -450,7 +450,7 @@ const aalPages: PageSeed[] = [
       faqs: [
         { question: 'How far in advance should I book an airport transfer?', answer: 'We recommend booking at least 48–72 hours in advance to guarantee availability, especially during peak ski season (December–March) and summer (July–August). Last-minute bookings are sometimes available — call us directly at (970) 456-3666 to check.' },
         { question: 'Do you charge extra for flight delays?', answer: 'No — flight delays are never charged extra. We monitor your flight and adjust our schedule accordingly. You only pay for the agreed transfer rate, regardless of how long your flight is delayed.' },
-        { question: 'Can you accommodate large groups?', answer: 'Yes — our Ford Transit passenger van accommodates up to 13 passengers with luggage. For very large groups, we can coordinate multiple vehicles arriving simultaneously. Corporate and group bookings receive priority scheduling.' },
+        { question: 'Can you accommodate large groups?', answer: 'Yes — our Ford Transit Passenger Van accommodates up to 13 passengers with luggage. For very large groups, we can coordinate multiple vehicles arriving simultaneously. Corporate and group bookings receive priority scheduling.' },
         { question: 'What payment methods do you accept?', answer: 'We accept all major credit cards, corporate accounts with monthly billing, and bank transfers for large bookings. Payment is collected at time of booking or upon arrival depending on your account type.' },
         { question: 'Can you arrange a return transfer during our stay?', answer: 'Absolutely — round-trip and multi-leg transfers can be booked together. We maintain your itinerary and proactively confirm return pickups 24 hours before departure.' },
       ],
@@ -472,7 +472,7 @@ const aalPages: PageSeed[] = [
     content: {
       hero_title: 'Wedding Transportation in Aspen, Colorado',
       hero_subtitle: 'Seamless Luxury Transport for Your Perfect Mountain Wedding',
-      intro: `An Aspen wedding deserves transportation that is as exceptional as the venue and the view. Aspen Alpenglow Limousine has been the trusted ground transportation partner for Aspen-area weddings since 2012, providing seamless logistics so the wedding party, guests, and couple arrive exactly where they need to be — on time, in style, and without a moment of stress.\n\nWe work with the Roaring Fork Valley\'s most celebrated wedding venues: The Meadows at Snowmass, Little Nell Hotel, Hotel Jerome, Aspen Mountain Club, Pine Creek Cookhouse in Ashcroft, and private ranch properties throughout the valley. Our event coordination team maps out every transfer — from the morning prep locations to the ceremony, reception, and final hotel drop-offs — creating a seamless transportation timeline that integrates perfectly with your overall wedding day schedule.\n\nOur luxury fleet includes the Chevrolet Suburban for intimate bridal party transport and the Ford Transit passenger van for guest shuttles, ensuring every member of your wedding party arrives in comfort and elegance.`,
+      intro: `An Aspen wedding deserves transportation that is as exceptional as the venue and the view. Aspen Alpenglow Limousine has been the trusted ground transportation partner for Aspen-area weddings since 2012, providing seamless logistics so the wedding party, guests, and couple arrive exactly where they need to be — on time, in style, and without a moment of stress.\n\nWe work with the Roaring Fork Valley\'s most celebrated wedding venues: The Meadows at Snowmass, Little Nell Hotel, Hotel Jerome, Aspen Mountain Club, Pine Creek Cookhouse in Ashcroft, and private ranch properties throughout the valley. Our event coordination team maps out every transfer — from the morning prep locations to the ceremony, reception, and final hotel drop-offs — creating a seamless transportation timeline that integrates perfectly with your overall wedding day schedule.\n\nOur luxury fleet includes the Chevrolet Suburban for intimate bridal party transport and the Ford Transit Passenger Van for guest shuttles, ensuring every member of your wedding party arrives in comfort and elegance.`,
       h2_sections: [
         {
           title: 'Bridal Party Transportation — From Getting Ready to the Altar',
@@ -494,7 +494,7 @@ const aalPages: PageSeed[] = [
       faqs: [
         { question: 'How far in advance should I book wedding transportation?', answer: 'Wedding transportation should be booked as early as possible — ideally when you confirm your venue, which is often 12–18 months before the wedding date. Summer and peak ski season weekends book up quickly. We cannot guarantee availability for last-minute wedding bookings.' },
         { question: 'Do you work with our wedding planner?', answer: 'Yes — we actively collaborate with wedding planners and coordinators. We request a copy of the wedding day timeline 2–3 weeks before the event and maintain real-time communication with your coordinator throughout the day.' },
-        { question: 'Can you accommodate guests with mobility needs?', answer: 'We can accommodate guests with mobility challenges in our Ford Transit passenger van, which allows for easier entry than typical sedans. Please notify us in advance if any members of your party require specific accommodations.' },
+        { question: 'Can you accommodate guests with mobility needs?', answer: 'We can accommodate guests with mobility challenges in our Ford Transit Passenger Van, which allows for easier entry than typical sedans. Please notify us in advance if any members of your party require specific accommodations.' },
         { question: 'What happens if the wedding runs late?', answer: 'Flexibility is built into every wedding transportation contract. We understand weddings don\'t always follow the schedule exactly. Our drivers are always on standby to adjust and will wait as long as needed within the agreed service window.' },
       ],
       cta_phone: '(970) 456-3666',
@@ -523,13 +523,13 @@ const aalPages: PageSeed[] = [
         },
         {
           title: 'Group Event Shuttles & Conference Logistics',
-          content: `Aspen conferences and corporate retreats often involve complex multi-venue, multi-day transportation logistics: hotel pickups across three properties, coordinated arrivals at conference venues, restaurant dinner transfers, and post-event returns at varied times.\n\nAspen Alpenglow builds detailed transportation schedules for multi-day corporate events, assigns dedicated drivers to specific groups, and maintains real-time communication with event coordinators throughout. Our Ford Transit passenger van seats up to 13 for group transfers, with climate control and a quiet cabin for confidential conversations.`,
+          content: `Aspen conferences and corporate retreats often involve complex multi-venue, multi-day transportation logistics: hotel pickups across three properties, coordinated arrivals at conference venues, restaurant dinner transfers, and post-event returns at varied times.\n\nAspen Alpenglow builds detailed transportation schedules for multi-day corporate events, assigns dedicated drivers to specific groups, and maintains real-time communication with event coordinators throughout. Our Ford Transit Passenger Van seats up to 13 for group transfers, with climate control and a quiet cabin for confidential conversations.`,
         },
       ],
       features: [
         { title: 'Corporate Account Billing', description: 'Corporate charge accounts are billed monthly.' },
         { title: 'Dedicated Event Coordinator', description: 'A single point of contact manages all transportation logistics for your event, from pre-arrival planning through final departure.' },
-        { title: 'Executive Fleet', description: 'Chevrolet Suburban SUVs (up to 7 passengers) and a Ford Transit passenger van (up to 13).' },
+        { title: 'Executive Fleet', description: 'Chevrolet Suburban SUVs (up to 7 passengers) and a Ford Transit Passenger Van (up to 13).' },
         { title: 'Scalable for Large Groups', description: 'Multiple coordinated vehicles for groups of 20–100+ participants with rolling schedule management.' },
         { title: 'Confidential & Discreet', description: 'All drivers are trained in executive discretion. NDAs available for high-profile clients and sensitive events.' },
         { title: 'All Mountain Venues', description: 'We know every corporate venue in the valley — Aspen Institute, Hotel Jerome, The St. Regis, Snowmass Club — including access logistics and timing nuances.' },
@@ -557,7 +557,7 @@ const aalPages: PageSeed[] = [
     content: {
       hero_title: 'Private Ski Resort Transfer Service in Aspen',
       hero_subtitle: 'Door-to-Slope Luxury Service at All Four Aspen Snowmass Mountains',
-      intro: `The Aspen Snowmass ski resort is actually four distinct mountains — Aspen Mountain, Aspen Highlands, Buttermilk, and Snowmass — spread across 8 miles of the Roaring Fork Valley. Navigating between your lodging and the mountain you want to ski each day shouldn\'t add stress to your vacation. That\'s where Aspen Alpenglow comes in.\n\nWe offer private door-to-slope transfer service to all four Aspen Snowmass mountains, with early morning availability to make first chair, equipment loading handled by our drivers, and real-time return pickup coordination so you\'re never waiting at the base in your ski boots.\n\nOur Chevrolet Suburban SUVs seat up to 7 and the Ford Transit passenger van seats up to 13, with room for ski bags, snowboards, helmets, and boot bags. No shared rides are offered.`,
+      intro: `The Aspen Snowmass ski resort is actually four distinct mountains — Aspen Mountain, Aspen Highlands, Buttermilk, and Snowmass — spread across 8 miles of the Roaring Fork Valley. Navigating between your lodging and the mountain you want to ski each day shouldn\'t add stress to your vacation. That\'s where Aspen Alpenglow comes in.\n\nWe offer private door-to-slope transfer service to all four Aspen Snowmass mountains, with early morning availability to make first chair, equipment loading handled by our drivers, and real-time return pickup coordination so you\'re never waiting at the base in your ski boots.\n\nOur Chevrolet Suburban SUVs seat up to 7 and the Ford Transit Passenger Van seats up to 13, with room for ski bags, snowboards, helmets, and boot bags. No shared rides are offered.`,
       h2_sections: [
         {
           title: 'All Four Aspen Snowmass Mountains',
@@ -578,7 +578,7 @@ const aalPages: PageSeed[] = [
       ],
       faqs: [
         { question: 'Is your ski transfer service better than the free RFTA ski bus?', answer: 'The free RFTA ski bus is a great public option. Private transfer offers significant advantages: door-to-door service (no walk to a bus stop), departure on your schedule (not the bus schedule), privacy with your group, and ski equipment handling without the bus crowd.' },
-        { question: 'Can you transport a family of 6 with all our ski gear?', answer: 'Yes — our Chevrolet Suburban comfortably seats 7 passengers with ample rear cargo for ski bags, boot bags, and helmets. Larger groups can book the Ford Transit passenger van for up to 13 passengers with additional luggage space.' },
+        { question: 'Can you transport a family of 6 with all our ski gear?', answer: 'Yes — our Chevrolet Suburban comfortably seats 7 passengers with ample rear cargo for ski bags, boot bags, and helmets. Larger groups can book the Ford Transit Passenger Van for up to 13 passengers with additional luggage space.' },
         { question: 'What time is the earliest pickup for first chair?', answer: 'We offer pickup as early as 7:00am for first chair access. The Aspen Mountain gondola typically opens at 9:00am, Snowmass at 8:30am. We\'ll coordinate timing to get you to the lift line early with time to get your equipment sorted.' },
         { question: 'Can we change which mountain we want to ski during the day?', answer: 'Yes — multi-mountain transfers are available and can be arranged with your driver throughout the day. Additional transfer charges apply for same-day mountain changes, which we quote transparently before confirming.' },
       ],
@@ -617,12 +617,12 @@ const aalPages: PageSeed[] = [
         { title: 'Restaurant Package Deals', description: 'Fixed-rate dinner packages for couples and groups — hotel pickup, dinner transport, and midnight return.' },
         { title: 'Late Night Availability', description: 'Available until 2:00am and beyond for Aspen\'s late-night venues.' },
         { title: 'Multi-Stop Flexibility', description: 'Move freely between restaurants, bars, and events throughout the evening — we follow your itinerary.' },
-        { title: 'Group Sizes 2–13', description: 'Chevrolet Suburban for smaller groups, Ford Transit passenger van for larger parties. Both equipped for a stylish night out.' },
+        { title: 'Group Sizes 2–13', description: 'Chevrolet Suburban for smaller groups, Ford Transit Passenger Van for larger parties. Both equipped for a stylish night out.' },
       ],
       faqs: [
         { question: 'How do I arrange a pickup during the evening if plans change?', answer: 'For hourly charter bookings, your driver is on standby and available with a single text or call. We provide your driver\'s direct number at the start of the evening. Response time is typically under 5 minutes within the Aspen core.' },
         { question: 'What is the minimum booking for a night out?', answer: 'Our evening charter minimum is 2 hours. Most dinner and nightlife bookings run 3–5 hours. We offer fixed-rate dinner packages for couples (hotel pickup to restaurant and return) that are often more economical for simple two-stop evenings.' },
-        { question: 'Can you accommodate a bachelorette or bachelor party?', answer: 'Absolutely — we regularly serve bachelorette parties, bachelor parties, and birthday groups. The Ford Transit passenger van accommodates up to 13 in the party. We can arrange champagne service, custom decorations, and a Spotify playlist for the ride. Contact us about party packages.' },
+        { question: 'Can you accommodate a bachelorette or bachelor party?', answer: 'Absolutely — we regularly serve bachelorette parties, bachelor parties, and birthday groups. The Ford Transit Passenger Van accommodates up to 13 in the party. We can arrange champagne service, custom decorations, and a Spotify playlist for the ride. Contact us about party packages.' },
       ],
       cta_phone: '(970) 456-3666',
       cta_text: 'Book Your Night Out',
@@ -664,7 +664,7 @@ const aalPages: PageSeed[] = [
       faqs: [
         { question: 'How long are the wine and brewery tours?', answer: 'Tour durations depend on destinations. Roaring Fork Valley brewery and spirits tours run 3–5 hours. Palisade wine country full-day tours are typically 8–9 hours including driving time. We build a custom itinerary based on your schedule and interests.' },
         { question: 'Can we arrange a private tasting at a winery?', answer: 'Yes — for Palisade wine country tours, we can arrange private tasting experiences at select wineries with advance notice. Private tastings provide more depth and personalization than standard walk-in pours and are especially worthwhile for wine enthusiasts.' },
-        { question: 'What is the minimum group size?', answer: 'Wine and brewery tours are available for groups of 2 and up. Larger groups of 6–13 are well-served by our Ford Transit passenger van and often find the per-person cost quite reasonable when split across the group.' },
+        { question: 'What is the minimum group size?', answer: 'Wine and brewery tours are available for groups of 2 and up. Larger groups of 6–13 are well-served by our Ford Transit Passenger Van and often find the per-person cost quite reasonable when split across the group.' },
         { question: 'Can you combine a wine tour with other activities?', answer: 'Absolutely — combining a morning outdoor adventure (hiking, snowshoeing) with an afternoon wine or brewery tour is a popular Aspen day package. We coordinate the full day seamlessly.' },
       ],
       cta_phone: '(970) 456-3666',
@@ -697,10 +697,9 @@ const aalPages: PageSeed[] = [
           items: [
             { title: 'Since 2012', description: 'Operating in Aspen since 2012 — local drivers and on-time pickups on these roads and airports.' },
             { title: 'Professional Chauffeurs', description: 'All drivers are background-checked, insured, trained in defensive mountain driving, and committed to absolute discretion.' },
-            { title: 'Luxury Fleet', description: 'Chevrolet Suburban SUVs (up to 7 passengers) and a Ford Transit passenger van (up to 13), equipped for every season.' },
+            { title: 'Luxury Fleet', description: 'Two Chevrolet Suburbans (7 passengers each) and one Ford Transit Passenger Van (13 passengers), equipped for every season.' },
             { title: '24/7 Operations', description: 'Early morning airport runs, late-night event returns, and everything in between — we operate when you need us.' },
             { title: 'Confidentiality', description: 'We treat every client with the discretion their privacy deserves. NDAs available for high-profile clients.' },
-            { title: '5.0 on Google', description: 'Rated 5.0 by guests on Google (5 reviews).' },
           ],
         },
       ],
@@ -722,12 +721,12 @@ const aalPages: PageSeed[] = [
       intro: 'Everything you need to know about booking private luxury transportation in Aspen, Colorado with Aspen Alpenglow Limousine.',
       faqs: [
         { question: 'How do I book a ride with Aspen Alpenglow Limousine?', answer: 'Call us at (970) 456-3666 or use our online booking form. For airport transfers, provide your flight number, arrival time, and pickup location. For event and charter bookings, we recommend calling to discuss your specific needs and receive an accurate quote.', category: 'Booking' },
-        { question: 'What vehicles do you operate?', answer: 'Our fleet includes the Chevrolet Suburban SUVs (seats up to 7 passengers with luggage) and the Ford Transit passenger van (seats up to 13 passengers with luggage). Both vehicles are equipped with leather seating, climate control, phone charging, and complimentary water. Both are maintained to the highest standards and replaced regularly to ensure reliability.', category: 'Fleet' },
+        { question: 'What vehicles do you operate?', answer: 'Our fleet includes the Chevrolet Suburban SUVs (seats up to 7 passengers with luggage) and the Ford Transit Passenger Van (seats up to 13 passengers with luggage). Both vehicles are equipped with leather seating, climate control, phone charging, and complimentary water. Both are maintained to the highest standards and replaced regularly to ensure reliability.', category: 'Fleet' },
         { question: 'How far in advance should I book?', answer: 'We recommend booking at least 48 hours in advance for airport transfers and at least 1 week for event, wedding, and tour bookings. During peak ski season (December–March) and summer (July–August), advance booking of 1–2 weeks is strongly recommended as availability is limited.', category: 'Booking' },
         { question: 'Do you charge for waiting due to flight delays?', answer: 'No — we monitor all flights in real time and never charge for delays caused by airlines. Our drivers adjust their pickup time based on your actual landing time. You pay the agreed transfer rate, period.', category: 'Airport Transfers' },
         { question: 'What airports do you serve?', answer: 'We serve Aspen/Pitkin County Airport (ASE), Eagle County Regional Airport (EGE) in Gypsum, and Denver International Airport (DEN). We can also arrange transfers from/to Grand Junction Regional Airport (GJT) upon request.', category: 'Airport Transfers' },
         { question: 'What is your service area?', answer: 'We primarily serve the Roaring Fork Valley — Aspen, Snowmass Village, Basalt, Carbondale, and Glenwood Springs. We also provide long-distance transfers to Eagle/Vail, Denver, and other Colorado destinations. Contact us for out-of-area quotes.', category: 'Service Area' },
-        { question: 'Can I bring ski equipment and luggage?', answer: 'Yes — both the Chevrolet Suburban and the Ford Transit passenger van have substantial cargo capacity for ski bags, snowboards, golf clubs, and standard luggage. Please mention equipment quantities when booking so we assign the right vehicle. Additional roof or hitch cargo options are available for particularly large loads.', category: 'Luggage & Equipment' },
+        { question: 'Can I bring ski equipment and luggage?', answer: 'Yes — both the Chevrolet Suburban and the Ford Transit Passenger Van have substantial cargo capacity for ski bags, snowboards, golf clubs, and standard luggage. Please mention equipment quantities when booking so we assign the right vehicle. Additional roof or hitch cargo options are available for particularly large loads.', category: 'Luggage & Equipment' },
         { question: 'Do you offer corporate accounts?', answer: 'Yes — we offer corporate accounts with negotiated rates, monthly billing, and dedicated account management. Corporate clients include Aspen Institute event attendees, private equity firms with regular Aspen travel, and luxury hospitality properties. Contact us to discuss establishing an account.', category: 'Corporate' },
         { question: 'What is your cancellation policy?', answer: 'Flight diversions to Denver or Grand Junction are handled with 2 hours\' notice and no Aspen cancellation penalty. General cancellations need 24 hours\' notice.', category: 'Booking' },
         { question: 'Are your drivers licensed and insured?', answer: 'Yes — all Aspen Alpenglow drivers hold valid Colorado commercial driver\'s licenses, undergo thorough background checks, carry commercial liability insurance, and are trained in mountain driving techniques. We maintain all required municipal, state, and federal transportation permits for Aspen and Pitkin County.', category: 'About' },
@@ -809,7 +808,7 @@ const aalPages: PageSeed[] = [
     slug: 'areas/vail',
     title: 'Aspen to Vail Transportation — Private Transfers',
     meta_title: 'Aspen to Vail Private Car Service | Eagle County | Alpenglow',
-    meta_description: 'Door-to-door private transfers between Aspen and Vail/Beaver Creek. Glenwood Canyon & I-70 in a Suburban or Ford Transit passenger van. EGE splits, storm routing, group quotes. 24/7.',
+    meta_description: 'Door-to-door private transfers between Aspen and Vail/Beaver Creek. Glenwood Canyon & I-70 in a Suburban or Ford Transit Passenger Van. EGE splits, storm routing, group quotes. 24/7.',
     template_type: 'location',
     status: 'published',
     published_at: new Date().toISOString(),
@@ -824,7 +823,7 @@ const aalPages: PageSeed[] = [
         'Aspen ↔ Beaver Creek & Bachelor Gulch service',
         'EGE airport ↔ Aspen or Vail (split-stay itineraries)',
         'Round-trip weekend packages with flexible return windows',
-        'Corporate & group Ford Transit passenger van transport (up to 13 passengers)',
+        'Corporate & group Ford Transit Passenger Van transport (up to 13 passengers)',
         'Storm-day rerouting coordination with your property manager',
       ],
       local_tips: [

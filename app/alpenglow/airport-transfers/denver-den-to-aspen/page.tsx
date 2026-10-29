@@ -5,7 +5,7 @@ import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 const path = '/airport-transfers/denver-den-to-aspen'
 const title = 'Denver Airport (DEN) to Aspen Private Car | $1,375'
 const description =
-  'DEN→Aspen door to door in a private Suburban, $1,375 all-inclusive. About 4 hrs via I-70. Winter-ready drivers, Starlink WiFi.'
+  'DEN→Aspen door to door in a private Suburban, $1,375 all-inclusive. The 13-passenger Ford Transit is $1,600. About 4 hrs via I-70.'
 
 export const metadata: Metadata = {
   title,
@@ -20,15 +20,15 @@ export default function DenverAirportTransferPage() {
       path={path}
       eyebrow="Denver International Airport"
       title={title}
-      lede="Private door-to-door service from Denver Airport (DEN) to Aspen is $1,375 each way. Aspen to Denver is the same $1,375. Holiday pricing may change seasonally."
-      facts={['$1,375 each way', 'About 3.5–4 hours', 'I-70', 'SUV up to 7 · Transit up to 13']}
+      lede="Private door-to-door service from Denver Airport (DEN) to Aspen is $1,375 each way in a Suburban. Aspen to Denver is the same $1,375. The 13-passenger Ford Transit is $1,600 each way. Holiday pricing may change seasonally."
+      facts={['SUV $1,375', 'Transit $1,600', 'About 3.5–4 hours', 'I-70', 'SUV up to 7 · Transit up to 13']}
       sections={[
         {
           heading: 'The Denver to Aspen ride',
           paragraphs: [
-            'The drive uses I-70. Public driving estimates put Denver International Airport about 3.5–4 hours from Aspen, depending on weather and traffic. This is a private SUV or Ford Transit passenger van, not a shared shuttle.',
-            'SUVs seat 7. The Ford Transit passenger van seats 13. The published one-way rate is $1,375 in a private SUV. A Ford Transit passenger van is available for larger groups. Holiday pricing may change seasonally.',
-            'Starlink, ski racks, and roof cargo space are on the vehicles. Drivers are 8 full-time locals who have been driving these mountain roads since 2012. Child car seats and boosters are free. Pets are welcome, with a cleaning fee. No shared rides are offered.',
+            'The drive uses I-70. Public driving estimates put Denver International Airport about 3.5–4 hours from Aspen, depending on weather and traffic. This is a private SUV or Ford Transit Passenger Van, not a shared shuttle.',
+            'SUVs seat 7. The Ford Transit Passenger Van seats 13. The published one-way SUV rate is $1,375. The 13-passenger Ford Transit is $1,600 each way. Holiday pricing may change seasonally.',
+            'Starlink, ski racks, and roof cargo space are on the vehicles. Child car seats and boosters are free. Pets are welcome, with a cleaning fee. No shared rides are offered.',
           ],
         },
         {
@@ -47,7 +47,7 @@ export default function DenverAirportTransferPage() {
       faqs={[
         {
           question: 'How much is a private car from Denver Airport to Aspen?',
-          answer: 'Denver (DEN) to Aspen is $1,375 each way. Aspen to Denver is $1,375. Holiday pricing may change seasonally.',
+          answer: 'Denver (DEN) to Aspen is $1,375 each way in a private SUV. Aspen to Denver is $1,375. The 13-passenger Ford Transit is $1,600 each way. Holiday pricing may change seasonally.',
         },
         {
           question: 'How long does DEN to Aspen take?',
@@ -55,7 +55,7 @@ export default function DenverAirportTransferPage() {
         },
         {
           question: 'Is the Denver rate all-inclusive?',
-          answer: 'Yes. The published one-way rate is $1,375 in a private SUV. A Ford Transit passenger van is available for larger groups.',
+          answer: 'Yes. The published one-way SUV rate is $1,375. The 13-passenger Ford Transit is $1,600 each way.',
         },
         {
           question: 'Do you have WiFi on the Denver drive?',
@@ -68,7 +68,7 @@ export default function DenverAirportTransferPage() {
       ]}
       links={[
         { href: '/airport-transfers', label: 'All airport transfers' },
-        { href: '/airport-transfers/eagle-ege-to-aspen', label: 'Eagle Airport (EGE) to Aspen — request a quote' },
+        { href: '/airport-transfers/eagle-ege-to-aspen', label: 'Eagle Airport (EGE) to Aspen — SUV $720' },
         { href: '/service-areas/denver', label: 'Denver service area' },
         { href: '/aspen-airport-closure-2027', label: 'Aspen Airport closure in 2027' },
         { href: '/pricing', label: 'Published rates' },

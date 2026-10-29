@@ -3,8 +3,8 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { seasonForWinterAdventure } from '@/lib/rva-winter-seasons'
 import ServicePageTemplate from '@/components/templates/ServicePageTemplate'
 import type { ServiceContent } from '@/lib/pages'
-
-const AAL_LINK = 'https://aspenalpenglowlimousine.com'
+import { RVA_SNOWSHOE_PRICE, RVA_TRIP_OWNERSHIP } from '@/lib/rva-confirmed'
+import { RVA_WINTER_HERO_PHOTO } from '@/lib/rva-kit-photos'
 
 export const dynamic = 'force-dynamic'
 
@@ -59,7 +59,7 @@ export default async function WinterPage() {
     hero_title: 'Winter Offerings',
     hero_subtitle: 'November through April',
     intro:
-      'The Roaring Fork Valley is just as magical under snow. Explore our guided winter adventures — all gear included, small groups, expert local guides.',
+      `The Roaring Fork Valley is just as magical under snow. Explore our guided winter adventures — all gear included, small groups, expert local guides. ${RVA_SNOWSHOE_PRICE}. ${RVA_TRIP_OWNERSHIP}`,
     lead: {
       heading: 'How winter trips work',
       paragraphs: [
@@ -69,21 +69,28 @@ export default async function WinterPage() {
           : '',
       ].filter(Boolean),
       facts: [
-        { label: 'Pricing', value: 'Starting at $250 per person' },
+        { label: 'Half-day snowshoe', value: '$500' },
+        { label: 'Hunting', value: 'From $250 per person' },
         { label: 'Half-day', value: '3–4 hours door-to-door. Includes snacks and drinks.' },
         { label: 'Full day', value: '6–8 hours door-to-door. Includes lunch.' },
         { label: 'Gear', value: 'All gear provided on every trip' },
         { label: 'Group sizes', value: '1–12 people' },
         { label: 'Transportation', value: 'All transportation provided by Aspen Alpenglow Limousine' },
       ],
-      links: [{ href: AAL_LINK, label: 'Aspen Alpenglow Limousine' }],
+      links: [],
     },
     h2_sections: winterAdventures.map((adventure) => {
       const season = seasonForWinterAdventure(adventure.title) || adventure.season || ''
       const bits = [
         adventure.description,
         [adventure.duration, adventure.difficulty, season].filter(Boolean).join(' · '),
-        'Starting at $250 per person. Half-day and full-day options are listed above. Groups 1–12. All gear included. Transport: Aspen Alpenglow Limousine.',
+        /snowshoe/i.test(adventure.title)
+          ? 'Half-day snowshoe: $500. Groups 1–12. All gear included. Snowshoeing is guided in-house.'
+          : /snowmobile|atv|snowbike/i.test(adventure.title)
+            ? 'Horseback, ATV, and snowmobile trips go through partner local outfitters. Groups 1–12. Transport: Aspen Alpenglow Limousine.'
+            : /hunt|elk|deer|waterfowl|cast and blast/i.test(adventure.title)
+              ? 'Hunting trips on this page start at $250 per person. Groups 1–12. All gear included. Transport: Aspen Alpenglow Limousine.'
+              : 'Groups 1–12. All gear included. Transport: Aspen Alpenglow Limousine.',
       ].filter(Boolean)
       const imageSrc = (adventure.image_url || '').trim()
       return {
@@ -101,7 +108,14 @@ export default async function WinterPage() {
   return (
     <>
       <div className="h-[86px]" />
-      <ServicePageTemplate site="rva" title="Winter Offerings" content={content} bookingHref="/contact" />
+      <ServicePageTemplate
+        site="rva"
+        title="Winter Offerings"
+        content={content}
+        bookingHref="/contact"
+        heroImage={RVA_WINTER_HERO_PHOTO.src}
+        heroImageAlt={RVA_WINTER_HERO_PHOTO.alt}
+      />
     </>
   )
 }

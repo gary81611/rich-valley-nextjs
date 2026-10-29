@@ -34,13 +34,21 @@ export const metadata: Metadata = {
 }
 
 export default async function AboutPage() {
-  const supabase = await createServerSupabaseClient()
-
-  const { data: settings } = await supabase
-    .from('site_settings')
-    .select('*')
-    .eq('site_key', 'rva')
-    .single()
+  let settings: { stats?: RvaStat[]; about_content?: Record<string, string> } | null = null
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  if (url && url.startsWith('http')) {
+    try {
+      const supabase = await createServerSupabaseClient()
+      const { data } = await supabase
+        .from('site_settings')
+        .select('*')
+        .eq('site_key', 'rva')
+        .single()
+      settings = data
+    } catch {
+      settings = null
+    }
+  }
 
   const stats = rvaPublicStats((settings?.stats || []) as RvaStat[])
   const about = settings?.about_content || null

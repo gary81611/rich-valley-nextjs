@@ -6,6 +6,7 @@ export function rvaPublicStats(stats: RvaStat[] | null | undefined): RvaStat[] {
   const out: RvaStat[] = []
   for (const stat of stats ?? []) {
     if (!stat?.label || /rating/i.test(stat.label)) continue
+    if (/3[,.]?000\+?/i.test(String(stat.value)) || /adventures led/i.test(stat.label)) continue
     const blob = `${stat.value} ${stat.label}`
     if (/14\s*\+/.test(blob) || /years of experience/i.test(stat.label)) {
       out.push({ value: '2012', label: 'Guiding since' })

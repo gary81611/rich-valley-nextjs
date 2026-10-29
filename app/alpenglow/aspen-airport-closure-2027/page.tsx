@@ -5,7 +5,7 @@ import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 const path = '/aspen-airport-closure-2027'
 const title = 'Aspen Airport Closure 2027 | Private Car Alternatives'
 const description =
-  'ASE closes April 4, 2027 at 11:00 p.m. through November 19, 2027 at 7:00 p.m. Rifle $720, Grand Junction $950, Denver $1,375. Eagle is quoted on request.'
+  'ASE closes April 4, 2027 at 11:00 p.m. through November 19, 2027 at 7:00 p.m. Eagle and Rifle SUV $720, Grand Junction $950, Denver $1,375. Transit van: Eagle or Rifle $1,200, Denver $1,600.'
 
 export const metadata: Metadata = {
   title,
@@ -33,10 +33,10 @@ export default function AspenAirportClosurePage() {
         {
           heading: 'Alternate airports and one-way rates',
           paragraphs: [
-            'Published one-way rates each way while you are using another airport: Rifle $720, Grand Junction $950, Denver (DEN) $1,375. Eagle (EGE) is quoted on request. Holiday pricing may change seasonally.',
+            'Published one-way SUV rates each way while you are using another airport: Eagle (EGE, in Gypsum) $720, Rifle $720, Grand Junction $950, Denver (DEN) $1,375. The 13-passenger Ford Transit is $1,200 from Eagle or Rifle and $1,600 from Denver. Holiday pricing may change seasonally.',
           ],
           bullets: [
-            'Eagle (EGE) — request a quote',
+            'Eagle (EGE, Gypsum) — SUV $720, Transit $1,200',
             'Rifle — $720 each way',
             'Grand Junction — $950 each way',
             'Denver (DEN) — $1,375 each way',
@@ -52,7 +52,7 @@ export default function AspenAirportClosurePage() {
           heading: 'Diversions and cancellations',
           paragraphs: [
             "Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice.",
-            'SUVs seat 7. The Ford Transit passenger van seats 13. No shared rides are offered.',
+            'SUVs seat 7. The Ford Transit Passenger Van seats 13. No shared rides are offered.',
           ],
         },
       ]}
@@ -68,7 +68,7 @@ export default function AspenAirportClosurePage() {
         },
         {
           question: 'Which alternate airports have published one-way rates?',
-          answer: 'Rifle $720, Grand Junction $950, and Denver $1,375, each way. Eagle is quoted on request. Holiday pricing may change seasonally.',
+          answer: 'SUV each way: Eagle $720, Rifle $720, Grand Junction $950, Denver $1,375. The 13-passenger Ford Transit is $1,200 from Eagle or Rifle and $1,600 from Denver. Eagle County Airport is in Gypsum. Holiday pricing may change seasonally.',
         },
         {
           question: 'Where is private FBO service available?',
@@ -84,7 +84,7 @@ export default function AspenAirportClosurePage() {
         },
       ]}
       links={[
-        { href: '/airport-transfers/eagle-ege-to-aspen', label: 'Eagle Airport (EGE) to Aspen — request a quote' },
+        { href: '/airport-transfers/eagle-ege-to-aspen', label: 'Eagle Airport (EGE) to Aspen — SUV $720' },
         { href: '/airport-transfers/denver-den-to-aspen', label: 'Denver Airport (DEN) to Aspen — $1,375' },
         { href: '/service-areas/rifle', label: 'Rifle airport transfers' },
         { href: '/service-areas/grand-junction', label: 'Grand Junction airport transfers' },

@@ -100,7 +100,7 @@ async function seed() {
     { title: 'First 15 minutes of wait time included', display_order: 4 },
     { title: '30 minutes included for airport arrivals', display_order: 5 },
     { title: 'Holiday pricing may change seasonally', display_order: 6 },
-    { title: 'One-way rates each way: Eagle $720, Denver $1,375, Grand Junction $950, Rifle $720', display_order: 9 },
+    { title: 'One-way SUV rates each way: Eagle and Rifle $720, Denver $1,375, Grand Junction $950. The 13-passenger Ford Transit is $1,200 from Eagle or Rifle and $1,600 from Denver', display_order: 9 },
     { title: 'Corporate charge accounts are billed monthly', display_order: 10 },
     { title: 'All reservations must be held with a credit card', display_order: 7 },
     { title: 'All-inclusive pricing — no hidden service charges or gratuity added', display_order: 8 },

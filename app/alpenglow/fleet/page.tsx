@@ -10,12 +10,12 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Luxury Fleet | Suburban SUVs & Transit Van | Alpenglow',
   description:
-    'Chevrolet Suburban SUVs (7 pax each) & 13-passenger Ford Transit Van — Starlink WiFi, ski racks, Aspen & Snowmass chauffeur service. Child seats are free. No shared rides are offered.',
+    'Chevrolet Suburban SUVs (7 pax each) & 13-passenger Ford Transit Passenger Van — Starlink WiFi, ski racks, Aspen & Snowmass chauffeur service. Child seats are free. No shared rides are offered.',
   alternates: { canonical: 'https://aspenalpenglowlimousine.com/fleet' },
   openGraph: {
     title: 'Luxury Fleet | Suburban SUVs & Transit Van | Alpenglow',
     description:
-      'Chevrolet Suburban SUVs (up to 7) and a Ford Transit passenger van (up to 13). No model years are listed until confirmed.',
+      'Chevrolet Suburban SUVs (up to 7) and a Ford Transit Passenger Van (up to 13). No model years are listed until confirmed.',
     url: 'https://aspenalpenglowlimousine.com/fleet',
     type: 'website',
     images: [AAL_OG_IMAGE],
@@ -36,7 +36,7 @@ const fleetJsonLd = {
         name: 'Chevrolet Suburban',
         seatingCapacity: 7,
         description:
-          'Full-size luxury SUV seating up to 7 passengers. Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee. Driven by full-time local drivers who have been driving these mountain roads since 2012.',
+          'Full-size luxury SUV seating up to 7 passengers. Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee.',
         offers: {
           '@type': 'Offer',
           priceCurrency: 'USD',
@@ -49,10 +49,10 @@ const fleetJsonLd = {
       position: 2,
       item: {
         '@type': 'Vehicle',
-        name: 'Ford Transit passenger van',
+        name: 'Ford Transit Passenger Van',
         seatingCapacity: 13,
         description:
-          '13-passenger Ford Transit Van for larger groups, corporate retreats, wedding parties, and ski group transfers. Spacious interior, WiFi, ski racks. Child car seats and boosters are free. No shared rides are offered.',
+          '13-passenger Ford Transit Passenger Van for larger groups, corporate retreats, wedding parties, and ski group transfers. Spacious interior, WiFi, ski racks. Child car seats and boosters are free. No shared rides are offered.',
         offers: {
           '@type': 'Offer',
           priceCurrency: 'USD',
@@ -85,7 +85,7 @@ export default function FleetPage() {
             Our Fleet
           </h1>
           <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl">
-            Chevrolet Suburban SUVs seat up to 7. The Ford Transit passenger van seats up to 13.
+            Two Chevrolet Suburbans (7 passengers) and one Ford Transit Passenger Van (13). Starlink, ski racks, and roof cargo. CO PUC permit LL-04725.
           </p>
         </div>
       </section>
@@ -98,9 +98,6 @@ export default function FleetPage() {
             ))}
           </div>
 
-          <p className="mt-12 text-center text-alp-slate max-w-3xl mx-auto leading-relaxed">
-            8 full-time local drivers who have been driving these mountain roads since 2012. Vehicles have Starlink, ski racks, and roof cargo space. SUVs seat 7 and the passenger shuttle van seats 13. Child car seats and boosters are free. No shared rides are offered. Pets are welcome, with a cleaning fee.
-          </p>
         </div>
       </section>
 

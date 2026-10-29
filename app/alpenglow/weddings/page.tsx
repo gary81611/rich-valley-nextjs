@@ -9,7 +9,7 @@ const pageUrl = 'https://aspenalpenglowlimousine.com/weddings'
 export const metadata: Metadata = {
   title: 'Wedding Transportation in Aspen, CO | Aspen Alpenglow Limousine',
   description:
-    'Wedding transportation in Aspen and Snowmass for bridal parties and guests. Chevrolet Suburban SUVs and Ford Transit Van service for venues, hotels, and airports.',
+    'Wedding transportation in Aspen and Snowmass for bridal parties and guests. Chevrolet Suburban SUVs and Ford Transit Passenger Van service for venues, hotels, and airports.',
   alternates: { canonical: pageUrl },
   openGraph: {
     title: 'Wedding Transportation in Aspen | Aspen Alpenglow Limousine',
@@ -79,7 +79,7 @@ export default function WeddingsPage() {
           </p>
           <p>
             For bridal parties and immediate family groups, our Chevrolet Suburban SUVs seat up to seven passengers
-            with comfortable luggage capacity. For larger groups and coordinated guest movement, our Ford Transit Van
+            with comfortable luggage capacity. For larger groups and coordinated guest movement, our Ford Transit Passenger Van
             seats up to thirteen passengers and keeps everyone together from pre-ceremony pickups through the final
             return. No shared rides are offered.
           </p>

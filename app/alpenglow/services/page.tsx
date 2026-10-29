@@ -9,7 +9,7 @@ const pageUrl = 'https://aspenalpenglowlimousine.com/services'
 export const metadata: Metadata = {
   title: 'Services | Aspen Alpenglow Limousine — Aspen & Roaring Fork Valley',
   description:
-    'Airport transfers, corporate travel, wedding transportation, and ski resort shuttles in Aspen, Colorado. All-inclusive rates, professional chauffeurs, Suburban SUVs and Ford Transit Van.',
+    'Airport transfers, corporate travel, wedding transportation, and ski resort shuttles in Aspen, Colorado. All-inclusive rates, professional chauffeurs, Suburban SUVs and Ford Transit Passenger Van.',
   alternates: { canonical: pageUrl },
 }
 
@@ -18,25 +18,25 @@ const sections = [
     id: 'airport-transfers',
     title: 'Airport Transfers',
     href: '/airport-transfers',
-    body: `Aspen Alpenglow Limousine offers all-inclusive, door-to-door private car service from ASE, EGE, DEN, KAPA (Centennial), KRIL (Rifle), and GJT (Grand Junction). Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way rates each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request. Holiday pricing may change seasonally. Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice. We monitor flights in real time, meet you at arrivals with a warm greeting, and include thirty minutes of complimentary wait time on airport pickups so you are never rushed after baggage claim.`,
+    body: `Aspen Alpenglow Limousine offers all-inclusive, door-to-door private car service from ASE, EGE, DEN, KAPA (Centennial), KRIL (Rifle), and GJT (Grand Junction). Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way SUV rates each way: Eagle and Rifle $720, Denver $1,375, Grand Junction $950. The 13-passenger Ford Transit is $1,200 from Eagle or Rifle and $1,600 from Denver. Holiday pricing may change seasonally. Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice. We monitor flights in real time, meet you at arrivals with a warm greeting, and include thirty minutes of complimentary wait time on airport pickups so you are never rushed after baggage claim.`,
   },
   {
     id: 'corporate',
     title: 'Corporate & Executive Travel',
     href: '/corporate',
-    body: `Discreet, professional transportation for business travelers, corporate retreats, and executive transfers across Aspen and Snowmass. Corporate charge accounts are billed monthly. 8 full-time local drivers who have been driving these mountain roads since 2012. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee.`,
+    body: `Discreet, professional transportation for business travelers, corporate retreats, and executive transfers across Aspen and Snowmass. Corporate charge accounts are billed monthly. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. Pets are welcome, with a cleaning fee.`,
   },
   {
     id: 'weddings',
     title: 'Wedding Transportation',
     href: '/weddings',
-    body: `Your wedding day deserves transportation that is punctual, elegant, and invisible when it needs to be. We coordinate bridal party transfers, venue shuttles, and guest movement throughout Aspen and Snowmass so nobody is stranded at the wrong property. Our team has extensive experience with venues including The Little Nell, Hotel Jerome, Aspen Meadows, Limelight, and Snowmass base-area properties. Both our Chevrolet Suburban SUVs and Ford Transit Van are available depending on group size — the Transit comfortably moves parties up to thirteen with room for gowns, flowers, and celebration gear. No shared rides are offered.`,
+    body: `Your wedding day deserves transportation that is punctual, elegant, and invisible when it needs to be. We coordinate bridal party transfers, venue shuttles, and guest movement throughout Aspen and Snowmass so nobody is stranded at the wrong property. Our team has extensive experience with venues including The Little Nell, Hotel Jerome, Aspen Meadows, Limelight, and Snowmass base-area properties. Both our Chevrolet Suburban SUVs and Ford Transit Passenger Van are available depending on group size — the Transit comfortably moves parties up to thirteen with room for gowns, flowers, and celebration gear. No shared rides are offered.`,
   },
   {
     id: 'ski-resort-transfers',
     title: 'Ski Resort Transfers',
     href: '/ski-resort-transfers',
-    body: `Private group transport to Aspen Mountain, Aspen Highlands, Buttermilk, and Snowmass — without the parking headache or the shared-shuttle shuffle. We run Suburban SUVs and a thirteen-passenger Ford Transit Van, each fitted with Myers 6X ski racks so boots and bags stay organized. Early-morning first-chair runs and flexible afternoon pickups are standard. You focus on the turns; we handle icy lots, gear loading, and the drive home when your legs are done. No shared rides are offered.`,
+    body: `Private group transport to Aspen Mountain, Aspen Highlands, Buttermilk, and Snowmass — without the parking headache or the shared-shuttle shuffle. We run Suburban SUVs and a thirteen-passenger Ford Transit Passenger Van, each fitted with Myers 6X ski racks so boots and bags stay organized. Early-morning first-chair runs and flexible afternoon pickups are standard. You focus on the turns; we handle icy lots, gear loading, and the drive home when your legs are done. No shared rides are offered.`,
   },
 ]
 

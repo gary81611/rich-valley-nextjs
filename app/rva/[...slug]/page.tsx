@@ -11,6 +11,7 @@ import { rvaServicePageRelatedBlogLinks } from '@/lib/rva-blog-pillars'
 import type { CmsPage } from '@/lib/pages'
 import { KIDS_FAMILY_FISHING, withYearRoundFishingNote } from '@/lib/rva-fly-fishing-content'
 import { rvaHikingAnswerFaqs, rvaHikingAnswerLead } from '@/lib/rva-hiking-page-seed'
+import { RVA_SNOWSHOE_PRICE, RVA_TRIP_OWNERSHIP } from '@/lib/rva-confirmed'
 import {
   PADDLE_OG_IMAGE,
   PADDLE_PHOTO,
@@ -190,6 +191,20 @@ function applyRvaConfirmedFacts(page: CmsPage | null): CmsPage | null {
     const have = new Set((content.faqs || []).map((faq) => faq.question))
     const extra = rvaHikingAnswerFaqs.filter((faq) => !have.has(faq.question))
     content.faqs = [...extra, ...(content.faqs || [])]
+    return applyFishingSeasonAndKids({ ...page, content })
+  }
+
+  if (page.slug === 'snowshoeing' && page.template_type === 'service') {
+    const content = { ...(page.content as ServiceContent) }
+    const price = `${RVA_SNOWSHOE_PRICE}. Snowshoeing is guided in-house.`
+    content.lead = {
+      heading: 'Half-day snowshoeing',
+      paragraphs: [price, ...(content.lead?.paragraphs || [])],
+      facts: [{ label: 'Half-day snowshoe', value: '$500' }, ...(content.lead?.facts || [])],
+    }
+    if (content.intro && !content.intro.includes('$500')) {
+      content.intro = `${price}\n\n${content.intro}`
+    }
     return applyFishingSeasonAndKids({ ...page, content })
   }
 

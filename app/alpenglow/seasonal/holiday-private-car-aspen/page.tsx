@@ -25,8 +25,8 @@ export default function HolidayPrivateCarPage() {
         {
           heading: 'What holiday rides cover',
           paragraphs: [
-            'The same private fleet runs through Christmas week and New Year\'s Eve: SUVs seat 7 and the Ford Transit passenger van seats 13. No shared rides are offered. Child car seats and boosters are free. Pets are welcome, with a cleaning fee.',
-            'Airport one-way rates that stay published outside any seasonal change are Denver $1,375, Grand Junction $950, and Rifle $720. Eagle one-way is quoted on request. If a holiday rate differs, it is quoted when you book.',
+            'The same private fleet runs through Christmas week and New Year\'s Eve: SUVs seat 7 and the Ford Transit Passenger Van seats 13. No shared rides are offered. Child car seats and boosters are free. Pets are welcome, with a cleaning fee.',
+            'Airport one-way SUV rates that stay published outside any seasonal change are Eagle and Rifle $720, Denver $1,375, and Grand Junction $950. The 13-passenger Ford Transit is $1,200 from Eagle or Rifle and $1,600 from Denver. If a holiday rate differs, it is quoted when you book.',
           ],
         },
         {
@@ -51,11 +51,11 @@ export default function HolidayPrivateCarPage() {
         },
         {
           question: 'How many people fit?',
-          answer: 'SUVs seat 7. The Ford Transit passenger van seats 13. No shared rides are offered.',
+          answer: 'SUVs seat 7. The Ford Transit Passenger Van seats 13. No shared rides are offered.',
         },
         {
           question: 'Which airport rates are published?',
-          answer: 'One-way each way: Denver $1,375, Grand Junction $950, Rifle $720. Eagle one-way is quoted on request, unless a seasonal holiday quote replaces a published rate for your dates.',
+          answer: 'One-way SUV rates: Eagle and Rifle $720, Denver $1,375, Grand Junction $950. The 13-passenger Ford Transit is $1,200 from Eagle or Rifle and $1,600 from Denver, unless a seasonal holiday quote replaces a published rate for your dates.',
         },
       ]}
       links={[
