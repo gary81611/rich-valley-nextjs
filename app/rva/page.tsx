@@ -34,16 +34,16 @@ export const metadata: Metadata = {
     url: RVA_URL,
     images: [
       {
-        url: `${RVA_URL}/images/og/rva-home-maroon-bells-alpine-lake.webp`,
+        url: `${RVA_URL}/images/og/rva-home-alpine-lake-aspen.webp`,
         width: 1200,
         height: 630,
-        alt: 'Alpine lake and Maroon Bells peaks near Aspen, Colorado',
+        alt: 'Alpine lake below the peaks near Aspen in summer',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    images: [`${RVA_URL}/images/og/rva-home-maroon-bells-alpine-lake.webp`],
+    images: [`${RVA_URL}/images/og/rva-home-alpine-lake-aspen.webp`],
   },
 }
 

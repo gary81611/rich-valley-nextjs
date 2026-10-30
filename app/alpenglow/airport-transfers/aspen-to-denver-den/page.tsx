@@ -3,6 +3,7 @@ import AalGuidePage from '@/components/alpenglow/AalGuidePage'
 import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 const path = '/airport-transfers/aspen-to-denver-den'
+const h1 = 'Aspen to Denver Airport (DEN)'
 const title = 'Aspen to Denver Airport (DEN) Private Car | $1,375'
 const description =
   'Aspen→DEN door to door in a private Suburban, $1,375 all-inclusive. The 13-passenger Ford Transit is $1,600. About 4 hrs via I-70.'
@@ -25,15 +26,15 @@ export default function AspenToDenverAirportPage() {
     <AalGuidePage
       path={path}
       eyebrow="Denver International Airport"
-      title={title}
-      lede="Private door-to-door service from Aspen to Denver Airport (DEN) is $1,375 each way in a Suburban. Denver to Aspen is the same $1,375. The 13-passenger Ford Transit is $1,600 each way. Holiday pricing may change seasonally."
+      title={h1}
+      lede="Published one-way rates are $1,375 for the Suburban and $1,600 for the 13-passenger Ford Transit. Holiday pricing may change seasonally."
       facts={['SUV $1,375', 'Transit $1,600', 'About 3.5–4 hours', 'I-70', 'SUV up to 7 · Transit up to 13']}
       sections={[
         {
           heading: 'The Aspen to Denver ride',
           paragraphs: [
-            'The drive uses I-70. Public driving estimates put Aspen about 3.5–4 hours from Denver International Airport, depending on weather and traffic. This is a private SUV or Ford Transit Passenger Van, not a shared shuttle.',
-            'SUVs seat 7. The Ford Transit Passenger Van seats 13. The published one-way SUV rate is $1,375. The 13-passenger Ford Transit is $1,600 each way. Holiday pricing may change seasonally.',
+            'Private door-to-door service from Aspen to Denver Airport (DEN), and Denver to Aspen at the same published rates. The drive uses I-70. Public driving estimates put Aspen about 3.5–4 hours from Denver International Airport, depending on weather and traffic. This is a private SUV or Ford Transit Passenger Van, not a shared shuttle.',
+            'SUVs seat 7. The Ford Transit Passenger Van seats 13.',
             'Starlink, ski racks, and roof cargo space are on the vehicles. Child car seats and boosters are free. Pets are welcome, with a cleaning fee. No shared rides are offered.',
           ],
         },

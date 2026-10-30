@@ -21,7 +21,7 @@ const speakableSchema = {
 export const metadata: Metadata = {
   title: 'Aspen Car Service & Limousine',
   description:
-    'Private SUV and Transit airport transfers for ASE, Eagle (EGE), and Denver (DEN). Available 24/7 since 2012. CO PUC permit LL-04725.',
+    'Aspen car service and limousine: private SUV and Transit transfers to ASE, Eagle (EGE) and Denver (DEN). 24/7 since 2012. CO PUC permit LL-04725.',
   alternates: {
     canonical: ALP_URL,
   },

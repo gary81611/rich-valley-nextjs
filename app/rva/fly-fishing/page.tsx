@@ -28,7 +28,7 @@ export const metadata: Metadata = {
         url: 'https://www.richvalleyadventures.com/images/og/rva-fly-fishing-brown-trout-angler.webp',
         width: 1200,
         height: 630,
-        alt: 'Angler holding a large brown trout on the Roaring Fork River',
+        alt: 'Angler holding a large brown trout on a Colorado river',
       },
     ],
   },

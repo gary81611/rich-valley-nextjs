@@ -51,13 +51,6 @@ const FEATURED_TRIPS = [
     alt: TRAIL_HIKING_IMAGE_ALT,
     detail: TRAIL_HIKING_PUBLIC_DESCRIPTION,
   },
-  {
-    title: 'Aspen Scenic River Rafting',
-    href: '/rafting',
-    image: '/images/og/rva-rafting-drift-boat-launch.webp',
-    alt: 'Drift boat launch on a Colorado river with Rich Valley Adventures',
-    detail: 'Scenic river rafting with a picnic is $1,200. Guided in-house.',
-  },
 ] as const
 
 export default function RVAHomeClient({
@@ -288,6 +281,13 @@ export default function RVAHomeClient({
               />
             ))}
           </div>
+          {!activeSeason && (
+            <p className="mt-8 text-center text-rva-forest text-lg">
+              <Link href="/rafting" className="text-rva-copper-700 font-semibold hover:underline">
+                Scenic river rafting with a picnic, $1,200
+              </Link>
+            </p>
+          )}
         </div>
       </section>
 

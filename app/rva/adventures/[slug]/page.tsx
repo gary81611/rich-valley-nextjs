@@ -140,41 +140,53 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
 
   const scenic = isScenicTourSlug(slug) || isScenicTourSlug(adventureSlug)
   const priceNote = adventurePublicFromText(adventure)
+  const seasonValue = adventure.season
+    ? adventure.season === 'year-round'
+      ? 'Year-round'
+      : adventure.season
+    : scenic
+      ? 'Year-round'
+      : null
   const facts = [
-    priceNote ? { label: 'Price', value: priceNote } : null,
-    adventure.duration ? { label: 'Duration', value: adventure.duration } : null,
+    scenic
+      ? { label: 'Duration', value: 'Half Day / Full Day' }
+      : adventure.duration
+        ? { label: 'Duration', value: adventure.duration }
+        : null,
+    scenic
+      ? { label: 'Half-day scenic and wildlife tour', value: '$750' }
+      : priceNote
+        ? { label: 'Price', value: priceNote }
+        : null,
     adventure.difficulty ? { label: 'Level', value: adventure.difficulty } : null,
     groupSize ? { label: 'Group size', value: groupSize } : null,
-    adventure.season ? { label: 'Season', value: adventure.season === 'year-round' ? 'Year-round' : adventure.season } : null,
+    seasonValue ? { label: 'Season', value: seasonValue } : null,
     adventure.best_for ? { label: 'Best for', value: adventure.best_for } : null,
   ].filter((fact): fact is { label: string; value: string } => fact !== null)
 
   const content: ServiceContent = {
     hero_title: displayName,
     hero_subtitle: scenic ? '' : publicDescription,
+    // Keep #15 scenic intro (publicDescription) after rebase onto main.
     intro: scenic
       ? publicDescription
       : /horse|snowmobile|atv|scenic|raft/i.test(`${adventureSlug} ${displayName}`)
         ? `${publicDescription}\n\n${RVA_TRIP_OWNERSHIP}`
         : longDescription,
-    lead: scenic
+    lead: facts.length > 0
       ? {
-          heading: 'Tour length and price',
-          paragraphs: [
-            'Tours run Half Day / Full Day. Half-day scenic and wildlife tour: $750.',
-          ],
-          facts: [
-            { label: 'Duration', value: 'Half Day / Full Day' },
-            { label: 'Half-day scenic and wildlife tour', value: '$750' },
-          ],
-          links: [
-            { href: '/rafting', label: 'Scenic river rafting with picnic' },
-            { href: '/fly-fishing', label: 'Aspen fly fishing' },
-          ],
+          paragraphs: [],
+          facts,
+          ...(scenic
+            ? {
+                links: [
+                  { href: '/rafting', label: 'Scenic river rafting with picnic' },
+                  { href: '/fly-fishing', label: 'Aspen fly fishing' },
+                ],
+              }
+            : {}),
         }
-      : facts.length > 0
-        ? { paragraphs: [], facts }
-        : undefined,
+      : undefined,
     features: whatsIncluded.filter(Boolean).map((item) => ({ title: item, description: '' })),
     h2_sections:
       highlights.length > 0 ? [{ title: 'Highlights', content: highlights.join('\n\n') }] : undefined,
@@ -187,10 +199,6 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
           {
             question: 'How much is a half-day scenic and wildlife tour?',
             answer: 'Half-day scenic and wildlife tour: $750.',
-          },
-          {
-            question: 'Who guides the scenic tours?',
-            answer: RVA_TRIP_OWNERSHIP,
           },
         ]
       : undefined,

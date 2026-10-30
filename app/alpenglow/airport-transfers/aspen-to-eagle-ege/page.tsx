@@ -3,7 +3,8 @@ import AalGuidePage from '@/components/alpenglow/AalGuidePage'
 import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 const path = '/airport-transfers/aspen-to-eagle-ege'
-const title = 'Aspen to Eagle Airport (EGE) Private Car | $720'
+const h1 = 'Aspen to Eagle County Airport (EGE)'
+const title = 'Aspen to Eagle County Airport (EGE) Private Car | $720'
 const description =
   'Aspen or Snowmass to EGE in Gypsum in a private Suburban, $720 one way. The 13-passenger Ford Transit is $1,200. About 1.5–2 hrs.'
 
@@ -25,21 +26,20 @@ export default function AspenToEagleAirportPage() {
     <AalGuidePage
       path={path}
       eyebrow="Eagle County Regional Airport · Gypsum"
-      title={title}
-      lede="Private one-way car service from Aspen or Snowmass to Eagle County Regional Airport (EGE) in Gypsum is $720 in a Suburban. Eagle back to Aspen is $720. The 13-passenger Ford Transit is $1,200 each way. Holiday pricing may change seasonally."
+      title={h1}
+      lede="Published one-way rates are $720 for the Suburban and $1,200 for the 13-passenger Ford Transit. Holiday pricing may change seasonally."
       facts={['SUV $720', 'Transit $1,200', 'About 68–70 miles', 'About 1.5 hours', 'EGE is in Gypsum']}
       sections={[
         {
           heading: 'The drive',
           paragraphs: [
-            'Eagle County Regional Airport (EGE) is in Gypsum, about 68–70 miles from Aspen, roughly 1.5 hours in ordinary conditions. Winter weather can change the timing. This is a private ride, not a shared shuttle.',
+            'Private one-way car service from Aspen or Snowmass to Eagle County Regional Airport (EGE) in Gypsum, and Eagle back to Aspen at the same published rates. Eagle County Regional Airport (EGE) is in Gypsum, about 68–70 miles from Aspen, roughly 1.5 hours in ordinary conditions. Winter weather can change the timing. This is a private ride, not a shared shuttle.',
             'SUVs seat 7. The Ford Transit Passenger Van seats 13. No shared rides are offered.',
           ],
         },
         {
           heading: 'What a booked Eagle ride includes',
           paragraphs: [
-            'The Eagle one-way SUV rate is $720. The 13-passenger Ford Transit is $1,200 each way. Holiday pricing may change seasonally.',
             'Child car seats and boosters are free. Pets are welcome, with a cleaning fee. Vehicles have Starlink, ski racks, and roof cargo space.',
           ],
         },

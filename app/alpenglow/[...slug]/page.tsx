@@ -325,6 +325,7 @@ export default async function CmsPage({ params }: Props) {
         <ServicePageTemplate
           site="alpenglow"
           title={page.title}
+          emitFaqSchema={false}
           content={page.content as ServiceContent}
           relatedLinks={
             slugStr === 'airport-transfers'
