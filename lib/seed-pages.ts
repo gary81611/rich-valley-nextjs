@@ -278,7 +278,7 @@ const rvaPages: PageSeed[] = [
             { title: 'Year-Round Local Guides', description: 'Our guides live in the Roaring Fork Valley year-round. They\'re not here for the season — they\'re here for life.' },
             { title: 'Safety Certified', description: 'All guides hold Wilderness First Responder or WFA certification, CPR/AED certification, and activity-specific safety training.' },
             { title: 'Leave No Trace', description: 'We practice and teach Leave No Trace principles on every trip. Protecting this landscape is why we do what we do.' },
-            { title: 'CO Licensed Outfitter OUT.0003060', description: 'CO River License 620. Guides run fishing, hiking, rafting, and camping in-house. Horseback, ATV, and snowmobile trips go through partner local outfitters.' },
+            { title: 'CO Licensed Outfitter OUT.0003060', description: 'CO River License 620. Guides run fishing, hiking, rafting, and camping in-house. Horseback, ATV, and snowmobile trips go through local partner outfitters.' },
           ],
         },
       ],

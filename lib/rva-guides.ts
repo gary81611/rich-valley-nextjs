@@ -5,14 +5,34 @@ import {
   scrubUnconfirmedWinterText,
 } from '@/lib/rva-unconfirmed-winter'
 
-
 const BART_CHANDLER_ID = '9937a1e8-c6d4-457d-a492-99324bda3161'
+const KIT_MCLENDON_ID = '7ad5b557-6a83-4d18-94e8-ccc583043834'
+const AARON_DALCHOW_ID = 'aad0aa57-93f5-4766-a036-63274b0a221c'
+const BOBBY_REGAN_ID = 'b6652670-ee67-4bcd-85d6-657b25dfee47'
 
-/** Supabase guides.bio for Bart (DB unchanged). Drop hunter + broken guest-quote sentences. */
-const BART_BIO_DB =
-  'Bart has been a lifelong hunter and fisherman and world traveler. Bart is recognized and one of the best shooting coaches in the country and has supported number sporting clay Champions and Olympian’s. One guest mention,  “It’s an honor to spend time with such an admirable gentleman. Bart is not just and professional but an expert in his field”.'
-
+/** Public bios (DB unchanged). Unconfirmed hunting sentences are scrubbed at render. */
 const BART_BIO_PUBLIC = 'Bart has been a lifelong fisherman and world traveler.'
+
+const KIT_BIO_PUBLIC = [
+  'Kit grew up hunting and fishing in Eastern North Carolina. His fishing experience began off the coast of the Outer Banks fishing for large gamefish that included Marlin, Sailfish, MahiMahi, Tuna, Wahoo and more.',
+  'With over 20 years experience as a fly fishing guide in Colorado, Kit has traveled to Alaska, Belize, Mexico and beyond chasing fish on the fly.',
+  'Sharing time with others on the water has been a lifelong passion. Kit loves the diversity of people who travel to Aspen from around the world. Kit enjoys the challenge of teaching children and beginners. Kit has also fished with some of the most versed fly fishing guides and professionals in the fly fishing industry.',
+].join('\n')
+
+const AARON_BIO_PUBLIC = [
+  'Chef Aaron loves the outdoors and best displays his culinary talents in a wilderness setting. Aaron has been working in Aspen as a private Chef for over 20 years and has been a Chef for Rich Valley Adventures for the last decade. Every year we work with Aaron we are more amazed by his comfort and excitement to achieve the best meals possible in the elements of nature.',
+  'Most recently guests from Guadalajara, Jalisco, Mexico requested "Carne\' Asada" to be served on the riverbank while fly fishing. The guests stated that "we don\'t get Carne\' Asada that authentic in Mexico"',
+].join('\n')
+
+const BOBBY_BIO_PUBLIC =
+  'Bobby grew up in Wisconsin as a passionate fisherman on some of the best rivers and lakes in America. Bobby has been an avid fishing guide and ski instructor since he moved to Aspen 15 years ago.'
+
+const GUIDE_BIO_PUBLIC: Record<string, string> = {
+  [BART_CHANDLER_ID]: BART_BIO_PUBLIC,
+  [KIT_MCLENDON_ID]: KIT_BIO_PUBLIC,
+  [AARON_DALCHOW_ID]: AARON_BIO_PUBLIC,
+  [BOBBY_REGAN_ID]: BOBBY_BIO_PUBLIC,
+}
 
 export type PublicGuide = {
   id: string
@@ -28,7 +48,7 @@ export type PublicGuide = {
 function isUnconfirmedGuideTitle(title: string): boolean {
   if (isUnconfirmedWinterClaim(title)) return true
   const t = title.toLowerCase()
-  // Bart Chandler — no confirmed shooting service
+  // Bart Chandler — no confirmed firearm-clinic title
   if (t.includes('shooting')) return true
   return false
 }
@@ -36,8 +56,7 @@ function isUnconfirmedGuideTitle(title: string): boolean {
 function toPublicGuide(row: PublicGuide): PublicGuide {
   const specialties = scrubUnconfirmedWinterList(row.specialties || []).filter(Boolean)
   const bioRaw = (row.bio || '').trim()
-  // Bart: whole-bio display override (see BART_BIO_DB). DB unchanged.
-  const bioNormalized = row.id === BART_CHANDLER_ID && bioRaw ? BART_BIO_PUBLIC : bioRaw
+  const bioNormalized = GUIDE_BIO_PUBLIC[row.id] && bioRaw ? GUIDE_BIO_PUBLIC[row.id] : bioRaw
   const bio = bioNormalized ? scrubUnconfirmedWinterText(bioNormalized) : ''
   const titleRaw = (row.title || '').trim()
   const title = titleRaw && !isUnconfirmedGuideTitle(titleRaw) ? titleRaw : null

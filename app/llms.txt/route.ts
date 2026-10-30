@@ -18,16 +18,16 @@ export async function GET(request: Request) {
 - Email: kit@richvalleyadventures.com
 - Founded: 2012
 - Licenses: CO Licensed Outfitter OUT.0003060. CO River License 620.
-- Guides run fishing, hiking, rafting, and camping in-house. Horseback riding, ATV, and snowmobile trips go through partner local outfitters. Outfitters are not named.
+- Guides run fishing, hiking, rafting, and camping in-house. Horseback riding, ATV, and snowmobile trips go through local partner outfitters. Outfitters are not named.
 - Primary services: guided fly fishing, hiking, mountain biking, elevated camping, winter adventures, horseback riding, scenic and wildlife tours, scenic river rafting
 - Paddleboarding: rental from $100, not a guided trip. Boards can be delivered to you. No delivery hours, areas, or fees are published.
-- Horseback riding: $600. Arranged with a partner local outfitter. https://www.richvalleyadventures.com/adventures/horseback-riding
+- Horseback riding: $600. Arranged with a local partner outfitter. https://www.richvalleyadventures.com/adventures/horseback-riding
 - Half-day scenic and wildlife tour: $750. https://www.richvalleyadventures.com/adventures/scenic-wildlife-tours
 - Scenic river rafting with picnic: $1,200. Rafting is guided in-house.
 - Half-day hike: $600. https://www.richvalleyadventures.com/hiking
 - Half-day snowshoe: $500. Snowshoeing is guided in-house.
 - Overnight camping: $1,500. Camping is guided in-house. https://www.richvalleyadventures.com/elevated-camping
-- Winter, November through April: https://www.richvalleyadventures.com/winter . Half-day is 3–4 hours door-to-door with snacks and drinks. Full day is 6–8 hours door-to-door with lunch. Groups are 1–12. All gear is provided. Transportation on winter trips is by Aspen Alpenglow Limousine.
+- Winter, November through April: https://www.richvalleyadventures.com/winter . Confirmed winter offering: half-day snowshoe ($500). Half-day is 3–4 hours door-to-door with snacks and drinks. Groups are 1–12. All gear is provided. Transportation on winter trips is by Aspen Alpenglow Limousine.
 - Snowshoeing season on the winter page: December 15 – February 25.
 - Snowshoeing page: https://www.richvalleyadventures.com/snowshoeing . Guided tours December through March. All snowshoes, poles, and safety equipment are provided. Routes include Ashcroft. Suitable for all ages; kids as young as 5 can participate on appropriate terrain.
 - Full-day float trip: from $1,400 for 2 people (1 boat, 1 captain). Additional adults $375 each, kids $175. An 8-12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up.
