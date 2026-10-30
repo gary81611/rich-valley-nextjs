@@ -5,20 +5,21 @@ import ServicePageTemplate from '@/components/templates/ServicePageTemplate'
 import type { ServiceContent } from '@/lib/pages'
 import { RVA_SNOWSHOE_PRICE, RVA_TRIP_OWNERSHIP } from '@/lib/rva-confirmed'
 import { RVA_WINTER_HERO_PHOTO } from '@/lib/rva-kit-photos'
+import { isUnconfirmedWinterListingTitle } from '@/lib/rva-unconfirmed-winter'
 
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Winter Adventures | Rich Valley Adventures | Aspen, CO',
   description:
-    'Explore winter in the Roaring Fork Valley with Rich Valley Adventures. Guided snowshoeing, cross-country skiing, ice fishing, and winter Chauffeur Guided Tours in Aspen, Colorado.',
+    'Explore winter in the Roaring Fork Valley with Rich Valley Adventures. Guided snowshoeing in Aspen, Colorado.',
   alternates: {
     canonical: 'https://www.richvalleyadventures.com/winter',
   },
   openGraph: {
     title: 'Winter Adventures in Aspen | Rich Valley Adventures',
     description:
-      'Guided snowshoeing, cross-country skiing, ice fishing, and scenic winter tours in the Roaring Fork Valley.',
+      'Guided snowshoeing in the Roaring Fork Valley.',
     type: 'website',
     url: 'https://www.richvalleyadventures.com/winter',
     images: [
@@ -66,7 +67,9 @@ async function getWinterAdventures(): Promise<WinterAdventure[]> {
 }
 
 export default async function WinterPage() {
-  const winterAdventures = await getWinterAdventures()
+  const winterAdventures = (await getWinterAdventures()).filter(
+    (a) => !isUnconfirmedWinterListingTitle(a.title)
+  )
   const content: ServiceContent = {
     hero_title: 'Winter Offerings',
     hero_subtitle: 'November through April',
@@ -75,7 +78,7 @@ export default async function WinterPage() {
     lead: {
       heading: 'How winter trips work',
       paragraphs: [
-        'Advance booking required: Ice fishing, snowshoeing, and cross-country skiing must be booked with a minimum 7-day notice. All other winter activities: 48-hour advance booking recommended.',
+        'Advance booking required: Snowshoeing must be booked with a minimum 7-day notice. All other winter activities: 48-hour advance booking recommended.',
         winterAdventures.length === 0
           ? 'No winter adventures available at this time. Check back soon!'
           : '',

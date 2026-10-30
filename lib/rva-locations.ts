@@ -16,7 +16,7 @@ export const LOCATIONS: Location[] = [
     description: 'Aspen is the base of operations for Rich Valley Adventures. From world-class fly fishing on the Roaring Fork River to guided hiking, snowshoeing, and Chauffeur Guided Tours and Excursions through historic landmarks — Aspen offers adventure year-round.',
     driveFromAspen: 'Home base',
     rivers: ['Roaring Fork River', 'Castle Creek', 'Maroon Creek'],
-    activities: ['Fly Fishing', 'Guided Hiking', 'Snowshoeing', 'Chauffeur Guided Tours', 'Mountain Biking', 'Cross-Country Skiing'],
+    activities: ['Fly Fishing', 'Guided Hiking', 'Snowshoeing', 'Chauffeur Guided Tours', 'Mountain Biking'],
     highlights: ['Gold medal trout water', 'Maroon Bells scenic area', 'Historic downtown', 'Four ski mountains'],
     faq: [
       { q: 'What fly fishing is available in Aspen?', a: 'The Roaring Fork River runs through Aspen. A full-day float trip is from $1,400 for 2 people (1 boat, 1 captain). Additional adults are $375 each and kids are $175. It covers an 8–12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation are included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up.' },
@@ -103,8 +103,8 @@ export const LOCATIONS: Location[] = [
     description: 'Twin Lakes sits at 9,200 feet at the base of Colorado\'s highest peaks. These alpine lakes offer fishing for lake trout and brook trout in a high-mountain setting.',
     driveFromAspen: '~1.5 hr (summer via Independence Pass)',
     rivers: ['Twin Lakes', 'Lake Creek'],
-    activities: ['Lake Fishing', 'Ice Fishing (winter)', 'Hiking', 'Photography'],
+    activities: ['Lake Fishing', 'Hiking', 'Photography'],
     highlights: ['Alpine lake fishing', 'Independence Pass (summer)', 'Mt. Elbert views', 'Brook trout'],
-    faq: [{ q: 'Can I fish Twin Lakes?', a: 'Yes. Twin Lakes offers lake trout and brook trout fishing in a spectacular alpine setting. In winter, we offer guided ice fishing trips. All gear and transport included.' }],
+    faq: [],
   },
 ]

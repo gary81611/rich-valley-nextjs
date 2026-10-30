@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import RvaButton from '@/components/rva/Button'
+import { isUnconfirmedWinterClaim } from '@/lib/rva-unconfirmed-winter'
 
 /** Row shape from `locations` table — used by /locations/[slug] and /service-areas/[slug] fallback. */
 export type LocationDetailRow = {
@@ -19,9 +20,11 @@ type Props = {
 }
 
 export default function LocationDetailView({ loc, backLink }: Props) {
-  const faqs: { q: string; a: string }[] = loc.faqs || []
+  const faqs: { q: string; a: string }[] = (loc.faqs || []).filter(
+    (f) => !isUnconfirmedWinterClaim(`${f.q} ${f.a}`)
+  )
   const rivers: string[] = loc.rivers || []
-  const activities: string[] = loc.activities || []
+  const activities: string[] = (loc.activities || []).filter((a) => !isUnconfirmedWinterClaim(a))
   const highlights: string[] = loc.highlights || []
   const driveTime: string = loc.drive_time || ''
 
