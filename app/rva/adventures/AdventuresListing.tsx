@@ -115,7 +115,7 @@ export default function AdventuresListing({ adventures }: { adventures: PublicAd
               </p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch md:max-lg:[&>*:last-child:nth-child(odd)]:justify-self-center md:max-lg:[&>*:last-child:nth-child(odd)]:w-[calc(50%-0.75rem)]">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
               {filtered.map((adventure) => (
                 <AdventureCard
                   key={adventure.slug}
