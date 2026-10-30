@@ -68,6 +68,7 @@ export default function DenverAirportTransferPage() {
       ]}
       links={[
         { href: '/airport-transfers', label: 'All airport transfers' },
+        { href: '/airport-transfers/aspen-to-denver-den', label: 'Aspen to Denver Airport (DEN) — $1,375' },
         { href: '/airport-transfers/eagle-ege-to-aspen', label: 'Eagle Airport (EGE) to Aspen — SUV $720' },
         { href: '/service-areas/denver', label: 'Denver service area' },
         { href: '/aspen-airport-closure-2027', label: 'Aspen Airport closure in 2027' },

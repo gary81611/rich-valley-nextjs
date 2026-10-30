@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import InquiryForm from '@/components/shared/InquiryForm'
 import NewsletterSignup from '@/components/shared/NewsletterSignup'
@@ -9,7 +10,7 @@ import { createClient } from '@/lib/supabase'
 import { hrefForService } from '@/lib/alpenglow-services'
 import type { Service as ServiceType, Testimonial } from '@/lib/types'
 import { seoAlt } from '@/lib/seo/alt-text'
-import { AAL_ONE_WAY_RATES, correctAalFaqItem, correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
+import { AAL_EAGLE_BOTH_WAYS, AAL_ONE_WAY_RATES, correctAalFaqItem, correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
 import { isPublicTestimonial } from '@/lib/rva-confirmed'
 
 interface GeoBlock {
@@ -159,7 +160,7 @@ export default function AlpenglowHomeClient() {
             Aspen Car Service &amp; Limousine
           </h1>
           <p className="alp-speak-intro text-xl md:text-2xl text-white/85 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
-            Distinguished private car and limousine service — available 24/7 since 2012.
+            Private SUV and Transit airport transfers for ASE, Eagle (EGE), and Denver (DEN). Available 24/7 since 2012. CO PUC permit LL-04725.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href={alpenglowData.onlineReservationsPath} className="bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block">
@@ -189,6 +190,54 @@ export default function AlpenglowHomeClient() {
           </div>
         </div>
         )}
+      </section>
+
+      {/* Published airport rates — visible text only; no Offer/Product JSON-LD */}
+      <section id="rates" className="py-16 bg-white border-b border-alp-pearl-dark" aria-label="Published airport rates">
+        <div className="max-w-4xl mx-auto px-6">
+          <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-3 text-center">Published rates</p>
+          <h2 className="font-playfair text-3xl md:text-4xl text-alp-navy font-bold mb-8 text-center">Airport transfer rates</h2>
+          <ul className="space-y-4 text-alp-navy text-lg">
+            <li className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 border-b border-alp-pearl-dark pb-3">
+              <span>Aspen Airport (ASE) SUV</span>
+              <span className="font-semibold">from $210</span>
+            </li>
+            <li className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 border-b border-alp-pearl-dark pb-3">
+              <span>Eagle (EGE) SUV / Transit</span>
+              <span className="font-semibold">$720 / $1,200</span>
+            </li>
+            <li className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 border-b border-alp-pearl-dark pb-3">
+              <span>Denver (DEN) SUV / Transit</span>
+              <span className="font-semibold">$1,375 / $1,600</span>
+            </li>
+          </ul>
+          <p className="mt-6 text-alp-slate text-sm text-center">
+            One-way rates. Holiday pricing may change seasonally. No shared rides.{' '}
+            <Link href="/pricing" className="text-alp-gold font-semibold hover:text-alp-navy">
+              Full pricing
+            </Link>
+          </p>
+        </div>
+      </section>
+
+      <section className="py-14 bg-alp-pearl" aria-label="Guest reviews">
+        <div className="max-w-4xl mx-auto px-6">
+          <h2 className="font-playfair text-3xl font-bold text-alp-navy mb-8 text-center">Guest reviews</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <blockquote className="bg-white rounded-xl p-6 border border-alp-pearl-dark">
+              <p className="text-alp-slate text-sm leading-relaxed italic">
+                &ldquo;Excellent car service in Aspen! I&apos;ve used them many times. The experience is excellent all around. The vehicles are always nice &amp; clean, and the drivers are very friendly and professional.&rdquo;
+              </p>
+              <footer className="mt-4 text-alp-navy font-semibold text-sm">— Michael D.</footer>
+            </blockquote>
+            <blockquote className="bg-white rounded-xl p-6 border border-alp-pearl-dark">
+              <p className="text-alp-slate text-sm leading-relaxed italic">
+                &ldquo;Always feel safe with Aspen Alpenglow Limo service, have been driven by this company for many years. Very professional and courteous. Whether you need a drive to the Denver airport or just out to dinner, Aspen Alpenglow has great service.&rdquo;
+              </p>
+              <footer className="mt-4 text-alp-navy font-semibold text-sm">— Lance Y.</footer>
+            </blockquote>
+          </div>
+        </div>
       </section>
 
       {/* TRANSPORTATION SERVICES */}
@@ -350,6 +399,41 @@ export default function AlpenglowHomeClient() {
         </div>
       </section>
       )}
+
+      {/* SEO answer FAQs — visible text only; no Offer/Product JSON-LD */}
+      <section className="py-16 bg-alp-pearl" aria-label="Airport transfer questions">
+        <div className="max-w-3xl mx-auto px-6">
+          <h2 className="font-playfair text-3xl font-bold text-alp-navy mb-8 text-center">Airport transfer questions</h2>
+          <div className="space-y-4">
+            {[
+              {
+                q: 'How much is a car service from Denver to Aspen?',
+                a: 'A private Suburban from Denver Airport (DEN) to Aspen is $1,375 one way. The 13-passenger Ford Transit is $1,600. Holiday pricing may change seasonally.',
+              },
+              {
+                q: 'How much is Eagle Airport to Aspen?',
+                a: AAL_EAGLE_BOTH_WAYS,
+              },
+              {
+                q: 'Do you offer shared rides?',
+                a: 'No shared rides are offered.',
+              },
+              {
+                q: 'What is your PUC permit?',
+                a: 'CO PUC permit LL-04725.',
+              },
+            ].map((item) => (
+              <details key={item.q} className="group rounded-xl border border-alp-pearl-dark bg-white p-5">
+                <summary className="cursor-pointer font-semibold text-alp-navy flex justify-between gap-3">
+                  <span>{item.q}</span>
+                  <span className="text-alp-gold">+</span>
+                </summary>
+                <p className="mt-3 text-sm text-alp-slate leading-relaxed">{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* FAQ */}
       {faqs.length > 0 && (

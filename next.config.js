@@ -81,6 +81,8 @@ function rvaRedirects() {
       ['/trail-hiking', '/hiking'],
       ['/scenic-escalade-tours', '/adventures/scenic-wildlife-tours'],
       ['/adventures/scenic-escalade-tours', '/adventures/scenic-wildlife-tours'],
+      ['/scenic-tours', '/adventures/scenic-wildlife-tours'],
+      ['/adventures/scenic-tours', '/adventures/scenic-wildlife-tours'],
       ['/adventures/rafting', '/rafting'],
       ['/horseback-riding', '/adventures/horseback-riding'],
       ['/hunting', '/winter'],

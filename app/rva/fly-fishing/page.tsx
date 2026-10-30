@@ -5,7 +5,7 @@ import {
   flyFishingServiceContent,
 } from '@/lib/rva-fly-fishing-content'
 import { rvaServicePageRelatedBlogLinks } from '@/lib/rva-blog-pillars'
-import { RVA_FLY_FISHING_HERO_PHOTO } from '@/lib/rva-kit-photos'
+import { RVA_FLOAT_PHOTO, RVA_FLY_FISHING_HERO_PHOTO } from '@/lib/rva-kit-photos'
 
 /** The prerendered HTML was stuck on the Vercel edge as STALE after the copy change. Render each request from this file. */
 export const dynamic = 'force-dynamic'
@@ -23,6 +23,18 @@ export const metadata: Metadata = {
       'Gold Medal waters, Gunnison River floats, and private water — guided by local experts since 2012.',
     type: 'website',
     url: pageUrl,
+    images: [
+      {
+        url: 'https://www.richvalleyadventures.com/images/og/rva-fly-fishing-brown-trout-angler.webp',
+        width: 1200,
+        height: 630,
+        alt: 'Angler holding a large brown trout on the Roaring Fork River',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['https://www.richvalleyadventures.com/images/og/rva-fly-fishing-brown-trout-angler.webp'],
   },
 }
 
@@ -191,14 +203,33 @@ export default function FlyFishingPage() {
         />
       ))}
       <ServicePageTemplate
+        emitFaqSchema={false}
         site="rva"
         title={flyFishingPageTitle}
         heroImage={RVA_FLY_FISHING_HERO_PHOTO.src}
         heroImageAlt={RVA_FLY_FISHING_HERO_PHOTO.alt}
         heroObjectClassName="object-[18%_50%] sm:object-[40%_25%]"
         heroSplit
-        content={content}
-        relatedLinks={rvaServicePageRelatedBlogLinks('fly-fishing')}
+        content={{
+          ...content,
+          intro: content.intro,
+          h2_sections: [
+            {
+              title: 'On the river',
+              content: 'Full-day float trip: $1,400 for 2. Fishing is guided in-house.',
+              image: RVA_FLOAT_PHOTO.src,
+              imageAlt: RVA_FLOAT_PHOTO.alt,
+            },
+            ...(content.h2_sections || []),
+          ],
+        }}
+        relatedLinks={[
+          { href: '/private-ranch-fishing', label: 'Private ranch fishing & picnic' },
+          { href: '/rafting', label: 'Aspen scenic river rafting' },
+          { href: '/adventures/scenic-wildlife-tours', label: 'Scenic and wildlife tours' },
+          { href: '/conditions', label: 'Fishing and river conditions' },
+          ...rvaServicePageRelatedBlogLinks('fly-fishing'),
+        ]}
       />
     </>
   )

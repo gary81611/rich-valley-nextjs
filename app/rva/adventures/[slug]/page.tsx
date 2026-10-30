@@ -157,10 +157,43 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
       : /horse|snowmobile|atv|scenic|raft/i.test(`${adventureSlug} ${displayName}`)
         ? `${publicDescription}\n\n${RVA_TRIP_OWNERSHIP}`
         : longDescription,
-    lead: facts.length > 0 ? { paragraphs: [], facts } : undefined,
+    lead: scenic
+      ? {
+          heading: 'Tour length and price',
+          paragraphs: [
+            'Tours run Half Day / Full Day. Half-day scenic and wildlife tour: $750.',
+          ],
+          facts: [
+            { label: 'Duration', value: 'Half Day / Full Day' },
+            { label: 'Half-day scenic and wildlife tour', value: '$750' },
+          ],
+          links: [
+            { href: '/rafting', label: 'Scenic river rafting with picnic' },
+            { href: '/fly-fishing', label: 'Aspen fly fishing' },
+          ],
+        }
+      : facts.length > 0
+        ? { paragraphs: [], facts }
+        : undefined,
     features: whatsIncluded.filter(Boolean).map((item) => ({ title: item, description: '' })),
     h2_sections:
       highlights.length > 0 ? [{ title: 'Highlights', content: highlights.join('\n\n') }] : undefined,
+    faqs: scenic
+      ? [
+          {
+            question: 'How long are scenic and wildlife tours?',
+            answer: 'Tours run Half Day / Full Day.',
+          },
+          {
+            question: 'How much is a half-day scenic and wildlife tour?',
+            answer: 'Half-day scenic and wildlife tour: $750.',
+          },
+          {
+            question: 'Who guides the scenic tours?',
+            answer: RVA_TRIP_OWNERSHIP,
+          },
+        ]
+      : undefined,
     cta_text: 'Check availability',
   }
 

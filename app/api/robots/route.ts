@@ -39,6 +39,8 @@ Allow: /adventures/mountain-biking
 Allow: /paddle-boarding
 Allow: /elevated-camping
 Allow: /winter
+Allow: /rafting
+Allow: /adventures/scenic-wildlife-tours
 Allow: /locations
 Allow: /service-areas
 Allow: /contact
