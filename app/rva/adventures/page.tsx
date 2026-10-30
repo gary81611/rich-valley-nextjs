@@ -10,9 +10,14 @@ import AdventuresListing from './AdventuresListing'
 
 export const dynamic = 'force-dynamic'
 
+/** Same as home #18: no duration badge or level meta on adventure cards; keep prices. */
+function withoutCardBadges(card: PublicAdventureCard): PublicAdventureCard {
+  return { ...card, duration: '', difficulty: '' }
+}
+
 function staticFallback(reason: string): PublicAdventureCard[] {
   console.error(`[rva/adventures] static fallback: ${reason}`)
-  return getStaticPublicAdventureCards()
+  return getStaticPublicAdventureCards().map(withoutCardBadges)
 }
 
 export default async function AdventuresPage() {
@@ -30,7 +35,7 @@ export default async function AdventuresPage() {
     } else if (data && data.length > 0) {
       adventures = data
         .filter((a: Adventure) => isPublicAdventureCard(a))
-        .map((a: Adventure) => toPublicAdventureCard(a))
+        .map((a: Adventure) => withoutCardBadges(toPublicAdventureCard(a)))
       if (adventures.length === 0) {
         adventures = staticFallback('supabase returned rows but none are public adventure cards')
       }
