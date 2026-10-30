@@ -54,6 +54,22 @@ export function stripEscaladeCopy(text: string): string {
 }
 
 /** Customer quotes that name the retired vehicle stay in the database and stay off the page. */
+
+/** Drop sentences that claim First Aid / first-aid certification or kit (Kit-unconfirmed). */
+export function scrubUnconfirmedFirstAidText(text: string): string {
+  if (!text) return text
+  return text
+    .split(/(?<=[.!?])(\s+)/)
+    .filter((part) => {
+      if (/^\s+$/.test(part) || !part.trim()) return true
+      return !/first[\s-]*aid/i.test(part)
+    })
+    .join('')
+    .replace(/\s{2,}/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
 export function quoteMentionsEscalade(quote: string | null | undefined): boolean {
   return /escalade/i.test(quote || '')
 }

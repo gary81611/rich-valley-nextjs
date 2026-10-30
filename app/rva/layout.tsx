@@ -206,15 +206,6 @@ const localBusinessSchema = {
             'Premium guided camping experiences with curated gear and gourmet food in the Colorado wilderness near Aspen.',
         },
       },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'TouristAttraction',
-          name: 'Chauffeur Guided Tours and Excursions — Aspen & Roaring Fork Valley, CO',
-          description:
-            'Private scenic tours of Aspen and the Roaring Fork Valley on Chauffeur Guided Tours and Excursions with a knowledgeable local guide and luxury vehicle.',
-        },
-      },
     ],
   },
 }

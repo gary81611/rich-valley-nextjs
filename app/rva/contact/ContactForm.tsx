@@ -8,7 +8,7 @@ const serviceOptions = [
   'Paddleboard Rental',
   'Mountain Biking',
   'Trail Hiking',
-  'Chauffeur Guided Tours and Excursions',
+  'Scenic & Wildlife Tours',
   'Elevated Camping',
   'Winter Adventure',
   'Other / Not Sure',

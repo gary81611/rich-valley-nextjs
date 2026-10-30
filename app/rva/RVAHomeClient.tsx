@@ -302,7 +302,7 @@ export default function RVAHomeClient({
           <p className="font-cormorant text-rva-copper-700 text-lg tracking-widest uppercase mb-3">Our Team</p>
           <h2 className="font-playfair text-3xl md:text-4xl text-rva-forest font-bold mb-4">Local Guides, Year-Round</h2>
           <p className="text-gray-600 text-lg mb-6">
-            First Aid certified, valley-raised, and passionate about these mountains — meet the people behind your trip.
+            Local guides who know these mountains — meet the people behind your trip.
           </p>
           <Link
             href="/guides"

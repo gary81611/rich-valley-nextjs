@@ -333,7 +333,7 @@ export default function SettingsPage() {
                   value={(currentSettings?.about_content?.team_characteristics || []).join(', ')}
                   onChange={(e) => updateAboutContent('team_characteristics', e.target.value.split(',').map(s => s.trim()).filter(Boolean))}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-500"
-                  placeholder="Wilderness First-Aid certified, Average 8+ years experience, ..."
+                  placeholder="Wilderness First-Aid certified, Average 8+ years of experience, ..."
                 />
                 <p className="text-xs text-slate-500 mt-1">Comma-separated list of team qualities</p>
               </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
-import { scrubUnconfirmedWinterList } from '@/lib/rva-unconfirmed-winter'
+import { publicLocationActivities, publicLocationTagline, scrubChauffeurGuidedText } from '@/lib/rva-location-public'
 
 export const dynamic = 'force-dynamic'
 
@@ -23,10 +23,10 @@ export default async function LocationsPage() {
   const locations = (locationsRaw ?? []).map((loc: any) => ({
     name: loc.name,
     slug: loc.slug,
-    tagline: loc.tagline,
-    description: loc.description,
+    tagline: publicLocationTagline(loc.slug, loc.tagline),
+    description: scrubChauffeurGuidedText(loc.description),
     driveTime: loc.drive_time,
-    activities: scrubUnconfirmedWinterList(loc.activities || []),
+    activities: publicLocationActivities(loc.slug, loc.activities),
   }))
 
   return (
