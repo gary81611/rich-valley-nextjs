@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { publicLocationActivities, publicLocationTagline, scrubChauffeurGuidedText } from '@/lib/rva-location-public'
 
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Adventure Locations | Rich Valley Adventures — Colorado Outdoor Destinations',
-  description: 'Guided adventures across Colorado — Aspen, Basalt, Carbondale, Glenwood Springs, Snowmass, Vail, Telluride, and more. Fly fishing, hiking, and hunting from $250 per person throughout the Roaring Fork Valley.',
+  description: 'Guided adventures across Colorado — Aspen, Basalt, Carbondale, Glenwood Springs, Snowmass, Vail, Telluride, and more. Fly fishing and hiking throughout the Roaring Fork Valley.',
   alternates: { canonical: 'https://www.richvalleyadventures.com/locations' },
 }
 
@@ -22,10 +23,10 @@ export default async function LocationsPage() {
   const locations = (locationsRaw ?? []).map((loc: any) => ({
     name: loc.name,
     slug: loc.slug,
-    tagline: loc.tagline,
-    description: loc.description,
+    tagline: publicLocationTagline(loc.slug, loc.tagline),
+    description: scrubChauffeurGuidedText(loc.description),
     driveTime: loc.drive_time,
-    activities: loc.activities || [],
+    activities: publicLocationActivities(loc.slug, loc.activities),
   }))
 
   return (

@@ -59,7 +59,7 @@ export default function FlyFishingPage() {
       telephone: '+19704563666',
       email: 'kit@richvalleyadventures.com',
       description:
-        'Expert-guided fly fishing, hiking, mountain biking, paddleboard rentals, hunting from $250 per person, and elevated camping in Aspen, Colorado and the Roaring Fork Valley since 2012.',
+        'Expert-guided fly fishing, hiking, mountain biking, paddleboard rentals, and elevated camping in Aspen, Colorado and the Roaring Fork Valley since 2012.',
       priceRange: '$$$$',
       openingHours: 'Mo-Su 00:00-23:59',
       address: {

@@ -104,7 +104,7 @@ Items flagged **⚠** require owner input before they are treated as published b
 ## 5. Category and offers
 
 ### Core services — RVA
-Guided fly fishing (Roaring Fork, Frying Pan, Crystal); SUP; mountain biking; trail hiking; elevated/premium camping; chauffeur-guided scenic tours (AAL crossover); winter: snowshoeing, XC skiing, ice fishing.
+Guided fly fishing (Roaring Fork, Frying Pan, Crystal); SUP; mountain biking; trail hiking; elevated/premium camping; chauffeur-guided scenic tours (AAL crossover); winter: snowshoeing.
 
 ### Core services — AAL
 Airport transfers (ASE, EGE, DEN, KAPA, KRIL, GJT per site); hourly private charter; corporate/executive; wedding logistics; ski resort transfers.
@@ -114,7 +114,7 @@ Airport transfers (ASE, EGE, DEN, KAPA, KRIL, GJT per site); hourly private char
 - **AAL:** ASE transfer + flight tracking + meet-and-greet; DEN luxury run; wedding venues (Little Nell, Jerome, Meadows, Limelight); Myers ski racks on vehicles; corporate + Starlink.
 
 ### Seasonality
-- **RVA:** Summer peak May–Oct, dry flies July–Sep; winter Frying Pan + snowshoe/XC/ice fishing; most activities May–Oct with Frying Pan as confirmed year-round fishing option.  
+- **RVA:** Summer peak May–Oct, dry flies July–Sep; winter Frying Pan + snowshoe; most activities May–Oct with Frying Pan as confirmed year-round fishing option.  
 - **AAL:** Summer leisure peak Jul–Aug; ski Dec–Mar; **24/7/365 — no off-season.**
 
 ### Fleet / gear facts (verify before any copy change)

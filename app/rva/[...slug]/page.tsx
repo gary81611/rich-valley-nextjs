@@ -12,6 +12,7 @@ import type { CmsPage } from '@/lib/pages'
 import { KIDS_FAMILY_FISHING, withYearRoundFishingNote } from '@/lib/rva-fly-fishing-content'
 import { rvaHikingAnswerFaqs, rvaHikingAnswerLead } from '@/lib/rva-hiking-page-seed'
 import { RVA_SNOWSHOE_PRICE, RVA_TRIP_OWNERSHIP } from '@/lib/rva-confirmed'
+import { scrubUnconfirmedWinterFaqs, scrubUnconfirmedWinterList, scrubUnconfirmedWinterText } from '@/lib/rva-unconfirmed-winter'
 import {
   PADDLE_OG_IMAGE,
   PADDLE_PHOTO,
@@ -224,6 +225,7 @@ function applyFishingSeasonAndKids(page: CmsPage): CmsPage {
         ...content.faqs,
       ]
     }
+    content.faqs = scrubUnconfirmedWinterFaqs(content.faqs)
     return { ...page, content }
   }
 
@@ -245,6 +247,15 @@ function applyFishingSeasonAndKids(page: CmsPage): CmsPage {
       !(content.faqs || []).some((faq) => /can kids fish/i.test(faq.question))
     ) {
       content.faqs = [{ question: 'Can kids fish?', answer: KIDS_FAMILY_FISHING }, ...(content.faqs || [])]
+    }
+    content.faqs = scrubUnconfirmedWinterFaqs(content.faqs || [])
+    if ('services_available' in content && Array.isArray((content as LocationContent).services_available)) {
+      ;(content as LocationContent).services_available = scrubUnconfirmedWinterList(
+        (content as LocationContent).services_available || []
+      )
+    }
+    if (content.intro) {
+      content.intro = scrubUnconfirmedWinterText(content.intro)
     }
     return { ...page, content }
   }

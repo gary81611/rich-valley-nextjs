@@ -1,8 +1,11 @@
 import Link from 'next/link'
 import RvaButton from '@/components/rva/Button'
+import { isUnconfirmedWinterClaim, scrubUnconfirmedWinterList } from '@/lib/rva-unconfirmed-winter'
+import { publicLocationActivities, publicLocationTagline, scrubChauffeurGuidedText } from '@/lib/rva-location-public'
 
 /** Row shape from `locations` table — used by /locations/[slug] and /service-areas/[slug] fallback. */
 export type LocationDetailRow = {
+  slug: string
   name: string
   tagline: string | null
   description: string | null
@@ -19,11 +22,19 @@ type Props = {
 }
 
 export default function LocationDetailView({ loc, backLink }: Props) {
-  const faqs: { q: string; a: string }[] = loc.faqs || []
+  const faqs: { q: string; a: string }[] = (loc.faqs || [])
+    .filter((f) => !isUnconfirmedWinterClaim(`${f.q} ${f.a}`))
+    .filter((f) => !/chauffeur guided/i.test(`${f.q} ${f.a}`))
+    .map((f) => ({
+      q: scrubChauffeurGuidedText(f.q) || f.q,
+      a: scrubChauffeurGuidedText(f.a) || f.a,
+    }))
   const rivers: string[] = loc.rivers || []
-  const activities: string[] = loc.activities || []
-  const highlights: string[] = loc.highlights || []
+  const activities: string[] = publicLocationActivities(loc.slug, loc.activities)
+  const highlights: string[] = scrubUnconfirmedWinterList(loc.highlights || [])
   const driveTime: string = loc.drive_time || ''
+  const tagline = publicLocationTagline(loc.slug, loc.tagline)
+  const description = scrubChauffeurGuidedText(loc.description)
 
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
@@ -33,7 +44,7 @@ export default function LocationDetailView({ loc, backLink }: Props) {
             {backLink.label}
           </Link>
           <h1 className="font-playfair text-4xl md:text-5xl text-white font-light mb-2">{loc.name}</h1>
-          <p className="text-white/60 text-lg">{loc.tagline}</p>
+          <p className="text-white/60 text-lg">{tagline}</p>
           {driveTime && driveTime !== 'Home base' && (
             <p className="text-white/40 text-sm mt-2">{driveTime} from Aspen</p>
           )}
@@ -41,7 +52,7 @@ export default function LocationDetailView({ loc, backLink }: Props) {
       </div>
 
       <div className="max-w-4xl mx-auto px-6 py-16">
-        <p className="text-lg text-rva-forest/80 leading-relaxed mb-10">{loc.description}</p>
+        <p className="text-lg text-rva-forest/80 leading-relaxed mb-10">{description}</p>
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           <div className="bg-white p-6 rounded-xl">
@@ -63,14 +74,18 @@ export default function LocationDetailView({ loc, backLink }: Props) {
                 </li>
               ))}
             </ul>
-            <h3 className="font-semibold text-rva-forest-dark mt-6 mb-2 text-sm">Highlights</h3>
-            <ul className="space-y-1">
-              {highlights.map((h) => (
-                <li key={h} className="text-xs text-rva-forest/80">
-                  • {h}
-                </li>
-              ))}
-            </ul>
+            {highlights.length > 0 && (
+              <>
+                <h3 className="font-semibold text-rva-forest-dark mt-6 mb-2 text-sm">Highlights</h3>
+                <ul className="space-y-1">
+                  {highlights.map((h) => (
+                    <li key={h} className="text-xs text-rva-forest/80">
+                      • {h}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </div>
         </div>
 
@@ -127,7 +142,7 @@ export default function LocationDetailView({ loc, backLink }: Props) {
             '@context': 'https://schema.org',
             '@type': 'TouristDestination',
             name: `${loc.name} — Rich Valley Adventures`,
-            description: loc.description,
+            description,
             touristType: activities,
             containedInPlace: { '@type': 'State', name: 'Colorado' },
           }),

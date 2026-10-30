@@ -9,7 +9,7 @@ export const RVA_LICENSES_LINE = `${RVA_LICENSED_OUTFITTER}. ${RVA_RIVER_LICENSE
 
 /** In-house vs partner trips. Partner outfitters stay unnamed. */
 export const RVA_TRIP_OWNERSHIP =
-  'Guides run fishing, hiking, rafting, and camping in-house. Horseback riding, ATV, and snowmobile trips go through partner local outfitters.'
+  'Guides run fishing, hiking, rafting, and camping in-house. Horseback riding, ATV, and snowmobile trips go through local partner outfitters.'
 
 export const RVA_FLOAT_PRICE = 'Full-day float trip: $1,400 for 2'
 export const RVA_RANCH_PRICE = 'Private ranch: $800 per adult and $250 per child'
@@ -54,6 +54,22 @@ export function stripEscaladeCopy(text: string): string {
 }
 
 /** Customer quotes that name the retired vehicle stay in the database and stay off the page. */
+
+/** Drop sentences that claim First Aid / first-aid certification or kit (Kit-unconfirmed). */
+export function scrubUnconfirmedFirstAidText(text: string): string {
+  if (!text) return text
+  return text
+    .split(/(?<=[.!?])(\s+)/)
+    .filter((part) => {
+      if (/^\s+$/.test(part) || !part.trim()) return true
+      return !/first[\s-]*aid/i.test(part)
+    })
+    .join('')
+    .replace(/\s{2,}/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
 export function quoteMentionsEscalade(quote: string | null | undefined): boolean {
   return /escalade/i.test(quote || '')
 }

@@ -8,8 +8,12 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Our Guides | Rich Valley Adventures — Expert Local Guides in Aspen',
   description:
-    'Meet the Rich Valley Adventures guide team. First Aid certified experts in fly fishing, hunting from $250 per person, hiking, and outdoor adventures in the Roaring Fork Valley.',
+    'Meet the Rich Valley Adventures guide team: fly fishing, hiking, and outdoor adventures in the Roaring Fork Valley.',
   alternates: { canonical: 'https://www.richvalleyadventures.com/guides' },
+  openGraph: {
+    description:
+      'Meet the Rich Valley Adventures guide team: fly fishing, hiking, and outdoor adventures in the Roaring Fork Valley.',
+  },
 }
 
 export default async function GuidesPage() {
@@ -21,7 +25,7 @@ export default async function GuidesPage() {
         <div className="max-w-5xl mx-auto px-6 text-center">
           <p className="text-rva-copper-light text-sm font-semibold uppercase tracking-[0.2em] mb-3">Our Team</p>
           <h1 className="font-playfair text-4xl md:text-5xl text-white font-light mb-4">Meet Your Guides</h1>
-          <p className="text-white/60">First Aid certified. Local experts. Passionate about the outdoors.</p>
+          <p className="text-white/60">Local experts. Passionate about the outdoors.</p>
         </div>
       </div>
 
@@ -56,14 +60,20 @@ export default async function GuidesPage() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(
-              guides.map((g) => ({
-                '@context': 'https://schema.org',
-                '@type': 'Person',
-                name: g.name,
-                jobTitle: g.title,
-                worksFor: { '@type': 'Organization', name: 'Rich Valley Adventures', url: 'https://www.richvalleyadventures.com' },
-                hasCredential: { '@type': 'EducationalOccupationalCredential', credentialCategory: 'First Aid Certification' },
-              })),
+              guides.map((g) => {
+                const person: Record<string, unknown> = {
+                  '@context': 'https://schema.org',
+                  '@type': 'Person',
+                  name: g.name,
+                  worksFor: {
+                    '@type': 'Organization',
+                    name: 'Rich Valley Adventures',
+                    url: 'https://www.richvalleyadventures.com',
+                  },
+                }
+                if (g.title) person.jobTitle = g.title
+                return person
+              }),
             ),
           }}
         />

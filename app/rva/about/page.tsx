@@ -193,8 +193,7 @@ export default async function AboutPage() {
           )}
 
           <p className="text-center text-gray-600 text-sm mt-12 max-w-2xl mx-auto leading-relaxed">
-            All Rich Valley Adventures guides hold current First Aid certification and have extensive experience
-            guiding in the Roaring Fork Valley.
+            All Rich Valley Adventures guides have extensive experience guiding in the Roaring Fork Valley.
           </p>
         </div>
       </section>

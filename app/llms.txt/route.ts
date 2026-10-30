@@ -18,19 +18,18 @@ export async function GET(request: Request) {
 - Email: kit@richvalleyadventures.com
 - Founded: 2012
 - Licenses: CO Licensed Outfitter OUT.0003060. CO River License 620.
-- Guides run fishing, hiking, rafting, and camping in-house. Horseback riding, ATV, and snowmobile trips go through partner local outfitters. Outfitters are not named.
-- Primary services: guided fly fishing, hiking, mountain biking, elevated camping, winter adventures, hunting from $250 per person, horseback riding, scenic and wildlife tours, scenic river rafting
+- Guides run fishing, hiking, rafting, and camping in-house. Horseback riding, ATV, and snowmobile trips go through local partner outfitters. Outfitters are not named.
+- Primary services: guided fly fishing, hiking, mountain biking, elevated camping, winter adventures, horseback riding, scenic and wildlife tours, scenic river rafting
 - Paddleboarding: rental from $100, not a guided trip. Boards can be delivered to you. No delivery hours, areas, or fees are published.
-- Horseback riding: $600. Arranged with a partner local outfitter. https://www.richvalleyadventures.com/adventures/horseback-riding
+- Horseback riding: $600. Arranged with a local partner outfitter. https://www.richvalleyadventures.com/adventures/horseback-riding
 - Half-day scenic and wildlife tour: $750. https://www.richvalleyadventures.com/adventures/scenic-wildlife-tours
 - Scenic river rafting with picnic: $1,200. Rafting is guided in-house.
 - Half-day hike: $600. https://www.richvalleyadventures.com/hiking
 - Half-day snowshoe: $500. Snowshoeing is guided in-house.
 - Overnight camping: $1,500. Camping is guided in-house. https://www.richvalleyadventures.com/elevated-camping
-- Winter, November through April: https://www.richvalleyadventures.com/winter . From $250 per person. Half-day is 3–4 hours door-to-door with snacks and drinks. Full day is 6–8 hours door-to-door with lunch. Groups are 1–12. All gear is provided. Transportation on winter trips is by Aspen Alpenglow Limousine.
-- Hunting on the winter page, from $250 per person: elk and mule deer (September 1 – December 10), waterfowl (October 1 – January 15), and cast and blast (October 1 – January 15). There is no separate hunting page.
-- Ice fishing, snowshoeing, and cross-country skiing on the winter page need 7 days' notice. The winter listing dates those three December 15 – February 25 (cross-country skiing is marked approximate). Other winter activities: 48-hour advance booking is recommended.
-- Snowshoeing page: https://www.richvalleyadventures.com/snowshoeing . Guided tours December through March. All snowshoes, poles, and safety equipment are provided. Routes include Ashcroft. Suitable for all ages; kids as young as 5 can participate on appropriate terrain. Book 7 days ahead.
+- Winter, November through April: https://www.richvalleyadventures.com/winter . Confirmed winter offering: half-day snowshoe ($500). Half-day is 3–4 hours door-to-door with snacks and drinks. Groups are 1–12. All gear is provided. Transportation on winter trips is by Aspen Alpenglow Limousine.
+- Snowshoeing season on the winter page: December 15 – February 25.
+- Snowshoeing page: https://www.richvalleyadventures.com/snowshoeing . Guided tours December through March. All snowshoes, poles, and safety equipment are provided. Routes include Ashcroft. Suitable for all ages; kids as young as 5 can participate on appropriate terrain.
 - Full-day float trip: from $1,400 for 2 people (1 boat, 1 captain). Additional adults $375 each, kids $175. An 8-12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up.
 - Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+). Page: https://www.richvalleyadventures.com/private-ranch-fishing
 - Kids & family fishing: kids ages 3 and up can fish. Waders are provided for kids 3 and up, and adult waders and boots go up to men's size 15. Guests and grandparents with limited mobility can be hosted at the ranch ponds.

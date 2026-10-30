@@ -5,20 +5,25 @@ import ServicePageTemplate from '@/components/templates/ServicePageTemplate'
 import type { ServiceContent } from '@/lib/pages'
 import { RVA_SNOWSHOE_PRICE, RVA_TRIP_OWNERSHIP } from '@/lib/rva-confirmed'
 import { RVA_WINTER_HERO_PHOTO } from '@/lib/rva-kit-photos'
+import {
+  isUnconfirmedWinterListingTitle,
+  publicWinterSnowmobileDescription,
+  publicWinterSnowmobileTitle,
+} from '@/lib/rva-unconfirmed-winter'
 
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Winter Adventures | Rich Valley Adventures | Aspen, CO',
   description:
-    'Explore winter in the Roaring Fork Valley with Rich Valley Adventures. Guided snowshoeing, cross-country skiing, ice fishing, and winter Chauffeur Guided Tours in Aspen, Colorado.',
+    'Explore winter in the Roaring Fork Valley with Rich Valley Adventures. Guided snowshoeing in Aspen, Colorado.',
   alternates: {
     canonical: 'https://www.richvalleyadventures.com/winter',
   },
   openGraph: {
     title: 'Winter Adventures in Aspen | Rich Valley Adventures',
     description:
-      'Guided snowshoeing, cross-country skiing, ice fishing, and scenic winter tours in the Roaring Fork Valley.',
+      'Guided snowshoeing in the Roaring Fork Valley.',
     type: 'website',
     url: 'https://www.richvalleyadventures.com/winter',
     images: [
@@ -66,7 +71,9 @@ async function getWinterAdventures(): Promise<WinterAdventure[]> {
 }
 
 export default async function WinterPage() {
-  const winterAdventures = await getWinterAdventures()
+  const winterAdventures = (await getWinterAdventures()).filter(
+    (a) => !isUnconfirmedWinterListingTitle(a.title)
+  )
   const content: ServiceContent = {
     hero_title: 'Winter Offerings',
     hero_subtitle: 'November through April',
@@ -75,16 +82,13 @@ export default async function WinterPage() {
     lead: {
       heading: 'How winter trips work',
       paragraphs: [
-        'Advance booking required: Ice fishing, snowshoeing, and cross-country skiing must be booked with a minimum 7-day notice. All other winter activities: 48-hour advance booking recommended.',
         winterAdventures.length === 0
           ? 'No winter adventures available at this time. Check back soon!'
           : '',
       ].filter(Boolean),
       facts: [
         { label: 'Half-day snowshoe', value: '$500' },
-        { label: 'Hunting', value: 'From $250 per person' },
         { label: 'Half-day', value: '3–4 hours door-to-door. Includes snacks and drinks.' },
-        { label: 'Full day', value: '6–8 hours door-to-door. Includes lunch.' },
         { label: 'Gear', value: 'All gear provided on every trip' },
         { label: 'Group sizes', value: '1–12 people' },
         { label: 'Transportation', value: 'All transportation provided by Aspen Alpenglow Limousine' },
@@ -92,24 +96,26 @@ export default async function WinterPage() {
       links: [],
     },
     h2_sections: winterAdventures.map((adventure) => {
-      const season = seasonForWinterAdventure(adventure.title) || adventure.season || ''
+      const title = publicWinterSnowmobileTitle(adventure)
+      const description = publicWinterSnowmobileDescription(adventure)
+      const season = seasonForWinterAdventure(title) || adventure.season || ''
       const bits = [
-        adventure.description,
+        description,
         [season].filter(Boolean).join(' · '),
-        /snowshoe/i.test(adventure.title)
+        /snowshoe/i.test(title)
           ? 'Half-day snowshoe: $500. Groups 1–12. All gear included. Snowshoeing is guided in-house.'
-          : /snowmobile|atv|snowbike/i.test(adventure.title)
-            ? 'Horseback, ATV, and snowmobile trips go through partner local outfitters. Groups 1–12. Transport: Aspen Alpenglow Limousine.'
-            : /hunt|elk|deer|waterfowl|cast and blast/i.test(adventure.title)
-              ? 'Hunting trips on this page start at $250 per person. Groups 1–12. All gear included. Transport: Aspen Alpenglow Limousine.'
-              : 'Groups 1–12. All gear included. Transport: Aspen Alpenglow Limousine.',
+          : /snowmobile/i.test(title)
+            ? 'Snowmobile tours run through a local partner outfitter. Groups 1–12. Transport: Aspen Alpenglow Limousine.'
+            : /atv/i.test(title)
+              ? 'ATV trips go through a local partner outfitter. Groups 1–12. Transport: Aspen Alpenglow Limousine.'
+            : 'Groups 1–12. All gear included. Transport: Aspen Alpenglow Limousine.',
       ].filter(Boolean)
       const imageSrc = (adventure.image_url || '').trim()
       return {
-        title: adventure.title,
+        title,
         content: bits.join('\n\n'),
         image: imageSrc || undefined,
-        imageAlt: `${adventure.title} — guided winter adventure near Aspen, Colorado with Rich Valley Adventures`,
+        imageAlt: `${title} — guided winter adventure near Aspen, Colorado with Rich Valley Adventures`,
       }
     }),
     cta_text: 'Plan Your Winter Adventure',
