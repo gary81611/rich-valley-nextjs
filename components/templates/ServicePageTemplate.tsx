@@ -59,47 +59,61 @@ export default function ServicePageTemplate({
     <div className={rva ? 'font-inter text-rva-forest' : 'font-inter text-alp-navy'}>
       {/* Hero. RVA photo heroes share one height. Portraits letterbox; AAL markup stays. */}
       {rva && heroSplit && heroImage ? (
-        <section className="@container flex w-full flex-col-reverse bg-rva-forest text-rva-cream lg:flex-row lg:items-center">
-          {/* Copy: below photo on mobile; left panel at lg+ with scrollbar-safe rail padding (100cqw, not 100vw) */}
-          <div className="flex min-w-0 flex-1 flex-col justify-center p-6 text-left lg:py-12 lg:pr-10 lg:pl-[max(1.5rem,calc((100cqw-80rem)/2+1.5rem))] xl:pr-14">
-            <div className="w-full max-w-[520px]">
-              <h1 className="font-playfair font-semibold mb-2 leading-[1.1] text-3xl lg:mb-4 lg:text-3xl xl:text-4xl 2xl:text-5xl">
-                {title}
-              </h1>
-              {content.hero_subtitle && (
-                <p className="text-base opacity-90 mt-1 lg:mt-2 lg:text-lg xl:text-xl">{content.hero_subtitle}</p>
-              )}
-              <div className="mt-4 flex flex-wrap gap-3 lg:mt-8">
-                <RvaButton href={bookingHref || '/contact'} size="lg" tone="on-dark">
-                  {bookingLabel || RVA_BOOKING_LABEL}
-                </RvaButton>
-                <RvaButton href={`tel:${phone.replace(/\D/g, '')}`} variant="secondary" size="lg" tone="on-dark">
-                  {RVA_PHONE_LABEL}
-                </RvaButton>
+        <section className="relative w-full bg-rva-forest text-rva-cream">
+          <div className="flex flex-col-reverse lg:block">
+            {/* Copy rail: same max-w-7xl mx-auto px-6 as RVANav so H1 aligns with the logo */}
+            <div className="relative z-10 w-full pt-3 pb-4 text-left lg:absolute lg:inset-0 lg:flex lg:items-center lg:py-12">
+              <div className="mx-auto w-full max-w-7xl px-6">
+                <div
+                  className={
+                    portraitHero
+                      ? 'w-full max-w-[520px]'
+                      : 'w-full max-w-[min(520px,calc(100%-min(60%,960px)-0.75rem))]'
+                  }
+                >
+                  <h1 className="font-playfair font-semibold mb-1 leading-[1.1] text-3xl lg:mb-4 lg:text-3xl xl:text-4xl 2xl:text-5xl">
+                    {title}
+                  </h1>
+                  {content.hero_subtitle ? (
+                    <p className="text-sm opacity-90 mt-1 lg:mt-2 lg:text-lg xl:text-xl">{content.hero_subtitle}</p>
+                  ) : null}
+                  <div className="mt-3 flex flex-wrap gap-3 lg:mt-8">
+                    <RvaButton href={bookingHref || '/contact'} size="lg" tone="on-dark">
+                      {bookingLabel || RVA_BOOKING_LABEL}
+                    </RvaButton>
+                    <RvaButton href={`tel:${phone.replace(/\D/g, '')}`} variant="secondary" size="lg" tone="on-dark">
+                      {RVA_PHONE_LABEL}
+                    </RvaButton>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          {/* Photo: first on mobile; flush right at lg+. Landscape 4:3 or portrait 3:4 (ranch), never stretched by copy. */}
-          <div
-            className={
-              portraitHero
-                ? 'relative mx-auto aspect-[3/4] w-full max-w-[min(100%,calc(70vh*3/4))] shrink-0 bg-rva-forest-dark lg:mx-0 lg:ml-auto lg:max-w-none lg:w-[min(40%,540px)] lg:max-h-[720px] lg:self-start'
-                : 'relative aspect-[4/3] w-full shrink-0 bg-rva-forest-dark lg:ml-auto lg:w-[60%] lg:max-w-[960px] lg:max-h-[720px] lg:self-start'
-            }
-          >
-            <Image
-              src={heroImage}
-              alt={heroImageAlt || title}
-              fill
-              priority
-              unoptimized
-              className="object-contain"
-              sizes={
+            {/* Photo: full-width 4:3 cover below lg (ranch); lg+ flush-right 3:4 contain (ranch) or 4:3 contain (fly-fishing) */}
+            <div
+              className={
                 portraitHero
-                  ? '(min-width: 1024px) min(40vw, 540px), 100vw'
-                  : '(min-width: 1024px) min(60vw, 960px), 100vw'
+                  ? 'relative aspect-[4/3] w-full shrink-0 bg-rva-forest-dark lg:aspect-[3/4] lg:ml-auto lg:w-[min(40%,540px)] lg:max-h-[720px]'
+                  : 'relative aspect-[4/3] w-full shrink-0 bg-rva-forest-dark lg:ml-auto lg:w-[60%] lg:max-w-[960px] lg:max-h-[720px]'
               }
-            />
+            >
+              <Image
+                src={heroImage}
+                alt={heroImageAlt || title}
+                fill
+                priority
+                unoptimized
+                className={
+                  portraitHero
+                    ? 'object-cover object-[50%_60%] lg:object-contain lg:object-center'
+                    : 'object-contain'
+                }
+                sizes={
+                  portraitHero
+                    ? '(min-width: 1024px) min(40vw, 540px), 100vw'
+                    : '(min-width: 1024px) min(60vw, 960px), 100vw'
+                }
+              />
+            </div>
           </div>
         </section>
       ) : (

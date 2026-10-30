@@ -26,7 +26,7 @@ const RANCH_ANSWER = [
 
 export const privateRanchFishingServiceContent: ServiceContent = {
   hero_title: privateRanchFishingPageTitle,
-  hero_subtitle: 'Private ranch fly fishing at Spring Creek Ranch, Carbondale',
+  hero_subtitle: '',
   lead: {
     heading: 'What is private ranch fishing at Spring Creek Ranch?',
     paragraphs: RANCH_ANSWER,
