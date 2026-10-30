@@ -299,7 +299,7 @@ export default function AlpenglowHomeClient() {
             </p>
           </div>
           {services.length > 0 && (
-          <div className="grid md:grid-cols-2 gap-8 md:[&>*:last-child:nth-child(odd)]:justify-self-center md:[&>*:last-child:nth-child(odd)]:w-[calc(50%-1rem)]">
+          <div className="grid md:grid-cols-2 gap-8">
             {services.map((service, i) => (
               <ScrollReveal key={service.title} delay={i * 100}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 border border-alp-pearl-dark h-full">
@@ -358,7 +358,7 @@ export default function AlpenglowHomeClient() {
             <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-4">Service Areas</h2>
             <p className="text-alp-slate text-xl max-w-2xl mx-auto">From Aspen to Vail and everywhere in between.</p>
           </ScrollReveal>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:max-lg:[&>*:last-child:nth-child(odd)]:justify-self-center md:max-lg:[&>*:last-child:nth-child(odd)]:w-[calc(50%-0.75rem)]">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {serviceAreas.map((area, i) => (
               <ScrollReveal key={area.name} delay={i * 80}>
                 <div className="bg-white rounded-xl p-6 border border-alp-pearl-dark hover:border-alp-gold/40 hover:shadow-md transition-all">
