@@ -37,9 +37,9 @@ export const FLY_FISHING_PUBLIC_DESCRIPTION =
 
 export const TRAIL_HIKING_IMAGE = '/images/adventures/hiking.png'
 export const TRAIL_HIKING_IMAGE_ALT = 'Trail hiking'
-/** Live Trail Hiking row: duration, difficulty, and description. No picnic line; /hiking does not say that. */
+/** Live Trail Hiking row description. Duration/difficulty chips stay off cards; Kit confirmed half-day hike $600. */
 export const TRAIL_HIKING_PUBLIC_DESCRIPTION =
-  'Discover hidden waterfalls, wildflower meadows, and panoramic summit views with guides who bring the ecology and history of the Rockies to life. 3–6 Hours. Moderate.'
+  'Discover hidden waterfalls, wildflower meadows, and panoramic summit views with guides who bring the ecology and history of the Rockies to life.'
 
 export const PADDLE_PHOTO = '/images/adventures/paddle-boarding.jpg'
 export const PADDLE_PHOTO_ALT = 'Four people paddleboarding on a river'
@@ -163,7 +163,8 @@ export function adventurePublicDescription(row: {
     return 'A guided scenic and wildlife tour through the Aspen area.'
   }
   if (slug === 'horseback-riding') {
-    return 'Rides go through a local partner outfitter.'
+    // Whole-card display copy (DB description unused). Avoid repeating "Horseback"; Kit confirmed $600.
+    return 'Rides go through a local partner outfitter. $600.'
   }
   if (/snowmobile|atv/i.test(row.name)) {
     return `${row.description} ${RVA_TRIP_OWNERSHIP}`

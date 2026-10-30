@@ -16,7 +16,7 @@ export const RVA_RANCH_PRICE = 'Private ranch: $800 per adult and $250 per child
 export const RVA_HIKE_PRICE = 'Half-day hike: $600'
 export const RVA_SNOWSHOE_PRICE = 'Half-day snowshoe: $500'
 export const RVA_CAMPING_PRICE = 'Overnight camping: $1,500'
-export const RVA_HORSEBACK_PRICE = 'Horseback: $600'
+export const RVA_HORSEBACK_PRICE = 'Horseback riding: $600'
 export const RVA_SCENIC_PRICE = 'Half-day scenic and wildlife tour: $750'
 export const RVA_RAFTING_PRICE = 'Scenic river rafting with picnic: $1,200'
 
