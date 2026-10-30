@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { scrubUnconfirmedWinterList } from '@/lib/rva-unconfirmed-winter'
 
 export const dynamic = 'force-dynamic'
 
@@ -25,7 +26,7 @@ export default async function LocationsPage() {
     tagline: loc.tagline,
     description: loc.description,
     driveTime: loc.drive_time,
-    activities: loc.activities || [],
+    activities: scrubUnconfirmedWinterList(loc.activities || []),
   }))
 
   return (

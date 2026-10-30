@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import RvaButton from '@/components/rva/Button'
-import { isUnconfirmedWinterClaim } from '@/lib/rva-unconfirmed-winter'
+import { isUnconfirmedWinterClaim, scrubUnconfirmedWinterList } from '@/lib/rva-unconfirmed-winter'
 
 /** Row shape from `locations` table — used by /locations/[slug] and /service-areas/[slug] fallback. */
 export type LocationDetailRow = {
@@ -24,8 +24,8 @@ export default function LocationDetailView({ loc, backLink }: Props) {
     (f) => !isUnconfirmedWinterClaim(`${f.q} ${f.a}`)
   )
   const rivers: string[] = loc.rivers || []
-  const activities: string[] = (loc.activities || []).filter((a) => !isUnconfirmedWinterClaim(a))
-  const highlights: string[] = loc.highlights || []
+  const activities: string[] = scrubUnconfirmedWinterList(loc.activities || [])
+  const highlights: string[] = scrubUnconfirmedWinterList(loc.highlights || [])
   const driveTime: string = loc.drive_time || ''
 
   return (
@@ -66,14 +66,18 @@ export default function LocationDetailView({ loc, backLink }: Props) {
                 </li>
               ))}
             </ul>
-            <h3 className="font-semibold text-rva-forest-dark mt-6 mb-2 text-sm">Highlights</h3>
-            <ul className="space-y-1">
-              {highlights.map((h) => (
-                <li key={h} className="text-xs text-rva-forest/80">
-                  • {h}
-                </li>
-              ))}
-            </ul>
+            {highlights.length > 0 && (
+              <>
+                <h3 className="font-semibold text-rva-forest-dark mt-6 mb-2 text-sm">Highlights</h3>
+                <ul className="space-y-1">
+                  {highlights.map((h) => (
+                    <li key={h} className="text-xs text-rva-forest/80">
+                      • {h}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </div>
         </div>
 
