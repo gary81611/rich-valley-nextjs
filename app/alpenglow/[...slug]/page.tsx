@@ -292,7 +292,7 @@ export default async function CmsPage({ params }: Props) {
 
   return (
     <>
-      <div className="h-[86px]" />
+      <div className="h-[var(--aal-header,72px)]" aria-hidden="true" />
       {jsonLdSchemas && jsonLdSchemas.map((schema, i) => (
         <script
           key={i}
