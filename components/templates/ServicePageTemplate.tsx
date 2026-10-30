@@ -60,40 +60,33 @@ export default function ServicePageTemplate({
       {/* Hero. RVA photo heroes share one height. Portraits letterbox; AAL markup stays. */}
       {rva && heroSplit && heroImage ? (
         <section className="relative w-full bg-rva-forest text-rva-cream">
-          <div className="flex flex-col-reverse lg:block">
-            {/* Copy rail: same max-w-7xl mx-auto px-6 as RVANav so H1 aligns with the logo */}
-            <div className="relative z-10 w-full pt-2 pb-3 text-left lg:absolute lg:inset-0 lg:flex lg:items-center lg:py-12">
-              <div className="mx-auto w-full max-w-7xl px-6">
-                <div
-                  className={
-                    portraitHero
-                      ? 'w-full max-w-[520px]'
-                      : 'w-full lg:max-w-[min(520px,calc(100%-min(60%,960px)-0.75rem))]'
-                  }
-                >
-                  <h1 className="font-playfair font-semibold mb-1 leading-[1.1] text-[1.65rem] lg:mb-4 lg:text-3xl xl:text-4xl 2xl:text-5xl">
-                    {title}
-                  </h1>
-                  {content.hero_subtitle ? (
-                    <p className="text-sm leading-snug opacity-90 mt-0.5 lg:mt-2 lg:text-lg lg:leading-normal xl:text-xl">{content.hero_subtitle}</p>
-                  ) : null}
-                  <div className="mt-2.5 flex flex-wrap gap-3 lg:mt-8">
-                    <RvaButton href={bookingHref || '/contact'} size="md" tone="on-dark" className="whitespace-nowrap lg:min-h-14 lg:px-8">
-                      {bookingLabel || RVA_BOOKING_LABEL}
-                    </RvaButton>
-                    <RvaButton href={`tel:${phone.replace(/\D/g, '')}`} variant="secondary" size="md" tone="on-dark" className="whitespace-nowrap lg:min-h-14 lg:px-8">
-                      {RVA_PHONE_LABEL}
-                    </RvaButton>
-                  </div>
+          {/* Mobile: col-reverse. lg+: real flex row on the section (not inside max-w-7xl). */}
+          <div className="flex flex-col-reverse lg:flex-row lg:items-center">
+            {/* Copy: mobile px-6; lg pl matches logo rail, fixed pr-16 (64px) gap before photo */}
+            <div className="relative z-10 w-full px-6 pt-2 pb-3 text-left lg:flex-1 lg:min-w-0 lg:py-12 lg:pl-[max(1.5rem,calc((100%-80rem)/2+1.5rem))] lg:pr-16">
+              <div className="w-full max-w-[520px]">
+                <h1 className="font-playfair font-semibold mb-1 leading-[1.1] text-[1.65rem] lg:mb-4 lg:text-3xl xl:text-4xl 2xl:text-5xl">
+                  {title}
+                </h1>
+                {content.hero_subtitle ? (
+                  <p className="text-sm leading-snug opacity-90 mt-0.5 lg:mt-2 lg:text-lg lg:leading-normal xl:text-xl">{content.hero_subtitle}</p>
+                ) : null}
+                <div className="mt-2.5 flex flex-wrap gap-3 lg:mt-8">
+                  <RvaButton href={bookingHref || '/contact'} size="md" tone="on-dark" className="whitespace-nowrap lg:min-h-14 lg:px-8">
+                    {bookingLabel || RVA_BOOKING_LABEL}
+                  </RvaButton>
+                  <RvaButton href={`tel:${phone.replace(/\D/g, '')}`} variant="secondary" size="md" tone="on-dark" className="whitespace-nowrap lg:min-h-14 lg:px-8">
+                    {RVA_PHONE_LABEL}
+                  </RvaButton>
                 </div>
               </div>
             </div>
-            {/* Photo: ranch full-bleed 4:3 cover below lg / 3:4 contain lg+; fly-fishing 3:2 below lg / flush-right contain lg+ */}
+            {/* Photo: full-bleed cover below lg; lg shrink-0 flush-right */}
             <div
               className={
                 portraitHero
-                  ? 'relative aspect-[4/3] w-full shrink-0 bg-rva-forest-dark lg:aspect-[3/4] lg:ml-auto lg:w-[min(40%,540px)] lg:max-h-[720px]'
-                  : 'relative aspect-[3/2] w-full shrink-0 bg-rva-forest-dark lg:aspect-[4/3] lg:ml-auto lg:w-[60%] lg:max-w-[960px] lg:max-h-[720px]'
+                  ? 'relative aspect-[4/3] w-full shrink-0 bg-rva-forest-dark lg:aspect-[3/4] lg:w-[min(40%,540px)] lg:max-h-[720px]'
+                  : 'relative aspect-[3/2] w-full shrink-0 bg-rva-forest-dark lg:aspect-[4/3] lg:w-[60%] lg:max-w-[960px] lg:max-h-[720px]'
               }
             >
               <Image
