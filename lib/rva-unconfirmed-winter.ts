@@ -38,7 +38,7 @@ export function scrubUnconfirmedWinterText(text: string): string {
     /snowshoeing\s*,\s*Chauffeur Guided Tours and Excursions offer/gi,
     'snowshoeing offers'
   )
-  // "guided ice fishing trips" leftovers after ice-fish phrase already removed
+  // leftover "guided … trips" scaffolding after phrase removal
   s = s.replace(/In winter,\s*we offer guided\s+trips\./gi, '')
   s = s.replace(/we offer guided\s+trips\./gi, '')
 
