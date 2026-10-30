@@ -68,7 +68,7 @@ export default function ServicePageTemplate({
                   className={
                     portraitHero
                       ? 'w-full max-w-[520px]'
-                      : 'w-full max-w-[min(520px,calc(100%-min(60%,960px)-0.75rem))]'
+                      : 'w-full lg:max-w-[min(520px,calc(100%-min(60%,960px)-0.75rem))]'
                   }
                 >
                   <h1 className="font-playfair font-semibold mb-1 leading-[1.1] text-[1.65rem] lg:mb-4 lg:text-3xl xl:text-4xl 2xl:text-5xl">
@@ -78,10 +78,10 @@ export default function ServicePageTemplate({
                     <p className="text-sm leading-snug opacity-90 mt-0.5 lg:mt-2 lg:text-lg lg:leading-normal xl:text-xl">{content.hero_subtitle}</p>
                   ) : null}
                   <div className="mt-2.5 flex flex-wrap gap-3 lg:mt-8">
-                    <RvaButton href={bookingHref || '/contact'} size="md" tone="on-dark" className="lg:min-h-14 lg:px-8">
+                    <RvaButton href={bookingHref || '/contact'} size="md" tone="on-dark" className="whitespace-nowrap lg:min-h-14 lg:px-8">
                       {bookingLabel || RVA_BOOKING_LABEL}
                     </RvaButton>
-                    <RvaButton href={`tel:${phone.replace(/\D/g, '')}`} variant="secondary" size="md" tone="on-dark" className="lg:min-h-14 lg:px-8">
+                    <RvaButton href={`tel:${phone.replace(/\D/g, '')}`} variant="secondary" size="md" tone="on-dark" className="whitespace-nowrap lg:min-h-14 lg:px-8">
                       {RVA_PHONE_LABEL}
                     </RvaButton>
                   </div>
@@ -93,7 +93,7 @@ export default function ServicePageTemplate({
               className={
                 portraitHero
                   ? 'relative aspect-[4/3] w-full shrink-0 bg-rva-forest-dark lg:aspect-[3/4] lg:ml-auto lg:w-[min(40%,540px)] lg:max-h-[720px]'
-                  : 'relative aspect-[3/2] w-full shrink-0 bg-rva-forest-dark lg:aspect-auto lg:ml-auto lg:w-[60%] lg:max-w-[960px] lg:max-h-[720px]'
+                  : 'relative aspect-[3/2] w-full shrink-0 bg-rva-forest-dark lg:aspect-[4/3] lg:ml-auto lg:w-[60%] lg:max-w-[960px] lg:max-h-[720px]'
               }
             >
               <Image
@@ -105,7 +105,7 @@ export default function ServicePageTemplate({
                 className={
                   portraitHero
                     ? 'object-cover object-[50%_60%] lg:object-contain lg:object-center'
-                    : 'object-contain'
+                    : 'object-cover object-center lg:object-contain'
                 }
                 sizes={
                   portraitHero
