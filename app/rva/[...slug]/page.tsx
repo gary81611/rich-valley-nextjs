@@ -100,11 +100,11 @@ function applyRvaConfirmedFacts(page: CmsPage | null): CmsPage | null {
   if (page.slug === 'paddle-boarding' && page.template_type === 'service') {
     const content = { ...(page.content as ServiceContent) }
     content.hero_title = PADDLE_PAGE_TITLE
-    // Split hero matches ranch: H1 + CTAs only. Equipment sentence stays on the page in the body.
+    // Split hero matches ranch: H1 + CTAs only. Intro rental copy first; equipment sentence second in the body.
     content.hero_subtitle = ''
-    content.intro = `${PADDLE_SUBTITLE}
+    content.intro = `${PADDLE_INTRO}
 
-${PADDLE_INTRO}`
+${PADDLE_SUBTITLE}`
     content.cta_note = PADDLE_DELIVERY
     content.h2_sections = (content.h2_sections || [])
       .filter((section) => !isPaddleLessonHeading(section.title))
