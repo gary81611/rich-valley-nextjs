@@ -90,6 +90,14 @@ function applyAalConfirmedFacts(page: CmsPage | null): CmsPage | null {
     if (!content.intro?.includes('Buena Vista')) {
       content.intro = `${content.intro || ''}\n\n${note}`.trim()
     }
+    const aseHeading = 'Aspen Airport (ASE) private car service'
+    const aseBody =
+      'Aspen/Pitkin County Airport (ASE) private car service starts at $210 one way in an SUV on our pricing page. Child seats are free. No shared rides. CO PUC permit LL-04725.'
+    const sections = [...(content.h2_sections || [])]
+    if (!sections.some((s) => /Aspen Airport \(ASE\)/i.test(s.title))) {
+      sections.unshift({ title: aseHeading, content: aseBody, link: { href: '/pricing', label: 'Published ASE rates' } })
+    }
+    content.h2_sections = sections
     return applyFleetCapacityCopy({
       ...page,
       meta_description: page.meta_description?.includes('Buena Vista')
@@ -215,18 +223,6 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
           closes: '23:59',
         },
       }
-      serviceSchema.offers = {
-        '@type': 'Offer',
-        priceCurrency: 'USD',
-        description:
-          'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way SUV rates each way: Eagle and Rifle $720, Denver $1,375, Grand Junction $950. The 13-passenger Ford Transit is $1,200 from Eagle or Rifle and $1,600 from Denver. Holiday pricing may change seasonally. Flight diversions to Denver or Grand Junction are handled with 2 hours\' notice and no Aspen cancellation penalty.',
-        availability: 'https://schema.org/InStock',
-        seller: {
-          '@type': 'Organization',
-          name: 'Aspen Alpenglow Limousine',
-          url: baseUrl,
-        },
-      }
     }
 
     schemas.push(serviceSchema)
@@ -251,14 +247,6 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
         addressCountry: 'US',
       },
       areaServed: { '@type': 'Place', name: content.area_description },
-      makesOffer: {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: page.title,
-          url: pageUrl,
-        },
-      },
     })
   }
 
@@ -304,7 +292,7 @@ export default async function CmsPage({ params }: Props) {
 
   return (
     <>
-      <div className="h-[86px]" />
+      <div className="h-[var(--aal-header,72px)]" aria-hidden="true" />
       {jsonLdSchemas && jsonLdSchemas.map((schema, i) => (
         <script
           key={i}
@@ -317,12 +305,15 @@ export default async function CmsPage({ params }: Props) {
         <ServicePageTemplate
           site="alpenglow"
           title={page.title}
+          emitFaqSchema={false}
           content={page.content as ServiceContent}
           relatedLinks={
             slugStr === 'airport-transfers'
               ? [
                   { href: '/airport-transfers/eagle-ege-to-aspen', label: 'Eagle Airport (EGE) in Gypsum to Aspen — SUV $720' },
+                  { href: '/airport-transfers/aspen-to-eagle-ege', label: 'Aspen to Eagle Airport (EGE) — SUV $720' },
                   { href: '/airport-transfers/denver-den-to-aspen', label: 'Denver Airport (DEN) to Aspen private car — $1,375' },
+                  { href: '/airport-transfers/aspen-to-denver-den', label: 'Aspen to Denver Airport (DEN) — $1,375' },
                   { href: '/aspen-airport-closure-2027', label: 'Aspen Airport closure in 2027' },
                   { href: '/service-areas/snowmass-village', label: 'Snowmass Village pickups & Aspen transfers' },
                   { href: '/service-areas/eagle-vail', label: 'Aspen ↔ Vail / Beaver Creek private car service' },

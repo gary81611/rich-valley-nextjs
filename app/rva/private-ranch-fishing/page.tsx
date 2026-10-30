@@ -138,6 +138,7 @@ export default function PrivateRanchFishingPage() {
       <ServicePageTemplate
         site="rva"
         title={privateRanchFishingPageTitle}
+          emitFaqSchema={false}
         content={content}
         heroImage={heroImage}
         heroImageAlt={seoAlt({

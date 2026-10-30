@@ -423,6 +423,7 @@ export default async function CmsPage({ params }: Props) {
         <ServicePageTemplate
           site="rva"
           title={page.title}
+          emitFaqSchema={false}
           content={page.content as ServiceContent}
           relatedLinks={rvaServicePageRelatedBlogLinks(slugStr)}
           heroImage={slugStr === 'paddle-boarding' ? PADDLE_PHOTO : undefined}

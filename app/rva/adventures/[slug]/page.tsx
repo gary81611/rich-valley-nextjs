@@ -89,29 +89,43 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const isRental = adventure.id === PADDLE_RENTAL_ID || adventureSlug === 'paddle-board-rentals'
   const visual = adventurePublicImage(adventure)
   const publicDescription = adventurePublicDescription(adventure)
+  const scenic = isScenicTourSlug(slug) || isScenicTourSlug(adventureSlug)
+  const metaDescription = scenic
+    ? 'Chauffeur Guided Scenic and Wildlife Tours in Aspen and the Roaring Fork Valley. Call 970-456-3666.'
+    : publicDescription
   return {
     title: `${displayName} | Rich Valley Adventures | Aspen, CO`,
-    description: publicDescription,
+    description: metaDescription,
     alternates: {
       canonical: `https://www.richvalleyadventures.com/adventures/${adventureSlug}`,
     },
     openGraph: {
       title: `${displayName} — Guided Adventure in Aspen | Rich Valley Adventures`,
-      description: publicDescription,
+      description: metaDescription,
       type: 'website',
       url: `https://www.richvalleyadventures.com/adventures/${adventureSlug}`,
-      images: [
-        {
-          url: isRental ? PADDLE_OG_IMAGE : visual.src,
-          width: 1200,
-          height: 630,
-          alt:
-            visual.alt ||
-            (isRental
-              ? PADDLE_PHOTO_ALT
-              : `${displayName} with Rich Valley Adventures in Aspen, Colorado`),
-        },
-      ],
+      // Scenic source is 503×725 — do not crop; use site default og:image (layout logo).
+      images: scenic
+        ? [
+            {
+              url: 'https://www.richvalleyadventures.com/images/logos/rva-logo.png',
+              width: 441,
+              height: 212,
+              alt: 'Rich Valley Adventures logo',
+            },
+          ]
+        : [
+            {
+              url: isRental ? PADDLE_OG_IMAGE : visual.src,
+              width: 1200,
+              height: 630,
+              alt:
+                visual.alt ||
+                (isRental
+                  ? PADDLE_PHOTO_ALT
+                  : `${displayName} with Rich Valley Adventures in Aspen, Colorado`),
+            },
+          ],
     },
   }
 }
@@ -140,27 +154,68 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
 
   const scenic = isScenicTourSlug(slug) || isScenicTourSlug(adventureSlug)
   const priceNote = adventurePublicFromText(adventure)
+  const seasonValue = adventure.season
+    ? adventure.season === 'year-round'
+      ? 'Year-round'
+      : adventure.season
+    : scenic
+      ? 'Year-round'
+      : null
   const facts = [
-    priceNote ? { label: 'Price', value: priceNote } : null,
-    adventure.duration ? { label: 'Duration', value: adventure.duration } : null,
+    scenic
+      ? { label: 'Duration', value: 'Half Day / Full Day' }
+      : adventure.duration
+        ? { label: 'Duration', value: adventure.duration }
+        : null,
+    scenic
+      ? { label: 'Half-day scenic and wildlife tour', value: '$750' }
+      : priceNote
+        ? { label: 'Price', value: priceNote }
+        : null,
     adventure.difficulty ? { label: 'Level', value: adventure.difficulty } : null,
     groupSize ? { label: 'Group size', value: groupSize } : null,
-    adventure.season ? { label: 'Season', value: adventure.season === 'year-round' ? 'Year-round' : adventure.season } : null,
+    seasonValue ? { label: 'Season', value: seasonValue } : null,
     adventure.best_for ? { label: 'Best for', value: adventure.best_for } : null,
   ].filter((fact): fact is { label: string; value: string } => fact !== null)
 
   const content: ServiceContent = {
     hero_title: displayName,
     hero_subtitle: scenic ? '' : publicDescription,
+    // Keep #15 scenic intro (publicDescription) after rebase onto main.
     intro: scenic
       ? publicDescription
       : /horse|snowmobile|atv|scenic|raft/i.test(`${adventureSlug} ${displayName}`)
         ? `${publicDescription}\n\n${RVA_TRIP_OWNERSHIP}`
         : longDescription,
-    lead: facts.length > 0 ? { paragraphs: [], facts } : undefined,
+    lead: facts.length > 0
+      ? {
+          paragraphs: [],
+          facts,
+          ...(scenic
+            ? {
+                links: [
+                  { href: '/rafting', label: 'Scenic river rafting with picnic' },
+                  { href: '/fly-fishing', label: 'Aspen fly fishing' },
+                ],
+              }
+            : {}),
+        }
+      : undefined,
     features: whatsIncluded.filter(Boolean).map((item) => ({ title: item, description: '' })),
     h2_sections:
       highlights.length > 0 ? [{ title: 'Highlights', content: highlights.join('\n\n') }] : undefined,
+    faqs: scenic
+      ? [
+          {
+            question: 'How long are scenic and wildlife tours?',
+            answer: 'Tours run Half Day / Full Day.',
+          },
+          {
+            question: 'How much is a half-day scenic and wildlife tour?',
+            answer: 'Half-day scenic and wildlife tour: $750.',
+          },
+        ]
+      : undefined,
     cta_text: 'Check availability',
   }
 

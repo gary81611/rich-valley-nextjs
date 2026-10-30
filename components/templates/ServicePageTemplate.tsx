@@ -27,6 +27,8 @@ interface Props {
   /** Booking form path, including a service query when the form can preselect it. */
   bookingHref?: string
   bookingLabel?: string
+  /** When true (default), emit FAQPage JSON-LD from content.faqs. Set false if the page already emits FAQPage. */
+  emitFaqSchema?: boolean
 }
 
 const isRva = (site: SiteId) => site === 'rva'
@@ -44,8 +46,21 @@ export default function ServicePageTemplate({
   heroHeightClass,
   bookingHref,
   bookingLabel,
+  emitFaqSchema = true,
 }: Props) {
   const rva = isRva(site)
+  const faqSchema =
+    emitFaqSchema && content.faqs && content.faqs.length > 0
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: content.faqs.map((faq) => ({
+            '@type': 'Question',
+            name: faq.question,
+            acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+          })),
+        }
+      : null
   const phone = content.cta_phone || (rva ? '(970) 456-3666' : '(970) 456-3666')
   const linkClass = rva
     ? 'text-rva-copper-700 font-semibold hover:text-rva-forest'
@@ -57,6 +72,12 @@ export default function ServicePageTemplate({
 
   return (
     <div className={rva ? 'font-inter text-rva-forest' : 'font-inter text-alp-navy'}>
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       {/* Hero. RVA photo heroes share one height. Portraits letterbox; AAL markup stays. */}
       {rva && heroSplit && heroImage ? (
         <section className="relative w-full bg-rva-forest text-rva-cream">
@@ -132,7 +153,9 @@ export default function ServicePageTemplate({
         className={
           rva
             ? `text-center ${rvaHeroClass}`
-            : 'aal-hero-photo relative overflow-hidden bg-alp-navy text-white'
+            : heroImage
+              ? 'aal-hero-photo relative overflow-hidden bg-alp-navy text-white'
+              : 'aal-hero-text relative bg-alp-navy text-white'
         }
       >
         {heroImage && (
@@ -154,7 +177,7 @@ export default function ServicePageTemplate({
             <div className={`absolute inset-0 ${portraitHero ? 'bg-gradient-to-b from-rva-forest-dark/35 via-transparent to-rva-forest-dark/75' : 'bg-gradient-to-b from-rva-forest-dark/55 via-rva-forest-dark/45 to-rva-forest-dark/80'}`} />
           </>
         )}
-        <div className={`max-w-7xl mx-auto w-full px-6 pb-10 ${heroImage ? 'relative z-10' : ''} ${rva ? 'max-w-3xl text-center' : 'text-left'}`}>
+        <div className={`max-w-7xl mx-auto w-full px-6 ${heroImage || rva ? 'pb-10' : ''} ${heroImage ? 'relative z-10' : ''} ${rva ? 'max-w-3xl text-center' : 'text-left'}`}>
           <h1 className={rva ? 'font-playfair font-semibold mb-4 leading-[1.1]' : 'font-playfair font-bold mb-4 leading-tight'}>{title}</h1>
           {content.hero_subtitle && (
             <p className="text-lg md:text-xl opacity-80 mt-2">{content.hero_subtitle}</p>

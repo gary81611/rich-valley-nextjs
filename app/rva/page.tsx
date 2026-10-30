@@ -32,6 +32,18 @@ export const metadata: Metadata = {
     description:
       'Guided fly fishing, hiking, and more in Aspen and the Roaring Fork Valley. Since 2012.',
     url: RVA_URL,
+    images: [
+      {
+        url: `${RVA_URL}/images/og/rva-home-alpine-lake-aspen.webp`,
+        width: 1200,
+        height: 630,
+        alt: 'Alpine lake below the peaks near Aspen in summer',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: [`${RVA_URL}/images/og/rva-home-alpine-lake-aspen.webp`],
   },
 }
 

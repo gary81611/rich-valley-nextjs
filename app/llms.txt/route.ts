@@ -91,7 +91,8 @@ Sitemap: https://www.richvalleyadventures.com/sitemap.xml
 - ASE closure: Sunday, April 4, 2027 at 11:00 p.m. through Friday, November 19, 2027 at 7:00 p.m. No commercial or general aviation operations. Existing terminal remains in use after reopening until the new terminal is completed (projected 2029). Source: https://www.aspenairport.com/closure/ (press release May 28, 2026). Check aspenairport.com for updates.
 - Cloud Nine Alpine Bistro is on Aspen Highlands.
 - Google Business review (leave a review): ${AAL_GOOGLE_REVIEW_URL}
-- Last updated: 2026-10-20
+- Colorado PUC permit: LL-04725
+- Last updated: 2026-10-29
 
 ## Canonical URLs (authoritative)
 https://aspenalpenglowlimousine.com/
@@ -104,6 +105,8 @@ https://aspenalpenglowlimousine.com/contact
 https://aspenalpenglowlimousine.com/airport-transfers
 https://aspenalpenglowlimousine.com/airport-transfers/eagle-ege-to-aspen
 https://aspenalpenglowlimousine.com/airport-transfers/denver-den-to-aspen
+https://aspenalpenglowlimousine.com/airport-transfers/aspen-to-eagle-ege
+https://aspenalpenglowlimousine.com/airport-transfers/aspen-to-denver-den
 https://aspenalpenglowlimousine.com/aspen-airport-closure-2027
 https://aspenalpenglowlimousine.com/corporate
 https://aspenalpenglowlimousine.com/weddings

@@ -245,7 +245,7 @@ export default function RVAHomeClient({
               ))}
             </div>
           </ScrollReveal>
-          <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+          <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch md:max-lg:[&>*:last-child:nth-child(odd)]:justify-self-center md:max-lg:[&>*:last-child:nth-child(odd)]:w-[calc(50%-0.75rem)]">
             {(activeSeason ? [] : FEATURED_TRIPS).map((trip) => (
               <AdventureCard
                 key={trip.href}
@@ -281,6 +281,13 @@ export default function RVAHomeClient({
               />
             ))}
           </div>
+          {!activeSeason && (
+            <p className="mt-8 text-center text-rva-forest text-lg">
+              <Link href="/rafting" className="text-rva-copper-700 font-semibold hover:underline">
+                Scenic river rafting with a picnic, $1,200
+              </Link>
+            </p>
+          )}
         </div>
       </section>
 

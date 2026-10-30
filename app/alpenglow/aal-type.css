@@ -3,6 +3,13 @@
  * (about 5.1:1 on pearl-dark #D8DCE3, 7:1 on white). #C9A84C stays on navy
  * (about 6.8:1 on #1B2338). Navy ink on gold fills is unchanged.
  */
+
+/* Fixed ALPNav height (inner h-[72px]; no border on the bar). Keep spacers/heroes in sync. */
+.aal-root {
+  --aal-header: 72px;
+}
+
+
 .aal-root .text-alp-gold {
   color: #6e5516;
 }
@@ -41,8 +48,8 @@
 .aal-hero-compact {
   box-sizing: border-box;
   text-align: left;
-  /* Fixed 72px bar. Do not add this offset on the home hero. */
-  padding-top: 72px;
+  /* Fixed ALPNav. Do not add this offset on the home hero. */
+  padding-top: var(--aal-header, 72px);
 }
 
 .aal-hero-photo {
@@ -56,6 +63,40 @@
   display: flex;
   align-items: center;
 }
+
+/*
+ * Photo-less navy heroes (no background image): size to content.
+ * Pair with the --aal-header spacer above so nav stays flush; do not use on
+ * .aal-hero-photo pages that have a real image, or on the home hero.
+ */
+.aal-hero-text {
+  box-sizing: border-box;
+  text-align: left;
+  height: auto;
+  min-height: 0;
+  display: block;
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+
+@media (min-width: 768px) {
+  .aal-hero-text {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}
+
+.aal-hero-text .text-center {
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.aal-hero-text h1 {
+  font-size: 2.25rem !important;
+  line-height: 1.15 !important;
+}
+
 
 @media (min-width: 768px) {
   .aal-hero-photo {
@@ -77,9 +118,9 @@
   line-height: 1.15 !important;
 }
 
-/* Fixed 72px bar at every width. scroll-padding cannot uncover content at y=0. */
+/* Fixed ALPNav at every width. scroll-padding cannot uncover content at y=0. */
 html:has(.aal-root) {
-  scroll-padding-top: 72px;
+  scroll-padding-top: var(--aal-header, 72px);
 }
 
 /* Body-copy links need a non-color cue. Pill buttons and gold fills stay plain. */
@@ -90,7 +131,8 @@ html:has(.aal-root) {
 
 @media (min-width: 768px) {
   .aal-hero-photo h1,
-  .aal-hero-compact h1 {
+  .aal-hero-compact h1,
+  .aal-hero-text h1 {
     font-size: 3rem !important;
   }
 }

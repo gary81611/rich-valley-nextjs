@@ -21,6 +21,18 @@ export const metadata: Metadata = {
       'Guided snowshoeing, cross-country skiing, ice fishing, and scenic winter tours in the Roaring Fork Valley.',
     type: 'website',
     url: 'https://www.richvalleyadventures.com/winter',
+    images: [
+      {
+        url: 'https://www.richvalleyadventures.com/images/og/rva-winter-snowmobiles-ranch-road.webp',
+        width: 1200,
+        height: 630,
+        alt: 'Snowmobiles on a snowy ranch road in the Roaring Fork Valley',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['https://www.richvalleyadventures.com/images/og/rva-winter-snowmobiles-ranch-road.webp'],
   },
 }
 

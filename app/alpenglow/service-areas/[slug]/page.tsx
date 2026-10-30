@@ -180,10 +180,11 @@ export default async function ServiceAreaDetailPage({ params }: { params: Promis
         <script key={`aal-sa-ldjson-${i}`} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       ))}
 
-      {/* Breadcrumb */}
-      <div className="bg-alp-navy-deep">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="flex text-sm text-alp-pearl/70">
+      <div className="h-[var(--aal-header,72px)]" aria-hidden="true" />
+      {/* Hero + breadcrumb (flush under ALPNav via --aal-header spacer) */}
+      <section className="aal-hero-text bg-alp-navy-deep text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left w-full">
+          <nav className="flex text-sm text-alp-pearl/70 mb-6">
             <Link href="/" className="hover:text-alp-gold transition-colors">
               Home
             </Link>
@@ -194,12 +195,6 @@ export default async function ServiceAreaDetailPage({ params }: { params: Promis
             <span className="mx-2">/</span>
             <span className="text-alp-gold">{area.name}</span>
           </nav>
-        </div>
-      </div>
-
-      {/* Hero */}
-      <section className="aal-hero-photo bg-alp-navy-deep text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left w-full pb-12">
           <h1 className="font-playfair font-bold mb-4">
             {area.name}
           </h1>

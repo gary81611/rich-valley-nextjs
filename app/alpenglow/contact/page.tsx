@@ -9,7 +9,7 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-alp-pearl font-inter">
       {/* Breadcrumb */}
-      <div className="bg-alp-navy-deep pt-[72px] scroll-mt-[72px]">
+      <div className="bg-alp-navy-deep pt-[var(--aal-header,72px)] scroll-mt-[var(--aal-header,72px)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex text-sm text-alp-pearl/70">
             <Link href="/" className="hover:text-alp-gold transition-colors">Home</Link>

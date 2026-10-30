@@ -46,6 +46,8 @@ const RVA_EXACT_ALIAS: Record<string, string> = {
   '/trail-hiking': '/hiking',
   '/scenic-escalade-tours': '/adventures/scenic-wildlife-tours',
   '/adventures/scenic-escalade-tours': '/adventures/scenic-wildlife-tours',
+  '/scenic-tours': '/adventures/scenic-wildlife-tours',
+  '/adventures/scenic-tours': '/adventures/scenic-wildlife-tours',
   '/adventures/rafting': '/rafting',
   '/horseback-riding': '/adventures/horseback-riding',
   '/hunting': '/winter',
@@ -152,7 +154,7 @@ export function resolveRvaLegacySingleHop(pathname: string, search: string): Rva
     return { kind: 'path', path: '/hiking' + (search || '') }
   }
 
-  if (p === '/scenic-escalade-tours') {
+  if (p === '/scenic-escalade-tours' || p === '/scenic-tours') {
     return { kind: 'path', path: '/adventures/scenic-wildlife-tours' + (search || '') }
   }
 
@@ -211,6 +213,7 @@ export function normalizeRvaLegacyPath(url: string): string {
     // Detail pages stay on /adventures/<slug>. Mapping to themselves skips the /<slug> fallback.
     'scenic-escalade-tours': '/adventures/scenic-wildlife-tours',
     'scenic-wildlife-tours': '/adventures/scenic-wildlife-tours',
+    'scenic-tours': '/adventures/scenic-wildlife-tours',
     rafting: '/rafting',
     'whitewater-rafting': '/rafting',
     'scenic-river-rafting': '/rafting',

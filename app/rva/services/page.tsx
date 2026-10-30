@@ -91,7 +91,7 @@ export default async function ServicesPage() {
           {adventures.length === 0 ? (
             <p className="text-center text-rva-forest">No adventures are listed yet. Call 970-456-3666 and we will help you plan.</p>
           ) : (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch sm:max-lg:[&>*:last-child:nth-child(odd)]:justify-self-center sm:max-lg:[&>*:last-child:nth-child(odd)]:w-[calc(50%-0.75rem)]">
               {adventures.map((adventure) => (
                 <AdventureCard
                   key={adventure.slug}
