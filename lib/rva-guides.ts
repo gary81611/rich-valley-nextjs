@@ -38,6 +38,14 @@ function toPublicGuide(row: PublicGuide): PublicGuide {
   }
 }
 
+/** Name-only + monogram shells (no title/photo/bio after scrub) — hide until Kit confirms. */
+function isEmptyGuideShell(g: PublicGuide): boolean {
+  const photo = (g.photo_url || '').trim()
+  const bio = (g.bio || '').trim()
+  const title = (g.title || '').trim()
+  return !photo && !bio && !title
+}
+
 /** Same guide rows as /guides. Empty photo_url stays empty — do not invent a portrait. */
 export async function getActiveGuides(): Promise<PublicGuide[]> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -50,7 +58,7 @@ export async function getActiveGuides(): Promise<PublicGuide[]> {
       .eq('is_active', true)
       .order('display_order', { ascending: true })
     if (error || !data) return []
-    return (data as PublicGuide[]).map(toPublicGuide)
+    return (data as PublicGuide[]).map(toPublicGuide).filter((g) => !isEmptyGuideShell(g))
   } catch {
     return []
   }
