@@ -164,7 +164,7 @@ export function adventurePublicDescription(row: {
   }
   if (slug === 'horseback-riding') {
     // Whole-card display copy (DB description unused). Avoid repeating "Horseback"; Kit confirmed $600.
-    return 'Rides go through a local partner outfitter. $600.'
+    return 'Rides go through a local partner outfitter.'
   }
   if (/snowmobile|atv/i.test(row.name)) {
     return `${row.description} ${RVA_TRIP_OWNERSHIP}`

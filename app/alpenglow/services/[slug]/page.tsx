@@ -134,7 +134,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
             <div className="space-y-6">
               <h3 className="font-playfair text-2xl font-bold text-alp-navy mb-4">Available Vehicles</h3>
               {AAL_VEHICLES.map((vehicle) => (
-                <VehicleCard key={vehicle.id} vehicle={vehicle} />
+                <VehicleCard key={vehicle.id} vehicle={vehicle} fillHeight={false} />
               ))}
             </div>
           </div>
