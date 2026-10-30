@@ -194,7 +194,7 @@ const localBusinessSchema = {
           '@type': 'SportsActivityLocation',
           name: 'Guided Trail Hiking — Aspen & Elk Mountains, CO',
           description:
-            'Guided hiking in the Elk Mountains and Roaring Fork Valley near Aspen, Colorado. Trail Hiking is 3–6 hours and moderate. The hiking page also lists easier walks and strenuous alpine days.',
+            'Guided hiking in the Elk Mountains and Roaring Fork Valley near Aspen, Colorado. A half-day hike is $600. The hiking page also lists easier walks and strenuous alpine days.',
         },
       },
       {

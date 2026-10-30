@@ -154,7 +154,7 @@ export function adventurePublicDescription(row: {
   description: string
 }): string {
   if (isFlyFishingListing(row)) return FLY_FISHING_PUBLIC_DESCRIPTION
-  if (isTrailHikingListing(row)) return `${TRAIL_HIKING_PUBLIC_DESCRIPTION} Half-day hike: $600.`
+  if (isTrailHikingListing(row)) return TRAIL_HIKING_PUBLIC_DESCRIPTION
   const slug = slugFromAdventureName(row.name)
   if (row.id === PADDLE_RENTAL_ID || slug === 'paddle-board-rentals') {
     return 'We rent High Society paddle boards, and boards can be delivered to you.'
@@ -163,7 +163,6 @@ export function adventurePublicDescription(row: {
     return 'A guided scenic and wildlife tour through the Aspen area.'
   }
   if (slug === 'horseback-riding') {
-    // Whole-card display copy (DB description unused). Avoid repeating "Horseback"; Kit confirmed $600.
     return 'Rides go through a local partner outfitter.'
   }
   if (/snowmobile|atv/i.test(row.name)) {
