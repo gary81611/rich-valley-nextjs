@@ -15,6 +15,8 @@ interface Props {
   heroImageAlt?: string
   /** CSS object-position for a portrait hero. Omitted pages stay at the default cover crop. */
   heroObjectPosition?: string
+  /** Responsive object-position classes (e.g. object-[25%_50%] sm:object-[40%_50%]). Wins over heroObjectPosition. */
+  heroObjectClassName?: string
   /** Overrides the shared RVA photo-hero height. AAL heroes ignore this. */
   heroHeightClass?: string
   /** Booking form path, including a service query when the form can preselect it. */
@@ -32,6 +34,7 @@ export default function ServicePageTemplate({
   heroImage,
   heroImageAlt,
   heroObjectPosition,
+  heroObjectClassName,
   heroHeightClass,
   bookingHref,
   bookingLabel,
@@ -64,8 +67,12 @@ export default function ServicePageTemplate({
               fill
               priority
               unoptimized
-              className={portraitHero ? 'object-contain' : 'object-cover'}
-              style={heroObjectPosition ? { objectPosition: heroObjectPosition } : undefined}
+              className={`${portraitHero ? 'object-contain' : 'object-cover'}${heroObjectClassName ? ` ${heroObjectClassName}` : ''}`}
+              style={
+                heroObjectPosition && !heroObjectClassName
+                  ? { objectPosition: heroObjectPosition }
+                  : undefined
+              }
               sizes="100vw"
             />
             <div className={`absolute inset-0 ${portraitHero ? 'bg-gradient-to-b from-rva-forest-dark/35 via-transparent to-rva-forest-dark/75' : 'bg-gradient-to-b from-rva-forest-dark/55 via-rva-forest-dark/45 to-rva-forest-dark/80'}`} />

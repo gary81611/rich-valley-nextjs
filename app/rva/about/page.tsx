@@ -76,8 +76,8 @@ export default async function AboutPage() {
       <section className="relative h-[70svh] md:h-[560px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src={RVA_ABOUT_GROUP_FLOAT_PHOTO.src}
-            alt={RVA_ABOUT_GROUP_FLOAT_PHOTO.alt}
+            src="/images/about/hero.jpg"
+            alt="Rich Valley Adventures — guided outdoor experiences in the Roaring Fork Valley since 2012"
             fill
             className="object-cover"
             priority
@@ -145,6 +145,17 @@ export default async function AboutPage() {
               <div className="absolute -bottom-6 -left-6 w-48 h-48 bg-rva-sage/10 rounded-full blur-3xl" />
             </div>
           </div>
+
+            {/* Kit trip photo — in-body group float (hero restored to original). */}
+            <div className="mt-16 relative rounded-2xl overflow-hidden shadow-xl aspect-[16/10] max-w-5xl mx-auto">
+              <Image
+                src={RVA_ABOUT_GROUP_FLOAT_PHOTO.src}
+                alt={RVA_ABOUT_GROUP_FLOAT_PHOTO.alt}
+                fill
+                className="object-cover"
+                unoptimized
+              />
+            </div>
         </div>
       </section>
 

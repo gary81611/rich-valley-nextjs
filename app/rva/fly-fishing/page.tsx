@@ -195,7 +195,7 @@ export default function FlyFishingPage() {
         title={flyFishingPageTitle}
         heroImage={RVA_FLY_FISHING_HERO_PHOTO.src}
         heroImageAlt={RVA_FLY_FISHING_HERO_PHOTO.alt}
-        heroObjectPosition="40% 50%"
+        heroObjectClassName="object-[25%_50%] sm:object-[40%_50%]"
         content={{
           ...content,
           intro: content.intro,
