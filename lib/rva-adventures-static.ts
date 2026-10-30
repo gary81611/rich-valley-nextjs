@@ -8,7 +8,7 @@
 import { RVA_ACTIVITIES } from '@/lib/rva-activities'
 import {
   FLY_FISHING_ID,
-  FLY_FISHING_IMAGE,
+  FLY_FISHING_CARD_IMAGE,
   FLY_FISHING_PUBLIC_DESCRIPTION,
   PADDLE_PHOTO,
   PADDLE_RENTAL_ID,
@@ -57,7 +57,7 @@ const ROW_BY_ACTIVITY_HREF: Record<string, () => FallbackRow> = {
     id: FLY_FISHING_ID,
     name: 'Fly Fishing',
     description: FLY_FISHING_PUBLIC_DESCRIPTION,
-    image_url: FLY_FISHING_IMAGE,
+    image_url: FLY_FISHING_CARD_IMAGE,
     duration: '',
     difficulty: '',
     season: 'summer',

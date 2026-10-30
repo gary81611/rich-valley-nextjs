@@ -27,6 +27,10 @@ export const TRAIL_HIKING_ID = '8db0165a-5bd7-42c6-8514-d33ff973914b'
 export const FLY_FISHING_IMAGE = '/images/adventures/fly-fishing.png'
 export const FLY_FISHING_IMAGE_ALT = 'An angler holding a trout on a river'
 
+/** Kit IMG_9194 plain 4:3 for /services + /adventures + home cards. /fly-fishing hero still uses FLY_FISHING_IMAGE / kit hero. */
+export const FLY_FISHING_CARD_IMAGE = '/images/rva/kit/fly-fishing-card-brown-trout.webp'
+export const FLY_FISHING_CARD_IMAGE_ALT = 'Angler holding a large brown trout on a Colorado river'
+
 /** Wording already on /fly-fishing: wading trips plus the full-day float price. */
 export const FLY_FISHING_PUBLIC_DESCRIPTION =
   'Half-day and full-day guided trips on our wading fisheries, and full-day float trips on the Roaring Fork or Colorado River. From $1,400 for 2 people (1 boat, 1 captain). Additional adults $375 each, kids $175. An 8–12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation included.'
@@ -122,7 +126,7 @@ export function adventurePublicImage(row: {
 }): { src: string; objectPosition?: string; alt?: string } {
   const slug = slugFromAdventureName(row.name)
   if (row.id === FLY_FISHING_ID || slug === 'fly-fishing') {
-    return { src: FLY_FISHING_IMAGE, alt: FLY_FISHING_IMAGE_ALT }
+    return { src: FLY_FISHING_CARD_IMAGE, alt: FLY_FISHING_CARD_IMAGE_ALT }
   }
   if (row.id === TRAIL_HIKING_ID || slug === 'trail-hiking') {
     return { src: TRAIL_HIKING_IMAGE, alt: TRAIL_HIKING_IMAGE_ALT }
