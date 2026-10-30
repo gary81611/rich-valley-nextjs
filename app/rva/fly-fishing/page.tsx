@@ -182,7 +182,7 @@ export default function FlyFishingPage() {
 
   return (
     <>
-      <div className="h-[var(--rva-header)]" aria-hidden />
+      <div className="h-[var(--rva-header,97px)] md:h-[var(--rva-header,117px)]" aria-hidden />
       {jsonLd.map((schema, i) => (
         <script
           key={i}

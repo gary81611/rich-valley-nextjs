@@ -32,8 +32,19 @@
 /* Header row: py-4 plus the logo box. Mobile logo is h-12; desktop logo is h-16.
    Focus must clear that bar and the mobile sticky bar.
    Override the site-wide smooth scroll so focus lands before it is measured. */
+/* Header height on .rva-site so --rva-header works without :has().
+   Measured RVANav: py-4 + logo tile + 1px border. Mobile h-12 → 97px; md:h-16 → 117px. */
+.rva-site {
+  --rva-header: 97px;
+}
+
+@media (min-width: 768px) {
+  .rva-site {
+    --rva-header: 117px;
+  }
+}
+
 html:has(.rva-site) {
-  /* Measured RVANav: py-4 + logo tile + 1px border. Mobile h-12 → 97px; md:h-16 → 117px. */
   --rva-header: 97px;
   scroll-behavior: auto;
   scroll-padding-top: var(--rva-header);

@@ -81,7 +81,7 @@ export default function ServicePageTemplate({
                   className={
                     portraitHero
                       ? 'mt-2.5 flex flex-wrap gap-3 lg:mt-8'
-                      : 'mt-2.5 flex flex-col gap-3 md:flex-row md:flex-wrap lg:flex-col min-[1100px]:flex-row lg:mt-8'
+                      : 'mt-2.5 flex flex-col gap-3 md:flex-row md:flex-wrap lg:flex-col lg:mt-8'
                   }
                 >
                   <RvaButton
@@ -91,7 +91,7 @@ export default function ServicePageTemplate({
                     className={
                       portraitHero
                         ? 'whitespace-nowrap lg:min-h-14 lg:px-8'
-                        : 'w-full whitespace-nowrap md:w-auto lg:w-full min-[1100px]:w-auto lg:min-h-14 lg:px-8'
+                        : 'w-full whitespace-nowrap md:w-auto lg:w-full lg:min-h-14 lg:px-8'
                     }
                   >
                     {bookingLabel || RVA_BOOKING_LABEL}
@@ -104,7 +104,7 @@ export default function ServicePageTemplate({
                     className={
                       portraitHero
                         ? 'whitespace-nowrap lg:min-h-14 lg:px-8'
-                        : 'w-full whitespace-nowrap md:w-auto lg:w-full min-[1100px]:w-auto lg:min-h-14 lg:px-8'
+                        : 'w-full whitespace-nowrap md:w-auto lg:w-full lg:min-h-14 lg:px-8'
                     }
                   >
                     {RVA_PHONE_LABEL}
