@@ -95,7 +95,7 @@ export default async function WinterPage() {
       const season = seasonForWinterAdventure(adventure.title) || adventure.season || ''
       const bits = [
         adventure.description,
-        [adventure.duration, adventure.difficulty, season].filter(Boolean).join(' · '),
+        [season].filter(Boolean).join(' · '),
         /snowshoe/i.test(adventure.title)
           ? 'Half-day snowshoe: $500. Groups 1–12. All gear included. Snowshoeing is guided in-house.'
           : /snowmobile|atv|snowbike/i.test(adventure.title)

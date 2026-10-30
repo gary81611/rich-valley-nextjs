@@ -121,11 +121,16 @@ const ROW_BY_ACTIVITY_HREF: Record<string, () => FallbackRow> = {
   }),
 }
 
+/** Same as home #18 / adventures listing: no duration badge or level meta; keep prices. */
+export function withoutCardBadges(card: PublicAdventureCard): PublicAdventureCard {
+  return { ...card, duration: '', difficulty: '' }
+}
+
 /** The 7 public adventure cards, ordered like RVA_ACTIVITIES, for SSR when Supabase fails. */
 export function getStaticPublicAdventureCards(): PublicAdventureCard[] {
   return RVA_ACTIVITIES.filter((activity) => activity.href in ROW_BY_ACTIVITY_HREF).map((activity) => {
     const card = toPublicAdventureCard(ROW_BY_ACTIVITY_HREF[activity.href]())
     // Strip badges even if adventurePublicDuration fills paddle duration.
-    return { ...card, duration: '', difficulty: '' }
+    return withoutCardBadges(card)
   })
 }

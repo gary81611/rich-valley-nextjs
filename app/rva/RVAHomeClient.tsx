@@ -11,8 +11,6 @@ import type { Adventure, Testimonial, GalleryImage } from '@/lib/types'
 import { isPublicTestimonial } from '@/lib/rva-confirmed'
 
 import {
-  FLY_FISHING_IMAGE,
-  FLY_FISHING_IMAGE_ALT,
   FLY_FISHING_PUBLIC_DESCRIPTION,
   PADDLE_PHOTO,
   PADDLE_PHOTO_ALT,
@@ -52,8 +50,10 @@ const FEATURED_TRIPS = [
   {
     title: 'Fly Fishing',
     href: '/fly-fishing',
-    image: FLY_FISHING_IMAGE,
-    alt: FLY_FISHING_IMAGE_ALT,
+    // Kit landscape (IMG_9194) — 4:3 keeps angler head + brown trout in the home card crop.
+    // Do not change /fly-fishing hero (RVA_FLY_FISHING_HERO_PHOTO).
+    image: '/images/rva/kit/fly-fishing-card-brown-trout.webp',
+    alt: 'Angler holding a large brown trout on a Colorado river',
     detail: FLY_FISHING_PUBLIC_DESCRIPTION,
   },
   {
