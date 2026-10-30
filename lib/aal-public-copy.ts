@@ -155,6 +155,14 @@ const AAL_DENVER_PRICE_SENTENCE =
 /** Fleet names, passenger counts, the published Denver one-way rate, and the ski canonical path. */
 export function correctAalPublicText(text: string): string {
   if (!text) return text
+  // Supabase services.afe22f3d… Vehicle Concierge description (DB unchanged)
+  const vehicleConciergeTypo =
+    'We will come to your house, load up summer or snow tires, and get your vehicle maintenanced. Tire change overs, regular scheduled maintenace, oil changes, and more. '
+  const vehicleConciergeFixed =
+    'We will come to your house, load up summer or snow tires, and get your vehicle maintained. Tire changeovers, regular scheduled maintenance, oil changes, and more.'
+  if (text === vehicleConciergeTypo || text.trim() === vehicleConciergeTypo.trim()) {
+    return vehicleConciergeFixed
+  }
   let t = text
   t = t.replace(/scenic-escalade-tours/gi, 'scenic-wildlife-tours')
   t = t.replace(/scenic-escalade\.png/gi, 'scenic-wildlife-tour.png')

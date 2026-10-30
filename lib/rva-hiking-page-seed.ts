@@ -4,7 +4,7 @@ import type { ServiceContent, ServiceLead } from './pages'
 export const rvaHikingAnswerLead: ServiceLead = {
   heading: 'Guided hiking in Aspen',
   paragraphs: [
-    'Rich Valley Adventures guides hikes in the Elk Mountains and the Roaring Fork Valley, from gentle riparian walks and easy valley miles to strenuous high-alpine days. The Trail Hiking trip is 3–6 hours and moderate. Groups are typically 2–8, and this page lists a maximum of 8. Hiking is guided in-house.',
+    'Rich Valley Adventures guides hikes in the Elk Mountains and the Roaring Fork Valley, from gentle riparian walks and easy valley miles to strenuous high-alpine days. Groups are typically 2–8, and this page lists a maximum of 8. Hiking is guided in-house. A half-day hike is $600.',
     'A half-day hike is $600. Book at least 2 days in advance. A 50% deposit is due at booking. Cancellations within 72 hours are billed in full. For a date, a route, or a plan this page does not list, call 970-456-3666.',
   ],
   facts: [{ label: 'Half-day hike', value: '$600' }],
@@ -15,7 +15,7 @@ export const rvaHikingAnswerFaqs: { question: string; answer: string }[] = [
   {
     question: 'Do you offer easy or beginner guided hikes in Aspen?',
     answer:
-      'The Trail Hiking trip is 3–6 hours and moderate. A half-day hike is $600. This page also describes easier walks: Maroon Lake Scenic Trail is about 1 mile (30–60 minutes) and is a fit for a first day at altitude, the Grottos are short family-friendly paths, and the Rio Grande Trail is a flat rail-trail. We match the route to the group. Call 970-456-3666 to plan.',
+      'A half-day hike is $600. This page also describes easier walks: Maroon Lake Scenic Trail is about 1 mile (30–60 minutes) and is a fit for a first day at altitude, the Grottos are short family-friendly paths, and the Rio Grande Trail is a flat rail-trail. We match the route to the group. Call 970-456-3666 to plan.',
   },
   {
     question: 'Do you have family-friendly hikes for kids?',
@@ -35,7 +35,7 @@ export const rvaHikingAnswerFaqs: { question: string; answer: string }[] = [
   {
     question: 'What guided hikes and trails do you offer near Aspen?',
     answer:
-      'This page lists 25 popular hikes near Aspen, including Maroon Lake, Crater Lake, Cathedral Lake, the Ute Trail, and Independence Pass trails such as the Grottos and Lost Man Lake Loop. Your guide matches mileage and elevation to the group. The Trail Hiking trip is 3–6 hours and moderate.',
+      'This page lists 25 popular hikes near Aspen, including Maroon Lake, Crater Lake, Cathedral Lake, the Ute Trail, and Independence Pass trails such as the Grottos and Lost Man Lake Loop. Your guide matches mileage and elevation to the group.',
   },
   {
     question: 'Are guided hikes available in June and July?',

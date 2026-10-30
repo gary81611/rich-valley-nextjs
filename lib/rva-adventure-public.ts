@@ -37,9 +37,9 @@ export const FLY_FISHING_PUBLIC_DESCRIPTION =
 
 export const TRAIL_HIKING_IMAGE = '/images/adventures/hiking.png'
 export const TRAIL_HIKING_IMAGE_ALT = 'Trail hiking'
-/** Live Trail Hiking row: duration, difficulty, and description. No picnic line; /hiking does not say that. */
+/** Live Trail Hiking row description. Duration/difficulty chips stay off cards; Kit confirmed half-day hike $600. */
 export const TRAIL_HIKING_PUBLIC_DESCRIPTION =
-  'Discover hidden waterfalls, wildflower meadows, and panoramic summit views with guides who bring the ecology and history of the Rockies to life. 3–6 Hours. Moderate.'
+  'Discover hidden waterfalls, wildflower meadows, and panoramic summit views with guides who bring the ecology and history of the Rockies to life.'
 
 export const PADDLE_PHOTO = '/images/adventures/paddle-boarding.jpg'
 export const PADDLE_PHOTO_ALT = 'Four people paddleboarding on a river'
@@ -154,7 +154,7 @@ export function adventurePublicDescription(row: {
   description: string
 }): string {
   if (isFlyFishingListing(row)) return FLY_FISHING_PUBLIC_DESCRIPTION
-  if (isTrailHikingListing(row)) return `${TRAIL_HIKING_PUBLIC_DESCRIPTION} Half-day hike: $600.`
+  if (isTrailHikingListing(row)) return TRAIL_HIKING_PUBLIC_DESCRIPTION
   const slug = slugFromAdventureName(row.name)
   if (row.id === PADDLE_RENTAL_ID || slug === 'paddle-board-rentals') {
     return 'We rent High Society paddle boards, and boards can be delivered to you.'
