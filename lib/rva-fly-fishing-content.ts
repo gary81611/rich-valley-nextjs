@@ -3,11 +3,11 @@ import type { ServiceContent } from '@/lib/pages'
 export const flyFishingPageTitle = 'Aspen Fly Fishing'
 
 export const KIDS_FAMILY_FISHING =
-  'Kids ages 3 and up can fish. Waders and boots up to men\'s size 15. Guests and grandparents with limited mobility can be hosted at the ranch ponds.'
+  'Kids ages 3 and up can fish. Waders are provided for kids 3 and up, and waders and boots go up to men\'s size 15. Guests and grandparents with limited mobility can be hosted at the ranch ponds.'
 
 /** Home card — same kids facts (prices live in Trip prices / ranch card). */
 export const KIDS_FAMILY_FISHING_HOME =
-  'Kids ages 3 and up can fish. Waders and boots up to men\'s size 15. Guests and grandparents with limited mobility can be hosted at the ranch ponds.'
+  'Kids ages 3 and up can fish. Waders are provided for kids 3 and up, and waders and boots go up to men\'s size 15. Guests and grandparents with limited mobility can be hosted at the ranch ponds.'
 
 export const YEAR_ROUND_FISHING =
   'Guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady.'

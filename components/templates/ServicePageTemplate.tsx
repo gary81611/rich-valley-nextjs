@@ -59,28 +59,17 @@ export default function ServicePageTemplate({
     <div className={rva ? 'font-inter text-rva-forest' : 'font-inter text-alp-navy'}>
       {/* Hero. RVA photo heroes share one height. Portraits letterbox; AAL markup stays. */}
       {rva && heroSplit && heroImage ? (
-        <>
-          {/* Stacked below lg: uncropped 4:3 photo, then dark-green copy + CTAs */}
-          <section className="lg:hidden bg-rva-forest text-rva-cream">
-            <div className="relative w-full aspect-[4/3] bg-rva-forest-dark">
-              <Image
-                src={heroImage}
-                alt={heroImageAlt || title}
-                fill
-                priority
-                unoptimized
-                className="object-contain"
-                sizes="100vw"
-              />
-            </div>
-            <div className="p-6 text-left">
-              <h1 className="font-playfair font-semibold mb-2 leading-[1.1] text-3xl">
+        <section className="flex w-full flex-col-reverse bg-rva-forest text-rva-cream lg:flex-row lg:items-start">
+          {/* Copy: below photo on mobile (flex-col-reverse), left panel at lg+ */}
+          <div className="flex min-w-0 flex-1 flex-col justify-center p-6 text-left lg:px-10 lg:py-12 xl:px-14">
+            <div className="w-full max-w-[520px]">
+              <h1 className="font-playfair font-semibold mb-2 leading-[1.1] text-3xl lg:mb-4 lg:text-3xl xl:text-4xl 2xl:text-5xl">
                 {title}
               </h1>
               {content.hero_subtitle && (
-                <p className="text-base opacity-90 mt-1">{content.hero_subtitle}</p>
+                <p className="text-base opacity-90 mt-1 lg:mt-2 lg:text-lg xl:text-xl">{content.hero_subtitle}</p>
               )}
-              <div className="mt-4 flex flex-wrap gap-3">
+              <div className="mt-4 flex flex-wrap gap-3 lg:mt-8">
                 <RvaButton href={bookingHref || '/contact'} size="lg" tone="on-dark">
                   {bookingLabel || RVA_BOOKING_LABEL}
                 </RvaButton>
@@ -89,40 +78,20 @@ export default function ServicePageTemplate({
                 </RvaButton>
               </div>
             </div>
-          </section>
-          {/* Split from lg: photo flush right (max 960×720); all extra width is green on the left. */}
-          <section className="hidden lg:flex w-full items-stretch bg-rva-forest text-rva-cream">
-            <div className="flex min-w-0 flex-1 flex-col justify-center px-10 xl:px-14 py-12 text-left">
-              <div className="w-full max-w-[520px]">
-                <h1 className="font-playfair font-semibold mb-4 leading-[1.1] text-3xl xl:text-4xl 2xl:text-5xl">
-                  {title}
-                </h1>
-                {content.hero_subtitle && (
-                  <p className="text-lg xl:text-xl opacity-90 mt-2">{content.hero_subtitle}</p>
-                )}
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <RvaButton href={bookingHref || '/contact'} size="lg" tone="on-dark">
-                    {bookingLabel || RVA_BOOKING_LABEL}
-                  </RvaButton>
-                  <RvaButton href={`tel:${phone.replace(/\D/g, '')}`} variant="secondary" size="lg" tone="on-dark">
-                    {RVA_PHONE_LABEL}
-                  </RvaButton>
-                </div>
-              </div>
-            </div>
-            <div className="relative ml-auto w-[60%] max-w-[960px] shrink-0 aspect-[4/3] max-h-[720px] bg-rva-forest-dark">
-              <Image
-                src={heroImage}
-                alt={heroImageAlt || title}
-                fill
-                priority
-                unoptimized
-                className="object-cover"
-                sizes="(min-width: 1024px) min(60vw, 960px), 100vw"
-              />
-            </div>
-          </section>
-        </>
+          </div>
+          {/* Photo: first visually on mobile; flush right at lg+, true 4:3, never stretched/cropped */}
+          <div className="relative aspect-[4/3] w-full shrink-0 bg-rva-forest-dark lg:ml-auto lg:w-[60%] lg:max-w-[960px] lg:max-h-[720px] lg:self-start">
+            <Image
+              src={heroImage}
+              alt={heroImageAlt || title}
+              fill
+              priority
+              unoptimized
+              className="object-contain"
+              sizes="(min-width: 1024px) min(60vw, 960px), 100vw"
+            />
+          </div>
+        </section>
       ) : (
       <section
         className={
