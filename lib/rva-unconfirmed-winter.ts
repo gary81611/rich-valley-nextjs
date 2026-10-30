@@ -1,78 +1,59 @@
 /**
  * Kit-unconfirmed winter offerings. Used to hide Supabase-backed copy until he confirms.
- * Does not mutate the database.
+ * Does not mutate the database. Filters drop whole items only (rows, FAQs, list items,
+ * or whole sentences) — no phrase surgery inside a sentence.
  */
 
 export function isUnconfirmedWinterClaim(text: string): boolean {
   const t = text.toLowerCase()
   if (/ice[\s-]*fish/.test(t)) return true
   if (/cross[\s-]*country/.test(t)) return true
-  if (t.includes('nor' + 'dic')) return true
+  if (t.includes('nordic')) return true
   return false
 }
 
-/** Winter-page listing titles only — also drops winter chauffeur cards (year-round scenic stays elsewhere). */
+/** Winter-page listing titles: unconfirmed claims + winter chauffeur + hunting offerings. */
 export function isUnconfirmedWinterListingTitle(title: string): boolean {
   const t = title.toLowerCase()
   if (isUnconfirmedWinterClaim(t)) return true
   if (t.includes('chauffeur')) return true
+  if (/\bhunt/.test(t)) return true
+  if (t.includes('mule deer')) return true
+  if (/\belk\b/.test(t) && t.includes('hunt')) return true
+  if (t.includes('waterfowl')) return true
+  if (t.includes('cast') && t.includes('blast')) return true
   return false
 }
 
-/** Remove unconfirmed winter phrases; keep snowshoeing and other confirmed copy. */
+/** Drop whole sentences that still advertise unconfirmed winter offerings. */
 export function scrubUnconfirmedWinterText(text: string): string {
-  let s = text
-
-  // Drop whole list-item clauses that name unconfirmed offerings
-  s = s.replace(/,?\s*winter\s+Chauffeur\s+Guided\s+Tours?/gi, '')
-  s = s.replace(/,?\s*and\s+ice[\s-]*fish(?:ing)?(?:\s+on\s+the\s+[^.,;]+)?/gi, '')
-  s = s.replace(/,?\s*ice[\s-]*fish(?:ing)?(?:\s+on\s+the\s+[^.,;]+)?/gi, '')
-  s = s.replace(/,?\s*cross[\s-]*country(?:\s+skiing)?/gi, '')
-  s = s.replace(new RegExp(',?\\s*(?:and\\s+)?' + 'nor' + 'dic(?:\\s+skiing)?', 'gi'), '')
-  // Winter FAQ list that mixed snowshoeing with chauffeur: collapse to snowshoeing offers…
-  s = s.replace(
-    /snowshoeing\s*,\s*and\s+Chauffeur Guided Tours and Excursions offer/gi,
-    'snowshoeing offers'
-  )
-  s = s.replace(
-    /snowshoeing\s*,\s*Chauffeur Guided Tours and Excursions offer/gi,
-    'snowshoeing offers'
-  )
-  // leftover "guided … trips" scaffolding after phrase removal
-  s = s.replace(/In winter,\s*we offer guided\s+trips\./gi, '')
-  s = s.replace(/we offer guided\s+trips\./gi, '')
-
-  // Drop any remaining sentence that still carries a claim
-  s = s
+  return text
     .split(/(?<=\.)(\s+)/)
-    .filter((part, idx, arr) => {
+    .filter((part) => {
       if (/^\s+$/.test(part)) return true
-      return !isUnconfirmedWinterClaim(part)
+      if (!part.trim()) return true
+      if (isUnconfirmedWinterClaim(part)) return false
+      // Winter-framed chauffeur tours (year-round scenic stays on other pages)
+      const lower = part.toLowerCase()
+      if (lower.includes('winter') && lower.includes('chauffeur')) return false
+      return true
     })
     .join('')
-
-  s = s.replace(/,\s*,+/g, ',')
-  s = s.replace(/,\s*and\s*\./g, '.')
-  s = s.replace(/,\s*\./g, '.')
-  s = s.replace(/—\s*,/g, '—')
-  s = s.replace(/\s{2,}/g, ' ')
-  s = s.replace(/\s+([,.;])/g, '$1')
-  s = s.replace(/\(\s*\)/g, '')
-  return s.trim()
+    .replace(/\s{2,}/g, ' ')
+    .trim()
 }
 
 export function scrubUnconfirmedWinterFaqs<T extends { question: string; answer: string }>(
   faqs: T[]
 ): T[] {
-  return faqs
-    .map((faq) => ({ ...faq, answer: scrubUnconfirmedWinterText(faq.answer) }))
-    .filter((faq) => {
-      const a = faq.answer.trim()
-      if (!a) return false
-      if (isUnconfirmedWinterClaim(faq.question)) return false
-      if (isUnconfirmedWinterClaim(a)) return false
-      return true
-    })
+  // Whole-FAQ drop when Q or A carries an unconfirmed claim (no partial rewrite).
+  return faqs.filter((faq) => {
+    const blob = `${faq.question} ${faq.answer}`
+    if (isUnconfirmedWinterClaim(blob)) return false
+    const lower = blob.toLowerCase()
+    if (lower.includes('winter') && lower.includes('chauffeur')) return false
+    return true
+  })
 }
 
 export function scrubUnconfirmedWinterList(items: string[]): string[] {

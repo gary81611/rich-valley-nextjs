@@ -75,7 +75,7 @@ const localBusinessSchema = {
   '@id': `${RVA_URL}/#business`,
   name: 'Rich Valley Adventures',
   description:
-    'Expert-guided fly fishing, hiking, mountain biking, paddleboard rentals, hunting from $250 per person, and elevated camping in Aspen, Colorado and the Roaring Fork Valley since 2012.',
+    'Expert-guided fly fishing, hiking, mountain biking, paddleboard rentals, and elevated camping in Aspen, Colorado and the Roaring Fork Valley since 2012.',
   url: RVA_URL,
   telephone: '+19704563666',
   email: 'kit@richvalleyadventures.com',

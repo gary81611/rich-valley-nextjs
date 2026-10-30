@@ -32,13 +32,9 @@ async function seed() {
 
   // Winter Adventures
   await seedIfEmpty('winter_adventures', [
-    { title: 'Fall & Winter Guided Hunting (Elk)', description: 'Experience Colorado elk hunting with expert guides.', duration: 'Full Day (6-8 hours)', difficulty: 'Moderate to Challenging', season_start: 'Sept 1', season_end: 'Dec 10', price_from: 250, display_order: 1 },
-    { title: 'Mule Deer Hunting', description: 'Guided mule deer hunting in the high country.', duration: 'Full Day (6-8 hours)', difficulty: 'Moderate', season_start: 'Sept 1', season_end: 'Dec 10', price_from: 250, display_order: 2 },
-    { title: 'Waterfowl Hunting', description: 'Guided waterfowl hunting along rivers and reservoirs.', duration: 'Half Day (3-4 hours)', difficulty: 'All Levels', season_start: 'Oct 1', season_end: 'Jan 15', price_from: 250, display_order: 3 },
     { title: 'Winter Guided Snowshoeing', description: 'Trek through snow-covered meadows and frozen aspen groves.', duration: 'Half Day / Full Day', difficulty: 'All Levels', season_start: 'Dec 15', season_end: 'Feb 25', price_from: 250, display_order: 5 },
     { title: 'Electric/Fat Tire Guided Biking Tour', description: 'Explore snow-packed trails on fat tire or electric bikes.', duration: 'Half Day (3-4 hours)', difficulty: 'All Levels', season_start: 'Nov 1', season_end: 'May 31', price_from: 250, display_order: 7 },
     { title: 'Sporting Clay Shotgun Shooting Clinic', description: 'Expert instruction at a private sporting clay range.', duration: 'Half Day (3-4 hours)', difficulty: 'All Levels', season_start: 'Nov 1', season_end: 'May 31', price_from: 250, display_order: 8 },
-    { title: 'Cast and Blast', description: 'River float trip with waterfowl hunting and fly fishing.', duration: 'Full Day (6-8 hours)', difficulty: 'Moderate', season_start: 'Fall', season_end: 'Season', price_from: 250, display_order: 10 },
     { title: 'Snowmobile & Electric Snowbike Tours', description: 'Explore backcountry terrain on snowmobiles or electric snowbikes.', duration: 'Half Day / Full Day', difficulty: 'Moderate', season_start: 'Winter', season_end: 'Season', price_from: 250, display_order: 11 },
   ])
 

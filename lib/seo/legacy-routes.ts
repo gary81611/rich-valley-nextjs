@@ -17,7 +17,7 @@ const PADDLE_RENTAL_ALIAS_PATHS = new Set([
  * Extra one-hop aliases. Trailing slashes are stripped by the lookup so
  * `/glamping/` does not 301 to `/glamping` and then again.
  * Bare `/horseback-riding` goes to the live adventure page.
- * `/hunting` and `/adventures/hunting` go to `/winter`, which lists the hunting trips.
+ * `/hunting` and `/adventures/hunting` go to `/winter` (legacy URLs; hunting is not a confirmed offering).
  */
 const RVA_EXACT_ALIAS: Record<string, string> = {
   '/adventures/paddleboarding': '/paddle-boarding',

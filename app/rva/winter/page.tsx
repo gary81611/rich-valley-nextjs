@@ -78,14 +78,12 @@ export default async function WinterPage() {
     lead: {
       heading: 'How winter trips work',
       paragraphs: [
-        'Advance booking required: Snowshoeing must be booked with a minimum 7-day notice. All other winter activities: 48-hour advance booking recommended.',
         winterAdventures.length === 0
           ? 'No winter adventures available at this time. Check back soon!'
           : '',
       ].filter(Boolean),
       facts: [
         { label: 'Half-day snowshoe', value: '$500' },
-        { label: 'Hunting', value: 'From $250 per person' },
         { label: 'Half-day', value: '3–4 hours door-to-door. Includes snacks and drinks.' },
         { label: 'Full day', value: '6–8 hours door-to-door. Includes lunch.' },
         { label: 'Gear', value: 'All gear provided on every trip' },
@@ -103,9 +101,7 @@ export default async function WinterPage() {
           ? 'Half-day snowshoe: $500. Groups 1–12. All gear included. Snowshoeing is guided in-house.'
           : /snowmobile|atv|snowbike/i.test(adventure.title)
             ? 'Horseback, ATV, and snowmobile trips go through partner local outfitters. Groups 1–12. Transport: Aspen Alpenglow Limousine.'
-            : /hunt|elk|deer|waterfowl|cast and blast/i.test(adventure.title)
-              ? 'Hunting trips on this page start at $250 per person. Groups 1–12. All gear included. Transport: Aspen Alpenglow Limousine.'
-              : 'Groups 1–12. All gear included. Transport: Aspen Alpenglow Limousine.',
+            : 'Groups 1–12. All gear included. Transport: Aspen Alpenglow Limousine.',
       ].filter(Boolean)
       const imageSrc = (adventure.image_url || '').trim()
       return {
