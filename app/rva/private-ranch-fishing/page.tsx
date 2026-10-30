@@ -146,6 +146,7 @@ export default function PrivateRanchFishingPage() {
           context: 'private ranch fly fishing',
           brand: 'Rich Valley Adventures',
         })}
+        heroSplit
         bookingHref="/contact?service=private-ranch-fishing"
         bookingLabel="Book private ranch fishing"
         relatedLinks={[

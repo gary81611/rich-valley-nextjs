@@ -192,6 +192,25 @@ export type PublicAdventureCard = {
   fromText: string | null
 }
 
+
+/** Card badge duration. Normalize DB wording so every card matches. */
+export function adventurePublicDuration(row: {
+  id?: string | null
+  name: string
+  duration: string
+}): string {
+  const raw = (row.duration || '').trim()
+  const slug = slugFromAdventureName(row.name)
+  const isPaddle =
+    row.id === PADDLE_RENTAL_ID ||
+    row.id === PADDLE_TOUR_ID ||
+    slug === 'paddle-board-rentals' ||
+    slug === 'paddle-boarding'
+  if (isPaddle) return 'Half Day / Full Day'
+  if (/half\s*day\s*or\s*full\s*day/i.test(raw)) return 'Half Day / Full Day'
+  return raw
+}
+
 export function toPublicAdventureCard(row: {
   id: string
   name: string
@@ -211,7 +230,7 @@ export function toPublicAdventureCard(row: {
     imageAlt: visual.alt,
     objectPosition: visual.objectPosition,
     href: adventurePublicHref(row),
-    duration: row.duration,
+    duration: adventurePublicDuration(row),
     difficulty: row.difficulty,
     season: row.season || 'summer',
     fromText: adventurePublicFromText(row),

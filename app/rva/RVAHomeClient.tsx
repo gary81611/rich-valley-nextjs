@@ -113,7 +113,7 @@ export default function RVAHomeClient({
               const card = toPublicAdventureCard(a)
               return {
                 ...card,
-                duration: 'Half day / Full day',
+                duration: 'Half Day / Full Day',
                 difficulty: 'All levels',
                 fromText: null,
               }

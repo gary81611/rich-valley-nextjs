@@ -18,8 +18,8 @@ interface Props {
   /** Responsive object-position classes (e.g. object-[25%_50%] sm:object-[40%_50%]). Wins over heroObjectPosition. */
   heroObjectClassName?: string
   /**
-   * RVA only. From lg (1024px) up, split the hero: copy + CTAs on dark green (~40% left),
-   * uncropped 4:3 photo on the right (~60%). Below lg, keep the full-bleed photo hero.
+   * RVA only. From lg (1024px) up, split the hero: copy + CTAs on dark green,
+   * uncropped photo flush right (4:3 landscape or 3:4 portrait). Below lg, stack photo then copy.
    */
   heroSplit?: boolean
   /** Overrides the shared RVA photo-hero height. AAL heroes ignore this. */
@@ -59,9 +59,9 @@ export default function ServicePageTemplate({
     <div className={rva ? 'font-inter text-rva-forest' : 'font-inter text-alp-navy'}>
       {/* Hero. RVA photo heroes share one height. Portraits letterbox; AAL markup stays. */}
       {rva && heroSplit && heroImage ? (
-        <section className="flex w-full flex-col-reverse bg-rva-forest text-rva-cream lg:flex-row lg:items-center">
-          {/* Copy: below photo on mobile (flex-col-reverse), left panel at lg+ */}
-          <div className="flex min-w-0 flex-1 flex-col justify-center p-6 text-left lg:py-12 lg:pr-10 lg:pl-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))] xl:pr-14">
+        <section className="@container flex w-full flex-col-reverse bg-rva-forest text-rva-cream lg:flex-row lg:items-center">
+          {/* Copy: below photo on mobile; left panel at lg+ with scrollbar-safe rail padding (100cqw, not 100vw) */}
+          <div className="flex min-w-0 flex-1 flex-col justify-center p-6 text-left lg:py-12 lg:pr-10 lg:pl-[max(1.5rem,calc((100cqw-80rem)/2+1.5rem))] xl:pr-14">
             <div className="w-full max-w-[520px]">
               <h1 className="font-playfair font-semibold mb-2 leading-[1.1] text-3xl lg:mb-4 lg:text-3xl xl:text-4xl 2xl:text-5xl">
                 {title}
@@ -79,8 +79,14 @@ export default function ServicePageTemplate({
               </div>
             </div>
           </div>
-          {/* Photo: first visually on mobile; flush right at lg+, true 4:3, never stretched/cropped */}
-          <div className="relative aspect-[4/3] w-full shrink-0 bg-rva-forest-dark lg:ml-auto lg:w-[60%] lg:max-w-[960px] lg:max-h-[720px] lg:self-start">
+          {/* Photo: first on mobile; flush right at lg+. Landscape 4:3 or portrait 3:4 (ranch), never stretched by copy. */}
+          <div
+            className={
+              portraitHero
+                ? 'relative mx-auto aspect-[3/4] w-full max-w-[min(100%,calc(70vh*3/4))] shrink-0 bg-rva-forest-dark lg:mx-0 lg:ml-auto lg:max-w-none lg:w-[min(40%,540px)] lg:max-h-[720px] lg:self-start'
+                : 'relative aspect-[4/3] w-full shrink-0 bg-rva-forest-dark lg:ml-auto lg:w-[60%] lg:max-w-[960px] lg:max-h-[720px] lg:self-start'
+            }
+          >
             <Image
               src={heroImage}
               alt={heroImageAlt || title}
@@ -88,7 +94,11 @@ export default function ServicePageTemplate({
               priority
               unoptimized
               className="object-contain"
-              sizes="(min-width: 1024px) min(60vw, 960px), 100vw"
+              sizes={
+                portraitHero
+                  ? '(min-width: 1024px) min(40vw, 540px), 100vw'
+                  : '(min-width: 1024px) min(60vw, 960px), 100vw'
+              }
             />
           </div>
         </section>
