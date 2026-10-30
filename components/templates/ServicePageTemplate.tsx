@@ -62,7 +62,7 @@ export default function ServicePageTemplate({
         <section className="relative w-full bg-rva-forest text-rva-cream">
           <div className="flex flex-col-reverse lg:block">
             {/* Copy rail: same max-w-7xl mx-auto px-6 as RVANav so H1 aligns with the logo */}
-            <div className="relative z-10 w-full pt-3 pb-4 text-left lg:absolute lg:inset-0 lg:flex lg:items-center lg:py-12">
+            <div className="relative z-10 w-full pt-2 pb-3 text-left lg:absolute lg:inset-0 lg:flex lg:items-center lg:py-12">
               <div className="mx-auto w-full max-w-7xl px-6">
                 <div
                   className={
@@ -71,13 +71,13 @@ export default function ServicePageTemplate({
                       : 'w-full max-w-[min(520px,calc(100%-min(60%,960px)-0.75rem))]'
                   }
                 >
-                  <h1 className="font-playfair font-semibold mb-1 leading-[1.1] text-3xl lg:mb-4 lg:text-3xl xl:text-4xl 2xl:text-5xl">
+                  <h1 className="font-playfair font-semibold mb-1 leading-[1.1] text-[1.65rem] lg:mb-4 lg:text-3xl xl:text-4xl 2xl:text-5xl">
                     {title}
                   </h1>
                   {content.hero_subtitle ? (
-                    <p className="text-sm opacity-90 mt-1 lg:mt-2 lg:text-lg xl:text-xl">{content.hero_subtitle}</p>
+                    <p className="text-sm leading-snug opacity-90 mt-0.5 lg:mt-2 lg:text-lg lg:leading-normal xl:text-xl">{content.hero_subtitle}</p>
                   ) : null}
-                  <div className="mt-3 flex flex-wrap gap-3 lg:mt-8">
+                  <div className="mt-2.5 flex flex-wrap gap-3 lg:mt-8">
                     <RvaButton href={bookingHref || '/contact'} size="lg" tone="on-dark">
                       {bookingLabel || RVA_BOOKING_LABEL}
                     </RvaButton>

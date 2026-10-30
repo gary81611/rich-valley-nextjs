@@ -127,7 +127,7 @@ export default function PrivateRanchFishingPage() {
 
   return (
     <>
-      <div className="h-[72px] lg:h-[86px]" aria-hidden />
+      <div className="h-[64px] lg:h-[86px]" aria-hidden />
       {jsonLd.map((schema, i) => (
         <script
           key={i}
