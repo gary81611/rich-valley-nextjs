@@ -52,7 +52,7 @@ const rvaPages: PageSeed[] = [
         { title: 'Guided Photography', description: 'We capture the moment so you can focus on the fight. Share-worthy shots of every big fish.' },
       ],
       faqs: [
-        { question: 'Can kids fish?', answer: 'Kids ages 3 and up can fish. Waders and boots up to men\'s size 15. Guests and grandparents with limited mobility can be hosted at the ranch ponds.' },
+        { question: 'Can kids fish?', answer: 'Kids ages 3 and up can fish. Waders are provided for kids 3 and up, and adult waders and boots go up to men\'s size 15. Guests and grandparents with limited mobility can be hosted at the ranch ponds.' },
         { question: 'Do I need a Colorado fishing license?', answer: 'A Colorado Parks and Wildlife fishing license is required for ages 16 and up.' },
         { question: 'What time of year is best for fly fishing near Aspen?', answer: 'The Roaring Fork Valley offers excellent fishing year-round. June through September is peak dry fly season with multiple hatches daily. October and November are prime for large browns in the fall spawn. The Frying Pan tailwater fishes well even in winter due to the stable, cold water temperatures from Ruedi Reservoir. Guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady.' },
         { question: 'Can beginners go fly fishing with you?', answer: 'Absolutely. Beginners are welcome and we love introducing new anglers to the sport. Our guides are patient, enthusiastic teachers. Many of our most rewarding trips are with anglers casting a fly rod for the very first time.' },

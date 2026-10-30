@@ -59,7 +59,7 @@ export default function ServicePageTemplate({
     <div className={rva ? 'font-inter text-rva-forest' : 'font-inter text-alp-navy'}>
       {/* Hero. RVA photo heroes share one height. Portraits letterbox; AAL markup stays. */}
       {rva && heroSplit && heroImage ? (
-        <section className="flex w-full flex-col-reverse bg-rva-forest text-rva-cream lg:flex-row lg:items-start">
+        <section className="flex w-full flex-col-reverse bg-rva-forest text-rva-cream lg:flex-row lg:items-center">
           {/* Copy: below photo on mobile (flex-col-reverse), left panel at lg+ */}
           <div className="flex min-w-0 flex-1 flex-col justify-center p-6 text-left lg:px-10 lg:py-12 xl:px-14">
             <div className="w-full max-w-[520px]">
