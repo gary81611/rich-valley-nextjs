@@ -72,12 +72,3 @@ export const RVA_FLY_FISHING_HERO_PHOTO: KitPhoto = {
   width: 1920,
   height: 1440,
 }
-
-/** About page trip/group image only. Not in gallery. */
-export const RVA_ABOUT_GROUP_FLOAT_PHOTO: KitPhoto = {
-  src: '/images/rva/kit/group-river-float-rafts.webp',
-  alt: 'Rich Valley Adventures guides and guests on a group river float with rafts',
-  caption: 'Group river float',
-  width: 1440,
-  height: 1080,
-}
