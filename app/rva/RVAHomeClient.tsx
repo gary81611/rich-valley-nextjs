@@ -42,7 +42,7 @@ const FEATURED_TRIPS = [
     image: '/images/adventures/fishing-catch-1440.webp',
     alt: 'A family fly fishing from a dock and canoe on a ranch pond',
     detail:
-      'Private ranch and picnic package at a private ranch in the Roaring Fork Valley: from $800 per adult, $250 per child (ages 3+).',
+      'Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+).',
   },
   {
     title: 'Trail Hiking',

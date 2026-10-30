@@ -165,10 +165,10 @@ const localBusinessSchema = {
         url: 'https://www.richvalleyadventures.com/private-ranch-fishing',
         itemOffered: {
           '@type': 'TouristTrip',
-          name: 'Private Ranch Fishing',
+          name: 'Private Ranch Fishing at Spring Creek Ranch, Carbondale',
           url: 'https://www.richvalleyadventures.com/private-ranch-fishing',
           description:
-            'Private ranch and picnic package at a private ranch in the Roaring Fork Valley: from $800 per adult and $250 per child (ages 3+). Ponds, creeks, and a private section of the Roaring Fork River.',
+            'Private ranch and picnic package at Spring Creek Ranch, Carbondale, CO: from $800 per adult and $250 per child (ages 3+). Ponds, creeks, and a private section of the Roaring Fork River.',
         },
       },
       {

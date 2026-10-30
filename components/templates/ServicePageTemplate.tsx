@@ -17,6 +17,11 @@ interface Props {
   heroObjectPosition?: string
   /** Responsive object-position classes (e.g. object-[25%_50%] sm:object-[40%_50%]). Wins over heroObjectPosition. */
   heroObjectClassName?: string
+  /**
+   * RVA only. From lg (1024px) up, split the hero: copy + CTAs on dark green (~40% left),
+   * uncropped 4:3 photo on the right (~60%). Below lg, keep the full-bleed photo hero.
+   */
+  heroSplit?: boolean
   /** Overrides the shared RVA photo-hero height. AAL heroes ignore this. */
   heroHeightClass?: string
   /** Booking form path, including a service query when the form can preselect it. */
@@ -35,6 +40,7 @@ export default function ServicePageTemplate({
   heroImageAlt,
   heroObjectPosition,
   heroObjectClassName,
+  heroSplit = false,
   heroHeightClass,
   bookingHref,
   bookingLabel,
@@ -52,6 +58,66 @@ export default function ServicePageTemplate({
   return (
     <div className={rva ? 'font-inter text-rva-forest' : 'font-inter text-alp-navy'}>
       {/* Hero. RVA photo heroes share one height. Portraits letterbox; AAL markup stays. */}
+      {rva && heroSplit && heroImage ? (
+        <>
+          {/* Full-bleed below lg */}
+          <section className={`lg:hidden text-center ${rvaHeroClass}`}>
+            <Image
+              src={heroImage}
+              alt={heroImageAlt || title}
+              fill
+              priority
+              unoptimized
+              className={`object-cover${heroObjectClassName ? ` ${heroObjectClassName}` : ''}`}
+              style={
+                heroObjectPosition && !heroObjectClassName
+                  ? { objectPosition: heroObjectPosition }
+                  : undefined
+              }
+              sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-rva-forest-dark/55 via-rva-forest-dark/45 to-rva-forest-dark/80" />
+            <div className="max-w-3xl mx-auto w-full px-6 pb-10 relative z-10 text-center">
+              <h1 className="font-playfair font-semibold mb-4 leading-[1.1]">{title}</h1>
+              {content.hero_subtitle && (
+                <p className="text-lg md:text-xl opacity-80 mt-2">{content.hero_subtitle}</p>
+              )}
+            </div>
+          </section>
+          {/* Split from lg: ~40% copy on dark green, ~60% uncropped 4:3 photo. Cap width so 1920 does not balloon. */}
+          <section className="hidden lg:block bg-rva-forest text-rva-cream">
+            <div className="mx-auto flex w-full max-w-[1680px] items-stretch">
+              <div className="flex w-[40%] flex-col justify-center px-10 xl:px-14 py-12 text-left">
+                <h1 className="font-playfair font-semibold mb-4 leading-[1.1] text-3xl xl:text-4xl 2xl:text-5xl">
+                  {title}
+                </h1>
+                {content.hero_subtitle && (
+                  <p className="text-lg xl:text-xl opacity-90 mt-2 max-w-md">{content.hero_subtitle}</p>
+                )}
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <RvaButton href={bookingHref || '/contact'} size="lg" tone="on-dark">
+                    {bookingLabel || RVA_BOOKING_LABEL}
+                  </RvaButton>
+                  <RvaButton href={`tel:${phone.replace(/\D/g, '')}`} variant="secondary" size="lg" tone="on-dark">
+                    {RVA_PHONE_LABEL}
+                  </RvaButton>
+                </div>
+              </div>
+              <div className="relative w-[60%] aspect-[4/3] max-h-[810px] bg-rva-forest-dark">
+                <Image
+                  src={heroImage}
+                  alt={heroImageAlt || title}
+                  fill
+                  priority
+                  unoptimized
+                  className="object-contain"
+                  sizes="(min-width: 1024px) 60vw, 100vw"
+                />
+              </div>
+            </div>
+          </section>
+        </>
+      ) : (
       <section
         className={
           rva
@@ -91,6 +157,7 @@ export default function ServicePageTemplate({
           )}
         </div>
       </section>
+      )}
 
       {content.lead && (content.lead.paragraphs.length > 0 || (content.lead.facts && content.lead.facts.length > 0)) && (
         <section className={`py-10 px-6 border-b ${rva ? 'bg-white border-rva-sage/20' : 'bg-white border-alp-slate/15'}`}>

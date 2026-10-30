@@ -16,14 +16,14 @@ const ogImage = '/images/adventures/fishing-catch.jpeg'
 const ogImageAbsolute = `https://www.richvalleyadventures.com${ogImage}`
 
 const metaDescription =
-  'Private ranch trout fishing and family fishing at a historic private ranch in the Roaring Fork Valley, near Aspen. Ponds, creeks, and a private Roaring Fork section. From $800 per adult and $250 per child (ages 3+).'
+  'Private ranch trout fishing and family fishing at a historic ranch: Spring Creek Ranch in Carbondale, near Aspen. Ponds, creeks, and a private Roaring Fork section. From $800 per adult and $250 per child (ages 3+).'
 
 export const metadata: Metadata = {
-  title: 'Private Ranch Fishing near Aspen | Rich Valley Adventures',
+  title: 'Private Ranch Fly Fishing near Aspen & Carbondale | Rich Valley Adventures',
   description: metaDescription,
   alternates: { canonical: pageUrl },
   openGraph: {
-    title: 'Private Ranch Fishing near Aspen | Rich Valley Adventures',
+    title: 'Private Ranch Fly Fishing near Aspen & Carbondale | Rich Valley Adventures',
     description: metaDescription,
     type: 'website',
     url: pageUrl,
@@ -68,7 +68,7 @@ export default function PrivateRanchFishingPage() {
           price: '800',
           priceCurrency: 'USD',
           url: pageUrl,
-          description: 'From $800 per adult at a private ranch in the Roaring Fork Valley.',
+          description: 'From $800 per adult at Spring Creek Ranch, Carbondale, Colorado.',
         },
         {
           '@type': 'Offer',
@@ -85,7 +85,7 @@ export default function PrivateRanchFishingPage() {
       '@type': 'TouristTrip',
       name: privateRanchFishingPageTitle,
       description:
-        'Private ranch fly fishing at a private ranch in the Roaring Fork Valley. Private ranch and picnic: ponds, creeks, and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat, and brook trout from 12 to 30 inches.',
+        'Private ranch fly fishing at Spring Creek Ranch, Carbondale. Private ranch and picnic: ponds, creeks, and a private section of the Roaring Fork River.',
       url: pageUrl,
       image: ogImageAbsolute,
       touristType: 'Families',

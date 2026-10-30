@@ -25,22 +25,22 @@ const rvaPages: PageSeed[] = [
       h2_sections: [
         {
           title: 'The Roaring Fork River — Gold Medal Fly Fishing Near Aspen',
-          content: `The Roaring Fork River flows 70 miles from its headwaters near Independence Pass through Aspen, Basalt, and Carbondale before joining the Colorado River at Glenwood Springs. Colorado Parks & Wildlife designates the Roaring Fork from Basalt to Glenwood Springs, and the Fryingpan below Ruedi Reservoir, as Gold Medal water, a status reserved for waters that consistently produce large wild trout.\n\nHatches of PMDs, caddis, green drakes, and Trico spinners make dry fly fishing thrilling from June through September. In the spring and fall, streamers and nymphs produce aggressive strikes from the river\'s biggest fish.`,
+          content: `The Roaring Fork River flows 70 miles from its headwaters near Independence Pass through Aspen, Basalt, and Carbondale before joining the Colorado River at Glenwood Springs. Colorado Parks & Wildlife designates the Roaring Fork from Basalt to Glenwood Springs, and the Frying Pan below Ruedi Reservoir, as Gold Medal water, a status reserved for waters that consistently produce large wild trout.\n\nHatches of PMDs, caddis, green drakes, and Trico spinners make dry fly fishing thrilling from June through September. In the spring and fall, streamers and nymphs produce aggressive strikes from the river\'s biggest fish.`,
         },
         {
           title: 'The Frying Pan River — Tailwater below Ruedi Reservoir',
-          content: `Just 15 miles from Basalt, the Frying Pan River below Ruedi Reservoir is widely considered one of the top tailwater fisheries in North America. The cold, nutrient-rich water released from the dam creates an almost year-round midge hatch and supports an extraordinary density of large wild trout.\n\nThe Frying Pan demands technical precision: long leaders, small flies, and delicate presentations. Our guides excel at teaching the nuances of tailwater nymphing and the art of fishing size-22 midge clusters to selective risers. This river rewards patience and skill — and the payoff is the fish of a lifetime.`,
+          content: `Just 15 miles from Basalt, the Frying Pan River below Ruedi Reservoir is widely considered one of the top tailwater fisheries in North America. The cold, nutrient-rich water released from the dam creates an almost year-round midge hatch and supports an extraordinary density of large wild trout — browns and rainbows averaging 16–22 inches.\n\nThe Frying Pan demands technical precision: long leaders, small flies, and delicate presentations. Our guides excel at teaching the nuances of tailwater nymphing and the art of fishing size-22 midge clusters to selective risers. This river rewards patience and skill — and the payoff is the fish of a lifetime.`,
         },
         {
           title: 'Full-Day Float Trip',
-          content: `Full-day float trip: from $1,400 for 2 people (1 boat, 1 captain). Additional adults $375 each, kids $175. Covers an 8-12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear and luxury door-to-door transportation included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up.`,
+          content: `Full-day float trips cover an 8–12 mile stretch of the Roaring Fork or Colorado River.`,
         },
         {
-          title: 'Private Ranch Fishing',
-          content: `Private ranch and picnic package at a private ranch in the Roaring Fork Valley: from $800 per adult, $250 per child (ages 3+). Includes ponds, creeks and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat and brook trout from 12 to 30 inches.`,
+          title: 'Private Ranch and Picnic — Spring Creek Ranch, Carbondale',
+          content: `Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+). Includes ponds, creeks and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat and brook trout.`,
           link: {
             href: '/private-ranch-fishing',
-            label: 'Private ranch fishing in the Roaring Fork Valley',
+            label: 'Private ranch fishing at Spring Creek Ranch',
           },
         },
       ],
@@ -52,7 +52,7 @@ const rvaPages: PageSeed[] = [
         { title: 'Guided Photography', description: 'We capture the moment so you can focus on the fight. Share-worthy shots of every big fish.' },
       ],
       faqs: [
-        { question: 'Can kids fish?', answer: 'Kids ages 3 and up can fish. Waders and boots up to men\'s size 15. Kids on the full-day float are $175. At a private ranch picnic in the Roaring Fork Valley, kids are $250 each (ages 3+). Guests and grandparents with limited mobility can be hosted at the ranch ponds.' },
+        { question: 'Can kids fish?', answer: 'Kids ages 3 and up can fish. Waders and boots up to men\'s size 15. Guests and grandparents with limited mobility can be hosted at the ranch ponds.' },
         { question: 'Do I need a Colorado fishing license?', answer: 'A Colorado Parks and Wildlife fishing license is required for ages 16 and up.' },
         { question: 'What time of year is best for fly fishing near Aspen?', answer: 'The Roaring Fork Valley offers excellent fishing year-round. June through September is peak dry fly season with multiple hatches daily. October and November are prime for large browns in the fall spawn. The Frying Pan tailwater fishes well even in winter due to the stable, cold water temperatures from Ruedi Reservoir. Guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady.' },
         { question: 'Can beginners go fly fishing with you?', answer: 'Absolutely. Beginners are welcome and we love introducing new anglers to the sport. Our guides are patient, enthusiastic teachers. Many of our most rewarding trips are with anglers casting a fly rod for the very first time.' },
