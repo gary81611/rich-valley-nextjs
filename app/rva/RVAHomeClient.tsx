@@ -9,6 +9,7 @@ import RvaButton from '@/components/rva/Button'
 import { createClient } from '@/lib/supabase'
 import type { Adventure, Testimonial, GalleryImage } from '@/lib/types'
 import { isPublicTestimonial } from '@/lib/rva-confirmed'
+
 import {
   FLY_FISHING_IMAGE,
   FLY_FISHING_IMAGE_ALT,
@@ -26,6 +27,26 @@ import {
   formatFishingReportFeedDate,
   type FishingReportFeedItem,
 } from '@/lib/fishing-report-feed'
+
+/** Verbatim Google Maps reviews (scraped 2026-10-30 → /workspace/rva-aal/reviews.json). First name + last initial only. */
+const GOOGLE_HOME_REVIEWS = [
+  {
+    name: 'Sophie N.',
+    // Ellipsis marks a cut after the second paragraph; words before it are unchanged.
+    quote:
+      "Best experience. 10/10, would absolutely recommend. I spent a full day on the drift boat with Kit. I'm an experienced angler, but I also brought my mom, who had never fly fished before. Kit was incredible at teaching a complete beginner while simultaneously giving me tips to improve my own technique. We both caught fish and more importantly had such a fun time together…",
+  },
+  {
+    name: 'Erin P.',
+    quote:
+      'This was an experience of a lifetime! We did a float trip down the roaring fork river and caught a lot of trout in such a beautiful setting. Kit provides everything and is a wonderful guide. We will be sure to book with RichValleyAdventures again when we are out in Aspen!',
+  },
+  {
+    name: 'John M.',
+    quote:
+      'I have been going on trips with the Rich Valley team for the last 9 summer seasons. From day hikes, river floats, fishing and camping I have been beyond impressed with their attention to detail. If you are looking for a high end outfitter Kit has provided an experience that my family and I will never forget!',
+  },
+]
 
 const FEATURED_TRIPS = [
   {
@@ -370,31 +391,43 @@ export default function RVAHomeClient({
       </section>
       )}
 
-      {/* TESTIMONIALS */}
-      {testimonials.length > 0 && (
-      <section className="py-16 bg-rva-cream-dark">
+      {/* Guest reviews: Google quotes first; verified Supabase testimonials join the same grid when present */}
+      <section className="py-16 bg-rva-cream" aria-label="Guest reviews">
         <div className="max-w-5xl mx-auto px-6">
           <ScrollReveal className="text-center mb-10">
-            <p className="font-cormorant text-rva-copper-800 text-lg tracking-widest uppercase mb-4">What Guests Say</p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-rva-forest font-bold">Stories from the Valley</h2>
+            <p className="font-cormorant text-rva-copper-700 text-lg tracking-widest uppercase mb-4">Guest reviews</p>
+            <h2 className="font-playfair text-4xl md:text-5xl text-rva-forest font-bold">What guests say</h2>
           </ScrollReveal>
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {GOOGLE_HOME_REVIEWS.map((review) => (
+              <ScrollReveal key={review.name} className="h-full">
+                <blockquote className="flex h-full flex-col bg-white rounded-2xl p-8 shadow-sm border border-rva-cream-dark">
+                  <p className="mb-6 whitespace-pre-line text-gray-700 text-base leading-relaxed italic">&ldquo;{review.quote}&rdquo;</p>
+                  <footer className="mt-auto border-t border-rva-cream-dark pt-4">
+                    <p className="font-semibold text-rva-forest text-sm">— {review.name}</p>
+                    <p className="text-rva-copper-700 text-xs mt-1">Google review</p>
+                  </footer>
+                </blockquote>
+              </ScrollReveal>
+            ))}
             {testimonials.map((t, i) => (
-              <ScrollReveal key={t.name} delay={i * 150}>
-                <div className="bg-white rounded-2xl p-8 shadow-sm relative">
-                  <div className="font-playfair text-7xl text-rva-copper-700/20 absolute top-4 left-6 leading-none select-none" aria-hidden="true">&ldquo;</div>
-                  <p className="text-gray-700 text-lg leading-relaxed italic mb-6 pt-6 relative z-10">{t.quote}</p>
-                  <div className="border-t border-rva-cream-dark pt-4">
-                    <p className="font-semibold text-rva-forest">{t.name}</p>
-                    <p className="text-rva-copper-700 text-sm">{t.location}</p>
-                  </div>
-                </div>
+              <ScrollReveal key={`testimonial-${t.name}-${i}`} className="h-full" delay={i * 100}>
+                <blockquote className="flex h-full flex-col bg-white rounded-2xl p-8 shadow-sm border border-rva-cream-dark">
+                  <p className="mb-6 whitespace-pre-line text-gray-700 text-base leading-relaxed italic">&ldquo;{t.quote}&rdquo;</p>
+                  <footer className="mt-auto border-t border-rva-cream-dark pt-4">
+                    <p className="font-semibold text-rva-forest text-sm">— {t.name}</p>
+                    {t.location ? (
+                      <p className="text-rva-copper-700 text-xs mt-1">{t.location}</p>
+                    ) : (
+                      <p className="text-rva-copper-700 text-xs mt-1">Verified guest</p>
+                    )}
+                  </footer>
+                </blockquote>
               </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
-      )}
 
       {/* GALLERY */}
       {gallery.length > 0 && (

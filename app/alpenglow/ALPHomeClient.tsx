@@ -42,15 +42,15 @@ const AIRPORT_HOME_FAQS: { q: string; a: string }[] = [
 const GOOGLE_HOME_REVIEWS = [
   {
     name: 'Michael D.',
-    // Full review from /workspace/seo/reviews/aal_greviews.txt (not truncated).
+    // Verbatim from Google Maps reviews, 2026-10-30 (Mac mini scrape → /workspace/rva-aal/reviews.json).
     quote:
       "Excellent car service in Aspen! I've used them many times. The experience is excellent all around. The vehicles are always nice & clean, and the drivers are very friendly and professional. Highly recommend to anyone looking for first class transportation in Aspen!",
   },
   {
     name: 'Lance Y.',
-    // Truncated word-for-word from aal_greviews.txt; ellipsis marks the cut.
+    // Full verbatim from Google Maps (same scrape). Newline preserves the source break before Highly recommended.
     quote:
-      'Always feel safe with Aspen Alpenglow Limo service, have been driven by this company for many years. Very professional and courteous. Whether you need a drive to the Denver airport or just out to dinner, Aspen Alpenglow has great service…',
+      'Always feel safe with Aspen Alpenglow Limo service, have been driven by this company for many years. Very professional and courteous. Whether you need a drive to the Denver airport or just out to dinner, Aspen Alpenglow has great service and clean vehicles. Thanks again\nHighly recommended',
   },
 ]
 
@@ -271,11 +271,11 @@ export default function AlpenglowHomeClient() {
       <section className="py-14 bg-alp-pearl" aria-label="Guest reviews">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="font-playfair text-3xl font-bold text-alp-navy mb-8 text-center">Guest reviews</h2>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="mx-auto grid max-w-[800px] grid-cols-1 gap-6 lg:grid-cols-2">
             {GOOGLE_HOME_REVIEWS.map((review) => (
-              <blockquote key={review.name} className="bg-white rounded-xl p-6 border border-alp-pearl-dark">
-                <p className="text-alp-slate text-sm leading-relaxed italic">&ldquo;{review.quote}&rdquo;</p>
-                <footer className="mt-4">
+              <blockquote key={review.name} className="flex h-full flex-col bg-white rounded-xl p-6 border border-alp-pearl-dark">
+                <p className="mb-6 whitespace-pre-line text-alp-slate text-sm leading-relaxed italic">&ldquo;{review.quote}&rdquo;</p>
+                <footer className="mt-auto border-t border-alp-pearl-dark pt-4">
                   <p className="text-alp-navy font-semibold text-sm">— {review.name}</p>
                   <p className="text-alp-slate text-xs mt-1">Google review</p>
                 </footer>
