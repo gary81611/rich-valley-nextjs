@@ -163,11 +163,7 @@ export function adventurePublicDescription(row: {
     return 'A guided scenic and wildlife tour through the Aspen area.'
   }
   if (slug === 'horseback-riding') {
-    const base = (row.description || '').trim()
-    const suffix = 'Horseback: $600. Horseback rides go through a partner local outfitter.'
-    if (!base) return suffix
-    if (/partner local outfitter/i.test(base)) return base
-    return `${base} ${suffix}`
+    return 'Rides go through a local partner outfitter.'
   }
   if (/snowmobile|atv/i.test(row.name)) {
     return `${row.description} ${RVA_TRIP_OWNERSHIP}`

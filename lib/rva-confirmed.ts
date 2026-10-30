@@ -9,7 +9,7 @@ export const RVA_LICENSES_LINE = `${RVA_LICENSED_OUTFITTER}. ${RVA_RIVER_LICENSE
 
 /** In-house vs partner trips. Partner outfitters stay unnamed. */
 export const RVA_TRIP_OWNERSHIP =
-  'Guides run fishing, hiking, rafting, and camping in-house. Horseback riding, ATV, and snowmobile trips go through partner local outfitters.'
+  'Guides run fishing, hiking, rafting, and camping in-house. Horseback riding, ATV, and snowmobile trips go through local partner outfitters.'
 
 export const RVA_FLOAT_PRICE = 'Full-day float trip: $1,400 for 2'
 export const RVA_RANCH_PRICE = 'Private ranch: $800 per adult and $250 per child'
