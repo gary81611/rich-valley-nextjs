@@ -61,7 +61,7 @@ export default function ServicePageTemplate({
       {rva && heroSplit && heroImage ? (
         <section className="flex w-full flex-col-reverse bg-rva-forest text-rva-cream lg:flex-row lg:items-center">
           {/* Copy: below photo on mobile (flex-col-reverse), left panel at lg+ */}
-          <div className="flex min-w-0 flex-1 flex-col justify-center p-6 text-left lg:px-10 lg:py-12 xl:px-14">
+          <div className="flex min-w-0 flex-1 flex-col justify-center p-6 text-left lg:py-12 lg:pr-10 lg:pl-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))] xl:pr-14">
             <div className="w-full max-w-[520px]">
               <h1 className="font-playfair font-semibold mb-2 leading-[1.1] text-3xl lg:mb-4 lg:text-3xl xl:text-4xl 2xl:text-5xl">
                 {title}
