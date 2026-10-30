@@ -61,7 +61,6 @@ export default function RaftingPage() {
         content={content}
         bookingHref="/contact"
         relatedLinks={[
-          { href: '/fly-fishing', label: 'Aspen fly fishing guides' },
           { href: '/adventures/scenic-wildlife-tours', label: 'Scenic and wildlife tours' },
           { href: '/conditions', label: 'River and fishing conditions' },
         ]}

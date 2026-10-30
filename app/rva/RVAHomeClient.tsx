@@ -53,6 +53,9 @@ const FEATURED_TRIPS = [
   },
 ] as const
 
+/** Live defect: embed shows agency channel name + date. Flip to true to restore. */
+const SHOW_HOME_EXPERIENCE_VIDEO = false
+
 export default function RVAHomeClient({
   featuredReport = null,
 }: {
@@ -309,7 +312,8 @@ export default function RVAHomeClient({
         </div>
       </section>
 
-      {/* VIDEO */}
+      {/* VIDEO — hidden while embed shows agency channel chrome; set SHOW_HOME_EXPERIENCE_VIDEO to restore */}
+      {SHOW_HOME_EXPERIENCE_VIDEO ? (
       <section className="py-16 bg-rva-forest-dark">
         <div className="max-w-4xl mx-auto px-6">
           <ScrollReveal className="text-center mb-10">
@@ -329,6 +333,7 @@ export default function RVAHomeClient({
           </ScrollReveal>
         </div>
       </section>
+      ) : null}
 
       {/* LATEST FISHING REPORT — newest item from the merged server feed */}
       {featuredReport && (

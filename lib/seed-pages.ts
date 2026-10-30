@@ -132,7 +132,7 @@ const rvaPages: PageSeed[] = [
         },
       ],
       features: [
-        { title: 'All Equipment Provided', description: 'Premium hard and inflatable SUP boards, carbon paddles, PFDs, and dry bags. Nothing to bring except sunscreen.' },
+        { title: 'All Equipment Provided', description: 'Premium hard and inflatable SUP boards, paddles, PFDs, and dry bags. Nothing to bring except sunscreen.' },
         { title: 'Rental, not a guided trip', description: 'Paddleboarding is a rental from $100, not a guided trip.' },
         { title: 'Stunning Alpine Scenery', description: 'Glassy high-altitude lakes surrounded by 13,000–14,000 foot peaks — among the most scenic SUP venues in the country.' },
         { title: 'Wildlife Viewing', description: 'Osprey, herons, deer, and occasionally moose frequent Ruedi Reservoir and surrounding lakes.' },
