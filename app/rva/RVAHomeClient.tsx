@@ -22,7 +22,6 @@ import {
   toPublicAdventureCard,
 } from '@/lib/rva-adventure-public'
 import { seoAlt } from '@/lib/seo/alt-text'
-import { KIDS_FAMILY_FISHING_HOME } from '@/lib/rva-fly-fishing-content'
 import {
   formatFishingReportFeedDate,
   type FishingReportFeedItem,
@@ -116,8 +115,9 @@ export default function RVAHomeClient({
               const card = toPublicAdventureCard(a)
               return {
                 ...card,
-                duration: 'Half Day / Full Day',
-                difficulty: 'All levels',
+                // Home cards: no duration/level badge or meta line (Design).
+                duration: '',
+                difficulty: '',
                 fromText: null,
               }
             }),
@@ -216,17 +216,6 @@ export default function RVAHomeClient({
             <p className="rva-speak-services-intro text-rva-forest/80 text-xl max-w-2xl mx-auto">
               Guided trips and rentals across the Roaring Fork Valley, fully equipped.
             </p>
-            <div className="mt-8 max-w-3xl mx-auto text-left bg-rva-cream text-rva-forest rounded-2xl p-6 md:p-8">
-              <h3 className="font-playfair text-2xl md:text-3xl font-bold mb-3">Kids &amp; Family Fishing</h3>
-              <p className="text-base md:text-lg leading-relaxed">
-                {KIDS_FAMILY_FISHING_HOME}
-              </p>
-              <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
-                <Link href="/fly-fishing" className="inline-flex min-h-11 items-center text-rva-copper-700 font-semibold hover:underline">
-                  Fly fishing trips
-                </Link>
-              </div>
-            </div>
             <div className="mt-8 flex max-w-full flex-wrap justify-center gap-2">
               {[
                 { label: 'All', value: null },
@@ -277,20 +266,11 @@ export default function RVAHomeClient({
                       }))
                 }
                 objectPosition={adventure.objectPosition}
-                duration={adventure.duration}
-                level={adventure.difficulty}
                 excerpt={adventure.description}
                 priceNote={adventure.fromText}
               />
             ))}
           </div>
-          {!activeSeason && (
-            <p className="mt-8 text-center text-rva-forest text-lg">
-              <Link href="/rafting" className="text-rva-copper-700 font-semibold hover:underline">
-                Scenic river rafting with a picnic, $1,200
-              </Link>
-            </p>
-          )}
         </div>
       </section>
 
