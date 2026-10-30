@@ -8,7 +8,7 @@
 import { RVA_ACTIVITIES } from '@/lib/rva-activities'
 import {
   FLY_FISHING_ID,
-  FLY_FISHING_IMAGE,
+  FLY_FISHING_CARD_IMAGE,
   FLY_FISHING_PUBLIC_DESCRIPTION,
   PADDLE_PHOTO,
   PADDLE_RENTAL_ID,
@@ -57,7 +57,7 @@ const ROW_BY_ACTIVITY_HREF: Record<string, () => FallbackRow> = {
     id: FLY_FISHING_ID,
     name: 'Fly Fishing',
     description: FLY_FISHING_PUBLIC_DESCRIPTION,
-    image_url: FLY_FISHING_IMAGE,
+    image_url: FLY_FISHING_CARD_IMAGE,
     duration: '',
     difficulty: '',
     season: 'summer',
@@ -121,11 +121,16 @@ const ROW_BY_ACTIVITY_HREF: Record<string, () => FallbackRow> = {
   }),
 }
 
+/** Same as home #18 / adventures listing: no duration badge or level meta; keep prices. */
+export function withoutCardBadges(card: PublicAdventureCard): PublicAdventureCard {
+  return { ...card, duration: '', difficulty: '' }
+}
+
 /** The 7 public adventure cards, ordered like RVA_ACTIVITIES, for SSR when Supabase fails. */
 export function getStaticPublicAdventureCards(): PublicAdventureCard[] {
   return RVA_ACTIVITIES.filter((activity) => activity.href in ROW_BY_ACTIVITY_HREF).map((activity) => {
     const card = toPublicAdventureCard(ROW_BY_ACTIVITY_HREF[activity.href]())
     // Strip badges even if adventurePublicDuration fills paddle duration.
-    return { ...card, duration: '', difficulty: '' }
+    return withoutCardBadges(card)
   })
 }

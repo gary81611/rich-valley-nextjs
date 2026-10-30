@@ -11,8 +11,8 @@ import type { Adventure, Testimonial, GalleryImage } from '@/lib/types'
 import { isPublicTestimonial } from '@/lib/rva-confirmed'
 
 import {
-  FLY_FISHING_IMAGE,
-  FLY_FISHING_IMAGE_ALT,
+  FLY_FISHING_CARD_IMAGE,
+  FLY_FISHING_CARD_IMAGE_ALT,
   FLY_FISHING_PUBLIC_DESCRIPTION,
   PADDLE_PHOTO,
   PADDLE_PHOTO_ALT,
@@ -52,8 +52,9 @@ const FEATURED_TRIPS = [
   {
     title: 'Fly Fishing',
     href: '/fly-fishing',
-    image: FLY_FISHING_IMAGE,
-    alt: FLY_FISHING_IMAGE_ALT,
+    // Kit IMG_9194 plain 4:3 — real pixels only (no pad/stitch). /fly-fishing hero unchanged.
+    image: FLY_FISHING_CARD_IMAGE,
+    alt: FLY_FISHING_CARD_IMAGE_ALT,
     detail: FLY_FISHING_PUBLIC_DESCRIPTION,
   },
   {
@@ -258,7 +259,7 @@ export default function RVAHomeClient({
               ))}
             </div>
           </ScrollReveal>
-          <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch md:max-lg:[&>*:last-child:nth-child(odd)]:justify-self-center md:max-lg:[&>*:last-child:nth-child(odd)]:w-[calc(50%-0.75rem)]">
+          <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
             {(activeSeason ? [] : FEATURED_TRIPS).map((trip) => (
               <AdventureCard
                 key={trip.href}

@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import type { Adventure } from '@/lib/types'
-import { PADDLE_PHOTO, PADDLE_PHOTO_ALT, isPublicAdventureCard, toPublicAdventureCard } from '@/lib/rva-adventure-public'
+import { PADDLE_PHOTO, PADDLE_PHOTO_ALT, isPublicAdventureCard, toPublicAdventureCard, type PublicAdventureCard } from '@/lib/rva-adventure-public'
+import { getStaticPublicAdventureCards, withoutCardBadges } from '@/lib/rva-adventures-static'
 import AdventureCard from '@/components/rva/AdventureCard'
 import RvaButton, { RVA_BOOKING_LABEL, RVA_PHONE_LABEL, RVA_PHONE_HREF } from '@/components/rva/Button'
 
@@ -17,31 +18,53 @@ export const metadata: Metadata = {
   },
 }
 
+function staticAdventureFallback(reason: string): PublicAdventureCard[] {
+  console.error(`[rva/services] static fallback: ${reason}`)
+  return getStaticPublicAdventureCards().map(withoutCardBadges)
+}
+
 export default async function ServicesPage() {
-  const supabase = await createServerSupabaseClient()
+  let adventures: PublicAdventureCard[] = []
+  let services: { title: string; slug: string; description: string; features: string[] }[] = []
 
-  const { data: adventuresRaw } = await supabase
-    .from('adventures')
-    .select('*')
-    .eq('is_active', true)
-    .order('display_order')
+  try {
+    const supabase = await createServerSupabaseClient()
 
-  const { data: servicesRaw } = await supabase
-    .from('services')
-    .select('*')
-    .eq('is_active', true)
-    .order('display_order')
+    const { data: adventuresRaw, error: adventuresError } = await supabase
+      .from('adventures')
+      .select('*')
+      .eq('is_active', true)
+      .order('display_order')
 
-  const adventures = (adventuresRaw ?? [])
-    .filter((a: Adventure) => isPublicAdventureCard(a))
-    .map((a: Adventure) => toPublicAdventureCard(a))
+    if (adventuresError) {
+      adventures = staticAdventureFallback(`supabase error: ${adventuresError.message}`)
+    } else if (adventuresRaw && adventuresRaw.length > 0) {
+      adventures = adventuresRaw
+        .filter((a: Adventure) => isPublicAdventureCard(a))
+        .map((a: Adventure) => withoutCardBadges(toPublicAdventureCard(a)))
+      if (adventures.length === 0) {
+        adventures = staticAdventureFallback('supabase returned rows but none are public adventure cards')
+      }
+    } else {
+      adventures = staticAdventureFallback('supabase returned no active adventures')
+    }
 
-  const services = (servicesRaw ?? []).map((s: any) => ({
-    title: s.name,
-    slug: s.slug || s.name.toLowerCase().replace(/\s+/g, '-'),
-    description: s.description,
-    features: s.features || [],
-  }))
+    const { data: servicesRaw } = await supabase
+      .from('services')
+      .select('*')
+      .eq('is_active', true)
+      .order('display_order')
+
+    services = (servicesRaw ?? []).map((s: any) => ({
+      title: s.name,
+      slug: s.slug || s.name.toLowerCase().replace(/\s+/g, '-'),
+      description: s.description,
+      features: s.features || [],
+    }))
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
+    adventures = staticAdventureFallback(`supabase fetch failed: ${message}`)
+  }
 
   return (
     <div className="min-h-screen bg-rva-cream font-inter">
@@ -91,7 +114,7 @@ export default async function ServicesPage() {
           {adventures.length === 0 ? (
             <p className="text-center text-rva-forest">No adventures are listed yet. Call 970-456-3666 and we will help you plan.</p>
           ) : (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch sm:max-lg:[&>*:last-child:nth-child(odd)]:justify-self-center sm:max-lg:[&>*:last-child:nth-child(odd)]:w-[calc(50%-0.75rem)]">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
               {adventures.map((adventure) => (
                 <AdventureCard
                   key={adventure.slug}
@@ -100,8 +123,8 @@ export default async function ServicesPage() {
                   image={adventure.image}
                   imageAlt={adventure.imageAlt || (adventure.image === PADDLE_PHOTO ? PADDLE_PHOTO_ALT : adventure.title)}
                   objectPosition={adventure.objectPosition}
-                  duration={adventure.duration}
-                  level={adventure.difficulty}
+                  duration=""
+                  level=""
                   excerpt={adventure.description}
                   priceNote={adventure.fromText}
                 />
@@ -111,7 +134,8 @@ export default async function ServicesPage() {
         </div>
       </section>
 
-      {/* Transportation Section */}
+      {/* Transportation Section — omit entirely when Supabase returns no services */}
+      {services.length > 0 ? (
       <section className="py-16 sm:py-24 bg-rva-cream-dark">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12">
@@ -125,9 +149,6 @@ export default async function ServicesPage() {
               Our sister company offers premium car service throughout the Roaring Fork Valley and beyond.
             </p>
           </div>
-          {services.length === 0 ? (
-            <p className="text-center text-gray-500">No services available at this time. Check back soon!</p>
-          ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {services.map((service) => (
                 <div
@@ -153,9 +174,9 @@ export default async function ServicesPage() {
                 </div>
               ))}
             </div>
-          )}
         </div>
       </section>
+      ) : null}
 
       {/* CTA */}
       <section className="py-20 bg-rva-forest">

@@ -5,7 +5,6 @@ import ServicePageTemplate from '@/components/templates/ServicePageTemplate'
 import AdventureCard from '@/components/rva/AdventureCard'
 import type { ServiceContent } from '@/lib/pages'
 import {
-  adventurePublicDuration,
   PADDLE_OG_IMAGE,
   PADDLE_PHOTO_ALT,
   PADDLE_RENTAL_ID,
@@ -172,7 +171,6 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
       : priceNote
         ? { label: 'Price', value: priceNote }
         : null,
-    adventure.difficulty ? { label: 'Level', value: adventure.difficulty } : null,
     groupSize ? { label: 'Group size', value: groupSize } : null,
     seasonValue ? { label: 'Season', value: seasonValue } : null,
     adventure.best_for ? { label: 'Best for', value: adventure.best_for } : null,
@@ -253,8 +251,8 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
                         : rvaPublicAdventureTitle(related.name, slugify(related.name)))
                     }
                     objectPosition={relatedVisual.objectPosition}
-                    duration={adventurePublicDuration(related)}
-                    level={related.difficulty}
+                    duration=""
+                    level=""
                   />
                 )
               })}
