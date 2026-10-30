@@ -87,7 +87,7 @@ export default function FlyFishingPage() {
         },
         {
           '@type': 'Offer',
-          name: 'Private ranch and picnic package at Spring Creek Ranch, Carbondale, CO',
+          name: 'Private ranch and picnic package at a private ranch in the Roaring Fork Valley',
           price: '800',
           priceCurrency: 'USD',
           description:

@@ -173,7 +173,7 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
     [post.content, ...(post.faqs ?? []).flatMap((f) => [f.question, f.answer])].filter(Boolean).join('\n'),
   )
   if (ranchMention && !sidebarLinks.some((l) => l.url.includes('/private-ranch-fishing'))) {
-    sidebarLinks.unshift({ text: 'Private ranch fishing at Spring Creek Ranch', url: '/private-ranch-fishing' })
+    sidebarLinks.unshift({ text: 'Private ranch fishing', url: '/private-ranch-fishing' })
   }
 
   const coverImageAbsolute = absolutePublicImageUrl('rva', blogImageSrcForNext(post.featured_image_url))

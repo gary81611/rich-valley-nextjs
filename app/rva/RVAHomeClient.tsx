@@ -22,7 +22,7 @@ import {
   toPublicAdventureCard,
 } from '@/lib/rva-adventure-public'
 import { seoAlt } from '@/lib/seo/alt-text'
-import { KIDS_FAMILY_FISHING } from '@/lib/rva-fly-fishing-content'
+import { KIDS_FAMILY_FISHING_HOME } from '@/lib/rva-fly-fishing-content'
 import {
   formatFishingReportFeedDate,
   type FishingReportFeedItem,
@@ -42,7 +42,7 @@ const FEATURED_TRIPS = [
     image: '/images/adventures/fishing-catch-1440.webp',
     alt: 'A family fly fishing from a dock and canoe on a ranch pond',
     detail:
-      'Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+).',
+      'Private ranch and picnic package at a private ranch in the Roaring Fork Valley: from $800 per adult, $250 per child (ages 3+).',
   },
   {
     title: 'Trail Hiking',
@@ -216,7 +216,7 @@ export default function RVAHomeClient({
             <div className="mt-8 max-w-3xl mx-auto text-left bg-rva-cream text-rva-forest rounded-2xl p-6 md:p-8">
               <h3 className="font-playfair text-2xl md:text-3xl font-bold mb-3">Kids &amp; Family Fishing</h3>
               <p className="text-base md:text-lg leading-relaxed">
-                {KIDS_FAMILY_FISHING.replace(/ At the Spring Creek Ranch private ranch and picnic, kids are \$250 each \(ages 3\+\)\./, '')}
+                {KIDS_FAMILY_FISHING_HOME}
               </p>
               <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
                 <Link href="/fly-fishing" className="inline-flex min-h-11 items-center text-rva-copper-700 font-semibold hover:underline">

@@ -2,7 +2,7 @@ import type { ServiceContent } from '@/lib/pages'
 import { KIDS_FAMILY_FISHING } from '@/lib/rva-fly-fishing-content'
 
 export const privateRanchFishingPath = '/private-ranch-fishing'
-export const privateRanchFishingPageTitle = 'Private Ranch Fly Fishing at Spring Creek Ranch'
+export const privateRanchFishingPageTitle = 'Private Ranch Fishing'
 
 const WADERS =
   'Waders and boots up to men\'s size 15.'
@@ -19,19 +19,19 @@ const BOOKING =
 const LICENSE = 'A Colorado Parks and Wildlife fishing license is required for ages 16 and up.'
 
 const RANCH_ANSWER = [
-  'Private ranch fishing at Spring Creek Ranch is the private ranch and picnic package on a historic ranch in Carbondale, Colorado, owned by the same family since the late 1800s.',
+  'Private ranch fishing is the private ranch and picnic package on a historic private ranch in the Roaring Fork Valley, owned by the same family since the late 1800s.',
   'The ranch has ponds, creeks, and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat, and brook trout from 12 to 30 inches.',
   'The package is from $800 per adult and $250 per child (ages 3+).',
 ]
 
 export const privateRanchFishingServiceContent: ServiceContent = {
   hero_title: privateRanchFishingPageTitle,
-  hero_subtitle: 'Private ranch fly fishing at Spring Creek Ranch, Carbondale',
+  hero_subtitle: 'Private ranch fly fishing at a private ranch in the Roaring Fork Valley',
   lead: {
-    heading: 'What is private ranch fishing at Spring Creek Ranch?',
+    heading: 'What is private ranch fishing?',
     paragraphs: RANCH_ANSWER,
     facts: [
-      { label: 'Location', value: 'Spring Creek Ranch, Carbondale, CO' },
+      { label: 'Location', value: 'A private ranch in the Roaring Fork Valley' },
       { label: 'Water', value: 'Ponds, creeks, and a private section of the Roaring Fork River' },
       { label: 'Species', value: 'Rainbow, brown, native cutthroat, and brook trout' },
       { label: 'Size', value: '12–30 inches' },
@@ -39,7 +39,7 @@ export const privateRanchFishingServiceContent: ServiceContent = {
       { label: 'Booking', value: "2 days' notice, 50% deposit, 72-hour cancellation" },
     ],
   },
-  intro: `Spring Creek Ranch in Carbondale, Colorado is a famous historic ranch owned by the same family since the late 1800s. Rich Valley Adventures offers private ranch fly fishing here: trout fishing on private water, with a picnic.
+  intro: `A private ranch in the Roaring Fork Valley is a famous historic ranch owned by the same family since the late 1800s. Rich Valley Adventures offers private ranch fly fishing here: trout fishing on private water, with a picnic.
 
 The ranch has multiple ponds and creeks, plus a private section of the Roaring Fork River. The water holds rainbow, brown, native cutthroat, and brook trout, from 12 to 30 inches.
 
@@ -62,7 +62,7 @@ ${PRICE}`,
   h2_sections: [
     {
       title: 'Pricing',
-      content: `Private ranch and picnic package at Spring Creek Ranch, Carbondale, Colorado: from $800 per adult and $250 per child (ages 3+).`,
+      content: `Private ranch and picnic package at a private ranch in the Roaring Fork Valley: from $800 per adult and $250 per child (ages 3+).`,
     },
     {
       title: 'Kids & Family',
@@ -79,13 +79,13 @@ ${PRICE}`,
   ],
   faqs: [
     {
-      question: 'What is private ranch fishing at Spring Creek Ranch?',
+      question: 'What is private ranch fishing?',
       answer: RANCH_ANSWER.join(' '),
     },
     {
-      question: 'Where is Spring Creek Ranch?',
+      question: 'Where is the private ranch?',
       answer:
-        'Spring Creek Ranch is in Carbondale, Colorado, near Aspen. It is a famous historic ranch owned by the same family since the late 1800s.',
+        'The private ranch is in the Roaring Fork Valley, near Aspen. It is a famous historic ranch owned by the same family since the late 1800s.',
     },
     {
       question: 'What does the private ranch and picnic cost?',
