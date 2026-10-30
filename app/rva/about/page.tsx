@@ -6,6 +6,7 @@ import GuideCard from '@/components/rva/GuideCard'
 import RvaButton, { RVA_PHONE_LABEL, RVA_PHONE_HREF } from '@/components/rva/Button'
 import { getActiveGuides } from '@/lib/rva-guides'
 import { replaceRvaYearClaims, rvaPublicStats, type RvaStat } from '@/lib/rva-public-claims'
+import { RVA_ABOUT_GROUP_FLOAT_PHOTO } from '@/lib/rva-kit-photos'
 
 export const dynamic = 'force-dynamic'
 
@@ -75,8 +76,8 @@ export default async function AboutPage() {
       <section className="relative h-[70svh] md:h-[560px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/about/hero.jpg"
-            alt="Rich Valley Adventures — guided outdoor experiences in the Roaring Fork Valley since 2012"
+            src={RVA_ABOUT_GROUP_FLOAT_PHOTO.src}
+            alt={RVA_ABOUT_GROUP_FLOAT_PHOTO.alt}
             fill
             className="object-cover"
             priority
