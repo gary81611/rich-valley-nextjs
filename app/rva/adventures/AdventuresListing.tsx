@@ -129,8 +129,9 @@ export default function AdventuresListing({ adventures }: { adventures: PublicAd
                       : `${adventure.title} — guided adventure in Aspen and the Roaring Fork Valley`)
                   }
                   objectPosition={adventure.objectPosition}
-                  duration={adventure.duration}
-                  level={adventure.difficulty}
+                  // Same as home #18: no duration badge or level meta on adventure cards.
+                  duration=""
+                  level=""
                   excerpt={adventure.description}
                   priceNote={adventure.fromText}
                 />
