@@ -55,7 +55,7 @@ export const flyFishingServiceContent: ServiceContent = {
     links: [
       {
         href: '/private-ranch-fishing',
-        label: 'Private ranch fishing at Spring Creek Ranch, Carbondale is from $800 per adult and $250 per child (ages 3+).',
+        label: 'Private ranch fishing at Spring Creek Ranch in Carbondale starts at $800 per adult and $250 per child (ages 3+).',
       },
     ],
   },

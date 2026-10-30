@@ -10,7 +10,7 @@ export default function RVAFooter() {
   const phoneHref = rvaData.phoneHref
 
   return (
-    <footer className="bg-rva-forest-dark text-white py-16">
+    <footer className="bg-rva-forest-dark text-white pt-16 pb-28 lg:pb-16">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-4 gap-12 mb-12">
           <div>

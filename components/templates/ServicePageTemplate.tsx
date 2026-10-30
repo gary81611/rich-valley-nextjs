@@ -81,7 +81,7 @@ export default function ServicePageTemplate({
                   className={
                     portraitHero
                       ? 'mt-2.5 flex flex-wrap gap-3 lg:mt-8'
-                      : 'mt-2.5 flex flex-col gap-3 md:flex-row md:flex-wrap lg:flex-col lg:mt-8'
+                      : 'mt-2.5 flex flex-col gap-3 md:flex-row md:flex-wrap lg:flex-col lg:max-w-[320px] lg:mt-8'
                   }
                 >
                   <RvaButton
