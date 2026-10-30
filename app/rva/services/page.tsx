@@ -5,6 +5,7 @@ import type { Adventure } from '@/lib/types'
 import { PADDLE_PHOTO, PADDLE_PHOTO_ALT, isPublicAdventureCard, toPublicAdventureCard, type PublicAdventureCard } from '@/lib/rva-adventure-public'
 import { getStaticPublicAdventureCards, withoutCardBadges } from '@/lib/rva-adventures-static'
 import AdventureCard from '@/components/rva/AdventureCard'
+import { correctAalPublicText } from '@/lib/aal-public-copy'
 import RvaButton, { RVA_BOOKING_LABEL, RVA_PHONE_LABEL, RVA_PHONE_HREF } from '@/components/rva/Button'
 
 export const dynamic = 'force-dynamic'
@@ -58,8 +59,10 @@ export default async function ServicesPage() {
     services = (servicesRaw ?? []).map((s: any) => ({
       title: s.name,
       slug: s.slug || s.name.toLowerCase().replace(/\s+/g, '-'),
-      description: s.description,
-      features: s.features || [],
+      description: correctAalPublicText(s.description || ''),
+      features: (Array.isArray(s.features) ? (s.features as string[]) : []).map((f) =>
+        correctAalPublicText(f)
+      ),
     }))
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
@@ -161,16 +164,18 @@ export default async function ServicesPage() {
                   <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
                     {service.description}
                   </p>
-                  <ul className="space-y-1">
-                    {service.features.slice(0, 2).map((feature: string) => (
-                      <li key={feature} className="flex items-center gap-2 text-xs text-gray-500">
-                        <svg className="w-3 h-3 text-rva-copper-700 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
+                  {service.features.length > 0 && (
+                    <ul className="space-y-1">
+                      {service.features.slice(0, 2).map((feature: string) => (
+                        <li key={feature} className="flex items-center gap-2 text-xs text-gray-500">
+                          <svg className="w-3 h-3 text-rva-copper-700 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               ))}
             </div>
