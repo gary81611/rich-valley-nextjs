@@ -78,22 +78,22 @@ export default function ServicePageTemplate({
                     <p className="text-sm leading-snug opacity-90 mt-0.5 lg:mt-2 lg:text-lg lg:leading-normal xl:text-xl">{content.hero_subtitle}</p>
                   ) : null}
                   <div className="mt-2.5 flex flex-wrap gap-3 lg:mt-8">
-                    <RvaButton href={bookingHref || '/contact'} size="lg" tone="on-dark">
+                    <RvaButton href={bookingHref || '/contact'} size="md" tone="on-dark" className="lg:min-h-14 lg:px-8">
                       {bookingLabel || RVA_BOOKING_LABEL}
                     </RvaButton>
-                    <RvaButton href={`tel:${phone.replace(/\D/g, '')}`} variant="secondary" size="lg" tone="on-dark">
+                    <RvaButton href={`tel:${phone.replace(/\D/g, '')}`} variant="secondary" size="md" tone="on-dark" className="lg:min-h-14 lg:px-8">
                       {RVA_PHONE_LABEL}
                     </RvaButton>
                   </div>
                 </div>
               </div>
             </div>
-            {/* Photo: full-width 4:3 cover below lg (ranch); lg+ flush-right 3:4 contain (ranch) or 4:3 contain (fly-fishing) */}
+            {/* Photo: ranch full-bleed 4:3 cover below lg / 3:4 contain lg+; fly-fishing 3:2 below lg / flush-right contain lg+ */}
             <div
               className={
                 portraitHero
                   ? 'relative aspect-[4/3] w-full shrink-0 bg-rva-forest-dark lg:aspect-[3/4] lg:ml-auto lg:w-[min(40%,540px)] lg:max-h-[720px]'
-                  : 'relative aspect-[4/3] w-full shrink-0 bg-rva-forest-dark lg:ml-auto lg:w-[60%] lg:max-w-[960px] lg:max-h-[720px]'
+                  : 'relative aspect-[3/2] w-full shrink-0 bg-rva-forest-dark lg:aspect-auto lg:ml-auto lg:w-[60%] lg:max-w-[960px] lg:max-h-[720px]'
               }
             >
               <Image
