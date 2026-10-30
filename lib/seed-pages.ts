@@ -33,7 +33,7 @@ const rvaPages: PageSeed[] = [
         },
         {
           title: 'Full-Day Float Trip',
-          content: `Full-day float trips cover an 8–12 mile stretch of the Roaring Fork or Colorado River.`,
+          content: `Full-day float trips cover an 8–12 mile stretch of the Roaring Fork or Colorado River. Fishing is guided in-house.`,
         },
         {
           title: 'Private Ranch and Picnic — Spring Creek Ranch, Carbondale',

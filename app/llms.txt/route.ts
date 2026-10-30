@@ -33,7 +33,7 @@ export async function GET(request: Request) {
 - Snowshoeing page: https://www.richvalleyadventures.com/snowshoeing . Guided tours December through March. All snowshoes, poles, and safety equipment are provided. Routes include Ashcroft. Suitable for all ages; kids as young as 5 can participate on appropriate terrain. Book 7 days ahead.
 - Full-day float trip: from $1,400 for 2 people (1 boat, 1 captain). Additional adults $375 each, kids $175. An 8-12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up.
 - Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+). Page: https://www.richvalleyadventures.com/private-ranch-fishing
-- Kids & family fishing: kids ages 3 and up can fish. Waders are available for all children 3 and up, and adult sizes go up to size 15 feet. Guests and grandparents with limited mobility can be hosted at the ranch ponds.
+- Kids & family fishing: kids ages 3 and up can fish. Waders and boots up to men's size 15. Guests and grandparents with limited mobility can be hosted at the ranch ponds.
 - Year-round fishing: guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady.
 - Featured trips, in order: (1) Fly Fishing — half-day and full-day wading trips, and a full-day float from $1,400 for 2 people (1 boat, 1 captain), (2) private ranch family fishing and picnic lunch, (3) Trail Hiking (3–6 hours, moderate)
 - Corporate packages: groups of 50+, custom mix of fishing and hiking

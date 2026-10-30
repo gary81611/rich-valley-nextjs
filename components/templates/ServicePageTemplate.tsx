@@ -60,50 +60,58 @@ export default function ServicePageTemplate({
       {/* Hero. RVA photo heroes share one height. Portraits letterbox; AAL markup stays. */}
       {rva && heroSplit && heroImage ? (
         <>
-          {/* Full-bleed below lg */}
-          <section className={`lg:hidden text-center ${rvaHeroClass}`}>
-            <Image
-              src={heroImage}
-              alt={heroImageAlt || title}
-              fill
-              priority
-              unoptimized
-              className={`object-cover${heroObjectClassName ? ` ${heroObjectClassName}` : ''}`}
-              style={
-                heroObjectPosition && !heroObjectClassName
-                  ? { objectPosition: heroObjectPosition }
-                  : undefined
-              }
-              sizes="100vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-rva-forest-dark/55 via-rva-forest-dark/45 to-rva-forest-dark/80" />
-            <div className="max-w-3xl mx-auto w-full px-6 pb-10 relative z-10 text-center">
-              <h1 className="font-playfair font-semibold mb-4 leading-[1.1]">{title}</h1>
+          {/* Stacked below lg: uncropped 4:3 photo, then dark-green copy + CTAs */}
+          <section className="lg:hidden bg-rva-forest text-rva-cream">
+            <div className="relative w-full aspect-[4/3] bg-rva-forest-dark">
+              <Image
+                src={heroImage}
+                alt={heroImageAlt || title}
+                fill
+                priority
+                unoptimized
+                className="object-contain"
+                sizes="100vw"
+              />
+            </div>
+            <div className="p-6 text-left">
+              <h1 className="font-playfair font-semibold mb-2 leading-[1.1] text-3xl">
+                {title}
+              </h1>
               {content.hero_subtitle && (
-                <p className="text-lg md:text-xl opacity-80 mt-2">{content.hero_subtitle}</p>
+                <p className="text-base opacity-90 mt-1">{content.hero_subtitle}</p>
               )}
+              <div className="mt-4 flex flex-wrap gap-3">
+                <RvaButton href={bookingHref || '/contact'} size="lg" tone="on-dark">
+                  {bookingLabel || RVA_BOOKING_LABEL}
+                </RvaButton>
+                <RvaButton href={`tel:${phone.replace(/\D/g, '')}`} variant="secondary" size="lg" tone="on-dark">
+                  {RVA_PHONE_LABEL}
+                </RvaButton>
+              </div>
             </div>
           </section>
-          {/* Split from lg: ~40% copy on dark green, ~60% uncropped 4:3 photo. Cap width so 1920 does not balloon. */}
+          {/* Split from lg: photo capped at 960×720 (4:3); remaining width is green with copy block max ~520px, vertically centered. */}
           <section className="hidden lg:block bg-rva-forest text-rva-cream">
             <div className="mx-auto flex w-full max-w-[1680px] items-stretch">
-              <div className="flex w-[40%] flex-col justify-center px-10 xl:px-14 py-12 text-left">
-                <h1 className="font-playfair font-semibold mb-4 leading-[1.1] text-3xl xl:text-4xl 2xl:text-5xl">
-                  {title}
-                </h1>
-                {content.hero_subtitle && (
-                  <p className="text-lg xl:text-xl opacity-90 mt-2 max-w-md">{content.hero_subtitle}</p>
-                )}
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <RvaButton href={bookingHref || '/contact'} size="lg" tone="on-dark">
-                    {bookingLabel || RVA_BOOKING_LABEL}
-                  </RvaButton>
-                  <RvaButton href={`tel:${phone.replace(/\D/g, '')}`} variant="secondary" size="lg" tone="on-dark">
-                    {RVA_PHONE_LABEL}
-                  </RvaButton>
+              <div className="flex min-w-0 flex-1 flex-col justify-center px-10 xl:px-14 py-12 text-left">
+                <div className="w-full max-w-[520px]">
+                  <h1 className="font-playfair font-semibold mb-4 leading-[1.1] text-3xl xl:text-4xl 2xl:text-5xl">
+                    {title}
+                  </h1>
+                  {content.hero_subtitle && (
+                    <p className="text-lg xl:text-xl opacity-90 mt-2">{content.hero_subtitle}</p>
+                  )}
+                  <div className="mt-8 flex flex-wrap gap-3">
+                    <RvaButton href={bookingHref || '/contact'} size="lg" tone="on-dark">
+                      {bookingLabel || RVA_BOOKING_LABEL}
+                    </RvaButton>
+                    <RvaButton href={`tel:${phone.replace(/\D/g, '')}`} variant="secondary" size="lg" tone="on-dark">
+                      {RVA_PHONE_LABEL}
+                    </RvaButton>
+                  </div>
                 </div>
               </div>
-              <div className="relative w-[60%] aspect-[4/3] max-h-[810px] bg-rva-forest-dark">
+              <div className="relative w-[60%] max-w-[960px] shrink-0 aspect-[4/3] max-h-[720px] bg-rva-forest-dark">
                 <Image
                   src={heroImage}
                   alt={heroImageAlt || title}
@@ -111,7 +119,7 @@ export default function ServicePageTemplate({
                   priority
                   unoptimized
                   className="object-contain"
-                  sizes="(min-width: 1024px) 60vw, 100vw"
+                  sizes="(min-width: 1024px) min(60vw, 960px), 100vw"
                 />
               </div>
             </div>

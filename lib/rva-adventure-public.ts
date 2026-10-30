@@ -156,7 +156,7 @@ export function adventurePublicDescription(row: {
     return 'We rent High Society paddle boards, and boards can be delivered to you.'
   }
   if (isScenicTourSlug(slug) || /escalade/i.test(row.name)) {
-    return 'A half-day scenic and wildlife tour through the Aspen area, $750.'
+    return 'A guided scenic and wildlife tour through the Aspen area.'
   }
   if (slug === 'horseback-riding') {
     return `${row.description} Horseback: $600. Horseback rides go through a partner local outfitter.`

@@ -152,7 +152,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
     hero_title: displayName,
     hero_subtitle: scenic ? '' : publicDescription,
     intro: scenic
-      ? `${publicDescription}\n\n${RVA_TRIP_OWNERSHIP}`
+      ? publicDescription
       : /horse|snowmobile|atv|scenic|raft/i.test(`${adventureSlug} ${displayName}`)
         ? `${publicDescription}\n\n${RVA_TRIP_OWNERSHIP}`
         : longDescription,
