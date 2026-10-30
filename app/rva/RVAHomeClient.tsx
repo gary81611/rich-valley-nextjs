@@ -398,12 +398,12 @@ export default function RVAHomeClient({
             <p className="font-cormorant text-rva-copper-700 text-lg tracking-widest uppercase mb-4">Guest reviews</p>
             <h2 className="font-playfair text-4xl md:text-5xl text-rva-forest font-bold">What guests say</h2>
           </ScrollReveal>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {GOOGLE_HOME_REVIEWS.map((review) => (
-              <ScrollReveal key={review.name}>
-                <blockquote className="bg-white rounded-2xl p-8 shadow-sm border border-rva-cream-dark h-full">
+              <ScrollReveal key={review.name} className="h-full">
+                <blockquote className="flex h-full flex-col bg-white rounded-2xl p-8 shadow-sm border border-rva-cream-dark">
                   <p className="text-gray-700 text-base leading-relaxed italic">&ldquo;{review.quote}&rdquo;</p>
-                  <footer className="mt-6 border-t border-rva-cream-dark pt-4">
+                  <footer className="mt-auto border-t border-rva-cream-dark pt-4">
                     <p className="font-semibold text-rva-forest text-sm">— {review.name}</p>
                     <p className="text-rva-copper-700 text-xs mt-1">Google review</p>
                   </footer>

@@ -277,11 +277,11 @@ export default function AlpenglowHomeClient() {
       <section className="py-14 bg-alp-pearl" aria-label="Guest reviews">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="font-playfair text-3xl font-bold text-alp-navy mb-8 text-center">Guest reviews</h2>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {GOOGLE_HOME_REVIEWS.map((review) => (
-              <blockquote key={review.name} className="bg-white rounded-xl p-6 border border-alp-pearl-dark">
+              <blockquote key={review.name} className="flex h-full flex-col bg-white rounded-xl p-6 border border-alp-pearl-dark">
                 <p className="text-alp-slate text-sm leading-relaxed italic">&ldquo;{review.quote}&rdquo;</p>
-                <footer className="mt-4">
+                <footer className="mt-auto border-t border-alp-pearl-dark pt-4">
                   <p className="text-alp-navy font-semibold text-sm">— {review.name}</p>
                   <p className="text-alp-slate text-xs mt-1">Google review</p>
                 </footer>
