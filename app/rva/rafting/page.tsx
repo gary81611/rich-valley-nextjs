@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 export default function RaftingPage() {
   const content: ServiceContent = {
     hero_title: 'Aspen Scenic River Rafting',
-    hero_subtitle: 'Picnic on the river. Guided in-house.',
+    hero_subtitle: 'Picnic on the river.',
     intro: `Rich Valley Adventures guides scenic river rafting in the Roaring Fork Valley. ${RVA_TRIP_OWNERSHIP} Call 970-456-3666 to plan the day.`,
     lead: {
       heading: 'Published price',
