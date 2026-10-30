@@ -17,6 +17,11 @@ interface Props {
   heroObjectPosition?: string
   /** Responsive object-position classes (e.g. object-[25%_50%] sm:object-[40%_50%]). Wins over heroObjectPosition. */
   heroObjectClassName?: string
+  /**
+   * RVA only. From lg (1024px) up, split the hero: copy + CTAs on dark green,
+   * uncropped photo flush right (4:3 landscape or 3:4 portrait). Below lg, stack photo then copy.
+   */
+  heroSplit?: boolean
   /** Overrides the shared RVA photo-hero height. AAL heroes ignore this. */
   heroHeightClass?: string
   /** Booking form path, including a service query when the form can preselect it. */
@@ -35,6 +40,7 @@ export default function ServicePageTemplate({
   heroImageAlt,
   heroObjectPosition,
   heroObjectClassName,
+  heroSplit = false,
   heroHeightClass,
   bookingHref,
   bookingLabel,
@@ -52,6 +58,76 @@ export default function ServicePageTemplate({
   return (
     <div className={rva ? 'font-inter text-rva-forest' : 'font-inter text-alp-navy'}>
       {/* Hero. RVA photo heroes share one height. Portraits letterbox; AAL markup stays. */}
+      {rva && heroSplit && heroImage ? (
+        <section className="relative w-full bg-rva-forest text-rva-cream">
+          {/* Mobile: col-reverse. lg+: real flex row on the section (not inside max-w-7xl). */}
+          <div className="flex flex-col-reverse lg:flex-row lg:items-center">
+            {/* Copy: ranch keeps tight mobile pad; FF gets py-6. lg: logo pl + fixed pr-16 gap. */}
+            <div
+              className={
+                portraitHero
+                  ? 'relative z-10 w-full px-6 pt-2 pb-3 text-left lg:flex-1 lg:min-w-0 lg:self-center lg:py-12 lg:pl-[max(1.5rem,calc((100%-80rem)/2+1.5rem))] lg:pr-16'
+                  : 'relative z-10 w-full px-6 py-6 text-left lg:flex-1 lg:min-w-0 lg:self-center lg:py-12 lg:pl-[max(1.5rem,calc((100%-80rem)/2+1.5rem))] lg:pr-16'
+              }
+            >
+              <div className="w-full max-w-[520px]">
+                <h1 className="font-playfair font-semibold mb-1 leading-[1.1] text-[1.65rem] lg:mb-4 lg:text-3xl xl:text-4xl 2xl:text-5xl">
+                  {title}
+                </h1>
+                {content.hero_subtitle ? (
+                  <p className="text-base leading-snug opacity-90 mt-0.5 lg:mt-2 lg:text-lg lg:leading-normal xl:text-xl">{content.hero_subtitle}</p>
+                ) : null}
+                <div className="mt-2.5 flex flex-col gap-3 md:flex-row md:flex-wrap lg:flex-col lg:max-w-[320px] lg:mt-8">
+                  <RvaButton
+                    href={bookingHref || '/contact'}
+                    size="md"
+                    tone="on-dark"
+                    className="w-full whitespace-nowrap md:w-auto lg:w-full lg:min-h-14 lg:px-8"
+                  >
+                    {bookingLabel || RVA_BOOKING_LABEL}
+                  </RvaButton>
+                  {/* Sticky bar already has Call below lg — hide the hero duplicate. */}
+                  <RvaButton
+                    href={`tel:${phone.replace(/\D/g, '')}`}
+                    variant="secondary"
+                    size="md"
+                    tone="on-dark"
+                    className="max-lg:hidden lg:w-full lg:min-h-14 lg:px-8 whitespace-nowrap"
+                  >
+                    {RVA_PHONE_LABEL}
+                  </RvaButton>
+                </div>
+              </div>
+            </div>
+            {/* Photo: FF mobile true 4:3 full-bleed; ranch unchanged; lg+ flush-right */}
+            <div
+              className={
+                portraitHero
+                  ? 'relative aspect-[4/3] w-full shrink-0 bg-rva-forest-dark lg:aspect-[3/4] lg:w-[min(40%,540px)] lg:max-h-[720px]'
+                  : 'relative aspect-[4/3] w-full shrink-0 bg-rva-forest-dark lg:aspect-[4/3] lg:w-[60%] lg:max-w-[960px] lg:max-h-[720px]'
+              }
+            >
+              <Image
+                src={heroImage}
+                alt={heroImageAlt || title}
+                fill
+                priority
+                unoptimized
+                className={
+                  portraitHero
+                    ? 'object-cover object-[50%_60%] lg:object-contain lg:object-center'
+                    : 'object-cover object-center lg:object-contain'
+                }
+                sizes={
+                  portraitHero
+                    ? '(min-width: 1024px) min(40vw, 540px), 100vw'
+                    : '(min-width: 1024px) min(60vw, 960px), 100vw'
+                }
+              />
+            </div>
+          </div>
+        </section>
+      ) : (
       <section
         className={
           rva
@@ -91,6 +167,7 @@ export default function ServicePageTemplate({
           )}
         </div>
       </section>
+      )}
 
       {content.lead && (content.lead.paragraphs.length > 0 || (content.lead.facts && content.lead.facts.length > 0)) && (
         <section className={`py-10 px-6 border-b ${rva ? 'bg-white border-rva-sage/20' : 'bg-white border-alp-slate/15'}`}>

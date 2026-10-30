@@ -10,3 +10,4 @@ npm-debug.log*
 .claude/
 *.tsbuildinfo
 next-env.d.ts
+.qa-ff-focus/

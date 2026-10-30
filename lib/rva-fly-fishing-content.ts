@@ -3,14 +3,18 @@ import type { ServiceContent } from '@/lib/pages'
 export const flyFishingPageTitle = 'Aspen Fly Fishing'
 
 export const KIDS_FAMILY_FISHING =
-  'Kids ages 3 and up can fish. Waders are available for all children 3 and up, and adult sizes go up to size 15 feet. Kids on the full-day float are $175. At the Spring Creek Ranch private ranch and picnic, kids are $250 each (ages 3+). Guests and grandparents with limited mobility can be hosted at the ranch ponds.'
+  'Kids ages 3 and up can fish. Waders are provided for kids 3 and up, and adult waders and boots go up to men\'s size 15. Guests and grandparents with limited mobility can be hosted at the ranch ponds.'
+
+/** Home card — same kids facts (prices live in Trip prices / ranch card). */
+export const KIDS_FAMILY_FISHING_HOME =
+  'Kids ages 3 and up can fish. Waders are provided for kids 3 and up, and adult waders and boots go up to men\'s size 15. Guests and grandparents with limited mobility can be hosted at the ranch ponds.'
 
 export const YEAR_ROUND_FISHING =
   'Guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady.'
 
-/** Append the ranch landing link when copy already names Spring Creek Ranch. */
+/** Append the ranch landing link when copy already names Spring Creek Ranch / private ranch. */
 export function withPrivateRanchFishingLink(text: string, inline = false): string {
-  if (!text || !/spring creek ranch/i.test(text) || text.includes('/private-ranch-fishing')) return text
+  if (!text || !/(spring creek ranch|private ranch)/i.test(text) || text.includes('/private-ranch-fishing')) return text
   const link = '[Private ranch fishing at Spring Creek Ranch](/private-ranch-fishing)'
   return inline ? `${text.trimEnd()} ${link}` : `${text.trimEnd()}\n\n${link}`
 }
@@ -51,44 +55,36 @@ export const flyFishingServiceContent: ServiceContent = {
     links: [
       {
         href: '/private-ranch-fishing',
-        label: 'Private ranch fishing at Spring Creek Ranch is from $800 per adult and $250 per child (ages 3+).',
+        label: 'Private ranch fishing at Spring Creek Ranch in Carbondale starts at $800 per adult and $250 per child (ages 3+).',
       },
     ],
   },
-  intro: `The Roaring Fork Valley is one of the most storied fly fishing destinations in the American West. We guide the Roaring Fork River, Frying Pan River, Colorado River near Glenwood Springs, the Gunnison River on float trips, and private water — including pond and alpine spring settings, high mountain lakes, and the Old Town Basalt Private Ranch on the Roaring Fork — for anglers who want uncrowded water and a tailored experience.
+  intro: `The Roaring Fork Valley is one of the most storied fly fishing destinations in the American West. We guide the Roaring Fork River, Frying Pan River, Colorado River near Glenwood Springs, the Gunnison River on float trips, and private water — including pond and alpine spring settings, high mountain lakes, and Spring Creek Ranch, Carbondale — for anglers who want uncrowded water and a tailored experience.
 
 Rich Valley Adventures has been guiding these waters since 2012. Our guides grew up fishing these drainages and know every productive run, seam, and riffle across seasons. Whether you're picking up a fly rod for the first time or you're a seasoned angler chasing your personal best, we tailor every trip to your experience level and goals.
 
 We offer half-day and full-day guided trips from May through October on our wading fisheries, full-day float trips on the Roaring Fork or Colorado River, and dedicated float trips on the Gunnison with our in-house boat captain. Guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady. All gear is provided — premium fly rods, reels, waders, wading boots, and a full fly selection matched to current hatch conditions. Our catch-and-release philosophy protects these waters for generations of anglers to come.`,
   h2_sections: [
     {
-      title: 'Kids & Family Fishing',
-      content: KIDS_FAMILY_FISHING,
-    },
-    {
       title: 'The Roaring Fork River — Gold Medal Fly Fishing Near Aspen',
-      content: `The Roaring Fork River flows 70 miles from its headwaters near Independence Pass through Aspen, Basalt, and Carbondale before joining the Colorado River at Glenwood Springs. The stretch through and below Aspen is designated Gold Medal water by Colorado Parks & Wildlife — a designation reserved for waters that consistently produce large wild trout in exceptional numbers.
+      content: `The Roaring Fork River flows 70 miles from its headwaters near Independence Pass through Aspen, Basalt, and Carbondale before joining the Colorado River at Glenwood Springs. Colorado Parks & Wildlife designates the Roaring Fork from Basalt to Glenwood Springs, and the Frying Pan below Ruedi Reservoir, as Gold Medal water, a status reserved for waters that consistently produce large wild trout.
 
-Brown trout averaging 14–18 inches are common, with fish over 20 inches taken regularly by our guides. Hatches of PMDs, caddis, green drakes, and Trico spinners make dry fly fishing thrilling from June through September. In the spring and fall, streamers and nymphs produce aggressive strikes from the river's biggest fish.`,
+Hatches of PMDs, caddis, green drakes, and Trico spinners make dry fly fishing thrilling from June through September. In the spring and fall, streamers and nymphs produce aggressive strikes from the river's biggest fish.`,
     },
     {
       title: 'The Frying Pan River — Tailwater below Ruedi Reservoir',
-      content: `Just 15 miles from Basalt, the Frying Pan River below Ruedi Reservoir is widely considered one of the top tailwater fisheries in North America. The cold, nutrient-rich water released from the dam creates an almost year-round midge hatch and supports an extraordinary density of large wild trout — browns and rainbows averaging 16–22 inches.
+      content: `Just 15 miles from Basalt, the Frying Pan River below Ruedi Reservoir is widely considered one of the top tailwater fisheries in North America. The cold, nutrient-rich water released from the dam creates an almost year-round midge hatch and supports an extraordinary density of large wild trout.
 
 The Frying Pan demands technical precision: long leaders, small flies, and delicate presentations. Our guides excel at teaching the nuances of tailwater nymphing and the art of fishing size-22 midge clusters to selective risers. This river rewards patience and skill — and the payoff is the fish of a lifetime.`,
     },
     {
       id: 'full-day-float-trip',
       title: 'Full-Day Float Trip',
-      content: `Full-day float trip: from $1,400 for 2 people (1 boat, 1 captain). Additional adults $375 each, kids $175. Covers an 8–12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation are included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up.`,
+      content: `Full-day float trips cover an 8–12 mile stretch of the Roaring Fork or Colorado River. Fishing is guided in-house.`,
     },
     {
       title: 'Private Ranch and Picnic — Spring Creek Ranch, Carbondale',
-      content: `Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+). Includes ponds, creeks and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat and brook trout from 12 to 30 inches.`,
-      link: {
-        href: '/private-ranch-fishing',
-        label: 'Private ranch fishing at Spring Creek Ranch',
-      },
+      content: `Private ranch and picnic package at Spring Creek Ranch, Carbondale. Includes ponds, creeks and a private section of the Roaring Fork.`,
     },
     {
       title: 'Gunnison River — Big Water, Trophy Trout',
@@ -100,18 +96,14 @@ Float trips are the right tool here: volume, gradient, and depth favor a drift b
       title: 'Private Water Access — Exclusive Fishing Experiences',
       content: `Private water is how we deliver solitude, higher success rates for beginners and families, and access the public simply cannot replicate on its own. Options include a private pond fed by an alpine spring — ideal for kids, first-time anglers, and groups of up to twenty when you want guaranteed shots at cooperative fish without competing for elbow room along a public bank.
 
-We also offer river access on the Old Town Basalt Private Ranch on the Roaring Fork: a rare stretch where our guests fish water that is not open to casual walk-in traffic. For guests seeking alpine stillwater, we can arrange hike-in days at high mountain lakes where cutthroats and brookies live in postcard settings far from trailhead crowds. The through-line is simple: fewer people, less noise, more time with your guide, and a day shaped around outcomes you can feel — whether that is a child's first fish on a fly rod or a quiet, uncrowded afternoon on moving water.`,
+We also offer river access at Spring Creek Ranch, Carbondale: a rare stretch where our guests fish water that is not open to casual walk-in traffic. For guests seeking alpine stillwater, we can arrange hike-in days at high mountain lakes where cutthroats and brookies live in postcard settings far from trailhead crowds. The through-line is simple: fewer people, less noise, more time with your guide, and a day shaped around outcomes you can feel — whether that is a child's first fish on a fly rod or a quiet, uncrowded afternoon on moving water.`,
     },
   ],
   features: [
     {
-      title: 'Kids & Family Fishing',
-      description: KIDS_FAMILY_FISHING,
-    },
-    {
       title: 'Rivers & waters we fish',
       description:
-        'Roaring Fork River, Frying Pan River, Colorado River (near Glenwood Springs), Gunnison River float trips, Spring Creek Ranch in Carbondale, and other private water — including pond, alpine spring, ranch water, and high mountain lakes.',
+        'Roaring Fork River, Frying Pan River, Colorado River (near Glenwood Springs), Gunnison River float trips, Spring Creek Ranch, Carbondale, and other private water — including pond, alpine spring, ranch water, and high mountain lakes.',
     },
     {
       title: 'All Equipment Provided',
@@ -143,11 +135,6 @@ We also offer river access on the Old Town Basalt Private Ranch on the Roaring F
     {
       question: 'Can kids fish?',
       answer: KIDS_FAMILY_FISHING,
-    },
-    {
-      question: 'Do I need a Colorado fishing license?',
-      answer:
-        'A Colorado Parks and Wildlife fishing license is required for ages 16 and up.',
     },
     {
       question: 'What time of year is best for fly fishing near Aspen?',

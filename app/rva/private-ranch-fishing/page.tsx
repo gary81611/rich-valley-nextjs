@@ -85,7 +85,7 @@ export default function PrivateRanchFishingPage() {
       '@type': 'TouristTrip',
       name: privateRanchFishingPageTitle,
       description:
-        'Private ranch fly fishing at Spring Creek Ranch, Carbondale. Private ranch and picnic: ponds, creeks, and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat, and brook trout from 12 to 30 inches.',
+        'Private ranch fly fishing at Spring Creek Ranch, Carbondale. Private ranch and picnic: ponds, creeks, and a private section of the Roaring Fork River.',
       url: pageUrl,
       image: ogImageAbsolute,
       touristType: 'Families',
@@ -127,7 +127,7 @@ export default function PrivateRanchFishingPage() {
 
   return (
     <>
-      <div className="h-[86px]" />
+      <div className="h-[var(--rva-header,97px)] md:h-[var(--rva-header,117px)]" aria-hidden />
       {jsonLd.map((schema, i) => (
         <script
           key={i}
@@ -146,6 +146,7 @@ export default function PrivateRanchFishingPage() {
           context: 'private ranch fly fishing',
           brand: 'Rich Valley Adventures',
         })}
+        heroSplit
         bookingHref="/contact?service=private-ranch-fishing"
         bookingLabel="Book private ranch fishing"
         relatedLinks={[

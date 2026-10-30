@@ -25,13 +25,13 @@ export const LOCATIONS: Location[] = [
   },
   {
     slug: 'basalt', name: 'Basalt', tagline: 'Gateway to the Frying Pan River',
-    description: 'Basalt sits at the confluence of the Frying Pan and Roaring Fork Rivers — two of Colorado\'s premier fly fishing destinations. The Old Town Basalt Private Ranch on the Roaring Fork offers exclusive private water access through Rich Valley Adventures.',
+    description: 'Basalt sits at the confluence of the Frying Pan and Roaring Fork Rivers — two of Colorado\'s premier fly fishing destinations. Spring Creek Ranch, Carbondale offers exclusive private water access through Rich Valley Adventures.',
     driveFromAspen: '~25 min',
     rivers: ['Frying Pan River', 'Roaring Fork River'],
     activities: ['Fly Fishing', 'Private Water Access', 'Guided Hiking', 'Mountain Biking'],
-    highlights: ['Old Town Basalt Private Ranch (private water access)', 'Frying Pan River gold medal water', 'Family-friendly fishing'],
+    highlights: ['Spring Creek Ranch, Carbondale (private water access)', 'Frying Pan River gold medal water', 'Family-friendly fishing'],
     faq: [
-      { q: 'What is the Old Town Basalt Private Ranch?', a: 'It\'s exclusive private water access on the Roaring Fork River available only through Rich Valley Adventures. Less fishing pressure means more fish and a premium experience.' },
+      { q: 'What is Spring Creek Ranch, Carbondale?', a: 'Spring Creek Ranch, Carbondale offers exclusive private water access available only through Rich Valley Adventures. Less fishing pressure means more fish and a premium experience.' },
       { q: 'Is the Frying Pan River good for fly fishing?', a: 'The Frying Pan below Ruedi Reservoir is one of Colorado\'s finest tailwaters — cold, consistent flows produce excellent year-round trout fishing.' },
     ],
   },

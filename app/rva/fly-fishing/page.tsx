@@ -5,7 +5,7 @@ import {
   flyFishingServiceContent,
 } from '@/lib/rva-fly-fishing-content'
 import { rvaServicePageRelatedBlogLinks } from '@/lib/rva-blog-pillars'
-import { RVA_FLOAT_PHOTO, RVA_FLY_FISHING_HERO_PHOTO } from '@/lib/rva-kit-photos'
+import { RVA_FLY_FISHING_HERO_PHOTO } from '@/lib/rva-kit-photos'
 
 /** The prerendered HTML was stuck on the Vercel edge as STALE after the copy change. Render each request from this file. */
 export const dynamic = 'force-dynamic'
@@ -182,7 +182,7 @@ export default function FlyFishingPage() {
 
   return (
     <>
-      <div className="h-[86px]" />
+      <div className="h-[var(--rva-header,97px)] md:h-[var(--rva-header,117px)]" aria-hidden />
       {jsonLd.map((schema, i) => (
         <script
           key={i}
@@ -195,20 +195,9 @@ export default function FlyFishingPage() {
         title={flyFishingPageTitle}
         heroImage={RVA_FLY_FISHING_HERO_PHOTO.src}
         heroImageAlt={RVA_FLY_FISHING_HERO_PHOTO.alt}
-        heroObjectClassName="object-[25%_50%] sm:object-[40%_50%]"
-        content={{
-          ...content,
-          intro: content.intro,
-          h2_sections: [
-            {
-              title: 'On the river',
-              content: 'Full-day float trip: $1,400 for 2. Fishing is guided in-house.',
-              image: RVA_FLOAT_PHOTO.src,
-              imageAlt: RVA_FLOAT_PHOTO.alt,
-            },
-            ...(content.h2_sections || []),
-          ],
-        }}
+        heroObjectClassName="object-[18%_50%] sm:object-[40%_25%]"
+        heroSplit
+        content={content}
         relatedLinks={rvaServicePageRelatedBlogLinks('fly-fishing')}
       />
     </>

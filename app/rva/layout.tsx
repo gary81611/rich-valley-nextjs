@@ -235,7 +235,7 @@ export default function RVALayout({ children }: { children: React.ReactNode }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
       <RVANav />
-      <div className="rva-site pb-28 lg:pb-0">
+      <div className="rva-site">
         {children}
       </div>
       <RVAFooter />

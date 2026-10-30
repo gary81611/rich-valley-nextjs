@@ -5,6 +5,7 @@ import ServicePageTemplate from '@/components/templates/ServicePageTemplate'
 import AdventureCard from '@/components/rva/AdventureCard'
 import type { ServiceContent } from '@/lib/pages'
 import {
+  adventurePublicDuration,
   PADDLE_OG_IMAGE,
   PADDLE_PHOTO_ALT,
   PADDLE_RENTAL_ID,
@@ -144,7 +145,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
     adventure.duration ? { label: 'Duration', value: adventure.duration } : null,
     adventure.difficulty ? { label: 'Level', value: adventure.difficulty } : null,
     groupSize ? { label: 'Group size', value: groupSize } : null,
-    adventure.season ? { label: 'Season', value: adventure.season } : null,
+    adventure.season ? { label: 'Season', value: adventure.season === 'year-round' ? 'Year-round' : adventure.season } : null,
     adventure.best_for ? { label: 'Best for', value: adventure.best_for } : null,
   ].filter((fact): fact is { label: string; value: string } => fact !== null)
 
@@ -152,7 +153,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
     hero_title: displayName,
     hero_subtitle: scenic ? '' : publicDescription,
     intro: scenic
-      ? RVA_TRIP_OWNERSHIP
+      ? publicDescription
       : /horse|snowmobile|atv|scenic|raft/i.test(`${adventureSlug} ${displayName}`)
         ? `${publicDescription}\n\n${RVA_TRIP_OWNERSHIP}`
         : longDescription,
@@ -178,8 +179,8 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
         bookingHref="/contact"
       />
       {relatedAdventures.length > 0 && (
-        <section className="bg-rva-cream px-6 pb-16">
-          <div className="max-w-7xl mx-auto">
+        <section className="bg-rva-cream py-14 px-6">
+          <div className="max-w-5xl mx-auto">
             <h2 className="font-playfair text-3xl text-rva-forest font-semibold mb-6">More Adventures</h2>
             <div className="grid md:grid-cols-3 gap-6 items-stretch">
               {relatedAdventures.map((related) => {
@@ -197,7 +198,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
                         : rvaPublicAdventureTitle(related.name, slugify(related.name)))
                     }
                     objectPosition={relatedVisual.objectPosition}
-                    duration={related.duration}
+                    duration={adventurePublicDuration(related)}
                     level={related.difficulty}
                   />
                 )

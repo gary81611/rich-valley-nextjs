@@ -35,7 +35,7 @@ export default function RaftingPage() {
 
   return (
     <>
-      <div className="h-[86px]" />
+      <div className="h-[var(--rva-header,97px)] md:h-[var(--rva-header,117px)]" aria-hidden />
       <ServicePageTemplate site="rva" title="Scenic River Rafting" content={content} bookingHref="/contact" />
     </>
   )
