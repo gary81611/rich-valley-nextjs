@@ -42,15 +42,21 @@ const AIRPORT_HOME_FAQS: { q: string; a: string }[] = [
 const GOOGLE_HOME_REVIEWS = [
   {
     name: 'Michael D.',
-    // Full review from /workspace/seo/reviews/aal_greviews.txt (not truncated).
+    // Verbatim from Google Maps reviews, 2026-10-30 (Mac mini scrape → /workspace/rva-aal/reviews.json).
     quote:
       "Excellent car service in Aspen! I've used them many times. The experience is excellent all around. The vehicles are always nice & clean, and the drivers are very friendly and professional. Highly recommend to anyone looking for first class transportation in Aspen!",
   },
   {
     name: 'Lance Y.',
-    // Truncated word-for-word from aal_greviews.txt; ellipsis marks the cut.
+    // Full verbatim from Google Maps (same scrape).
     quote:
-      'Always feel safe with Aspen Alpenglow Limo service, have been driven by this company for many years. Very professional and courteous. Whether you need a drive to the Denver airport or just out to dinner, Aspen Alpenglow has great service…',
+      'Always feel safe with Aspen Alpenglow Limo service, have been driven by this company for many years. Very professional and courteous. Whether you need a drive to the Denver airport or just out to dinner, Aspen Alpenglow has great service and clean vehicles. Thanks again Highly recommended',
+  },
+  {
+    name: 'Nan M.',
+    // Verbatim from Google Maps (same scrape). Curly apostrophe preserved.
+    quote:
+      'First Class transportation!  Drivers are very professional.  Cars are always spotless.  Once you ride Aspen Alpenglow Limousine you’ll never want to ride with anyone else!',
   },
 ]
 
@@ -271,7 +277,7 @@ export default function AlpenglowHomeClient() {
       <section className="py-14 bg-alp-pearl" aria-label="Guest reviews">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="font-playfair text-3xl font-bold text-alp-navy mb-8 text-center">Guest reviews</h2>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-3 gap-6">
             {GOOGLE_HOME_REVIEWS.map((review) => (
               <blockquote key={review.name} className="bg-white rounded-xl p-6 border border-alp-pearl-dark">
                 <p className="text-alp-slate text-sm leading-relaxed italic">&ldquo;{review.quote}&rdquo;</p>
