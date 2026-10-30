@@ -77,35 +77,22 @@ export default function ServicePageTemplate({
                 {content.hero_subtitle ? (
                   <p className="text-base leading-snug opacity-90 mt-0.5 lg:mt-2 lg:text-lg lg:leading-normal xl:text-xl">{content.hero_subtitle}</p>
                 ) : null}
-                <div
-                  className={
-                    portraitHero
-                      ? 'mt-2.5 flex flex-wrap gap-3 lg:mt-8'
-                      : 'mt-2.5 flex flex-col gap-3 md:flex-row md:flex-wrap lg:flex-col lg:max-w-[320px] lg:mt-8'
-                  }
-                >
+                <div className="mt-2.5 flex flex-col gap-3 md:flex-row md:flex-wrap lg:flex-col lg:max-w-[320px] lg:mt-8">
                   <RvaButton
                     href={bookingHref || '/contact'}
                     size="md"
                     tone="on-dark"
-                    className={
-                      portraitHero
-                        ? 'whitespace-nowrap lg:min-h-14 lg:px-8'
-                        : 'w-full whitespace-nowrap md:w-auto lg:w-full lg:min-h-14 lg:px-8'
-                    }
+                    className="w-full whitespace-nowrap md:w-auto lg:w-full lg:min-h-14 lg:px-8"
                   >
                     {bookingLabel || RVA_BOOKING_LABEL}
                   </RvaButton>
+                  {/* Sticky bar already has Call below lg — hide the hero duplicate. */}
                   <RvaButton
                     href={`tel:${phone.replace(/\D/g, '')}`}
                     variant="secondary"
                     size="md"
                     tone="on-dark"
-                    className={
-                      portraitHero
-                        ? 'whitespace-nowrap lg:min-h-14 lg:px-8'
-                        : 'w-full whitespace-nowrap md:w-auto lg:w-full lg:min-h-14 lg:px-8'
-                    }
+                    className="max-lg:hidden lg:w-full lg:min-h-14 lg:px-8 whitespace-nowrap"
                   >
                     {RVA_PHONE_LABEL}
                   </RvaButton>
