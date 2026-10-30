@@ -90,38 +90,36 @@ export default function ServicePageTemplate({
               </div>
             </div>
           </section>
-          {/* Split from lg: photo capped at 960×720 (4:3); remaining width is green with copy block max ~520px, vertically centered. */}
-          <section className="hidden lg:block bg-rva-forest text-rva-cream">
-            <div className="mx-auto flex w-full max-w-[1680px] items-stretch">
-              <div className="flex min-w-0 flex-1 flex-col justify-center px-10 xl:px-14 py-12 text-left">
-                <div className="w-full max-w-[520px]">
-                  <h1 className="font-playfair font-semibold mb-4 leading-[1.1] text-3xl xl:text-4xl 2xl:text-5xl">
-                    {title}
-                  </h1>
-                  {content.hero_subtitle && (
-                    <p className="text-lg xl:text-xl opacity-90 mt-2">{content.hero_subtitle}</p>
-                  )}
-                  <div className="mt-8 flex flex-wrap gap-3">
-                    <RvaButton href={bookingHref || '/contact'} size="lg" tone="on-dark">
-                      {bookingLabel || RVA_BOOKING_LABEL}
-                    </RvaButton>
-                    <RvaButton href={`tel:${phone.replace(/\D/g, '')}`} variant="secondary" size="lg" tone="on-dark">
-                      {RVA_PHONE_LABEL}
-                    </RvaButton>
-                  </div>
+          {/* Split from lg: photo flush right (max 960×720); all extra width is green on the left. */}
+          <section className="hidden lg:flex w-full items-stretch bg-rva-forest text-rva-cream">
+            <div className="flex min-w-0 flex-1 flex-col justify-center px-10 xl:px-14 py-12 text-left">
+              <div className="w-full max-w-[520px]">
+                <h1 className="font-playfair font-semibold mb-4 leading-[1.1] text-3xl xl:text-4xl 2xl:text-5xl">
+                  {title}
+                </h1>
+                {content.hero_subtitle && (
+                  <p className="text-lg xl:text-xl opacity-90 mt-2">{content.hero_subtitle}</p>
+                )}
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <RvaButton href={bookingHref || '/contact'} size="lg" tone="on-dark">
+                    {bookingLabel || RVA_BOOKING_LABEL}
+                  </RvaButton>
+                  <RvaButton href={`tel:${phone.replace(/\D/g, '')}`} variant="secondary" size="lg" tone="on-dark">
+                    {RVA_PHONE_LABEL}
+                  </RvaButton>
                 </div>
               </div>
-              <div className="relative w-[60%] max-w-[960px] shrink-0 aspect-[4/3] max-h-[720px] bg-rva-forest-dark">
-                <Image
-                  src={heroImage}
-                  alt={heroImageAlt || title}
-                  fill
-                  priority
-                  unoptimized
-                  className="object-contain"
-                  sizes="(min-width: 1024px) min(60vw, 960px), 100vw"
-                />
-              </div>
+            </div>
+            <div className="relative ml-auto w-[60%] max-w-[960px] shrink-0 aspect-[4/3] max-h-[720px] bg-rva-forest-dark">
+              <Image
+                src={heroImage}
+                alt={heroImageAlt || title}
+                fill
+                priority
+                unoptimized
+                className="object-cover"
+                sizes="(min-width: 1024px) min(60vw, 960px), 100vw"
+              />
             </div>
           </section>
         </>
