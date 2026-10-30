@@ -3,7 +3,7 @@ import type { ServiceContent } from '@/lib/pages'
 export const flyFishingPageTitle = 'Aspen Fly Fishing'
 
 export const KIDS_FAMILY_FISHING =
-  'Kids ages 3 and up can fish. Waders are available for all children 3 and up, and adult sizes go up to size 15 feet. Kids on the full-day float are $175. At the Spring Creek Ranch private ranch and picnic, kids are $250 each (ages 3+). Guests and grandparents with limited mobility can be hosted at the ranch ponds.'
+  'Kids ages 3 and up can fish. Waders and boots up to men\'s size 15. Kids on the full-day float are $175. At the Spring Creek Ranch private ranch and picnic, kids are $250 each (ages 3+). Guests and grandparents with limited mobility can be hosted at the ranch ponds.'
 
 export const YEAR_ROUND_FISHING =
   'Guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady.'
@@ -62,33 +62,25 @@ Rich Valley Adventures has been guiding these waters since 2012. Our guides grew
 We offer half-day and full-day guided trips from May through October on our wading fisheries, full-day float trips on the Roaring Fork or Colorado River, and dedicated float trips on the Gunnison with our in-house boat captain. Guides have places to fish year-round, including alpine springs where spring-fed water keeps the temperature steady. All gear is provided — premium fly rods, reels, waders, wading boots, and a full fly selection matched to current hatch conditions. Our catch-and-release philosophy protects these waters for generations of anglers to come.`,
   h2_sections: [
     {
-      title: 'Kids & Family Fishing',
-      content: KIDS_FAMILY_FISHING,
-    },
-    {
       title: 'The Roaring Fork River — Gold Medal Fly Fishing Near Aspen',
-      content: `The Roaring Fork River flows 70 miles from its headwaters near Independence Pass through Aspen, Basalt, and Carbondale before joining the Colorado River at Glenwood Springs. The stretch through and below Aspen is designated Gold Medal water by Colorado Parks & Wildlife — a designation reserved for waters that consistently produce large wild trout in exceptional numbers.
+      content: `The Roaring Fork River flows 70 miles from its headwaters near Independence Pass through Aspen, Basalt, and Carbondale before joining the Colorado River at Glenwood Springs. Gold Medal water on the Roaring Fork from Basalt to Glenwood Springs, and on the Fryingpan below Ruedi Reservoir — a Colorado Parks & Wildlife designation reserved for waters that consistently produce large wild trout in exceptional numbers.
 
-Brown trout averaging 14–18 inches are common, with fish over 20 inches taken regularly by our guides. Hatches of PMDs, caddis, green drakes, and Trico spinners make dry fly fishing thrilling from June through September. In the spring and fall, streamers and nymphs produce aggressive strikes from the river's biggest fish.`,
+Hatches of PMDs, caddis, green drakes, and Trico spinners make dry fly fishing thrilling from June through September. In the spring and fall, streamers and nymphs produce aggressive strikes from the river's biggest fish.`,
     },
     {
       title: 'The Frying Pan River — Tailwater below Ruedi Reservoir',
-      content: `Just 15 miles from Basalt, the Frying Pan River below Ruedi Reservoir is widely considered one of the top tailwater fisheries in North America. The cold, nutrient-rich water released from the dam creates an almost year-round midge hatch and supports an extraordinary density of large wild trout — browns and rainbows averaging 16–22 inches.
+      content: `Just 15 miles from Basalt, the Frying Pan River below Ruedi Reservoir is widely considered one of the top tailwater fisheries in North America. The cold, nutrient-rich water released from the dam creates an almost year-round midge hatch and supports an extraordinary density of large wild trout.
 
 The Frying Pan demands technical precision: long leaders, small flies, and delicate presentations. Our guides excel at teaching the nuances of tailwater nymphing and the art of fishing size-22 midge clusters to selective risers. This river rewards patience and skill — and the payoff is the fish of a lifetime.`,
     },
     {
       id: 'full-day-float-trip',
       title: 'Full-Day Float Trip',
-      content: `Full-day float trip: from $1,400 for 2 people (1 boat, 1 captain). Additional adults $375 each, kids $175. Covers an 8–12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation are included. A Colorado Parks and Wildlife fishing license is required for ages 16 and up.`,
+      content: `Full-day float trips cover an 8–12 mile stretch of the Roaring Fork or Colorado River. Lunch, gear, and luxury door-to-door transportation are included. Fishing is guided in-house.`,
     },
     {
       title: 'Private Ranch and Picnic — Spring Creek Ranch, Carbondale',
-      content: `Private ranch and picnic package at Spring Creek Ranch, Carbondale CO: from $800 per adult, $250 per child (ages 3+). Includes ponds, creeks and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat and brook trout from 12 to 30 inches.`,
-      link: {
-        href: '/private-ranch-fishing',
-        label: 'Private ranch fishing at Spring Creek Ranch',
-      },
+      content: `Private ranch and picnic package at Spring Creek Ranch, Carbondale CO. Includes ponds, creeks and a private section of the Roaring Fork River, with rainbow, brown, native cutthroat and brook trout from 12 to 30 inches.`,
     },
     {
       title: 'Gunnison River — Big Water, Trophy Trout',
@@ -104,10 +96,6 @@ We also offer river access on the Old Town Basalt Private Ranch on the Roaring F
     },
   ],
   features: [
-    {
-      title: 'Kids & Family Fishing',
-      description: KIDS_FAMILY_FISHING,
-    },
     {
       title: 'Rivers & waters we fish',
       description:
@@ -143,11 +131,6 @@ We also offer river access on the Old Town Basalt Private Ranch on the Roaring F
     {
       question: 'Can kids fish?',
       answer: KIDS_FAMILY_FISHING,
-    },
-    {
-      question: 'Do I need a Colorado fishing license?',
-      answer:
-        'A Colorado Parks and Wildlife fishing license is required for ages 16 and up.',
     },
     {
       question: 'What time of year is best for fly fishing near Aspen?',

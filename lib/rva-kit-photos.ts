@@ -67,7 +67,7 @@ export const RVA_WINTER_HERO_PHOTO = RVA_KIT_PHOTOS[3]
 /** Fly-fishing page hero only. Not in gallery. */
 export const RVA_FLY_FISHING_HERO_PHOTO: KitPhoto = {
   src: '/images/rva/kit/roaring-fork-fly-fishing-brown-trout.webp',
-  alt: 'Angler holding a large brown trout on the Roaring Fork River',
+  alt: 'Angler holding a large brown trout on a Colorado river',
   caption: 'Brown trout on the Roaring Fork',
   width: 1920,
   height: 1440,

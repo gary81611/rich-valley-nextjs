@@ -5,7 +5,7 @@ export const privateRanchFishingPath = '/private-ranch-fishing'
 export const privateRanchFishingPageTitle = 'Private Ranch Fly Fishing at Spring Creek Ranch'
 
 const WADERS =
-  'Waders are available for all children 3 and up, and adult sizes go up to size 15 feet.'
+  'Waders and boots up to men\'s size 15.'
 
 const LIMITED_MOBILITY =
   'Guests and grandparents with limited mobility can be hosted at the ranch ponds.'
