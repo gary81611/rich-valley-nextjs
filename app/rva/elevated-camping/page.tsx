@@ -80,7 +80,7 @@ ${RVA_CAMPING_PRICE}. Camping is guided in-house. ${RVA_TRIP_OWNERSHIP}`,
 
   return (
     <>
-      <div className="h-[86px]" />
+      <div className="h-[var(--rva-header)]" aria-hidden />
       <ServicePageTemplate
         site="rva"
         title="Elevated Camping"

@@ -107,7 +107,7 @@ export default async function WinterPage() {
 
   return (
     <>
-      <div className="h-[86px]" />
+      <div className="h-[var(--rva-header)]" aria-hidden />
       <ServicePageTemplate
         site="rva"
         title="Winter Offerings"
