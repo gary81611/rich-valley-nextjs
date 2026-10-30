@@ -89,15 +89,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const isRental = adventure.id === PADDLE_RENTAL_ID || adventureSlug === 'paddle-board-rentals'
   const visual = adventurePublicImage(adventure)
   const publicDescription = adventurePublicDescription(adventure)
+  const scenic = isScenicTourSlug(slug) || isScenicTourSlug(adventureSlug)
+  const metaDescription = scenic
+    ? 'Chauffeur Guided Scenic and Wildlife Tours in Aspen and the Roaring Fork Valley. Call 970-456-3666.'
+    : publicDescription
   return {
     title: `${displayName} | Rich Valley Adventures | Aspen, CO`,
-    description: publicDescription,
+    description: metaDescription,
     alternates: {
       canonical: `https://www.richvalleyadventures.com/adventures/${adventureSlug}`,
     },
     openGraph: {
       title: `${displayName} — Guided Adventure in Aspen | Rich Valley Adventures`,
-      description: publicDescription,
+      description: metaDescription,
       type: 'website',
       url: `https://www.richvalleyadventures.com/adventures/${adventureSlug}`,
       images: [

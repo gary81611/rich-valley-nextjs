@@ -512,22 +512,6 @@ export default async function PricingPage() {
           address: { '@type': 'PostalAddress', addressLocality: 'Aspen', addressRegion: 'CO', addressCountry: 'US' },
         },
         areaServed: ['Aspen', 'Snowmass', 'Basalt', 'Carbondale', 'Glenwood Springs', 'Vail', 'Denver'],
-        offers: [
-          ...AIRPORT_OUTBOUND.filter((r) => /denver|grand junction|rifle|eagle|den|gjt|kril|ege/i.test(`${r.from} ${r.to}`)).map((r) => ({
-            '@type': 'Offer',
-            name: `${r.from} to ${r.to}`,
-            price: r.suvPrice,
-            priceCurrency: 'USD',
-            description: 'One-way private SUV rate from Aspen. Holiday pricing may change seasonally.',
-          })),
-          ...AIRPORT_INBOUND.slice(0, 6).map(r => ({
-            '@type': 'Offer',
-            name: `${r.from} to ${r.to}`,
-            price: r.suvPrice,
-            priceCurrency: 'USD',
-            description: `Private SUV transfer, ${r.driveTime} drive`,
-          })),
-        ],
       })}} />
     </div>
   )
