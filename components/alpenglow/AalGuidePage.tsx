@@ -65,20 +65,16 @@ export default function AalGuidePage({
     <div className="min-h-screen bg-alp-pearl font-inter">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <div className="bg-alp-navy-deep">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="flex text-sm text-alp-pearl/70">
+      <div className="h-[var(--aal-header,72px)]" aria-hidden="true" />
+      <section className="aal-hero-photo aal-hero-below-header bg-alp-navy-deep text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 w-full">
+          <nav className="flex text-sm text-alp-pearl/70 mb-6">
             <Link href="/" className="hover:text-alp-gold transition-colors">
               Home
             </Link>
             <span className="mx-2">/</span>
             <span className="text-alp-gold">{visibleTitle}</span>
           </nav>
-        </div>
-      </div>
-
-      <section className="aal-hero-photo bg-alp-navy-deep text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 w-full">
           <p className="text-alp-gold text-sm tracking-widest uppercase mb-4 font-semibold">{eyebrow}</p>
           <h1 className="font-playfair font-bold mb-6 max-w-4xl">{visibleTitle}</h1>
           <p className="text-lg text-alp-pearl/80 max-w-3xl leading-relaxed">{lede}</p>

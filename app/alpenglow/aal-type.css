@@ -64,6 +64,13 @@
   align-items: center;
 }
 
+/* When a page uses the --aal-header spacer above the hero, drop the extra 72px pad. */
+.aal-hero-photo.aal-hero-below-header,
+.aal-hero-compact.aal-hero-below-header {
+  padding-top: 1rem;
+}
+
+
 @media (min-width: 768px) {
   .aal-hero-photo {
     height: 560px;
