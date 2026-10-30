@@ -64,10 +64,37 @@
   align-items: center;
 }
 
-/* When a page uses the --aal-header spacer above the hero, drop the extra 72px pad. */
-.aal-hero-photo.aal-hero-below-header,
-.aal-hero-compact.aal-hero-below-header {
-  padding-top: 1rem;
+/*
+ * Photo-less navy heroes (no background image): size to content.
+ * Pair with the --aal-header spacer above so nav stays flush; do not use on
+ * .aal-hero-photo pages that have a real image, or on the home hero.
+ */
+.aal-hero-text {
+  box-sizing: border-box;
+  text-align: left;
+  height: auto;
+  min-height: 0;
+  display: block;
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+
+@media (min-width: 768px) {
+  .aal-hero-text {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}
+
+.aal-hero-text .text-center {
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.aal-hero-text h1 {
+  font-size: 2.25rem !important;
+  line-height: 1.15 !important;
 }
 
 
@@ -104,7 +131,8 @@ html:has(.aal-root) {
 
 @media (min-width: 768px) {
   .aal-hero-photo h1,
-  .aal-hero-compact h1 {
+  .aal-hero-compact h1,
+  .aal-hero-text h1 {
     font-size: 3rem !important;
   }
 }

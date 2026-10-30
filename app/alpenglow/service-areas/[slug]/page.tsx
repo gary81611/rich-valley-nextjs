@@ -182,8 +182,8 @@ export default async function ServiceAreaDetailPage({ params }: { params: Promis
 
       <div className="h-[var(--aal-header,72px)]" aria-hidden="true" />
       {/* Hero + breadcrumb (flush under ALPNav via --aal-header spacer) */}
-      <section className="aal-hero-photo aal-hero-below-header bg-alp-navy-deep text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left w-full pb-12">
+      <section className="aal-hero-text bg-alp-navy-deep text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-left w-full">
           <nav className="flex text-sm text-alp-pearl/70 mb-6">
             <Link href="/" className="hover:text-alp-gold transition-colors">
               Home

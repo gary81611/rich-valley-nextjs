@@ -66,8 +66,8 @@ export default function AalGuidePage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <div className="h-[var(--aal-header,72px)]" aria-hidden="true" />
-      <section className="aal-hero-photo aal-hero-below-header bg-alp-navy-deep text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 w-full">
+      <section className="aal-hero-text bg-alp-navy-deep text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <nav className="flex text-sm text-alp-pearl/70 mb-6">
             <Link href="/" className="hover:text-alp-gold transition-colors">
               Home
@@ -77,8 +77,7 @@ export default function AalGuidePage({
           </nav>
           <p className="text-alp-gold text-sm tracking-widest uppercase mb-4 font-semibold">{eyebrow}</p>
           <h1 className="font-playfair font-bold mb-6 max-w-4xl">{visibleTitle}</h1>
-          <p className="text-lg text-alp-pearl/80 max-w-3xl leading-relaxed">{lede}</p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Link href="/reservations" className="inline-flex items-center justify-center bg-alp-gold text-alp-navy font-semibold px-6 py-3 rounded-full">Book online</Link>
             <Link href="/contact" className="inline-flex items-center justify-center border-2 border-alp-gold text-alp-gold font-semibold px-6 py-3 rounded-full">Request a quote</Link>
           </div>
@@ -97,6 +96,7 @@ export default function AalGuidePage({
 
       <section className="py-16 sm:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-lg text-alp-slate leading-relaxed mb-10">{lede}</p>
           {imageSrc && imageAlt && (
             <div className="mb-12 rounded-2xl bg-alp-navy-deep flex items-center justify-center">
               <Image src={imageSrc} alt={imageAlt} width={800} height={450} className="max-w-full h-auto object-contain" />

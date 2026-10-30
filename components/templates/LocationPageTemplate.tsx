@@ -27,8 +27,8 @@ export default function LocationPageTemplate({ site, title, content, pageSlug }:
   return (
     <div className={rva ? 'font-inter text-rva-forest' : 'font-inter text-alp-navy'}>
       {/* Hero */}
-      <section className={rva ? 'py-20 px-6 text-center bg-rva-forest text-rva-cream' : 'aal-hero-photo bg-alp-navy text-white px-6'}>
-        <div className={rva ? 'max-w-3xl mx-auto' : 'max-w-7xl mx-auto w-full pb-10 text-left'}>
+      <section className={rva ? 'py-20 px-6 text-center bg-rva-forest text-rva-cream' : 'aal-hero-text bg-alp-navy text-white px-6'}>
+        <div className={rva ? 'max-w-3xl mx-auto' : 'max-w-7xl mx-auto w-full text-left'}>
           <p className={`text-sm font-semibold tracking-widest uppercase mb-3 ${rva ? 'text-rva-copper-light' : 'text-alp-gold-light'}`}>
             {content.area_description}
           </p>

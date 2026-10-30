@@ -153,7 +153,9 @@ export default function ServicePageTemplate({
         className={
           rva
             ? `text-center ${rvaHeroClass}`
-            : 'aal-hero-photo relative overflow-hidden bg-alp-navy text-white'
+            : heroImage
+              ? 'aal-hero-photo relative overflow-hidden bg-alp-navy text-white'
+              : 'aal-hero-text relative bg-alp-navy text-white'
         }
       >
         {heroImage && (
@@ -175,7 +177,7 @@ export default function ServicePageTemplate({
             <div className={`absolute inset-0 ${portraitHero ? 'bg-gradient-to-b from-rva-forest-dark/35 via-transparent to-rva-forest-dark/75' : 'bg-gradient-to-b from-rva-forest-dark/55 via-rva-forest-dark/45 to-rva-forest-dark/80'}`} />
           </>
         )}
-        <div className={`max-w-7xl mx-auto w-full px-6 pb-10 ${heroImage ? 'relative z-10' : ''} ${rva ? 'max-w-3xl text-center' : 'text-left'}`}>
+        <div className={`max-w-7xl mx-auto w-full px-6 ${heroImage || rva ? 'pb-10' : ''} ${heroImage ? 'relative z-10' : ''} ${rva ? 'max-w-3xl text-center' : 'text-left'}`}>
           <h1 className={rva ? 'font-playfair font-semibold mb-4 leading-[1.1]' : 'font-playfair font-bold mb-4 leading-tight'}>{title}</h1>
           {content.hero_subtitle && (
             <p className="text-lg md:text-xl opacity-80 mt-2">{content.hero_subtitle}</p>
