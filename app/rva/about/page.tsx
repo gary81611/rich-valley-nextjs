@@ -6,7 +6,6 @@ import GuideCard from '@/components/rva/GuideCard'
 import RvaButton, { RVA_PHONE_LABEL, RVA_PHONE_HREF } from '@/components/rva/Button'
 import { getActiveGuides } from '@/lib/rva-guides'
 import { replaceRvaYearClaims, rvaPublicStats, type RvaStat } from '@/lib/rva-public-claims'
-import { RVA_ABOUT_GROUP_FLOAT_PHOTO } from '@/lib/rva-kit-photos'
 
 export const dynamic = 'force-dynamic'
 
@@ -145,17 +144,6 @@ export default async function AboutPage() {
               <div className="absolute -bottom-6 -left-6 w-48 h-48 bg-rva-sage/10 rounded-full blur-3xl" />
             </div>
           </div>
-
-            {/* Kit trip photo — in-body group float (hero restored to original). */}
-            <div className="mt-16 relative rounded-2xl overflow-hidden shadow-xl aspect-[16/10] max-w-5xl mx-auto">
-              <Image
-                src={RVA_ABOUT_GROUP_FLOAT_PHOTO.src}
-                alt={RVA_ABOUT_GROUP_FLOAT_PHOTO.alt}
-                fill
-                className="object-cover"
-                unoptimized
-              />
-            </div>
         </div>
       </section>
 
