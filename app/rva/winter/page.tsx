@@ -89,7 +89,6 @@ export default async function WinterPage() {
       facts: [
         { label: 'Half-day snowshoe', value: '$500' },
         { label: 'Half-day', value: '3–4 hours door-to-door. Includes snacks and drinks.' },
-        { label: 'Full day', value: '6–8 hours door-to-door. Includes lunch.' },
         { label: 'Gear', value: 'All gear provided on every trip' },
         { label: 'Group sizes', value: '1–12 people' },
         { label: 'Transportation', value: 'All transportation provided by Aspen Alpenglow Limousine' },
@@ -105,8 +104,10 @@ export default async function WinterPage() {
         [season].filter(Boolean).join(' · '),
         /snowshoe/i.test(title)
           ? 'Half-day snowshoe: $500. Groups 1–12. All gear included. Snowshoeing is guided in-house.'
-          : /snowmobile|atv/i.test(title)
-            ? 'Horseback, ATV, and snowmobile trips go through partner local outfitters. Groups 1–12. Transport: Aspen Alpenglow Limousine.'
+          : /snowmobile/i.test(title)
+            ? 'Snowmobile tours run through a local partner outfitter. Groups 1–12. Transport: Aspen Alpenglow Limousine.'
+            : /atv/i.test(title)
+              ? 'ATV trips go through a local partner outfitter. Groups 1–12. Transport: Aspen Alpenglow Limousine.'
             : 'Groups 1–12. All gear included. Transport: Aspen Alpenglow Limousine.',
       ].filter(Boolean)
       const imageSrc = (adventure.image_url || '').trim()

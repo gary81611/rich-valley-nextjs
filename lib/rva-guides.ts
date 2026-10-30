@@ -5,6 +5,15 @@ import {
   scrubUnconfirmedWinterText,
 } from '@/lib/rva-unconfirmed-winter'
 
+
+const BART_CHANDLER_ID = '9937a1e8-c6d4-457d-a492-99324bda3161'
+
+/** Supabase guides.bio for Bart (DB unchanged). Drop hunter + broken guest-quote sentences. */
+const BART_BIO_DB =
+  'Bart has been a lifelong hunter and fisherman and world traveler. Bart is recognized and one of the best shooting coaches in the country and has supported number sporting clay Champions and Olympian’s. One guest mention,  “It’s an honor to spend time with such an admirable gentleman. Bart is not just and professional but an expert in his field”.'
+
+const BART_BIO_PUBLIC = 'Bart has been a lifelong fisherman and world traveler.'
+
 export type PublicGuide = {
   id: string
   name: string
@@ -27,7 +36,9 @@ function isUnconfirmedGuideTitle(title: string): boolean {
 function toPublicGuide(row: PublicGuide): PublicGuide {
   const specialties = scrubUnconfirmedWinterList(row.specialties || []).filter(Boolean)
   const bioRaw = (row.bio || '').trim()
-  const bio = bioRaw ? scrubUnconfirmedWinterText(bioRaw) : ''
+  // Bart: whole-bio display override (see BART_BIO_DB). DB unchanged.
+  const bioNormalized = row.id === BART_CHANDLER_ID && bioRaw ? BART_BIO_PUBLIC : bioRaw
+  const bio = bioNormalized ? scrubUnconfirmedWinterText(bioNormalized) : ''
   const titleRaw = (row.title || '').trim()
   const title = titleRaw && !isUnconfirmedGuideTitle(titleRaw) ? titleRaw : null
   return {
