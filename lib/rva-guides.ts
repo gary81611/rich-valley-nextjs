@@ -15,12 +15,21 @@ export type PublicGuide = {
   photo_url: string | null
 }
 
+/** Kit-unconfirmed guide job titles (DB unchanged). */
+function isUnconfirmedGuideTitle(title: string): boolean {
+  if (isUnconfirmedWinterClaim(title)) return true
+  const t = title.toLowerCase()
+  // Bart Chandler — no confirmed shooting service
+  if (t.includes('shooting')) return true
+  return false
+}
+
 function toPublicGuide(row: PublicGuide): PublicGuide {
   const specialties = scrubUnconfirmedWinterList(row.specialties || []).filter(Boolean)
   const bioRaw = (row.bio || '').trim()
   const bio = bioRaw ? scrubUnconfirmedWinterText(bioRaw) : ''
   const titleRaw = (row.title || '').trim()
-  const title = titleRaw && !isUnconfirmedWinterClaim(titleRaw) ? titleRaw : null
+  const title = titleRaw && !isUnconfirmedGuideTitle(titleRaw) ? titleRaw : null
   return {
     ...row,
     title,

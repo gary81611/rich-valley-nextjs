@@ -56,14 +56,24 @@ export default async function GuidesPage() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(
-              guides.map((g) => ({
-                '@context': 'https://schema.org',
-                '@type': 'Person',
-                name: g.name,
-                jobTitle: g.title,
-                worksFor: { '@type': 'Organization', name: 'Rich Valley Adventures', url: 'https://www.richvalleyadventures.com' },
-                hasCredential: { '@type': 'EducationalOccupationalCredential', credentialCategory: 'First Aid Certification' },
-              })),
+              guides.map((g) => {
+                const person: Record<string, unknown> = {
+                  '@context': 'https://schema.org',
+                  '@type': 'Person',
+                  name: g.name,
+                  worksFor: {
+                    '@type': 'Organization',
+                    name: 'Rich Valley Adventures',
+                    url: 'https://www.richvalleyadventures.com',
+                  },
+                  hasCredential: {
+                    '@type': 'EducationalOccupationalCredential',
+                    credentialCategory: 'First Aid Certification',
+                  },
+                }
+                if (g.title) person.jobTitle = g.title
+                return person
+              }),
             ),
           }}
         />

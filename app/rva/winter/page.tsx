@@ -5,7 +5,11 @@ import ServicePageTemplate from '@/components/templates/ServicePageTemplate'
 import type { ServiceContent } from '@/lib/pages'
 import { RVA_SNOWSHOE_PRICE, RVA_TRIP_OWNERSHIP } from '@/lib/rva-confirmed'
 import { RVA_WINTER_HERO_PHOTO } from '@/lib/rva-kit-photos'
-import { isUnconfirmedWinterListingTitle } from '@/lib/rva-unconfirmed-winter'
+import {
+  isUnconfirmedWinterListingTitle,
+  publicWinterSnowmobileDescription,
+  publicWinterSnowmobileTitle,
+} from '@/lib/rva-unconfirmed-winter'
 
 export const dynamic = 'force-dynamic'
 
@@ -93,22 +97,24 @@ export default async function WinterPage() {
       links: [],
     },
     h2_sections: winterAdventures.map((adventure) => {
-      const season = seasonForWinterAdventure(adventure.title) || adventure.season || ''
+      const title = publicWinterSnowmobileTitle(adventure)
+      const description = publicWinterSnowmobileDescription(adventure)
+      const season = seasonForWinterAdventure(title) || adventure.season || ''
       const bits = [
-        adventure.description,
+        description,
         [season].filter(Boolean).join(' · '),
-        /snowshoe/i.test(adventure.title)
+        /snowshoe/i.test(title)
           ? 'Half-day snowshoe: $500. Groups 1–12. All gear included. Snowshoeing is guided in-house.'
-          : /snowmobile|atv|snowbike/i.test(adventure.title)
+          : /snowmobile|atv/i.test(title)
             ? 'Horseback, ATV, and snowmobile trips go through partner local outfitters. Groups 1–12. Transport: Aspen Alpenglow Limousine.'
             : 'Groups 1–12. All gear included. Transport: Aspen Alpenglow Limousine.',
       ].filter(Boolean)
       const imageSrc = (adventure.image_url || '').trim()
       return {
-        title: adventure.title,
+        title,
         content: bits.join('\n\n'),
         image: imageSrc || undefined,
-        imageAlt: `${adventure.title} — guided winter adventure near Aspen, Colorado with Rich Valley Adventures`,
+        imageAlt: `${title} — guided winter adventure near Aspen, Colorado with Rich Valley Adventures`,
       }
     }),
     cta_text: 'Plan Your Winter Adventure',

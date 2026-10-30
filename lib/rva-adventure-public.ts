@@ -169,7 +169,7 @@ export function adventurePublicDescription(row: {
     if (/partner local outfitter/i.test(base)) return base
     return `${base} ${suffix}`
   }
-  if (/snowmobile|atv|snowbike/i.test(row.name)) {
+  if (/snowmobile|atv/i.test(row.name)) {
     return `${row.description} ${RVA_TRIP_OWNERSHIP}`
   }
   if (/raft/i.test(row.name)) {
