@@ -134,7 +134,8 @@ export default async function ServicesPage() {
         </div>
       </section>
 
-      {/* Transportation Section */}
+      {/* Transportation Section — omit entirely when Supabase returns no services */}
+      {services.length > 0 ? (
       <section className="py-16 sm:py-24 bg-rva-cream-dark">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12">
@@ -148,9 +149,6 @@ export default async function ServicesPage() {
               Our sister company offers premium car service throughout the Roaring Fork Valley and beyond.
             </p>
           </div>
-          {services.length === 0 ? (
-            <p className="text-center text-gray-500">No services available at this time. Check back soon!</p>
-          ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {services.map((service) => (
                 <div
@@ -176,9 +174,9 @@ export default async function ServicesPage() {
                 </div>
               ))}
             </div>
-          )}
         </div>
       </section>
+      ) : null}
 
       {/* CTA */}
       <section className="py-20 bg-rva-forest">
