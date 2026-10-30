@@ -5,7 +5,7 @@ import {
   flyFishingServiceContent,
 } from '@/lib/rva-fly-fishing-content'
 import { rvaServicePageRelatedBlogLinks } from '@/lib/rva-blog-pillars'
-import { RVA_FLOAT_PHOTO } from '@/lib/rva-kit-photos'
+import { RVA_FLOAT_PHOTO, RVA_FLY_FISHING_HERO_PHOTO } from '@/lib/rva-kit-photos'
 
 /** The prerendered HTML was stuck on the Vercel edge as STALE after the copy change. Render each request from this file. */
 export const dynamic = 'force-dynamic'
@@ -193,6 +193,9 @@ export default function FlyFishingPage() {
       <ServicePageTemplate
         site="rva"
         title={flyFishingPageTitle}
+        heroImage={RVA_FLY_FISHING_HERO_PHOTO.src}
+        heroImageAlt={RVA_FLY_FISHING_HERO_PHOTO.alt}
+        heroObjectClassName="object-[25%_50%] sm:object-[40%_50%]"
         content={{
           ...content,
           intro: content.intro,

@@ -51,8 +51,24 @@ export const RVA_KIT_PHOTOS: KitPhoto[] = [
     width: 1400,
     height: 1050,
   },
+  {
+    src: '/images/rva/kit/pink-streamer-fly-closeup.webp',
+    alt: "Close-up of a pink and white streamer fly in a guide's hand",
+    caption: 'Hand-tied streamer fly',
+    width: 1440,
+    height: 1080,
+  },
 ]
 
 export const RVA_FLOAT_PHOTO = RVA_KIT_PHOTOS[0]
 /** Landscape frame so the existing wide hero crop keeps the rider and both snowmobiles. */
 export const RVA_WINTER_HERO_PHOTO = RVA_KIT_PHOTOS[3]
+
+/** Fly-fishing page hero only. Not in gallery. */
+export const RVA_FLY_FISHING_HERO_PHOTO: KitPhoto = {
+  src: '/images/rva/kit/roaring-fork-fly-fishing-brown-trout.webp',
+  alt: 'Angler holding a large brown trout on the Roaring Fork River',
+  caption: 'Brown trout on the Roaring Fork',
+  width: 1920,
+  height: 1440,
+}
