@@ -68,13 +68,9 @@ export function rvaServicePageRelatedBlogLinks(serviceSlug: string): { href: str
       },
     ]
   }
+  // Paddle page: no related blog links (was an off-topic fly-fishing link).
   if (s === 'paddle-boarding') {
-    return [
-      {
-        href: '/blog/family-fly-fishing-trips-aspen-rich-valley-adventures',
-        label: 'Family fly fishing trips in Aspen',
-      },
-    ]
+    return []
   }
   return []
 }

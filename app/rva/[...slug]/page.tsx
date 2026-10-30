@@ -23,9 +23,6 @@ const PADDLE_RENTAL = 'Paddleboarding is a rental from $100, not a guided trip.'
 const PADDLE_PAGE_TITLE = 'Paddleboard Rentals in Aspen, Colorado'
 const PADDLE_META_TITLE = 'Paddleboard Rentals in Aspen, CO | From $100 | Rich Valley Adventures'
 const PADDLE_META_DESCRIPTION = `${PADDLE_RENTAL} Rich Valley Adventures, Aspen, Colorado.`
-/** Equipment fact — kept in the body (not the split hero). Rental sentence stays in the intro too. */
-const PADDLE_SUBTITLE =
-  'All equipment is provided — premium inflatable and hard SUP boards, adjustable paddles, Coast Guard-approved PFDs, and dry bags for your gear.'
 const PADDLE_DELIVERY = 'Boards can be delivered to you.'
 /** Live intro sentences that stay. Lesson, endurance, and logistics sentences are not included. */
 const PADDLE_INTRO = [
@@ -100,11 +97,9 @@ function applyRvaConfirmedFacts(page: CmsPage | null): CmsPage | null {
   if (page.slug === 'paddle-boarding' && page.template_type === 'service') {
     const content = { ...(page.content as ServiceContent) }
     content.hero_title = PADDLE_PAGE_TITLE
-    // Split hero matches ranch: H1 + CTAs only. Intro rental copy first; equipment sentence second in the body.
+    // Split hero matches ranch: H1 + CTAs only. Intro ends on the rental sentence.
     content.hero_subtitle = ''
-    content.intro = `${PADDLE_INTRO}
-
-${PADDLE_SUBTITLE}`
+    content.intro = PADDLE_INTRO
     content.cta_note = PADDLE_DELIVERY
     content.h2_sections = (content.h2_sections || [])
       .filter((section) => !isPaddleLessonHeading(section.title))
@@ -132,6 +127,7 @@ ${PADDLE_SUBTITLE}`
                 .trim(),
               description: stripPaddleLessonCopy(feature.description)
                 .replace(/Paddleboarding is a rental from \$100, not a guided trip\.?\s*/gi, '')
+                .replace(/\bcarbon paddles\b/gi, 'paddles')
                 .trim(),
             },
       )
@@ -428,7 +424,7 @@ export default async function CmsPage({ params }: Props) {
           title={page.title}
           emitFaqSchema={false}
           content={page.content as ServiceContent}
-          relatedLinks={rvaServicePageRelatedBlogLinks(slugStr)}
+          relatedLinks={slugStr === 'paddle-boarding' ? undefined : rvaServicePageRelatedBlogLinks(slugStr)}
           heroImage={slugStr === 'paddle-boarding' ? PADDLE_PHOTO : undefined}
           heroImageAlt={slugStr === 'paddle-boarding' ? PADDLE_PHOTO_ALT : undefined}
           heroObjectPosition={slugStr === 'paddle-boarding' ? PADDLE_PHOTO_POSITION : undefined}
