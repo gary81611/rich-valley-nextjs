@@ -104,18 +104,28 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: metaDescription,
       type: 'website',
       url: `https://www.richvalleyadventures.com/adventures/${adventureSlug}`,
-      images: [
-        {
-          url: isRental ? PADDLE_OG_IMAGE : visual.src,
-          width: 1200,
-          height: 630,
-          alt:
-            visual.alt ||
-            (isRental
-              ? PADDLE_PHOTO_ALT
-              : `${displayName} with Rich Valley Adventures in Aspen, Colorado`),
-        },
-      ],
+      // Scenic source is 503×725 — do not crop; use site default og:image (layout logo).
+      images: scenic
+        ? [
+            {
+              url: 'https://www.richvalleyadventures.com/images/logos/rva-logo.png',
+              width: 441,
+              height: 212,
+              alt: 'Rich Valley Adventures logo',
+            },
+          ]
+        : [
+            {
+              url: isRental ? PADDLE_OG_IMAGE : visual.src,
+              width: 1200,
+              height: 630,
+              alt:
+                visual.alt ||
+                (isRental
+                  ? PADDLE_PHOTO_ALT
+                  : `${displayName} with Rich Valley Adventures in Aspen, Colorado`),
+            },
+          ],
     },
   }
 }

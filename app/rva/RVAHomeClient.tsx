@@ -245,7 +245,7 @@ export default function RVAHomeClient({
               ))}
             </div>
           </ScrollReveal>
-          <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+          <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch md:max-lg:[&>*:last-child:nth-child(odd)]:justify-self-center md:max-lg:[&>*:last-child:nth-child(odd)]:w-[calc(50%-0.75rem)]">
             {(activeSeason ? [] : FEATURED_TRIPS).map((trip) => (
               <AdventureCard
                 key={trip.href}
