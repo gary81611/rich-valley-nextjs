@@ -48,15 +48,9 @@ const GOOGLE_HOME_REVIEWS = [
   },
   {
     name: 'Lance Y.',
-    // Full verbatim from Google Maps (same scrape).
+    // Full verbatim from Google Maps (same scrape). Newline preserves the source break before Highly recommended.
     quote:
-      'Always feel safe with Aspen Alpenglow Limo service, have been driven by this company for many years. Very professional and courteous. Whether you need a drive to the Denver airport or just out to dinner, Aspen Alpenglow has great service and clean vehicles. Thanks again Highly recommended',
-  },
-  {
-    name: 'Nan M.',
-    // Verbatim from Google Maps (same scrape). Curly apostrophe preserved.
-    quote:
-      'First Class transportation!  Drivers are very professional.  Cars are always spotless.  Once you ride Aspen Alpenglow Limousine you’ll never want to ride with anyone else!',
+      'Always feel safe with Aspen Alpenglow Limo service, have been driven by this company for many years. Very professional and courteous. Whether you need a drive to the Denver airport or just out to dinner, Aspen Alpenglow has great service and clean vehicles. Thanks again\nHighly recommended',
   },
 ]
 
@@ -277,10 +271,10 @@ export default function AlpenglowHomeClient() {
       <section className="py-14 bg-alp-pearl" aria-label="Guest reviews">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="font-playfair text-3xl font-bold text-alp-navy mb-8 text-center">Guest reviews</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="mx-auto grid max-w-[800px] grid-cols-1 gap-6 lg:grid-cols-2">
             {GOOGLE_HOME_REVIEWS.map((review) => (
               <blockquote key={review.name} className="flex h-full flex-col bg-white rounded-xl p-6 border border-alp-pearl-dark">
-                <p className="text-alp-slate text-sm leading-relaxed italic">&ldquo;{review.quote}&rdquo;</p>
+                <p className="mb-6 whitespace-pre-line text-alp-slate text-sm leading-relaxed italic">&ldquo;{review.quote}&rdquo;</p>
                 <footer className="mt-auto border-t border-alp-pearl-dark pt-4">
                   <p className="text-alp-navy font-semibold text-sm">— {review.name}</p>
                   <p className="text-alp-slate text-xs mt-1">Google review</p>
