@@ -10,18 +10,18 @@ const KIT_MCLENDON_ID = '7ad5b557-6a83-4d18-94e8-ccc583043834'
 const AARON_DALCHOW_ID = 'aad0aa57-93f5-4766-a036-63274b0a221c'
 const BOBBY_REGAN_ID = 'b6652670-ee67-4bcd-85d6-657b25dfee47'
 
-/** Public bios (DB unchanged). Unconfirmed hunting sentences are scrubbed at render. */
+/** Public bios (DB unchanged). Unconfirmed claim sentences are scrubbed at render. */
 const BART_BIO_PUBLIC = 'Bart has been a lifelong fisherman and world traveler.'
 
 const KIT_BIO_PUBLIC = [
-  'Kit grew up hunting and fishing in Eastern North Carolina. His fishing experience began off the coast of the Outer Banks fishing for large gamefish that included Marlin, Sailfish, MahiMahi, Tuna, Wahoo and more.',
+  'Kit grew up fishing in Eastern North Carolina. His fishing experience began off the coast of the Outer Banks fishing for large gamefish that included Marlin, Sailfish, MahiMahi, Tuna, Wahoo and more.',
   'With over 20 years experience as a fly fishing guide in Colorado, Kit has traveled to Alaska, Belize, Mexico and beyond chasing fish on the fly.',
   'Sharing time with others on the water has been a lifelong passion. Kit loves the diversity of people who travel to Aspen from around the world. Kit enjoys the challenge of teaching children and beginners. Kit has also fished with some of the most versed fly fishing guides and professionals in the fly fishing industry.',
 ].join('\n')
 
 const AARON_BIO_PUBLIC = [
   'Chef Aaron loves the outdoors and best displays his culinary talents in a wilderness setting. Aaron has been working in Aspen as a private Chef for over 20 years and has been a Chef for Rich Valley Adventures for the last decade. Every year we work with Aaron we are more amazed by his comfort and excitement to achieve the best meals possible in the elements of nature.',
-  'Most recently guests from Guadalajara, Jalisco, Mexico requested "Carne\' Asada" to be served on the riverbank while fly fishing. The guests stated that "we don\'t get Carne\' Asada that authentic in Mexico"',
+  'Most recently guests from Guadalajara, Jalisco, Mexico requested "carne asada" to be served on the riverbank while fly fishing. The guests stated that "we don\'t get carne asada that authentic in Mexico."',
 ].join('\n')
 
 const BOBBY_BIO_PUBLIC =
