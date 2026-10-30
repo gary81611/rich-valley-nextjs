@@ -50,12 +50,10 @@ const FEATURED_TRIPS = [
   {
     title: 'Fly Fishing',
     href: '/fly-fishing',
-    // Kit landscape (IMG_9194) — card asset is slightly taller than 4:3 so object-position
-    // can add headroom above the hood without clipping the trout. /fly-fishing hero unchanged.
+    // Kit IMG_9194 plain 4:3 — real pixels only (no pad/stitch). /fly-fishing hero unchanged.
     image: '/images/rva/kit/fly-fishing-card-brown-trout.webp',
     alt: 'Angler holding a large brown trout on a Colorado river',
     detail: FLY_FISHING_PUBLIC_DESCRIPTION,
-    objectPosition: '50% 10%',
   },
   {
     title: 'Private Ranch Fishing & Picnic',
@@ -267,7 +265,6 @@ export default function RVAHomeClient({
                 title={trip.title}
                 image={trip.image}
                 imageAlt={trip.alt}
-                objectPosition={'objectPosition' in trip ? trip.objectPosition : undefined}
                 excerpt={trip.detail}
               />
             ))}
