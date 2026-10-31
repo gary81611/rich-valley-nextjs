@@ -40,7 +40,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="font-playfair text-2xl font-semibold text-slate-900 mb-3">6. Your Rights</h2>
-            <p className="text-slate-700 leading-relaxed">You have the right to access, correct, or delete your personal information at any time. To unsubscribe from our newsletter, click the unsubscribe link in any email or contact us directly. To request deletion of your data, email or call us at 970-456-3666.</p>
+            <p className="text-slate-700 leading-relaxed">You have the right to access, correct, or delete your personal information at any time. To unsubscribe from our newsletter, click the unsubscribe link in any email or contact us directly. To request deletion of your data, email or call Rich Valley Adventures at (970) 456-3666 or Aspen Alpenglow Limousine at (970) 315-6111.</p>
           </section>
 
           <section>
@@ -55,7 +55,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="font-playfair text-2xl font-semibold text-slate-900 mb-3">9. Contact Us</h2>
-            <p className="text-slate-700 leading-relaxed">For questions about this privacy policy or your personal data, contact us at 970-456-3666 or visit us in Aspen, Colorado.</p>
+            <p className="text-slate-700 leading-relaxed">For questions about this privacy policy or your personal data, contact Rich Valley Adventures at (970) 456-3666 or Aspen Alpenglow Limousine at (970) 315-6111, or visit us in Aspen, Colorado.</p>
           </section>
         </div>
 

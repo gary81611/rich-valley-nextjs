@@ -55,7 +55,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="font-playfair text-2xl font-semibold text-slate-900 mb-3">9. Contact</h2>
-            <p className="text-slate-700 leading-relaxed">For questions about these terms, contact us at 970-456-3666 or visit us in Aspen, Colorado.</p>
+            <p className="text-slate-700 leading-relaxed">For questions about these terms, contact Rich Valley Adventures at (970) 456-3666 or Aspen Alpenglow Limousine at (970) 315-6111, or visit us in Aspen, Colorado.</p>
           </section>
         </div>
 
