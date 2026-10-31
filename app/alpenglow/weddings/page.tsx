@@ -30,7 +30,7 @@ const serviceSchema = {
     '@type': 'LocalBusiness',
     name: 'Aspen Alpenglow Limousine',
     url: 'https://aspenalpenglowlimousine.com',
-    telephone: '+19704563666',
+    telephone: '+19703156111',
   },
   areaServed: ['Aspen', 'Snowmass Village', 'Basalt', 'Carbondale'],
   description:

@@ -60,8 +60,8 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="text-sm text-alp-pearl/60 mb-1">Phone</p>
-                      <a href="tel:+19704563666" className="text-alp-gold font-semibold hover:underline text-lg">
-                        970-456-3666
+                      <a href="tel:+19703156111" className="text-alp-gold font-semibold hover:underline text-lg">
+                        970-315-6111
                       </a>
                     </div>
                   </div>

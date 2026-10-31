@@ -59,7 +59,7 @@ export function correctAalFaqItem(q: string, a: string): { q: string; a: string 
   let answer = a
   if (/rich valley adventures/i.test(q)) {
     question = question.replace(/Rich Valley Adventures/g, 'Aspen Alpenglow Limousine')
-    answer = 'Aspen Alpenglow Limousine has operated since 2012. Call 970-456-3666.'
+    answer = 'Aspen Alpenglow Limousine has operated since 2012. Call 970-315-6111.'
   }
   if (/eagle/i.test(question) && /aspen/i.test(question) && /cost|how much|rate/i.test(question)) {
     answer = AAL_EAGLE_BOTH_WAYS

@@ -191,7 +191,7 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
         '@type': 'LocalBusiness',
         name: 'Aspen Alpenglow Limousine',
         url: baseUrl,
-        telephone: '+19704563666',
+        telephone: '+19703156111',
         address: { '@type': 'PostalAddress', addressLocality: 'Aspen', addressRegion: 'CO', addressCountry: 'US' },
       },
       areaServed: [
@@ -213,7 +213,7 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
       ]
       serviceSchema.availableChannel = {
         '@type': 'ServiceChannel',
-        servicePhone: '+1-970-456-3666',
+        servicePhone: '+1-970-315-6111',
         serviceUrl: pageUrl,
         availableLanguage: 'English',
         hoursAvailable: {
@@ -237,7 +237,7 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
       name: 'Aspen Alpenglow Limousine',
       description: page.meta_description || undefined,
       url: pageUrl,
-      telephone: '+19704563666',
+      telephone: '+19703156111',
       priceRange: '$$$',
       address: {
         '@type': 'PostalAddress',

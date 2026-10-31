@@ -26,7 +26,7 @@ export default function NewYearsEveCarPage() {
           heading: 'A private car for the night',
           paragraphs: [
             "No shared rides are offered. Child car seats and boosters are free. Pets are welcome, with a cleaning fee. Vehicles have Starlink, ski racks, and roof cargo space.",
-            "General cancellations need 24 hours' notice. Call 970-456-3666 to book. The editorial planning guide covers the evening; this page is the ride.",
+            "General cancellations need 24 hours' notice. Call 970-315-6111 to book. The editorial planning guide covers the evening; this page is the ride.",
           ],
         },
         {

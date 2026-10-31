@@ -79,7 +79,7 @@ export default async function AboutPage() {
         '@id': 'https://aspenalpenglowlimousine.com/#business',
         name: 'Aspen Alpenglow Limousine',
         url: 'https://aspenalpenglowlimousine.com',
-        telephone: '+19704563666',
+        telephone: '+19703156111',
         priceRange: '$$$',
         address: {
           '@type': 'PostalAddress',
@@ -270,10 +270,10 @@ export default async function AboutPage() {
               Book online
             </Link>
             <a
-              href="tel:+19704563666"
+              href="tel:+19703156111"
               className="inline-block border-2 border-alp-gold text-alp-gold font-bold px-8 py-3 rounded-full hover:bg-alp-gold hover:text-alp-navy transition-colors"
             >
-              Call 970-456-3666
+              Call 970-315-6111
             </a>
           </div>
         </div>

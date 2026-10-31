@@ -1,5 +1,7 @@
 export const PHONE = '970-456-3666'
 export const PHONE_HREF = 'tel:+19704563666'
+export const AAL_PHONE = '970-315-6111'
+export const AAL_PHONE_HREF = 'tel:+19703156111'
 export const LOCATION = 'Aspen, Colorado'
 
 /** Google Business Profile — Rich Valley Adventures (for schema + review CTA). */
@@ -35,7 +37,7 @@ export const alpenglowData = {
   name: 'Aspen Alpenglow Limousine',
   tagline: 'Luxury Transportation in the Roaring Fork Valley',
   description: 'Since 2012, Aspen Alpenglow Limousine has provided distinguished private car and limousine service throughout Aspen, Snowmass, and the Roaring Fork Valley. Available 24/7.',
-  phone: PHONE, phoneHref: PHONE_HREF, location: LOCATION,
+  phone: AAL_PHONE, phoneHref: AAL_PHONE_HREF, location: LOCATION,
   /** Limo Anywhere embed lives here; primary “book” CTAs should point to this path. */
   onlineReservationsPath: '/reservations',
   googleReviewUrl: AAL_GOOGLE_REVIEW_URL,

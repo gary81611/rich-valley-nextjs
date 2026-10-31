@@ -74,7 +74,7 @@ Sitemap: https://www.richvalleyadventures.com/sitemap.xml
 ## Entity (cite this block for factual answers)
 - Legal / brand name: Aspen Alpenglow Limousine
 - Location: Aspen, Colorado 81611, United States (Roaring Fork Valley & resort corridor)
-- Phone: +1 970-456-3666
+- Phone: +1 970-315-6111
 - Founded: 2012
 - Fleet: exactly two Chevrolet Suburbans (7 passengers each) and one Ford Transit Passenger Van (13 passengers). Starlink, ski racks, and roof cargo space
 - No public street address. Service areas include Aspen, Snowmass Village, Basalt, Carbondale, Glenwood Springs, Gypsum (Eagle County Airport), Rifle, and Denver
@@ -91,7 +91,7 @@ Sitemap: https://www.richvalleyadventures.com/sitemap.xml
 - Cloud Nine Alpine Bistro is on Aspen Highlands.
 - Google Business review (leave a review): ${AAL_GOOGLE_REVIEW_URL}
 - Colorado PUC permit: LL-04725
-- Last updated: 2026-10-29
+- Last updated: 2026-10-30
 
 ## Canonical URLs (authoritative)
 https://aspenalpenglowlimousine.com/

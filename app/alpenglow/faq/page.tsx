@@ -221,10 +221,10 @@ export default async function FAQPage() {
           <h2 className="font-playfair text-xl text-alp-navy mb-3">Still have questions?</h2>
           <p className="text-sm text-alp-navy/60 mb-5">Call or text us anytime.</p>
           <a
-            href="tel:+19704563666"
+            href="tel:+19703156111"
             className="inline-block bg-alp-gold hover:bg-alp-gold-light text-alp-navy-deep px-8 py-3 rounded-full font-semibold transition-colors"
           >
-            970-456-3666
+            970-315-6111
           </a>
           <p className="mt-6 text-sm text-alp-navy/60">
             Or{' '}

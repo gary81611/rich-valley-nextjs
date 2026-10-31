@@ -18,6 +18,7 @@ export async function POST(request: Request) {
 
     const isAAL = brand === 'aal' || brand === 'alpenglow'
     const brandName = isAAL ? 'Aspen Alpenglow Limousine' : 'Rich Valley Adventures'
+    const brandPhone = isAAL ? '970-315-6111' : '970-456-3666'
     const reviewLink = isAAL ? GOOGLE_REVIEW_LINK : RVA_GOOGLE_REVIEW_LINK
 
     // Send email if available
@@ -42,7 +43,7 @@ export async function POST(request: Request) {
                   Leave a Review →
                 </a>
                 <p style="font-size: 12px; color: #aaa; margin-top: 32px;">
-                  ${brandName} · 970-456-3666
+                  ${brandName} · ${brandPhone}
                 </p>
               </div>
             `,

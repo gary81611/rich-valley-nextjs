@@ -161,13 +161,13 @@ export default function AalGuidePage({
           <h2 className="font-playfair text-3xl font-bold mb-4">
             Book a <span className="text-alp-gold">private car</span>
           </h2>
-          <p className="text-alp-pearl/80 mb-8">Call 970-456-3666. No shared rides are offered.</p>
+          <p className="text-alp-pearl/80 mb-8">Call 970-315-6111. No shared rides are offered.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/reservations" className="inline-block bg-alp-gold text-alp-navy font-bold px-8 py-3 rounded-full hover:bg-alp-gold-light transition-colors">
               Book Now
             </Link>
-            <a href="tel:+19704563666" className="inline-block border-2 border-alp-gold text-alp-gold font-bold px-8 py-3 rounded-full hover:bg-alp-gold hover:text-alp-navy transition-colors">
-              Call 970-456-3666
+            <a href="tel:+19703156111" className="inline-block border-2 border-alp-gold text-alp-gold font-bold px-8 py-3 rounded-full hover:bg-alp-gold hover:text-alp-navy transition-colors">
+              Call 970-315-6111
             </a>
           </div>
         </div>
