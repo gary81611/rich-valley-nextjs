@@ -62,6 +62,8 @@ interface Props {
 }
 
 export default function InquiryForm({ brand, initialServiceId }: Props) {
+  const displayPhone = brand === 'alpenglow' ? '970-315-6111' : '970-456-3666'
+  const displayPhoneHref = brand === 'alpenglow' ? 'tel:+19703156111' : 'tel:+19704563666'
   const services = brand === 'rva' ? RVA_SERVICES : AAL_SERVICES
   const preset = services.find((s) => s.id === initialServiceId)
   const [step, setStep] = useState(preset ? 2 : 1)
@@ -113,7 +115,7 @@ export default function InquiryForm({ brand, initialServiceId }: Props) {
         )}
         <h3 className="text-xl font-semibold text-gray-900 mb-2">Thank you!</h3>
         <p className="text-gray-600 mb-4">Kit will be in touch within a few hours.</p>
-        <p className="text-sm text-gray-500">Want to talk sooner? Call <a href="tel:+19704563666" className={`${accentText} font-semibold`}>970-456-3666</a></p>
+        <p className="text-sm text-gray-500">Want to talk sooner? Call <a href={displayPhoneHref} className={`${accentText} font-semibold`}>{displayPhone}</a></p>
       </div>
     )
   }
@@ -230,7 +232,7 @@ export default function InquiryForm({ brand, initialServiceId }: Props) {
               {status === 'sending' ? 'Sending...' : brand === 'alpenglow' ? 'Request a quote' : 'Send Request'}
             </button>
             )}
-            {status === 'error' && <p className="text-sm text-red-600 text-center">Something went wrong. Please try again or call 970-456-3666.</p>}
+            {status === 'error' && <p className="text-sm text-red-600 text-center">Something went wrong. Please try again or call {displayPhone}.</p>}
           </div>
         </div>
       )}

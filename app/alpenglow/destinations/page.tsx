@@ -69,7 +69,7 @@ export default async function DestinationsPage() {
     provider: {
       '@type': 'LocalBusiness',
       name: 'Aspen Alpenglow Limousine',
-      telephone: '+19704563666',
+      telephone: '+19703156111',
       url: 'https://aspenalpenglowlimousine.com',
       address: { '@type': 'PostalAddress', addressLocality: 'Aspen', addressRegion: 'CO', addressCountry: 'US' },
     },
@@ -213,10 +213,10 @@ export default async function DestinationsPage() {
               Get a Quote
             </Link>
             <a
-              href="tel:+19704563666"
+              href="tel:+19703156111"
               className="inline-block border-2 border-alp-gold text-alp-gold font-bold px-8 py-3 rounded-full hover:bg-alp-gold hover:text-alp-navy transition-colors"
             >
-              Call 970-456-3666
+              Call 970-315-6111
             </a>
           </div>
         </div>

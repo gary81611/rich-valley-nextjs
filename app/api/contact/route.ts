@@ -35,6 +35,7 @@ export async function POST(request: NextRequest) {
     const resendKey = process.env.RESEND_API_KEY
     if (resendKey) {
       const brandName = brand === 'alpenglow' ? 'Aspen Alpenglow Limousine' : 'Rich Valley Adventures'
+      const brandPhone = brand === 'alpenglow' ? '970-315-6111' : '970-456-3666'
       try {
         const notifyRes = await fetch('https://api.resend.com/emails', {
           method: 'POST',
@@ -57,7 +58,7 @@ export async function POST(request: NextRequest) {
             from: `${brandName} <noreply@adaptedprotech.com>`,
             to: [email],
             subject: `We received your inquiry — ${brandName}`,
-            html: `<h2>Thanks for reaching out, ${name}!</h2><p>We've received your inquiry and will get back to you within 24 hours.</p><p>In the meantime, feel free to call us at <strong>970-456-3666</strong>.</p><p>— The ${brandName} Team</p>`,
+            html: `<h2>Thanks for reaching out, ${name}!</h2><p>We've received your inquiry and will get back to you within 24 hours.</p><p>In the meantime, feel free to call us at <strong>${brandPhone}</strong>.</p><p>— The ${brandName} Team</p>`,
           }),
         })
         if (!confirmRes.ok) {

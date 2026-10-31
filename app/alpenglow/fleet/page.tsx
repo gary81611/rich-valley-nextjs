@@ -107,10 +107,10 @@ export default function FleetPage() {
           </Link>
           <p className="mt-6">
             <a
-              href="tel:+19704563666"
+              href="tel:+19703156111"
               className="text-alp-gold hover:text-alp-gold-light font-semibold"
             >
-              Or call 970-456-3666
+              Or call 970-315-6111
             </a>
           </p>
           <p className="mt-4 text-sm text-alp-pearl/75">

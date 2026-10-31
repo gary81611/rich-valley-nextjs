@@ -61,7 +61,7 @@ export default function ServicePageTemplate({
           })),
         }
       : null
-  const phone = content.cta_phone || (rva ? '(970) 456-3666' : '(970) 456-3666')
+  const phone = content.cta_phone || (rva ? '(970) 456-3666' : '(970) 315-6111')
   const linkClass = rva
     ? 'text-rva-copper-700 font-semibold hover:text-rva-forest'
     : 'text-alp-gold-700 font-semibold hover:text-alp-navy'

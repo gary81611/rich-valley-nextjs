@@ -77,7 +77,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     `${area.name} Private Car Service | Aspen Alpenglow Limousine`
   const description =
     area.meta_description?.trim() ||
-    `${area.description} Luxury SUV and van transportation in ${area.name}, Colorado. All-inclusive rates, 24/7. Call 970-456-3666.`
+    `${area.description} Luxury SUV and van transportation in ${area.name}, Colorado. All-inclusive rates, 24/7. Call 970-315-6111.`
   const canonical = `${AAL_BASE}/service-areas/${slug}`
 
   return {
@@ -150,7 +150,7 @@ export default async function ServiceAreaDetailPage({ params }: { params: Promis
     '@type': 'LocalBusiness',
     name: 'Aspen Alpenglow Limousine',
     url: AAL_BASE,
-    telephone: '+19704563666',
+    telephone: '+19703156111',
     priceRange: '$$$$',
     areaServed: {
       '@type': 'AdministrativeArea',
@@ -277,10 +277,10 @@ export default async function ServiceAreaDetailPage({ params }: { params: Promis
                   Book Online
                 </Link>
                 <a
-                  href="tel:+19704563666"
+                  href="tel:+19703156111"
                   className="block border-2 border-alp-gold text-alp-gold font-bold px-6 py-3 rounded-full hover:bg-alp-gold hover:text-alp-navy transition-colors text-center"
                 >
-                  Call 970-456-3666
+                  Call 970-315-6111
                 </a>
               </div>
 

@@ -34,7 +34,7 @@ export default function XGamesTransportationPage() {
         {
           heading: 'Hourly charter during the event',
           paragraphs: [
-            'Hourly charter is available if you want the car to stay with your group between sessions. Holiday pricing may change seasonally. General cancellations need 24 hours\' notice. Call 970-456-3666 to book.',
+            'Hourly charter is available if you want the car to stay with your group between sessions. Holiday pricing may change seasonally. General cancellations need 24 hours\' notice. Call 970-315-6111 to book.',
           ],
         },
       ]}
@@ -53,7 +53,7 @@ export default function XGamesTransportationPage() {
         },
         {
           question: 'Is hourly charter available during X Games?',
-          answer: 'Yes. Hourly charter can hold a private SUV or the Ford Transit Passenger Van for your group. Call 970-456-3666 for the current hourly quote.',
+          answer: 'Yes. Hourly charter can hold a private SUV or the Ford Transit Passenger Van for your group. Call 970-315-6111 for the current hourly quote.',
         },
         {
           question: 'What is the cancellation notice?',

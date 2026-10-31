@@ -173,7 +173,7 @@ function SchemaTab({ supabase }: { supabase: any }) {
             '@type': ['LocalBusiness', 'LimousineBus'],
             name: 'Aspen Alpenglow Limousine',
             url: 'https://aspenalpenglowlimousine.com',
-            telephone: '+1-970-456-3666',
+            telephone: '+1-970-315-6111',
             description: 'Luxury private car and limousine service in Aspen, Colorado. Airport transfers, weddings, ski resort shuttles, corporate travel.',
             foundingDate: '2012',
             openingHours: 'Mo-Su 00:00-24:00',

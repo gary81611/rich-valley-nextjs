@@ -22,7 +22,7 @@ const AAL_LOCATION_CROSS_LINKS: { href: string; label: string }[] = [
 
 export default function LocationPageTemplate({ site, title, content, pageSlug }: Props) {
   const rva = isRva(site)
-  const phone = content.cta_phone || (rva ? '(970) 456-3666' : '(970) 456-3666')
+  const phone = content.cta_phone || (rva ? '(970) 456-3666' : '(970) 315-6111')
 
   return (
     <div className={rva ? 'font-inter text-rva-forest' : 'font-inter text-alp-navy'}>

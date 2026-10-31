@@ -416,7 +416,7 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
               <p className="text-white/70 text-sm leading-relaxed mb-4">
                 Distinguished private car service in Aspen since 2012. Available 24/7.
               </p>
-              <p className="text-alp-gold font-semibold text-lg mb-4">970-456-3666</p>
+              <p className="text-alp-gold font-semibold text-lg mb-4">970-315-6111</p>
               <Link
                 href="/"
                 className="block text-center px-4 py-2.5 bg-alp-gold text-alp-navy text-sm font-semibold rounded-xl hover:bg-alp-gold-light transition-colors"

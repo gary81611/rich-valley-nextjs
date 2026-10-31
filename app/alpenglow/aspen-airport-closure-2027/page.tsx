@@ -45,7 +45,7 @@ export default function AspenAirportClosurePage() {
         {
           heading: 'Private FBO service',
           paragraphs: [
-            'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. Rifle, Grand Junction, and Denver have a published one-way price. Eagle, Buena Vista, Montrose, and Gunnison are quoted when you book. Call 970-456-3666.',
+            'Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. Rifle, Grand Junction, and Denver have a published one-way price. Eagle, Buena Vista, Montrose, and Gunnison are quoted when you book. Call 970-315-6111.',
           ],
         },
         {
