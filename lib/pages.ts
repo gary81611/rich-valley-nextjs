@@ -97,7 +97,12 @@ function getServerClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
   if (!url.startsWith('http')) return null
-  return createClient(url, key)
+  // Bypass Next.js Data Cache so CMS phone/copy updates show without waiting on redeploy TTL.
+  const fetchNoStore: typeof fetch = (input, init) => fetch(input, { ...init, cache: 'no-store' })
+  return createClient(url, key, {
+    auth: { persistSession: false, autoRefreshToken: false },
+    global: { fetch: fetchNoStore },
+  })
 }
 
 export async function getPageBySlug(siteId: SiteId, slug: string): Promise<CmsPage | null> {
