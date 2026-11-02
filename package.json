@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "node --experimental-strip-types --test scripts/rva-confirmed-linebreaks.test.mts",
     "seo:audit:sitemap": "node scripts/seo-sitemap-audit.mjs"
   },
   "dependencies": {
