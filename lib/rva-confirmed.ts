@@ -55,7 +55,8 @@ export function stripEscaladeCopy(text: string): string {
 
 /** Customer quotes that name the retired vehicle stay in the database and stay off the page. */
 
-/** Drop sentences that claim First Aid / first-aid certification or kit (Kit-unconfirmed). */
+/** Drop sentences that claim First Aid / first-aid certification or kit (Kit-unconfirmed).
+ *  Collapse runs of spaces and tabs only. Newlines stay so markdown blocks still split. */
 export function scrubUnconfirmedFirstAidText(text: string): string {
   if (!text) return text
   return text
@@ -65,7 +66,8 @@ export function scrubUnconfirmedFirstAidText(text: string): string {
       return !/first[\s-]*aid/i.test(part)
     })
     .join('')
-    .replace(/\s{2,}/g, ' ')
+    .replace(/[ \t]{2,}/g, ' ')
+    .replace(/[ \t]+\n/g, '\n')
     .replace(/\n{3,}/g, '\n\n')
     .trim()
 }
