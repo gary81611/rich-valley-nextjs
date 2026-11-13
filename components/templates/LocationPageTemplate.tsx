@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { LocationContent, SiteId } from '@/lib/pages'
+import { aalPhoneLabel, aalPhoneTel } from '@/lib/aal-public-copy'
 
 interface Props {
   site: SiteId
@@ -22,7 +23,8 @@ const AAL_LOCATION_CROSS_LINKS: { href: string; label: string }[] = [
 
 export default function LocationPageTemplate({ site, title, content, pageSlug }: Props) {
   const rva = isRva(site)
-  const phone = content.cta_phone || (rva ? '(970) 456-3666' : '(970) 315-6111')
+  const phone = rva ? content.cta_phone || '(970) 456-3666' : aalPhoneLabel(content.cta_phone)
+  const phoneHref = rva ? `tel:${phone.replace(/\D/g, '')}` : aalPhoneTel(phone)
 
   return (
     <div className={rva ? 'font-inter text-rva-forest' : 'font-inter text-alp-navy'}>
@@ -149,7 +151,7 @@ export default function LocationPageTemplate({ site, title, content, pageSlug }:
           <h2 className="font-playfair text-3xl font-bold mb-4">{content.cta_text || 'Ready to Book?'}</h2>
           <p className="mb-8 opacity-90">Get in touch to plan your perfect experience.</p>
           <a
-            href={`tel:${phone.replace(/\D/g, '')}`}
+            href={phoneHref}
             className={`inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 ${rva ? 'bg-white text-rva-forest' : 'bg-alp-navy text-white'}`}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

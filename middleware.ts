@@ -88,6 +88,9 @@ export async function middleware(request: NextRequest) {
       pathPart = pathPart.slice(0, -1)
     }
     const qs = dq != null ? `?${dq}` : search
+    if (pathPart === '/book') {
+      return NextResponse.redirect(`https://aspenalpenglowlimousine.com/reservations${qs}`, 301)
+    }
     return NextResponse.redirect(new URL(pathPart + qs, request.url), 301)
   }
 
@@ -118,10 +121,16 @@ export async function middleware(request: NextRequest) {
       '/areas/aspen': '/service-areas/aspen',
       '/areas/snowmass': '/service-areas/snowmass-village',
       '/areas/vail': '/service-areas/eagle-vail',
+      '/book': '/reservations',
     }
     const aalTarget = aalCanonical[bare]
     if (aalTarget) {
-      return NextResponse.redirect(new URL(aalTarget + search, request.url), 301)
+      const destPath = aalTarget + search
+      // /book must land on the canonical host in one hop so the old URL passes equity.
+      if (bare === '/book') {
+        return NextResponse.redirect(`https://aspenalpenglowlimousine.com${destPath}`, 301)
+      }
+      return NextResponse.redirect(new URL(destPath, request.url), 301)
     }
   }
 

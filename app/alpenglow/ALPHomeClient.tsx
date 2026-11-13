@@ -10,7 +10,7 @@ import { createClient } from '@/lib/supabase'
 import { hrefForService } from '@/lib/alpenglow-services'
 import type { Service as ServiceType, Testimonial } from '@/lib/types'
 import { seoAlt } from '@/lib/seo/alt-text'
-import { AAL_EAGLE_BOTH_WAYS, AAL_ONE_WAY_RATES, AAL_PUC_LINE, correctAalFaqItem, correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
+import { AAL_EAGLE_BOTH_WAYS, AAL_ONE_WAY_RATES, AAL_PUC_LINE, aalPhoneLabel, aalPhoneTel, correctAalFaqItem, correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
 import { isPublicTestimonial } from '@/lib/rva-confirmed'
 
 interface GeoBlock {
@@ -147,8 +147,8 @@ export default function AlpenglowHomeClient() {
           setFaqs(AIRPORT_HOME_FAQS)
         }
         if (settingsRes.data?.phone) {
-          setPhone(settingsRes.data.phone)
-          setPhoneHref(`tel:+1${settingsRes.data.phone.replace(/\D/g, '')}`)
+          setPhone(aalPhoneLabel(settingsRes.data.phone))
+          setPhoneHref(aalPhoneTel(settingsRes.data.phone))
         }
         if (settingsRes.data?.stats && Array.isArray(settingsRes.data.stats)) {
           setStats(

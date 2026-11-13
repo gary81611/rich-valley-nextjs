@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { alpenglowData, AAL_GOOGLE_REVIEW_URL } from '@/lib/site-data'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
-import { AAL_SERVICE_AREAS, correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
+import { AAL_OPENING_HOURS, AAL_OPENING_HOURS_SPEC, AAL_SERVICE_AREAS, correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
 import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 export const dynamic = 'force-dynamic'
@@ -80,6 +80,8 @@ export default async function AboutPage() {
         name: 'Aspen Alpenglow Limousine',
         url: 'https://aspenalpenglowlimousine.com',
         telephone: '+19703156111',
+        openingHours: AAL_OPENING_HOURS,
+        openingHoursSpecification: [AAL_OPENING_HOURS_SPEC],
         priceRange: '$$$',
         address: {
           '@type': 'PostalAddress',

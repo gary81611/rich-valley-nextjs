@@ -1,11 +1,14 @@
 import type { Metadata } from 'next'
+import { headers } from 'next/headers'
+import { isAalHost } from '@/lib/site-from-host'
 
 export const metadata: Metadata = {
   title: 'Terms and Conditions | Rich Valley Adventures & Aspen Alpenglow Limousine',
   description: 'Terms and conditions for Rich Valley Adventures guided outdoor experiences and Aspen Alpenglow Limousine transportation services in Aspen, Colorado.',
 }
 
-export default function TermsPage() {
+export default function TermsPage({ searchParams }: { searchParams?: { site?: string } }) {
+  const aal = isAalHost(headers().get('host') || '') || searchParams?.site === 'alpenglow'
   return (
     <div className="min-h-screen bg-white font-inter">
       <div className="max-w-3xl mx-auto px-6 py-16">
@@ -55,7 +58,11 @@ export default function TermsPage() {
 
           <section>
             <h2 className="font-playfair text-2xl font-semibold text-slate-900 mb-3">9. Contact</h2>
-            <p className="text-slate-700 leading-relaxed">For questions about these terms, contact Rich Valley Adventures at (970) 456-3666 or Aspen Alpenglow Limousine at (970) 315-6111, or visit us in Aspen, Colorado.</p>
+            <p className="text-slate-700 leading-relaxed">
+              {aal
+                ? 'For questions about these terms, contact Aspen Alpenglow Limousine at (970) 315-6111, or visit us in Aspen, Colorado.'
+                : 'For questions about these terms, contact Rich Valley Adventures at (970) 456-3666 or Aspen Alpenglow Limousine at (970) 315-6111, or visit us in Aspen, Colorado.'}
+            </p>
           </section>
         </div>
 

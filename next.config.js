@@ -116,6 +116,23 @@ function rvaRedirects() {
   return list
 }
 
+/** Old AAL booking URL. One hop to the canonical reservations page on either AAL host. */
+function aalBookRedirects() {
+  const list = []
+  for (const host of aalHosts) {
+    const h = [{ type: 'host', value: host }]
+    for (const source of ['/book', '/book/']) {
+      list.push({
+        source,
+        destination: 'https://aspenalpenglowlimousine.com/reservations',
+        statusCode: 301,
+        has: h,
+      })
+    }
+  }
+  return list
+}
+
 /** Canonical CMS landing for airport content; `/services/airport-transfers` duplicates the same topic. */
 function aalRedirects() {
   const list = []
@@ -192,7 +209,7 @@ const nextConfig = {
     remotePatterns: imageRemotePatterns,
   },
   async redirects() {
-    return [rvaApexToWww(), aalWwwToApex(), ...rvaRedirects(), ...aalRedirects()]
+    return [...aalBookRedirects(), rvaApexToWww(), aalWwwToApex(), ...rvaRedirects(), ...aalRedirects()]
   },
   async rewrites() {
     return {

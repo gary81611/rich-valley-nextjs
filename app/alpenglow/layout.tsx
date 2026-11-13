@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import ALPNav from '@/components/alpenglow/ALPNav'
 import ALPFooter from '@/components/alpenglow/ALPFooter'
 import { alpenglowData } from '@/lib/site-data'
-import { AAL_PUC_PERMIT } from '@/lib/aal-public-copy'
+import { AAL_OPENING_HOURS, AAL_OPENING_HOURS_SPEC, AAL_PUC_PERMIT } from '@/lib/aal-public-copy'
 import './aal-type.css'
 
 const ALP_URL = 'https://aspenalpenglowlimousine.com'
@@ -97,14 +97,8 @@ const localBusinessSchema = {
     latitude: 39.1911,
     longitude: -106.8175,
   },
-  openingHoursSpecification: [
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      opens: '00:00',
-      closes: '23:59',
-    },
-  ],
+  openingHours: AAL_OPENING_HOURS,
+  openingHoursSpecification: [AAL_OPENING_HOURS_SPEC],
   areaServed: [
     { '@type': 'City', name: 'Aspen', sameAs: 'https://en.wikipedia.org/wiki/Aspen,_Colorado' },
     { '@type': 'City', name: 'Snowmass Village' },
@@ -147,12 +141,7 @@ const localBusinessSchema = {
     contactType: 'Reservations',
     areaServed: 'US',
     availableLanguage: 'English',
-    hoursAvailable: {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      opens: '07:00',
-      closes: '20:00',
-    },
+    hoursAvailable: AAL_OPENING_HOURS_SPEC,
   },
 }
 

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import type { ServiceContent, SiteId } from '@/lib/pages'
 import { isPortraitAdventureImage } from '@/lib/rva-adventure-public'
 import RvaButton, { RVA_BOOKING_LABEL, RVA_PHONE_LABEL } from '@/components/rva/Button'
+import { aalPhoneLabel, aalPhoneTel } from '@/lib/aal-public-copy'
 
 interface Props {
   site: SiteId
@@ -61,7 +62,8 @@ export default function ServicePageTemplate({
           })),
         }
       : null
-  const phone = content.cta_phone || (rva ? '(970) 456-3666' : '(970) 315-6111')
+  const phone = rva ? content.cta_phone || '(970) 456-3666' : aalPhoneLabel(content.cta_phone)
+  const phoneHref = rva ? `tel:${phone.replace(/\D/g, '')}` : aalPhoneTel(phone)
   const linkClass = rva
     ? 'text-rva-copper-700 font-semibold hover:text-rva-forest'
     : 'text-alp-gold-700 font-semibold hover:text-alp-navy'
@@ -109,7 +111,7 @@ export default function ServicePageTemplate({
                   </RvaButton>
                   {/* Sticky bar already has Call below lg — hide the hero duplicate. */}
                   <RvaButton
-                    href={`tel:${phone.replace(/\D/g, '')}`}
+                    href={phoneHref}
                     variant="secondary"
                     size="md"
                     tone="on-dark"
@@ -430,7 +432,7 @@ export default function ServicePageTemplate({
               <RvaButton href={bookingHref || '/contact'} size="lg" tone="on-dark">
                 {RVA_BOOKING_LABEL}
               </RvaButton>
-              <RvaButton href={`tel:${phone.replace(/\D/g, '')}`} variant="secondary" size="lg" tone="on-dark">
+              <RvaButton href={phoneHref} variant="secondary" size="lg" tone="on-dark">
                 {RVA_PHONE_LABEL}
               </RvaButton>
             </div>
@@ -456,7 +458,7 @@ export default function ServicePageTemplate({
               </Link>
             )}
             <a
-              href={`tel:${phone.replace(/\D/g, '')}`}
+              href={phoneHref}
               className={`inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold text-lg transition-transform hover:scale-105 ${
                 bookingHref
                   ? 'border-2 border-alp-navy text-alp-navy-deep'
