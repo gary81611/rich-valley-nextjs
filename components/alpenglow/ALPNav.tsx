@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { alpenglowData } from '@/lib/site-data'
+import { aalPhoneLabel, aalPhoneTel } from '@/lib/aal-public-copy'
 import { createClient } from '@/lib/supabase'
 import { hrefForServiceArea } from '@/lib/alpenglow-service-areas'
 import { normalizeAalServiceNavHref } from '@/lib/alpenglow-nav'
@@ -75,8 +76,8 @@ export default function ALPNav() {
           )
         }
         if (settingsRes.data?.phone) {
-          setPhone(settingsRes.data.phone)
-          setPhoneHref(`tel:+1${settingsRes.data.phone.replace(/\D/g, '')}`)
+          setPhone(aalPhoneLabel(settingsRes.data.phone))
+          setPhoneHref(aalPhoneTel(settingsRes.data.phone))
         }
       } catch {
         // Use static fallback

@@ -8,7 +8,7 @@ import LocationPageTemplate from '@/components/templates/LocationPageTemplate'
 import FaqPageTemplate from '@/components/templates/FaqPageTemplate'
 import LandingPageTemplate from '@/components/templates/LandingPageTemplate'
 import type { CmsPage } from '@/lib/pages'
-import { correctAalPublicText } from '@/lib/aal-public-copy'
+import { AAL_OPENING_HOURS_SPEC, correctAalPublicText } from '@/lib/aal-public-copy'
 import { aalDisplayTitle } from '@/lib/aal-display-title'
 import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
@@ -216,12 +216,7 @@ function buildJsonLd(page: Awaited<ReturnType<typeof getPageBySlug>>) {
         servicePhone: '+1-970-315-6111',
         serviceUrl: pageUrl,
         availableLanguage: 'English',
-        hoursAvailable: {
-          '@type': 'OpeningHoursSpecification',
-          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-          opens: '00:00',
-          closes: '23:59',
-        },
+        hoursAvailable: AAL_OPENING_HOURS_SPEC,
       }
     }
 

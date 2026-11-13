@@ -40,6 +40,38 @@ export const AAL_POSTAL_ADDRESS = {
   addressCountry: 'US',
 }
 
+/** Public site and Google Business say 24/7. Schema.org closing time is 23:59, not 24:00. */
+export const AAL_OPENING_HOURS = 'Mo-Su 00:00-23:59'
+
+export const AAL_OPENING_HOURS_SPEC = {
+  '@type': 'OpeningHoursSpecification' as const,
+  dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+  opens: '00:00',
+  closes: '23:59',
+}
+
+const AAL_PHONE_LABEL = '(970) 315-6111'
+const AAL_PHONE_TEL = 'tel:+19703156111'
+
+function digitsOnly(value: string): string {
+  return value.replace(/\D/g, '').replace(/^1/, '')
+}
+
+/** AAL display phone. A stored Rich Valley Adventures number is not shown on AAL. */
+export function aalPhoneLabel(raw?: string | null): string {
+  if (!raw || !raw.trim()) return AAL_PHONE_LABEL
+  if (digitsOnly(raw) === '9704563666') return AAL_PHONE_LABEL
+  return raw.trim()
+}
+
+/** tel: link for AAL. Always the Alpenglow number, with a country code. */
+export function aalPhoneTel(raw?: string | null): string {
+  const label = aalPhoneLabel(raw)
+  const digits = digitsOnly(label)
+  if (digits === '9703156111') return AAL_PHONE_TEL
+  return digits ? `tel:+1${digits}` : AAL_PHONE_TEL
+}
+
 /** RVA closure post that was stored on the Alpenglow blog. Hidden until the round 14 migration drafts it. */
 export const AAL_HIDDEN_BLOG_SLUG = 'aspen-airport-closure-alternative-transportation-adventures'
 
@@ -53,7 +85,11 @@ export function correctAalFaqItem(q: string, a: string): { q: string; a: string 
   if (/april\s*23/i.test(blob) && /may\s*21/i.test(blob)) return null
   if (/closed in 2026/i.test(q) || /will be closed from/i.test(a)) return null
 
-  let question = q.replace(/\s+during the closure/gi, '').replace(/\s+during airport closure/gi, '')
+  // "closures" must be consumed whole. Matching only "closure" leaves the plural s
+  // stuck to the previous word ("bookings" + "s" → "bookingss").
+  let question = q
+    .replace(/\s+during the closures?/gi, '')
+    .replace(/\s+during airport closures?/gi, '')
   question = question.replace(/\s{2,}/g, ' ').trim()
 
   let answer = a
@@ -309,6 +345,11 @@ export function correctAalPublicText(text: string): string {
   t = t.replace(/\bFord Transit passenger vans\b/gi, 'Ford Transit Passenger Vans')
   t = t.replace(/\bFord Transit passenger van\b/gi, 'Ford Transit Passenger Van')
   t = t.replace(/\bFord Transit Van\b/gi, 'Ford Transit Passenger Van')
+  t = t.replace(/\bbookingss\b/gi, 'bookings')
+  t = t.replace(/tel:\+?1?9704563666/gi, 'tel:+19703156111')
+  t = t.replace(/\+1[\s.-]?970[\s.-]?456[\s.-]?3666/g, '+1-970-315-6111')
+  t = t.replace(/\(970\)\s*456[\s.-]?3666/g, '(970) 315-6111')
+  t = t.replace(/\b970[\s.-]?456[\s.-]?3666\b/g, '970-315-6111')
   return t
 }
 

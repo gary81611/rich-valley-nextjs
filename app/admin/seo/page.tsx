@@ -176,7 +176,7 @@ function SchemaTab({ supabase }: { supabase: any }) {
             telephone: '+1-970-315-6111',
             description: 'Luxury private car and limousine service in Aspen, Colorado. Airport transfers, weddings, ski resort shuttles, corporate travel.',
             foundingDate: '2012',
-            openingHours: 'Mo-Su 00:00-24:00',
+            openingHours: 'Mo-Su 00:00-23:59',
             address: {
               '@type': 'PostalAddress',
               addressLocality: 'Aspen',
