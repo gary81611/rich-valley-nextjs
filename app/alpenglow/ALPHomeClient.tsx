@@ -15,6 +15,7 @@ import {
   correctAalPublicText,
 } from '@/lib/aal-public-copy'
 import { AAL_VEHICLES } from '@/lib/aal-vehicles'
+import { homeFaqPageJsonLd, selectHomeFaqs } from '@/lib/aal-home-faq'
 import type { HomeAirportId, HomeFares } from '@/lib/aal-published-rates'
 import './aal-home.css'
 
@@ -168,23 +169,16 @@ export default function AlpenglowHomeClient({ fares }: { fares: HomeFares }) {
           })
         const have = new Set(mapped.map((item) => item.q.toLowerCase()))
         const extras = AIRPORT_HOME_FAQS.filter((item) => !have.has(item.q.toLowerCase()))
-        setFaqs([...extras, ...mapped])
+        setFaqs(selectHomeFaqs([...extras, ...mapped]))
       } catch {
-        setFaqs(AIRPORT_HOME_FAQS)
+        setFaqs(selectHomeFaqs(AIRPORT_HOME_FAQS))
       }
     }
     fetchFaqs()
   }, [])
 
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.map((item) => ({
-      '@type': 'Question',
-      name: item.q,
-      acceptedAnswer: { '@type': 'Answer', text: item.a },
-    })),
-  }
+  const visibleFaqs = selectHomeFaqs(faqs)
+  const faqSchema = homeFaqPageJsonLd(visibleFaqs)
 
   return (
     <div className="aal-home">
@@ -536,12 +530,15 @@ export default function AlpenglowHomeClient({ fares }: { fares: HomeFares }) {
             </div>
             <p>Everything you need to know before booking your luxury transfer.</p>
           </div>
-          {faqs.map((item) => (
+          {visibleFaqs.map((item) => (
             <details key={item.q}>
               <summary>{item.q}</summary>
               <p>{item.a}</p>
             </details>
           ))}
+          <p className="aal-note">
+            <Link href="/faq">All questions</Link>
+          </p>
         </div>
       </section>
 
