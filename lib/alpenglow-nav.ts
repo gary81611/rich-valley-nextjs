@@ -35,6 +35,11 @@ const LEGACY_TO_CANONICAL_SLUG: Record<string, string> = {
 
 export function normalizeAalServiceNavHref(href: string): string {
   const u = href.trim()
+  const pathOnly = u.split('?')[0]
+  const bare = pathOnly.length > 1 ? pathOnly.replace(/\/+$/, '') : pathOnly
+  if (bare === '/services/charter-services' || bare === '/charter-services') {
+    return '/services/hourly-charter'
+  }
   if (u === '/services/ski-resort-transfers' || u === '/services/ski-resort-transfers/') {
     return '/ski-resort-transfers'
   }
