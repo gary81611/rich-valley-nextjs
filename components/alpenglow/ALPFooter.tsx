@@ -18,6 +18,7 @@ export default function ALPFooter() {
             <p className="font-playfair text-lg font-semibold mb-5 text-alp-gold">Services</p>
             <ul className="space-y-2">
               <li><a href="/airport-transfers" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Airport Transfers</a></li>
+              <li><a href="/services/hourly-charter" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Hourly Charter</a></li>
               <li><a href="/corporate" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Corporate Transportation</a></li>
               <li><a href="/weddings" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Wedding Transportation</a></li>
               <li><a href="/ski-resort-transfers" className="text-white/65 hover:text-alp-gold-light text-sm transition-colors">Ski Resort Transfers</a></li>

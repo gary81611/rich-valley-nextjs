@@ -13,6 +13,8 @@ import {
   legalCanonicalUrl,
   xRobotsTagForHost,
 } from '../lib/aal-canonical.ts'
+import { normalizeAalServiceNavHref } from '../lib/alpenglow-nav.ts'
+import { hrefForService } from '../lib/alpenglow-services.ts'
 
 const require = createRequire(import.meta.url)
 
@@ -103,6 +105,52 @@ describe('service and service-area canonicals', () => {
       canonicalUrlForService({ slug: 'airport-transfers', name: 'Airport Transfers' }),
       'https://aspenalpenglowlimousine.com/airport-transfers',
     )
+  })
+
+  it('canonicalizes /services/hourly-charter to itself, with og:url on the same value', () => {
+    const url = 'https://aspenalpenglowlimousine.com/services/hourly-charter'
+    assert.equal(hrefForService({ slug: 'hourly-charter', name: 'Hourly Charter' }), '/services/hourly-charter')
+    assert.equal(hrefForService({ slug: 'charter-services', name: 'Hourly Charter' }), '/services/hourly-charter')
+    assert.equal(hrefForService({ slug: null, name: 'Charter Services' }), '/services/hourly-charter')
+    assert.equal(hrefForService({ slug: '', name: 'Charter Services' }), '/services/hourly-charter')
+    assert.equal(canonicalUrlForService({ slug: 'charter-services', name: 'Charter Services' }), url)
+    assert.equal(canonicalUrlForService({ slug: 'hourly-charter', name: 'Charter Services' }), url)
+
+    const page = readFileSync(new URL('../app/alpenglow/services/[slug]/page.tsx', import.meta.url), 'utf8')
+    assert.match(page, /const canonical = canonicalUrlForService\(service\)/)
+    assert.match(page, /alternates:\s*\{\s*canonical\s*\}/)
+    assert.match(page, /url:\s*canonical/)
+  })
+
+  it('listing, nav, footer, and sitemap use /services/hourly-charter and never the alias', () => {
+    const listing = readFileSync(new URL('../app/alpenglow/services/page.tsx', import.meta.url), 'utf8')
+    assert.match(listing, /hrefForService\(\{ slug: 'charter-services', name: 'Charter Services' \}\)/)
+    assert.equal(hrefForService({ slug: 'charter-services', name: 'Charter Services' }), '/services/hourly-charter')
+    assert.doesNotMatch(listing, /\/services\/charter-services/)
+
+    assert.equal(normalizeAalServiceNavHref('/services/charter-services'), '/services/hourly-charter')
+    assert.equal(normalizeAalServiceNavHref('/services/charter-services/'), '/services/hourly-charter')
+    assert.equal(normalizeAalServiceNavHref('/charter-services'), '/services/hourly-charter')
+    assert.equal(normalizeAalServiceNavHref('/services/hourly-charter'), '/services/hourly-charter')
+    const nav = readFileSync(new URL('../components/alpenglow/ALPNav.tsx', import.meta.url), 'utf8')
+    assert.match(nav, /href: '\/services\/hourly-charter'/)
+    assert.match(nav, /normalizeAalServiceNavHref/)
+    assert.doesNotMatch(nav, /charter-services/)
+
+    const footer = readFileSync(new URL('../components/alpenglow/ALPFooter.tsx', import.meta.url), 'utf8')
+    assert.match(footer, /href="\/services\/hourly-charter"/)
+    assert.doesNotMatch(footer, /charter-services/)
+
+    const sitemap = readFileSync(new URL('../app/api/sitemap/route.ts', import.meta.url), 'utf8')
+    assert.match(sitemap, /'\/services\/hourly-charter'/)
+    assert.doesNotMatch(sitemap, /\/services\/charter-services/)
+    const canonical = 'https://aspenalpenglowlimousine.com/services/hourly-charter'
+    assert.equal(canonicalizeAalSitemapUrl(canonical), canonical)
+    assert.equal(
+      canonicalizeAalSitemapUrl('https://aspenalpenglowlimousine.com/services/charter-services'),
+      canonical,
+    )
+    assert.equal(aalAliasDestination('/services/charter-services'), '/services/hourly-charter')
   })
 
   it('page metadata calls the href helpers instead of the request slug', () => {

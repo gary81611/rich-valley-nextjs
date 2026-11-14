@@ -5,8 +5,18 @@ export function slugifyServiceName(name: string): string {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 }
 
+/**
+ * CMS still stores this row as slug or name "Charter Services".
+ * The live URL is /services/hourly-charter; /services/charter-services 301s there.
+ */
+const SERVICE_SLUG_OVERRIDE: Record<string, string> = {
+  'charter-services': 'hourly-charter',
+}
+
 export function hrefForService(service: { slug: string | null; name: string }): string {
-  const seg = (service.slug && service.slug.trim()) || slugifyServiceName(service.name)
+  const fromName = slugifyServiceName(service.name)
+  const raw = (service.slug && service.slug.trim()) || fromName
+  const seg = SERVICE_SLUG_OVERRIDE[raw] || raw
   if (seg === 'airport-transfers') return '/airport-transfers'
   if (seg === 'ski-resort-transfers') return '/ski-resort-transfers'
   return `/services/${seg}`

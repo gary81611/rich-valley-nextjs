@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { hrefForService } from '@/lib/alpenglow-services'
 import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 import { alpenglowData } from '@/lib/site-data'
 
@@ -27,6 +28,12 @@ const sections = [
     title: 'Airport Transfers',
     href: '/airport-transfers',
     body: `Aspen Alpenglow Limousine offers all-inclusive, door-to-door private car service from ASE, EGE, DEN, KAPA (Centennial), KRIL (Rifle), and GJT (Grand Junction). Private FBO airport service includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison. One-way SUV rates each way: Eagle and Rifle $720, Denver $1,375, Grand Junction $950. The 13-passenger Ford Transit is $1,200 from Eagle or Rifle and $1,600 from Denver. Holiday pricing may change seasonally. Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice. We monitor flights in real time, meet you at arrivals with a warm greeting, and include thirty minutes of complimentary wait time on airport pickups so you are never rushed after baggage claim.`,
+  },
+  {
+    id: 'hourly-charter',
+    title: 'Hourly Charter',
+    href: hrefForService({ slug: 'charter-services', name: 'Charter Services' }),
+    body: `Private hourly charter in Aspen and the Roaring Fork Valley, with the vehicle and chauffeur reserved for your group. Chartered services require a 4-hour minimum. General cancellations need 24 hours' notice. Vehicles have Starlink, ski racks, and roof cargo space. Child car seats and boosters are free. No shared rides are offered.`,
   },
   {
     id: 'corporate',
