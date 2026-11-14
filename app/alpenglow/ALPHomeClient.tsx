@@ -334,23 +334,23 @@ export default function AlpenglowHomeClient({ fares }: { fares: HomeFares }) {
 
       <section className="aal-trust" aria-label="Service facts">
         <div className="aal-wrap">
-          <div>
+          <div className="aal-trust-item">
             <b>Since 2012</b>
             Aspen, Colorado
           </div>
-          <div>
+          <div className="aal-trust-item">
             <b>24/7</b>
             Early departures, late arrivals
           </div>
-          <div>
+          <div className="aal-trust-item">
             <b>Private only</b>
             No shared rides
           </div>
-          <div>
+          <div className="aal-trust-item">
             <b>All-inclusive</b>
             No gratuity or service charge added
           </div>
-          <div>
+          <div className="aal-trust-item">
             <b>{AAL_PUC_PERMIT}</b>
             Colorado PUC permit
           </div>
@@ -546,21 +546,19 @@ export default function AlpenglowHomeClient({ fares }: { fares: HomeFares }) {
       </section>
 
       <section className="aal-band aal-quote" id="quote">
-        <div className="aal-wrap">
-          <div className="aal-head">
-            <div>
-              <p className="eyebrow g">Reserve your journey</p>
-              <h2>Request a quote</h2>
-            </div>
+        <div className="aal-wrap aal-quote-grid">
+          <div className="aal-quote-copy">
+            <p className="eyebrow g">Groups &amp; custom trips</p>
+            <h2>Request a quote</h2>
+            <p className="aal-quote-lead">
+              <Link href={alpenglowData.onlineReservationsPath}>Book online</Link> for standard trips, or request a quote below and we&apos;ll respond with availability and pricing.
+            </p>
+            <p className="aal-note">
+              <a href={PHONE_HREF}>{PHONE}</a>
+              <span> · </span>
+              <span>{AAL_PUC_LINE}</span>
+            </p>
           </div>
-          <p className="aal-quote-lead">
-            <Link href={alpenglowData.onlineReservationsPath}>Book online</Link> for standard trips, or request a quote below and we&apos;ll respond with availability and pricing.
-          </p>
-          <p className="aal-note">
-            <a href={PHONE_HREF}>{PHONE}</a>
-            <span> · </span>
-            <span>{AAL_PUC_LINE}</span>
-          </p>
           <div className="aal-quote-card">
             <InquiryForm brand="alpenglow" />
           </div>
