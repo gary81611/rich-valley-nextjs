@@ -1,6 +1,22 @@
 import type { Metadata } from 'next'
+import { Cormorant_Garamond, Inter } from 'next/font/google'
 import AlpenglowHomeClient from './ALPHomeClient'
 import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
+import { buildHomeFares, loadAalPublishedRoutes } from '@/lib/aal-published-rates'
+
+const aalInter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-aal-inter',
+})
+
+const aalCormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+  variable: '--font-aal-cormorant',
+})
 
 /** Fleet paragraph must render from this file, not a stale edge prerender. */
 export const dynamic = 'force-dynamic'
@@ -40,11 +56,12 @@ export const metadata: Metadata = {
   },
 }
 
-export default function AlpenglowPage() {
+export default async function AlpenglowPage() {
+  const fares = buildHomeFares(await loadAalPublishedRoutes())
   return (
-    <>
+    <div className={`${aalInter.variable} ${aalCormorant.variable}`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
-      <AlpenglowHomeClient />
-    </>
+      <AlpenglowHomeClient fares={fares} />
+    </div>
   )
 }

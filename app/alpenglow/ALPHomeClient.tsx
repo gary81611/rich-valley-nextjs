@@ -1,24 +1,46 @@
 'use client'
-import { useState, useEffect } from 'react'
+
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import ScrollReveal from '@/components/shared/ScrollReveal'
 import InquiryForm from '@/components/shared/InquiryForm'
-import NewsletterSignup from '@/components/shared/NewsletterSignup'
 import { alpenglowData } from '@/lib/site-data'
 import { createClient } from '@/lib/supabase'
-import { hrefForService } from '@/lib/alpenglow-services'
-import type { Service as ServiceType, Testimonial } from '@/lib/types'
-import { seoAlt } from '@/lib/seo/alt-text'
-import { AAL_EAGLE_BOTH_WAYS, AAL_ONE_WAY_RATES, AAL_PUC_LINE, aalPhoneLabel, aalPhoneTel, correctAalFaqItem, correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
-import { isPublicTestimonial } from '@/lib/rva-confirmed'
+import {
+  AAL_EAGLE_BOTH_WAYS,
+  AAL_ONE_WAY_RATES,
+  AAL_PUC_LINE,
+  AAL_PUC_PERMIT,
+  correctAalFaqItem,
+  correctAalPublicText,
+} from '@/lib/aal-public-copy'
+import { AAL_VEHICLES } from '@/lib/aal-vehicles'
+import type { HomeAirportId, HomeFares } from '@/lib/aal-published-rates'
+import './aal-home.css'
 
-interface GeoBlock {
-  id: string
-  question: string
-  answer: string
-  block_type: string
-}
+const PHONE = alpenglowData.phone
+const PHONE_HREF = alpenglowData.phoneHref
+
+const AIRPORTS: { id: HomeAirportId; label: string; code: string }[] = [
+  { id: 'ase', label: 'Aspen', code: 'ASE' },
+  { id: 'ege', label: 'Eagle', code: 'EGE' },
+  { id: 'den', label: 'Denver', code: 'DEN' },
+  { id: 'ril', label: 'Rifle', code: 'RIL' },
+]
+
+const VEHICLES = [
+  { id: 'suv' as const, label: 'Suburban', cap: 'Up to 7' },
+  { id: 'transit' as const, label: 'Ford Transit', cap: 'Up to 13' },
+]
+
+const NAV = [
+  { href: '/airport-transfers', label: 'Airport Transfers' },
+  { href: '/fleet', label: 'Fleet' },
+  { href: '/pricing', label: 'Pricing' },
+  { href: '/weddings', label: 'Weddings & Events' },
+  { href: '/service-areas', label: 'Service Areas' },
+  { href: '/about', label: 'About' },
+]
 
 const AIRPORT_HOME_FAQS: { q: string; a: string }[] = [
   {
@@ -39,524 +61,621 @@ const AIRPORT_HOME_FAQS: { q: string; a: string }[] = [
   },
 ]
 
-const GOOGLE_HOME_REVIEWS = [
+const REVIEWS = [
   {
     name: 'Michael D.',
-    // Verbatim from Google Maps reviews, 2026-10-30 (Mac mini scrape → /workspace/rva-aal/reviews.json).
     quote:
-      "Excellent car service in Aspen! I've used them many times. The experience is excellent all around. The vehicles are always nice & clean, and the drivers are very friendly and professional. Highly recommend to anyone looking for first class transportation in Aspen!",
+      'The vehicles are always nice & clean, and the drivers are very friendly and professional. Highly recommend to anyone looking for first class transportation in Aspen!',
   },
   {
     name: 'Lance Y.',
-    // Full verbatim from Google Maps (same scrape). Newline preserves the source break before Highly recommended.
     quote:
-      'Always feel safe with Aspen Alpenglow Limo service, have been driven by this company for many years. Very professional and courteous. Whether you need a drive to the Denver airport or just out to dinner, Aspen Alpenglow has great service and clean vehicles. Thanks again\nHighly recommended',
+      'Always feel safe with Aspen Alpenglow Limo service, have been driven by this company for many years. Very professional and courteous.',
   },
 ]
 
-function correctAalCopy(question: string, answer: string): string {
+const INCLUDED = [
+  {
+    title: '30 minutes at the airport',
+    body: 'Thirty minutes of wait time are included on airport arrivals, and fifteen minutes on other pickups.',
+  },
+  {
+    title: 'Flight diversions handled',
+    body: 'Diverted to Denver or Grand Junction? Give us 2 hours\u2019 notice, with no Aspen cancellation penalty.',
+  },
+  {
+    title: 'The price you see',
+    body: 'All-inclusive pricing, with no hidden service charges and no gratuity added.',
+  },
+  {
+    title: 'Private FBO service',
+    body: 'Eagle, Rifle, Grand Junction, Buena Vista, Montrose and Gunnison.',
+  },
+  {
+    title: 'Hourly charters',
+    body: 'Dinners, events and full days in the valley, with a 4-hour minimum.',
+  },
+  {
+    title: 'Corporate accounts',
+    body: 'Charge accounts are billed monthly.',
+  },
+]
 
+const EVENTS = [
+  {
+    href: '/weddings',
+    eyebrow: 'Celebrations',
+    title: 'Weddings',
+    body: 'Private SUVs and the Ford Transit for the wedding weekend.',
+  },
+  {
+    href: '/events/x-games-aspen-transportation',
+    eyebrow: 'January',
+    title: 'X Games Aspen 2027',
+    body: 'Private car for X Games week.',
+  },
+  {
+    href: '/events/new-years-eve-aspen',
+    eyebrow: 'December',
+    title: 'New Year\u2019s Eve',
+    body: 'Private car for New Year\u2019s Eve in Aspen.',
+  },
+  {
+    href: '/seasonal/holiday-private-car-aspen',
+    eyebrow: 'Season',
+    title: 'Holiday private car',
+    body: 'Private car for holiday arrivals.',
+  },
+]
+
+const HERO_ALT = 'Aspen trees and the Maroon Bells reflected in a lake in the Roaring Fork Valley'
+
+function correctAalCopy(question: string, answer: string): string {
   const blob = `${question} ${answer}`.toLowerCase()
-  if (/1,475|1475/.test(answer) && blob.includes('denver')) {
-    return AAL_ONE_WAY_RATES
-  }
-  if (blob.includes('net-30') || blob.includes('net 30')) {
-    return 'Corporate charge accounts are billed monthly.'
-  }
+  if (/1,475|1475/.test(answer) && blob.includes('denver')) return AAL_ONE_WAY_RATES
+  if (blob.includes('net-30') || blob.includes('net 30')) return 'Corporate charge accounts are billed monthly.'
   if (blob.includes('cancellation') && (/50%|7-day|7 day|full refund/.test(answer))) {
     return "Flight diversions to Denver or Grand Junction are handled with 2 hours' notice and no Aspen cancellation penalty. General cancellations need 24 hours' notice."
   }
   return correctAalPublicText(answer)
 }
 
-export default function AlpenglowHomeClient() {
-  const [services, setServices] = useState<{ title: string; slug: string; description: string; features: string[] }[]>([])
-  const [testimonials, setTestimonials] = useState<{ quote: string; name: string; location: string }[]>([])
-  const [stats, setStats] = useState<{value: string; label: string}[]>([])
-  const [whyChooseUs, setWhyChooseUs] = useState<{title: string; description: string}[]>([])
-  const [serviceAreas, setServiceAreas] = useState<{name: string; description: string}[]>([])
-  const [destinations, setDestinations] = useState<{name: string; image: string; description: string}[]>([])
-  const [geoBlocks, setGeoBlocks] = useState<GeoBlock[]>([])
-  const [faqs, setFaqs] = useState<{q: string; a: string}[]>([])
-  const [phone, setPhone] = useState(alpenglowData.phone)
-  const [phoneHref, setPhoneHref] = useState(alpenglowData.phoneHref)
+export default function AlpenglowHomeClient({ fares }: { fares: HomeFares }) {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [airport, setAirport] = useState<HomeAirportId>('ege')
+  const [vehicle, setVehicle] = useState<'suv' | 'transit'>('suv')
+  const [faqs, setFaqs] = useState(AIRPORT_HOME_FAQS)
+  const fare = fares.airports[airport][vehicle]
+  const suburban = AAL_VEHICLES.find((item) => item.id === 'suburban')
+  const transit = AAL_VEHICLES.find((item) => item.id === 'transit')
 
   useEffect(() => {
-    async function fetchSupabaseData() {
+    async function fetchFaqs() {
       try {
         const supabase = createClient()
-        const [svcRes, testRes, geoRes, faqRes, settingsRes, vpRes, saRes, destRes] = await Promise.all([
-          supabase.from('services').select('*').eq('is_active', true).order('display_order'),
-          supabase.from('testimonials').select('*').eq('is_active', true).eq('verified', true).eq('site_key', 'alpenglow'),
-          supabase.from('geo_content_blocks').select('*').eq('is_active', true).eq('site_key', 'alpenglow').eq('display_on_page', '/').order('display_order'),
-          supabase.from('faqs').select('*').eq('is_active', true).eq('site_key', 'alpenglow').order('display_order'),
-          supabase.from('site_settings').select('phone, stats').eq('site_key', 'alpenglow').single(),
-          supabase.from('value_propositions').select('*').eq('site_key', 'alpenglow').eq('is_active', true).order('display_order'),
-          supabase.from('service_areas').select('*').eq('site_key', 'alpenglow').eq('is_active', true).order('display_order'),
-          supabase.from('destinations').select('*').eq('is_active', true).order('display_order'),
-        ])
-        if (svcRes.data && svcRes.data.length > 0) {
-          setServices(
-            svcRes.data.map((s: ServiceType) => ({
-              title: s.name,
-              slug: s.slug ?? '',
-              description: correctAalPublicText(s.description),
-              features: Array.isArray(s.features) ? (s.features as string[]).map((feature) => correctAalPublicText(feature)) : [],
-            })),
-          )
-        }
-        if (testRes.error || !testRes.data) {
-          setTestimonials([])
-        } else {
-          setTestimonials(
-            testRes.data
-              .filter((t: Testimonial) => isPublicTestimonial(t))
-              .filter((t: Testimonial) => {
-                const author = (t.author || '').toLowerCase()
-                const quote = (t.quote || '').toLowerCase()
-                return !GOOGLE_HOME_REVIEWS.some(
-                  (g) =>
-                    author.startsWith(g.name.replace(/\.$/, '').toLowerCase()) ||
-                    quote.startsWith(g.quote.slice(0, 48).toLowerCase()),
-                )
-              })
-              .map((t: Testimonial) => ({
-                quote: t.quote, name: t.author, location: '',
-              })),
-          )
-        }
-        if (geoRes.data && geoRes.data.length > 0) {
-          setGeoBlocks(
-            geoRes.data.flatMap((block: GeoBlock) => {
-              const fixed = correctAalFaqItem(block.question, correctAalCopy(block.question, block.answer))
-              return fixed ? [{ ...block, question: fixed.q, answer: fixed.a }] : []
-            }),
-          )
-        }
-        if (faqRes.data) {
-          const mapped = faqRes.data
-            .filter((f: { question: string; answer: string }) => f.question && f.answer)
-            .flatMap((f: { question: string; answer: string }) => {
-              const fixed = correctAalFaqItem(f.question, correctAalCopy(f.question, f.answer))
-              return fixed ? [fixed] : []
-            })
-          const have = new Set(mapped.map((f) => f.q.toLowerCase()))
-          const extras = AIRPORT_HOME_FAQS.filter((f) => !have.has(f.q.toLowerCase()))
-          setFaqs([...extras, ...mapped])
-        } else {
-          setFaqs(AIRPORT_HOME_FAQS)
-        }
-        if (settingsRes.data?.phone) {
-          setPhone(aalPhoneLabel(settingsRes.data.phone))
-          setPhoneHref(aalPhoneTel(settingsRes.data.phone))
-        }
-        if (settingsRes.data?.stats && Array.isArray(settingsRes.data.stats)) {
-          setStats(
-            settingsRes.data.stats
-              .map((stat: { value: string; label: string }) => normalizeAalStat(stat))
-              .filter((stat): stat is { value: string; label: string } => stat !== null),
-          )
-        }
-        if (vpRes.data) {
-          setWhyChooseUs(vpRes.data.map((vp: { title: string; description: string }) => ({
-            title: vp.title, description: vp.description,
-          })))
-        }
-        if (saRes.data) {
-          setServiceAreas(saRes.data.map((sa: { name: string; description: string }) => ({
-            name: sa.name, description: sa.description,
-          })))
-        }
-        if (destRes.data) {
-          setDestinations(destRes.data.map((d: { name: string; image_url: string; description: string }) => ({
-            name: d.name, image: d.image_url || '/images/destinations/garden-of-the-gods.jpg', description: d.description,
-          })))
-        }
+        const { data } = await supabase
+          .from('faqs')
+          .select('*')
+          .eq('is_active', true)
+          .eq('site_key', 'alpenglow')
+          .order('display_order')
+        if (!data) return
+        const mapped = data
+          .filter((item: { question: string; answer: string }) => item.question && item.answer)
+          .flatMap((item: { question: string; answer: string }) => {
+            const fixed = correctAalFaqItem(item.question, correctAalCopy(item.question, item.answer))
+            return fixed ? [fixed] : []
+          })
+        const have = new Set(mapped.map((item) => item.q.toLowerCase()))
+        const extras = AIRPORT_HOME_FAQS.filter((item) => !have.has(item.q.toLowerCase()))
+        setFaqs([...extras, ...mapped])
       } catch {
-        // Use static fallback
+        setFaqs(AIRPORT_HOME_FAQS)
       }
     }
-    fetchSupabaseData()
+    fetchFaqs()
   }, [])
 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  }
+
   return (
-    <div className="min-h-screen bg-alp-pearl font-inter">
-      {/* HERO */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/about/pexels-outdoor.png"
-            alt={seoAlt({
-              subject: 'Luxury private SUV on a mountain road',
-              location: 'Aspen, Colorado',
-              context: 'private car service',
-              brand: 'Aspen Alpenglow Limousine',
-            })}
-            fill
-            className="object-cover"
-            priority
-            unoptimized
-            fetchPriority="high"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-alp-navy-deep/80 via-alp-navy-deep/50 to-alp-navy-deep/85" />
+    <div className="aal-home">
+      <div className="aal-util">
+        <div className="aal-wrap">
+          <span>
+            Available 24/7 <span className="hide">&nbsp;·&nbsp; CO PUC permit {AAL_PUC_PERMIT}</span>
+          </span>
+          <span>
+            <span className="hide">Reservations &nbsp;</span>
+            <a href={PHONE_HREF}>
+              <b>{PHONE}</b>
+            </a>
+          </span>
         </div>
-        <div className="aal-on-navy relative z-10 text-center text-white px-6 max-w-5xl mx-auto pb-36 sm:pb-28">
-          <p className="font-cormorant text-xl md:text-2xl text-alp-gold tracking-[0.3em] uppercase mb-6">
-            Aspen · Snowmass · Roaring Fork Valley
-          </p>
-          <h1 className="alp-speak-hero font-playfair text-5xl md:text-7xl font-bold mb-8 leading-tight">
-            Aspen Car Service &amp; Limousine
-          </h1>
-          <p className="alp-speak-intro text-xl md:text-2xl text-white/85 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
-            Private SUV and Transit airport transfers for ASE, Eagle (EGE), and Denver (DEN). Available 24/7 since 2012.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href={alpenglowData.onlineReservationsPath} className="bg-alp-gold hover:bg-alp-gold-light text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-2xl hover:-translate-y-0.5 inline-block">
-              Book online
-            </a>
-            <a href="#quote" className="border-2 border-white text-white hover:bg-white hover:text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all inline-block">
-              Request a quote
-            </a>
-            <a href="/fleet" className="hidden md:inline-block border-2 border-white text-white hover:bg-white hover:text-alp-navy px-10 py-4 rounded-full font-semibold text-lg transition-all">
-              See the fleet
-            </a>
+      </div>
+
+      <header className="aal-hero">
+        <Image
+          src="/images/about/pexels-outdoor.png"
+          alt={HERO_ALT}
+          fill
+          priority
+          sizes="100vw"
+          className="aal-hero-img"
+        />
+        <div className="aal-hero-shade" />
+        <nav className="aal-hero-nav" aria-label="Main navigation">
+          <div className="aal-wrap">
+            <Link href="/" className="aal-mark" aria-label="Aspen Alpenglow Limousine, home">
+              <span className="n">Aspen Alpenglow</span>
+              <span className="s">Limousine · Since 2012</span>
+            </Link>
+            <div className="aal-nav-links">
+              {NAV.map((item) => (
+                <Link key={item.href} href={item.href}>
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+            <div className="aal-nav-right">
+              <a className="aal-nav-phone" href={PHONE_HREF}>
+                {PHONE}
+              </a>
+              <button
+                type="button"
+                className="aal-menu-btn"
+                aria-expanded={menuOpen}
+                onClick={() => setMenuOpen((open) => !open)}
+              >
+                Menu
+              </button>
+              <Link href="/reservations" className="aal-btn aal-btn-glow">
+                Book
+              </Link>
+            </div>
           </div>
-          <a href="/fleet" className="md:hidden mt-5 inline-block text-white text-lg underline underline-offset-4">
-            See the fleet
-          </a>
+          <div className={menuOpen ? 'aal-menu-panel is-open' : 'aal-menu-panel'}>
+            {NAV.map((item) => (
+              <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>
+                {item.label}
+              </Link>
+            ))}
+            <Link href="/faq" onClick={() => setMenuOpen(false)}>
+              FAQ
+            </Link>
+            <Link href="/contact" onClick={() => setMenuOpen(false)}>
+              Contact
+            </Link>
+          </div>
+        </nav>
+
+        <div className="aal-wrap aal-hero-grid">
+          <div>
+            <p className="eyebrow">Aspen · Snowmass · Roaring Fork Valley</p>
+            <h1 className="alp-speak-hero">
+              Private car service for Aspen, <em>since 2012.</em>
+            </h1>
+            <p className="lede alp-speak-intro">
+              Private Chevrolet Suburban and Ford Transit transfers from Aspen (ASE), Eagle (EGE) and Denver (DEN). Published rates, all-inclusive. No shared rides.
+            </p>
+            <p className="aal-callrow">
+              Arriving tonight? Call <a href={PHONE_HREF}>{PHONE}</a>. We answer 24/7.
+            </p>
+          </div>
+
+          <form className="aal-book" aria-label="Reserve a transfer" onSubmit={(event) => event.preventDefault()}>
+            <h2>Reserve a transfer</h2>
+            <p className="sub">Published one-way rate, before you book.</p>
+            <p className="aal-lbl">Arriving at</p>
+            <div className="aal-seg" role="group" aria-label="Arriving at">
+              {AIRPORTS.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  aria-pressed={airport === item.id}
+                  onClick={() => setAirport(item.id)}
+                >
+                  {item.label}
+                  <small>{item.code}</small>
+                </button>
+              ))}
+            </div>
+            <p className="aal-lbl">Vehicle</p>
+            <div className="aal-seg aal-seg-2" role="group" aria-label="Vehicle">
+              {VEHICLES.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  aria-pressed={vehicle === item.id}
+                  onClick={() => setVehicle(item.id)}
+                >
+                  {item.label}
+                  <small>{item.cap}</small>
+                </button>
+              ))}
+            </div>
+            <div className="aal-fields">
+              <label className="aal-field">
+                <b>Date</b>
+                <input type="date" name="date" aria-label="Date" />
+              </label>
+              <label className="aal-field">
+                <b>Flight</b>
+                <input type="text" name="flight" placeholder="Optional" aria-label="Flight" autoComplete="off" />
+              </label>
+            </div>
+            <div className="aal-fare">
+              <span className="p" aria-live="polite">
+                {fare}
+              </span>
+              <span className="t">
+                One way to Aspen or Snowmass
+                <br />
+                No service charge or gratuity added
+              </span>
+            </div>
+            <Link href="/reservations" className="aal-btn aal-btn-navy">
+              Continue to booking
+            </Link>
+            <p className="aal-fine">
+              Groups, hourly and custom trips: <Link href="#quote">request a quote</Link>.
+            </p>
+          </form>
         </div>
-        {/* Stats bar */}
-        {stats.length > 0 && (
-        <div className="aal-on-navy absolute bottom-0 left-0 right-0 bg-alp-navy/90 backdrop-blur-sm border-t border-white/10">
-          <div className="max-w-4xl mx-auto px-6 py-5 grid grid-cols-3 gap-4 text-center">
-            {stats.map((stat) => (
-              <div key={stat.label}>
-                <div className="font-playfair text-3xl font-bold text-alp-gold">{stat.value}</div>
-                <div className="text-white/70 text-xs tracking-wide uppercase mt-1">{stat.label}</div>
+      </header>
+
+      <section className="aal-trust" aria-label="Service facts">
+        <div className="aal-wrap">
+          <div>
+            <b>Since 2012</b>
+            Aspen, Colorado
+          </div>
+          <div>
+            <b>24/7</b>
+            Early departures, late arrivals
+          </div>
+          <div>
+            <b>Private only</b>
+            No shared rides
+          </div>
+          <div>
+            <b>All-inclusive</b>
+            No gratuity or service charge added
+          </div>
+          <div>
+            <b>{AAL_PUC_PERMIT}</b>
+            Colorado PUC permit
+          </div>
+        </div>
+      </section>
+
+      <section className="aal-band" id="rates" aria-label="Airport transfers">
+        <div className="aal-wrap">
+          <div className="aal-head">
+            <div>
+              <p className="eyebrow g">Airport transfers</p>
+              <h2>Three gateways. One published price.</h2>
+            </div>
+            <p className="alp-speak-services-overview">
+              We track your flight, meet you on arrival and take you to your hotel, residence or chalet. Rates are per vehicle, one way.
+            </p>
+          </div>
+          <div className="aal-routes">
+            {fares.routes.map((route) => (
+              <article className="aal-route" key={route.id}>
+                <div className="code">{route.code}</div>
+                <div className="nm">{route.name}</div>
+                {route.meta ? <div className="meta">{route.meta}</div> : null}
+                <div className="pr">
+                  <span>Suburban</span>
+                  <span>{route.suv}</span>
+                </div>
+                <div className="pr">
+                  <span>Ford Transit</span>
+                  <span>{route.transit}</span>
+                </div>
+                <Link className="aal-go" href={route.href}>
+                  {route.cta}
+                </Link>
+              </article>
+            ))}
+          </div>
+          <p className="aal-note">
+            {fares.alsoNote} <Link href="/pricing">Full pricing</Link>
+          </p>
+        </div>
+      </section>
+
+      <section className="aal-closure" id="ase-closure-2027" aria-label="Aspen Airport closure 2027">
+        <div className="aal-wrap">
+          <p className="tag">
+            ASE closes
+            <br />
+            April 4 – Nov 19, 2027
+          </p>
+          <p>
+            Aspen/Pitkin County Airport (ASE) closes Sunday, April 4, 2027 at 11:00 p.m. through Friday, November 19, 2027 at 7:00 p.m. for runway reconstruction.
+          </p>
+          <Link href="/aspen-airport-closure-2027" className="aal-btn aal-btn-line" style={{ color: 'var(--navy)' }}>
+            Alternate airports &amp; rates
+          </Link>
+        </div>
+      </section>
+
+      <section className="aal-band aal-fleet" aria-label="The fleet">
+        <div className="aal-wrap">
+          <div className="aal-head">
+            <div>
+              <p className="eyebrow g">The fleet</p>
+              <h2>Two Suburbans and a Ford Transit, ready for the mountains.</h2>
+            </div>
+            <p>Every vehicle carries Starlink, ski racks and roof cargo space. Child seats are free.</p>
+          </div>
+          <div className="aal-vgrid">
+            {suburban ? (
+              <article className="aal-vehicle">
+                <h3>{suburban.name}</h3>
+                <p className="cap">{suburban.capacityLabel}</p>
+                <ul className="aal-chips">
+                  {suburban.amenities.map((amenity) => (
+                    <li key={amenity}>{amenity}</li>
+                  ))}
+                </ul>
+                <div className="aal-vfoot">
+                  <span>{fares.suburbanFrom}</span>
+                  <Link className="aal-go" href="/reservations" style={{ marginTop: 0 }}>
+                    Book the Suburban
+                  </Link>
+                </div>
+              </article>
+            ) : null}
+            {transit ? (
+              <article className="aal-vehicle">
+                <h3>{transit.name}</h3>
+                <p className="cap">{transit.capacityLabel}</p>
+                <ul className="aal-chips">
+                  {transit.amenities.map((amenity) => (
+                    <li key={amenity}>{amenity}</li>
+                  ))}
+                </ul>
+                <div className="aal-vfoot">
+                  <span>{fares.transitFrom}</span>
+                  <Link className="aal-go" href="/reservations" style={{ marginTop: 0 }}>
+                    Book the Transit
+                  </Link>
+                </div>
+              </article>
+            ) : null}
+          </div>
+        </div>
+      </section>
+
+      <section className="aal-band" aria-label="Included on every ride">
+        <div className="aal-wrap">
+          <div className="aal-head">
+            <div>
+              <p className="eyebrow g">Included on every ride</p>
+              <h2>What you can count on.</h2>
+            </div>
+          </div>
+          <div className="aal-inc">
+            {INCLUDED.map((item) => (
+              <div key={item.title}>
+                <b>{item.title}</b>
+                <p>{item.body}</p>
               </div>
             ))}
           </div>
         </div>
-        )}
       </section>
 
-      {/* Published airport rates — visible text only; no Offer/Product JSON-LD */}
-      <section id="rates" className="py-16 bg-white border-b border-alp-pearl-dark" aria-label="Published airport rates">
-        <div className="max-w-4xl mx-auto px-6">
-          <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-3 text-center">Published rates</p>
-          <h2 className="font-playfair text-3xl md:text-4xl text-alp-navy font-bold mb-8 text-center">Airport transfer rates</h2>
-          <ul className="space-y-4 text-alp-navy text-lg">
-            <li className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 border-b border-alp-pearl-dark pb-3">
-              <span>Aspen Airport (ASE) SUV</span>
-              <span className="font-semibold">from $210</span>
-            </li>
-            <li className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 border-b border-alp-pearl-dark pb-3">
-              <span>Eagle (EGE) SUV / Transit</span>
-              <span className="font-semibold">$720 / $1,200</span>
-            </li>
-            <li className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 border-b border-alp-pearl-dark pb-3">
-              <span>Denver (DEN) SUV / Transit</span>
-              <span className="font-semibold">$1,375 / $1,600</span>
-            </li>
-          </ul>
-          <p className="mt-6 text-alp-slate text-sm text-center">
-            One-way rates. Holiday pricing may change seasonally. No shared rides.{' '}
-            <Link href="/pricing" className="text-alp-gold font-semibold hover:text-alp-navy">
-              Full pricing
-            </Link>
+      <section className="aal-band aal-rev" aria-label="Guest reviews">
+        <div className="aal-wrap">
+          <div className="aal-head">
+            <div>
+              <p className="eyebrow" style={{ color: 'var(--glow2)' }}>
+                From our guests
+              </p>
+              <h2>Google reviews</h2>
+            </div>
+          </div>
+          <div className="aal-rgrid">
+            {REVIEWS.map((review) => (
+              <figure key={review.name}>
+                <blockquote>&ldquo;{review.quote}&rdquo;</blockquote>
+                <cite>
+                  {review.name} · Google review
+                </cite>
+              </figure>
+            ))}
+          </div>
+          <p className="gl">
+            <a href={alpenglowData.googleReviewUrl} target="_blank" rel="noopener noreferrer">
+              Read all reviews on Google
+            </a>
           </p>
         </div>
       </section>
 
-      <section className="py-14 bg-alp-pearl" aria-label="Guest reviews">
-        <div className="max-w-4xl mx-auto px-6">
-          <h2 className="font-playfair text-3xl font-bold text-alp-navy mb-8 text-center">Guest reviews</h2>
-          <div className="mx-auto grid max-w-[800px] grid-cols-1 gap-6 lg:grid-cols-2">
-            {GOOGLE_HOME_REVIEWS.map((review) => (
-              <blockquote key={review.name} className="flex h-full flex-col bg-white rounded-xl p-6 border border-alp-pearl-dark">
-                <p className="mb-6 whitespace-pre-line text-alp-slate text-sm leading-relaxed italic">&ldquo;{review.quote}&rdquo;</p>
-                <footer className="mt-auto border-t border-alp-pearl-dark pt-4">
-                  <p className="text-alp-navy font-semibold text-sm">— {review.name}</p>
-                  <p className="text-alp-slate text-xs mt-1">Google review</p>
-                </footer>
-              </blockquote>
+      <section className="aal-band" aria-label="Weddings and events">
+        <div className="aal-wrap">
+          <div className="aal-head">
+            <div>
+              <p className="eyebrow g">Beyond the transfer</p>
+              <h2>Weddings, weekends and Aspen&apos;s big nights.</h2>
+            </div>
+            <p>Private SUVs and the Ford Transit for guests, wedding parties and event weeks. No shared rides.</p>
+          </div>
+          <div className="aal-egrid">
+            {EVENTS.map((event) => (
+              <Link key={event.href} href={event.href} className="aal-ev">
+                <p className="eyebrow">{event.eyebrow}</p>
+                <h3>{event.title}</h3>
+                <p>{event.body}</p>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* TRANSPORTATION SERVICES */}
-      <section id="services" className="py-24 bg-alp-pearl">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">What We Offer</p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-6">Our Services</h2>
-            <p className="text-alp-slate text-xl max-w-2xl mx-auto">
-              Every detail handled. Every journey seamless.
-            </p>
-            <p className="alp-speak-services-overview text-alp-slate text-base max-w-3xl mx-auto mt-6 leading-relaxed border-t border-alp-pearl-dark pt-6">
-              Private airport transfers, hourly charters and event transportation across the Roaring Fork Valley.
-            </p>
-          </div>
-          {services.length > 0 && (
-          <div className="grid md:grid-cols-2 gap-8">
-            {services.map((service, i) => (
-              <ScrollReveal key={service.title} delay={i * 100}>
-                <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 border border-alp-pearl-dark h-full">
-                  <h3 className="font-playfair text-2xl text-alp-navy font-semibold mb-2">{service.title}</h3>
-                  <p className="text-alp-slate text-sm leading-relaxed mb-6">{service.description}</p>
-                  {service.features.length > 0 && (
-                  <ul className="space-y-2">
-                    {service.features.map((feature) => (
-                      <li key={feature} className="text-sm text-gray-700">{feature}</li>
-                    ))}
-                  </ul>
-                  )}
-                  <a href={hrefForService({ slug: service.slug, name: service.title })} className="mt-6 inline-flex items-center gap-2 text-alp-gold font-semibold text-sm hover:text-alp-gold-light transition-colors">
-                    Book This Service
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                  </a>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-          )}
-        </div>
-      </section>
-
-      {/* WHY ALPENGLOW */}
-      {whyChooseUs.length > 0 && (
-      <section className="py-24 bg-alp-pearl">
-        <div className="max-w-7xl mx-auto px-6">
-          <ScrollReveal className="text-center mb-16">
-            <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Why Alpenglow</p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold">The Alpenglow Difference</h2>
-          </ScrollReveal>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {whyChooseUs.map((item, i) => (
-              <ScrollReveal key={item.title} delay={i * 100}>
-                <div className="text-center p-8 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-alp-pearl-dark">
-                  <div className="w-16 h-16 bg-alp-navy rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <div className="w-8 h-8 bg-alp-gold rounded-lg" />
-                  </div>
-                  <h3 className="font-playfair text-xl text-alp-navy font-semibold mb-3">{item.title}</h3>
-                  <p className="text-alp-slate text-sm leading-relaxed">{item.description}</p>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* SERVICE AREAS */}
-      {serviceAreas.length > 0 && (
-      <section id="service-areas" className="py-24 bg-alp-pearl-dark">
-        <div className="max-w-7xl mx-auto px-6">
-          <ScrollReveal className="text-center mb-16">
-            <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Where We Go</p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-4">Service Areas</h2>
-            <p className="text-alp-slate text-xl max-w-2xl mx-auto">From Aspen to Vail and everywhere in between.</p>
-          </ScrollReveal>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {serviceAreas.map((area, i) => (
-              <ScrollReveal key={area.name} delay={i * 80}>
-                <div className="bg-white rounded-xl p-6 border border-alp-pearl-dark hover:border-alp-gold/40 hover:shadow-md transition-all">
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-alp-navy rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <svg className="w-5 h-5 text-alp-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                    </div>
-                    <div>
-                      <h3 className="font-playfair text-lg text-alp-navy font-semibold mb-1">{area.name}</h3>
-                      <p className="text-alp-slate text-sm">{area.description}</p>
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* TESTIMONIALS */}
-      {testimonials.length > 0 && (
-      <section className="py-24 bg-alp-navy">
-        <div className="max-w-5xl mx-auto px-6">
-          <ScrollReveal className="text-center mb-16">
-            <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Client Stories</p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold">What Our Clients Say</h2>
-          </ScrollReveal>
-          <div className="grid md:grid-cols-2 gap-8">
-            {testimonials.map((t, i) => (
-              <ScrollReveal key={t.name} delay={i * 150}>
-                <div className="bg-alp-navy-deep rounded-2xl p-8 border border-white/5 relative">
-                  <div aria-hidden="true" className="font-playfair text-7xl text-alp-gold/20 absolute top-4 left-6 leading-none select-none">&ldquo;</div>
-                  <p className="text-white/80 text-lg leading-relaxed italic mb-6 pt-6 relative z-10">{t.quote}</p>
-                  <div className="border-t border-white/10 pt-4">
-                    <p className="font-semibold text-white">{t.name}</p>
-                    <p className="text-alp-gold text-sm">{t.location}</p>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* POPULAR DESTINATIONS */}
-      {destinations.length > 0 && (
-      <section id="destinations" className="py-24 bg-alp-navy-deep">
-        <div className="max-w-7xl mx-auto px-6">
-          <ScrollReveal className="text-center mb-16">
-            <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Day trips & trailheads</p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-white font-bold mb-4">Popular Destinations</h2>
-            <p className="text-white/60 text-xl max-w-2xl mx-auto">
-              Private rides to Independence Pass, Maroon Bells, Redstone, Marble, Glenwood, and the hikes on your list.
-            </p>
-          </ScrollReveal>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {destinations.map((dest, i) => (
-              <ScrollReveal key={dest.name} delay={i * 80} className="group">
-                <div className="relative aspect-[3/4] rounded-xl overflow-hidden">
-                  <Image
-                    src={dest.image}
-                    alt={seoAlt({
-                      subject: dest.name,
-                      location: 'Colorado',
-                      context: 'private car service destination',
-                      brand: 'Aspen Alpenglow Limousine',
-                    })}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    loading="eager"
-                    unoptimized
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-alp-navy-deep/85 via-transparent to-transparent" />
-                  <div className="absolute bottom-3 left-3 right-3">
-                    <p className="text-white font-playfair text-sm font-semibold leading-tight">{dest.name}</p>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-      )}
-
-
-      {/* FAQ — airport answers merged into the single accordion; one FAQPage */}
-      {(() => {
-        const faqItems = faqs.length > 0 ? faqs : AIRPORT_HOME_FAQS
-        const faqSchema = {
-          '@context': 'https://schema.org',
-          '@type': 'FAQPage',
-          mainEntity: faqItems.map((faq) => ({
-            '@type': 'Question',
-            name: faq.q,
-            acceptedAnswer: { '@type': 'Answer', text: faq.a },
-          })),
-        }
-        return (
-      <section id="faq" className="py-24 bg-alp-pearl" aria-label="Frequently asked questions about Aspen Alpenglow Limousine">
+      <section className="aal-band aal-faq" id="faq" aria-label="Frequently asked questions about Aspen Alpenglow Limousine">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-        <div className="max-w-3xl mx-auto px-6">
-          <ScrollReveal className="text-center mb-12">
-            <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Common Questions</p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold">Frequently Asked Questions</h2>
-            <p className="text-alp-slate mt-4 text-lg">Everything you need to know before booking your luxury transfer.</p>
-          </ScrollReveal>
-          <div className="space-y-3">
-            {faqItems.map((faq, i) => (
-              <details key={i} className="group bg-white rounded-xl border border-alp-pearl-dark overflow-hidden shadow-sm">
-                <summary className="flex items-center justify-between p-6 cursor-pointer list-none font-playfair text-lg text-alp-navy font-semibold hover:text-alp-gold transition-colors gap-4">
-                  <span>{faq.q}</span>
-                  <svg className="w-5 h-5 text-alp-gold flex-shrink-0 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </summary>
-                <div className="px-6 pb-6 pt-0 text-alp-slate leading-relaxed">
-                  {faq.a}
-                </div>
-              </details>
-            ))}
+        <div className="aal-wrap">
+          <div className="aal-head">
+            <div>
+              <p className="eyebrow g">Common Questions</p>
+              <h2>Frequently Asked Questions</h2>
+            </div>
+            <p>Everything you need to know before booking your luxury transfer.</p>
+          </div>
+          {faqs.map((item) => (
+            <details key={item.q}>
+              <summary>{item.q}</summary>
+              <p>{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section className="aal-band aal-quote" id="quote">
+        <div className="aal-wrap">
+          <div className="aal-head">
+            <div>
+              <p className="eyebrow g">Reserve your journey</p>
+              <h2>Request a quote</h2>
+            </div>
+          </div>
+          <p className="aal-quote-lead">
+            <Link href={alpenglowData.onlineReservationsPath}>Book online</Link> for standard trips, or request a quote below and we&apos;ll respond with availability and pricing.
+          </p>
+          <p className="aal-note">
+            <a href={PHONE_HREF}>{PHONE}</a>
+            <span> · </span>
+            <span>{AAL_PUC_LINE}</span>
+          </p>
+          <div className="aal-quote-card">
+            <InquiryForm brand="alpenglow" />
           </div>
         </div>
       </section>
-        )
-      })()}
 
-      {/* GEO CONTENT BLOCKS */}
-      {geoBlocks.length > 0 && (
-        <section className="py-16 bg-alp-pearl-dark">
-          <div className="max-w-3xl mx-auto px-6">
-            <ScrollReveal className="text-center mb-10">
-              <h2 className="font-playfair text-3xl text-alp-navy font-bold">About Aspen Limo Service</h2>
-            </ScrollReveal>
-            <div className="space-y-4">
-              {geoBlocks.map((block) => (
-                <div key={block.id} className="bg-white rounded-xl p-6 border border-alp-pearl-dark" itemScope itemType="https://schema.org/Question">
-                  {block.question && (
-                    <h3 className="font-playfair text-lg text-alp-navy font-semibold mb-2" itemProp="name">{block.question}</h3>
-                  )}
-                  <div itemScope itemType="https://schema.org/Answer" itemProp="acceptedAnswer">
-                    <p className="text-alp-slate text-sm leading-relaxed" itemProp="text">{block.answer}</p>
-                  </div>
-                </div>
-              ))}
+      <section className="aal-cta" aria-label="Book a transfer">
+        <Image
+          src="/images/about/pexels-outdoor.png"
+          alt=""
+          fill
+          sizes="100vw"
+          className="aal-cta-img"
+        />
+        <div className="aal-cta-shade" />
+        <div className="aal-wrap">
+          <p className="eyebrow">Reserve your journey</p>
+          <h2>Your car, waiting when you land.</h2>
+          <p>Book a standard transfer online, or request a quote for groups, hourly and custom trips.</p>
+          <div className="aal-cta-btns">
+            <Link href="/reservations" className="aal-btn aal-btn-glow">
+              Book online
+            </Link>
+            <a href={PHONE_HREF} className="aal-btn aal-btn-line">
+              Call {PHONE}
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <footer className="aal-footer">
+        <div className="aal-wrap">
+          <div className="aal-footer-grid">
+            <div>
+              <Link href="/" className="aal-mark">
+                <span className="n">Aspen Alpenglow</span>
+                <span className="s">Limousine · Since 2012</span>
+              </Link>
+              <p className="blurb">
+                Private car and limousine service throughout Aspen, Snowmass and the Roaring Fork Valley. Available 24/7.
+              </p>
+              <p className="phone">
+                <a href={PHONE_HREF}>{PHONE}</a>
+              </p>
+              <p>CO PUC permit {AAL_PUC_PERMIT}</p>
+            </div>
+            <div>
+              <h2>Services</h2>
+              <ul>
+                <li><Link href="/airport-transfers">Airport Transfers</Link></li>
+                <li><Link href="/airport-transfers/eagle-ege-to-aspen">Eagle (EGE)</Link></li>
+                <li><Link href="/airport-transfers/denver-den-to-aspen">Denver (DEN)</Link></li>
+                <li><Link href="/weddings">Weddings</Link></li>
+                <li><Link href="/corporate">Corporate</Link></li>
+                <li><Link href="/ski-resort-transfers">Ski Resort Transfers</Link></li>
+                <li><Link href="/events/x-games-aspen-transportation">X Games Aspen 2027</Link></li>
+                <li><Link href="/seasonal/holiday-private-car-aspen">Holiday Private Car</Link></li>
+                <li><Link href="/events/new-years-eve-aspen">New Year&apos;s Eve</Link></li>
+                <li><Link href="/aspen-airport-closure-2027">ASE Closure 2027</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h2>Plan</h2>
+              <ul>
+                <li><Link href="/fleet">Fleet</Link></li>
+                <li><Link href="/pricing">Pricing</Link></li>
+                <li><Link href="/service-areas">Service Areas</Link></li>
+                <li><Link href="/faq">FAQ</Link></li>
+                <li><Link href="/blog">Blog &amp; Guides</Link></li>
+                <li><Link href="/contact">Contact</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h2>Service areas</h2>
+              <ul>
+                <li>
+                  <Link href="/service-areas/aspen">Aspen</Link>
+                  {' · '}
+                  <Link href="/service-areas/snowmass-village">Snowmass Village</Link>
+                </li>
+                <li>
+                  <Link href="/service-areas/basalt">Basalt</Link>
+                  {' · '}
+                  <Link href="/service-areas/carbondale">Carbondale</Link>
+                </li>
+                <li>
+                  <Link href="/service-areas/glenwood-springs">Glenwood Springs</Link>
+                  {' · '}
+                  <Link href="/service-areas/rifle">Rifle</Link>
+                </li>
+                <li>
+                  <Link href="/service-areas/eagle-vail">Gypsum (EGE)</Link>
+                  {' · '}
+                  <Link href="/service-areas/denver">Denver</Link>
+                </li>
+              </ul>
             </div>
           </div>
-        </section>
-      )}
-
-      {/* EVENT TRANSPORTATION */}
-      <section className="py-24 bg-alp-pearl">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <ScrollReveal>
-            <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Beyond the Transfer</p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-6">Event transportation for weddings and weekends</h2>
-            <p className="text-alp-slate text-lg mb-8 max-w-2xl mx-auto leading-relaxed">
-              Private SUVs and the Ford Transit Passenger Van for weddings, X Games week, New Year&apos;s Eve, and holiday arrivals. No shared rides are offered.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="/weddings" className="inline-block bg-alp-navy hover:bg-alp-navy-deep text-white px-8 py-3 rounded-full font-semibold">Weddings</a>
-              <a href="/events/x-games-aspen-transportation" className="inline-block border border-alp-navy text-alp-navy px-8 py-3 rounded-full font-semibold">X Games</a>
-              <a href="/events/new-years-eve-aspen" className="inline-block border border-alp-navy text-alp-navy px-8 py-3 rounded-full font-semibold">New Year&apos;s Eve</a>
-            </div>
-          </ScrollReveal>
+          <div className="aal-legal">
+            <span>
+              © {new Date().getFullYear()} Aspen Alpenglow Limousine · Sister company:{' '}
+              <a href={alpenglowData.partnerSite.url}>{alpenglowData.partnerSite.name}</a>
+            </span>
+            <span>
+              <a href={alpenglowData.googleReviewUrl} target="_blank" rel="noopener noreferrer">
+                Review us on Google
+              </a>
+              {' · '}
+              <Link href="/terms">Terms</Link>
+              {' · '}
+              <Link href="/privacy">Privacy</Link>
+            </span>
+          </div>
         </div>
-      </section>
-
-      {/* NEWSLETTER */}
-      <NewsletterSignup siteKey="alpenglow" variant="alpenglow" />
-
-      {/* BOOKING / CONTACT */}
-      <section id="quote" className="py-24 bg-alp-pearl">
-        <div className="max-w-3xl mx-auto px-6">
-          <ScrollReveal className="text-center mb-12">
-            <p className="font-cormorant text-alp-gold text-lg tracking-widest uppercase mb-4">Reserve Your Journey</p>
-            <h2 className="font-playfair text-4xl md:text-5xl text-alp-navy font-bold mb-4">Request a quote</h2>
-            <p className="text-alp-slate text-lg">
-              <a href={alpenglowData.onlineReservationsPath} className="text-alp-gold font-semibold hover:underline">
-                Book online
-              </a>{' '}
-              for standard trips, or request a quote below and we&apos;ll respond with availability and pricing.
-            </p>
-            <p className="mt-4 text-alp-slate text-sm">
-              <a href={phoneHref} className="text-alp-navy font-semibold hover:text-alp-gold">{phone}</a>
-              <span className="mx-2 text-alp-pearl-dark">·</span>
-              <span>{AAL_PUC_LINE}</span>
-            </p>
-          </ScrollReveal>
-          <ScrollReveal delay={200}>
-            <div className="bg-white rounded-2xl p-8 md:p-12 shadow-lg border border-alp-pearl-dark">
-              <InquiryForm brand="alpenglow" />
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
+      </footer>
     </div>
   )
 }
