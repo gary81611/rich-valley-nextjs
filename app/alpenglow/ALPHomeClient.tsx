@@ -648,11 +648,20 @@ export default function AlpenglowHomeClient({ fares }: { fares: HomeFares }) {
                   <Link href="/service-areas/glenwood-springs">Glenwood Springs</Link>
                   {' · '}
                   <Link href="/service-areas/rifle">Rifle</Link>
+                  {' · '}
+                  <Link href="/service-areas/grand-junction">Grand Junction</Link>
                 </li>
                 <li>
-                  <Link href="/service-areas/eagle-vail">Gypsum (EGE)</Link>
+                  <Link href="/service-areas/eagle-vail">Eagle / Vail</Link>
                   {' · '}
                   <Link href="/service-areas/denver">Denver</Link>
+                </li>
+                <li className="aal-footer-extra">
+                  <Link href="/wine-tours">Wine Tours</Link>
+                  {' · '}
+                  <Link href="/night-out">Night Out</Link>
+                  {' · '}
+                  <Link href="/services/hourly-charter">Hourly charters</Link>
                 </li>
               </ul>
             </div>

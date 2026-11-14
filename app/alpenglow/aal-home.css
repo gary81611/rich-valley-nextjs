@@ -872,6 +872,11 @@
   margin-bottom: 8px;
 }
 
+.aal-footer-extra {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
 .aal-footer a:hover {
   color: #fff;
 }
