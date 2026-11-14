@@ -618,6 +618,13 @@ export default function AlpenglowHomeClient({ fares }: { fares: HomeFares }) {
                 <li><Link href="/seasonal/holiday-private-car-aspen">Holiday Private Car</Link></li>
                 <li><Link href="/events/new-years-eve-aspen">New Year&apos;s Eve</Link></li>
                 <li><Link href="/aspen-airport-closure-2027">ASE Closure 2027</Link></li>
+                <li className="aal-footer-extra">
+                  <Link href="/wine-tours">Wine Tours</Link>
+                  {' · '}
+                  <Link href="/night-out">Night Out</Link>
+                  {' · '}
+                  <Link href="/services/hourly-charter">Hourly charters</Link>
+                </li>
               </ul>
             </div>
             <div>
@@ -655,13 +662,6 @@ export default function AlpenglowHomeClient({ fares }: { fares: HomeFares }) {
                   <Link href="/service-areas/eagle-vail">Eagle / Vail</Link>
                   {' · '}
                   <Link href="/service-areas/denver">Denver</Link>
-                </li>
-                <li className="aal-footer-extra">
-                  <Link href="/wine-tours">Wine Tours</Link>
-                  {' · '}
-                  <Link href="/night-out">Night Out</Link>
-                  {' · '}
-                  <Link href="/services/hourly-charter">Hourly charters</Link>
                 </li>
               </ul>
             </div>
