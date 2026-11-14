@@ -26,7 +26,6 @@ export const metadata: Metadata = {
     description: 'Distinguished private car and limousine service throughout Aspen and the Roaring Fork Valley. Airport transfers, weddings, corporate events. Available 24/7 since 2012.',
     type: 'website',
     locale: 'en_US',
-    url: ALP_URL,
     siteName: 'Aspen Alpenglow Limousine',
     images: [
       {

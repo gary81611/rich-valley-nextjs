@@ -1,10 +1,16 @@
 import type { Metadata } from 'next'
 import { headers } from 'next/headers'
+import { legalCanonicalUrl } from '@/lib/aal-canonical'
 import { isAalHost } from '@/lib/site-from-host'
 
-export const metadata: Metadata = {
-  title: 'Terms and Conditions | Rich Valley Adventures & Aspen Alpenglow Limousine',
-  description: 'Terms and conditions for Rich Valley Adventures guided outdoor experiences and Aspen Alpenglow Limousine transportation services in Aspen, Colorado.',
+export async function generateMetadata(): Promise<Metadata> {
+  const canonical = legalCanonicalUrl(headers().get('host') || '', '/terms')
+  return {
+    title: 'Terms and Conditions | Rich Valley Adventures & Aspen Alpenglow Limousine',
+    description: 'Terms and conditions for Rich Valley Adventures guided outdoor experiences and Aspen Alpenglow Limousine transportation services in Aspen, Colorado.',
+    alternates: { canonical },
+    openGraph: { url: canonical },
+  }
 }
 
 export default function TermsPage({ searchParams }: { searchParams?: { site?: string } }) {

@@ -1,10 +1,16 @@
 import type { Metadata } from 'next'
 import { headers } from 'next/headers'
+import { legalCanonicalUrl } from '@/lib/aal-canonical'
 import { isAalHost } from '@/lib/site-from-host'
 
-export const metadata: Metadata = {
-  title: 'Privacy Policy | Rich Valley Adventures & Aspen Alpenglow Limousine',
-  description: 'Privacy policy for Rich Valley Adventures and Aspen Alpenglow Limousine. How we collect, use, and protect your information.',
+export async function generateMetadata(): Promise<Metadata> {
+  const canonical = legalCanonicalUrl(headers().get('host') || '', '/privacy')
+  return {
+    title: 'Privacy Policy | Rich Valley Adventures & Aspen Alpenglow Limousine',
+    description: 'Privacy policy for Rich Valley Adventures and Aspen Alpenglow Limousine. How we collect, use, and protect your information.',
+    alternates: { canonical },
+    openGraph: { url: canonical },
+  }
 }
 
 export default function PrivacyPage({ searchParams }: { searchParams?: { site?: string } }) {

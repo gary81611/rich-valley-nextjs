@@ -1,15 +1,25 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 import { hrefForServiceArea } from '@/lib/alpenglow-service-areas'
 import { correctAalPublicText } from '@/lib/aal-public-copy'
 
 export const dynamic = 'force-dynamic'
 
+const pageUrl = 'https://aspenalpenglowlimousine.com/service-areas'
+
 export const metadata: Metadata = {
   title: 'Service Areas | Aspen Alpenglow Limousine',
   description: 'Aspen Alpenglow Limousine proudly serves the entire Roaring Fork Valley and beyond — from Aspen to Denver.',
-  alternates: { canonical: 'https://aspenalpenglowlimousine.com/service-areas' },
+  alternates: { canonical: pageUrl },
+  openGraph: {
+    url: pageUrl,
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'Aspen Alpenglow Limousine',
+    images: [AAL_OG_IMAGE],
+  },
 }
 
 type ServiceArea = {

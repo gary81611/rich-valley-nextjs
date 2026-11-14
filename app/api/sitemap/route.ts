@@ -7,6 +7,7 @@ import { createClient } from '@supabase/supabase-js'
 import { isBlogPostPubliclyVisible } from '@/lib/blog-visibility'
 import { isAalHiddenBlogSlug } from '@/lib/aal-public-copy'
 import { resolveSiteKeyFromHost } from '@/lib/site-from-host'
+import { canonicalizeAalSitemapEntries } from '@/lib/aal-canonical'
 import { hrefForServiceArea } from '@/lib/alpenglow-service-areas'
 
 export const dynamic = 'force-dynamic'
@@ -358,9 +359,8 @@ export async function GET(request: Request) {
       })
 
     /**
-     * AAL area detail pages are currently canonical under `/areas/*` from the CMS-backed catch-all,
-     * while `/service-areas/*` is just the hub page family. Emitting AAL detail URLs here creates
-     * non-200s / duplicate clusters, so only RVA uses `service_areas` detail rows in the sitemap.
+     * RVA detail rows use the public /service-areas slug. AAL detail rows are added below
+     * via hrefForServiceArea, then normalized to apex slashless canonicals (no aliases, no /gallery).
      */
     const serviceAreaEntries: SitemapEntry[] = siteKey === 'rva'
       ? (serviceAreas || [])
@@ -408,14 +408,16 @@ export async function GET(request: Request) {
 
     const merged = isAAL
       ? applyFixedLastmod(
-          dedupeByUrl([
-            ...pageEntries,
-            ...blogEntries,
-            ...aalAreaEntries,
-            ...staticWithDates,
-            ...aalServiceEntries,
-            ...aalSitemapExtras(),
-          ]),
+          dedupeByUrl(
+            canonicalizeAalSitemapEntries([
+              ...pageEntries,
+              ...blogEntries,
+              ...aalAreaEntries,
+              ...staticWithDates,
+              ...aalServiceEntries,
+              ...aalSitemapExtras(),
+            ]),
+          ),
           AAL_ORIGIN,
           AAL_ROUTE_LASTMOD,
         )
@@ -468,7 +470,11 @@ function aalSitemapExtras(): SitemapEntry[] {
 
 function fallbackSitemap(entries: SitemapEntry[], isAAL: boolean): SitemapEntry[] {
   if (!isAAL) return withRvaSitemapExtras(entries, false)
-  return applyFixedLastmod(dedupeByUrl([...entries, ...aalSitemapExtras()]), AAL_ORIGIN, AAL_ROUTE_LASTMOD)
+  return applyFixedLastmod(
+    dedupeByUrl(canonicalizeAalSitemapEntries([...entries, ...aalSitemapExtras()])),
+    AAL_ORIGIN,
+    AAL_ROUTE_LASTMOD,
+  )
 }
 
 function withRvaSitemapExtras(entries: SitemapEntry[], isAAL: boolean): SitemapEntry[] {
