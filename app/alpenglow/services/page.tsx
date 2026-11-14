@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 import { alpenglowData } from '@/lib/site-data'
 
 export const dynamic = 'force-dynamic'
@@ -11,6 +12,13 @@ export const metadata: Metadata = {
   description:
     'Airport transfers, corporate travel, wedding transportation, and ski resort shuttles in Aspen, Colorado. All-inclusive rates, professional chauffeurs, Suburban SUVs and Ford Transit Passenger Van.',
   alternates: { canonical: pageUrl },
+  openGraph: {
+    url: pageUrl,
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'Aspen Alpenglow Limousine',
+    images: [AAL_OG_IMAGE],
+  },
 }
 
 const sections = [

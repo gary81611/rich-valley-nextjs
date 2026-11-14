@@ -2,14 +2,24 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { AAL_ONE_WAY_RATES, correctAalFaqItem, correctAalPublicText } from '@/lib/aal-public-copy'
+import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 export const dynamic = 'force-dynamic'
+
+const pageUrl = 'https://aspenalpenglowlimousine.com/faq'
 
 export const metadata: Metadata = {
   title: 'FAQ | Aspen Alpenglow Limousine — Transportation Questions Answered',
   description:
     'Aspen car service FAQs: SUV rates each way (Eagle and Rifle $720, Denver $1,375, Grand Junction $950). Ford Transit Passenger Van $1,200 Eagle/Rifle, $1,600 Denver.',
-  alternates: { canonical: 'https://aspenalpenglowlimousine.com/faq' },
+  alternates: { canonical: pageUrl },
+  openGraph: {
+    url: pageUrl,
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'Aspen Alpenglow Limousine',
+    images: [AAL_OG_IMAGE],
+  },
 }
 
 const VEHICLE_ANSWER =

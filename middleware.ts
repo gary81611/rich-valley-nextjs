@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
+import { aalAliasDestination, aalSearchWithoutBrandSite, xRobotsTagForHost } from '@/lib/aal-canonical'
+import { isAalHost, isRvaHost } from '@/lib/site-from-host'
 import { resolveRvaLegacySingleHop, rvaEarlyAliasPath, rvaExternalEarlyUrl } from '@/lib/seo/legacy-routes'
-
-const RVA_HOSTS = new Set(['www.richvalleyadventures.com', 'richvalleyadventures.com'])
-const AAL_HOSTS = new Set(['www.aspenalpenglowlimousine.com', 'aspenalpenglowlimousine.com'])
 
 function toSafeRedirectPath(path: string): string {
   if (!path.startsWith('/')) return '/'
@@ -33,12 +32,18 @@ export async function middleware(request: NextRequest) {
   const search = url.search
 
   const hostname = (request.headers.get('host') || '').trim().toLowerCase().split(':')[0]
-  const isRvaHost = RVA_HOSTS.has(hostname)
-  const isAalHost = AAL_HOSTS.has(hostname)
+  const aalHost = isAalHost(hostname)
+  const rvaHost = isRvaHost(hostname)
+
+  function tagRobots(response: NextResponse): NextResponse {
+    const tag = xRobotsTagForHost(hostname)
+    if (tag) response.headers.set('X-Robots-Tag', tag)
+    return response
+  }
 
   if (pathname === '/favicon.ico') {
-    const icon = isAalHost ? '/images/logos/alpenglow-logo.png' : '/images/logos/rva-logo.png'
-    return NextResponse.rewrite(new URL(icon, request.url))
+    const icon = aalHost ? '/images/logos/alpenglow-logo.png' : '/images/logos/rva-logo.png'
+    return tagRobots(NextResponse.rewrite(new URL(icon, request.url)))
   }
 
   if (
@@ -47,24 +52,24 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/images') ||
     pathname.includes('.')
   ) {
-    return NextResponse.next()
+    return tagRobots(NextResponse.next())
   }
 
   // One 301, including a trailing slash and the internal /rva path. Preview hosts are not RVA_HOSTS,
   // so this cannot wait for the host-scoped next.config hop.
-  if (!isAalHost) {
+  if (!aalHost) {
     const bare = pathname.length > 1 ? pathname.replace(/\/+$/, '') || '/' : pathname
     if (bare === '/adventures/rafting' || bare === '/rva/adventures/rafting') {
-      return NextResponse.redirect(new URL('/rafting' + search, request.url), 301)
+      return tagRobots(NextResponse.redirect(new URL('/rafting' + search, request.url), 301))
     }
   }
 
   if (pathname === '/home' || pathname === '/home/') {
-    return NextResponse.redirect(new URL('/', request.url), 301)
+    return tagRobots(NextResponse.redirect(new URL('/', request.url), 301))
   }
 
   /** `/rva` and `/rva/*` → public path in one hop (including nested legacy URLs). */
-  if (isRvaHost && (pathname === '/rva' || pathname === '/rva/' || pathname.startsWith('/rva/'))) {
+  if (rvaHost && (pathname === '/rva' || pathname === '/rva/' || pathname.startsWith('/rva/'))) {
     const dest =
       pathname === '/rva' || pathname === '/rva/' ? '/' : toSafeRedirectPath(pathname.slice(4) || '/')
     const [destPathPart, destQuery] = dest.split('?', 2)
@@ -72,12 +77,12 @@ export async function middleware(request: NextRequest) {
     const pathOnly = raw.length > 1 && raw.endsWith('/') ? raw.slice(0, -1) : raw
     const mergedSearch = destQuery != null ? `?${destQuery}` : search
     const nested = applyRvaSeoRedirect(request.url, pathOnly, mergedSearch)
-    if (nested) return nested
-    return NextResponse.redirect(new URL(pathOnly + mergedSearch, request.url), 301)
+    if (nested) return tagRobots(nested)
+    return tagRobots(NextResponse.redirect(new URL(pathOnly + mergedSearch, request.url), 301))
   }
 
   /** AAL host: drop `/alpenglow` prefix in one hop (trim trailing slash on destination). */
-  if (isAalHost && (pathname === '/alpenglow' || pathname === '/alpenglow/' || pathname.startsWith('/alpenglow/'))) {
+  if (aalHost && (pathname === '/alpenglow' || pathname === '/alpenglow/' || pathname.startsWith('/alpenglow/'))) {
     const rawDest =
       pathname === '/alpenglow' || pathname === '/alpenglow/'
         ? '/'
@@ -89,67 +94,53 @@ export async function middleware(request: NextRequest) {
     }
     const qs = dq != null ? `?${dq}` : search
     if (pathPart === '/book') {
-      return NextResponse.redirect(`https://aspenalpenglowlimousine.com/reservations${qs}`, 301)
+      return tagRobots(NextResponse.redirect(`https://aspenalpenglowlimousine.com/reservations${qs}`, 301))
     }
-    return NextResponse.redirect(new URL(pathPart + qs, request.url), 301)
+    return tagRobots(NextResponse.redirect(new URL(pathPart + qs, request.url), 301))
   }
 
   /** RVA aliases, including trailing slashes, before the generic slash strip (one hop). */
-  if (isRvaHost) {
+  if (rvaHost) {
     const externalTarget = rvaExternalEarlyUrl(pathname)
     if (externalTarget) {
-      return NextResponse.redirect(externalTarget, 301)
+      return tagRobots(NextResponse.redirect(externalTarget, 301))
     }
     const aliasTarget = rvaEarlyAliasPath(pathname)
     if (aliasTarget) {
-      return NextResponse.redirect(new URL(aliasTarget + search, request.url), 301)
+      return tagRobots(NextResponse.redirect(new URL(aliasTarget + search, request.url), 301))
     }
   }
 
   /** AAL duplicate and stub paths. Host-only. One hop, including a trailing slash. */
-  if (isAalHost) {
+  if (aalHost) {
     const bare = pathname.length > 1 && pathname.endsWith('/') ? pathname.replace(/\/+$/, '') : pathname
-    const aalCanonical: Record<string, string> = {
-      '/services/ski-resort-transfers': '/ski-resort-transfers',
-      '/services/airport-transfers': '/airport-transfers',
-      '/wedding-transportation': '/weddings',
-      '/corporate-events': '/corporate',
-      '/services/corporate-events': '/corporate',
-      '/services/corporate-travel': '/corporate',
-      '/services/wedding-transportation': '/weddings',
-      '/services/charter-services': '/services/hourly-charter',
-      '/areas/aspen': '/service-areas/aspen',
-      '/areas/snowmass': '/service-areas/snowmass-village',
-      '/areas/vail': '/service-areas/eagle-vail',
-      '/book': '/reservations',
-    }
-    const aalTarget = aalCanonical[bare]
+    const aalTarget = aalAliasDestination(pathname)
     if (aalTarget) {
       const destPath = aalTarget + search
       // /book must land on the canonical host in one hop so the old URL passes equity.
       if (bare === '/book') {
-        return NextResponse.redirect(`https://aspenalpenglowlimousine.com${destPath}`, 301)
+        return tagRobots(NextResponse.redirect(`https://aspenalpenglowlimousine.com${destPath}`, 301))
       }
-      return NextResponse.redirect(new URL(destPath, request.url), 301)
+      return tagRobots(NextResponse.redirect(new URL(destPath, request.url), 301))
     }
   }
 
   /** Canonical: no trailing slash (except `/`). Use a plain URL so NextURL does not put the slash back. */
   if (pathname.length > 1 && pathname.endsWith('/')) {
     const stripped = pathname.replace(/\/+$/, '') || '/'
-    return NextResponse.redirect(new URL(stripped + search, request.url), 301)
+    return tagRobots(NextResponse.redirect(new URL(stripped + search, request.url), 301))
   }
 
   /** RVA: legacy paths that must 301 before `/rva` rewrite (single hop). */
-  if (isRvaHost) {
+  if (rvaHost) {
     const direct = applyRvaSeoRedirect(request.url, pathname, search)
-    if (direct) return direct
+    if (direct) return tagRobots(direct)
   }
 
   let site: 'rva' | 'alpenglow' = 'rva'
-  if (isAalHost) {
+  if (aalHost) {
     site = 'alpenglow'
-  } else if (isRvaHost) {
+  } else if (rvaHost) {
     site = 'rva'
   }
 
@@ -162,7 +153,15 @@ export async function middleware(request: NextRequest) {
     const slug = pathname.slice('/locations/'.length).split('/')[0]
     if (slug && locationsMergedToServiceAreas.has(slug)) {
       const target = locationSlugToServiceArea[slug] || slug
-      return NextResponse.redirect(new URL(`/service-areas/${target}`, request.url), 301)
+      return tagRobots(NextResponse.redirect(new URL(`/service-areas/${target}`, request.url), 301))
+    }
+  }
+
+  // AAL only. Strip ?site=alpenglow and ?site=rva after path 301s so those hops stay unchanged.
+  if (aalHost) {
+    const strippedSearch = aalSearchWithoutBrandSite(search)
+    if (strippedSearch !== null) {
+      return tagRobots(NextResponse.redirect(new URL(pathname + strippedSearch, request.url), 301))
     }
   }
 
@@ -198,11 +197,11 @@ export async function middleware(request: NextRequest) {
   }
 
   if (pathname.startsWith('/admin')) {
-    return response
+    return tagRobots(response)
   }
 
   if (pathname === '/terms' || pathname === '/privacy') {
-    return response
+    return tagRobots(response)
   }
 
   const siteParam = url.searchParams.get('site')
@@ -211,11 +210,11 @@ export async function middleware(request: NextRequest) {
   }
 
   if (pathname.startsWith(`/${site}`)) {
-    return response
+    return tagRobots(response)
   }
 
   url.pathname = `/${site}${pathname === '/' ? '' : pathname}`
-  return NextResponse.rewrite(url)
+  return tagRobots(NextResponse.rewrite(url))
 }
 
 export const config = {

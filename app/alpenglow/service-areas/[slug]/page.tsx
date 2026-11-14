@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { canonicalUrlForServiceArea } from '@/lib/aal-canonical'
 import { slugifyServiceName } from '@/lib/alpenglow-services'
 import { serviceAreaMatchesPathSlug } from '@/lib/alpenglow-service-areas'
 import { alpenglowData } from '@/lib/site-data'
@@ -78,7 +79,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const description =
     area.meta_description?.trim() ||
     `${area.description} Luxury SUV and van transportation in ${area.name}, Colorado. All-inclusive rates, 24/7. Call 970-315-6111.`
-  const canonical = `${AAL_BASE}/service-areas/${slug}`
+  const canonical = canonicalUrlForServiceArea(area)
 
   return {
     title,
@@ -121,7 +122,7 @@ export default async function ServiceAreaDetailPage({ params }: { params: Promis
 
   const bodyCopy = area.long_description?.trim() || area.description
   const faqs = parseServiceAreaFaqs(area.faq_schema)
-  const pageUrl = `${AAL_BASE}/service-areas/${slug}`
+  const pageUrl = canonicalUrlForServiceArea(area)
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',

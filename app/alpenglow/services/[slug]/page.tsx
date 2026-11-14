@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { canonicalUrlForService } from '@/lib/aal-canonical'
 import { serviceMatchesPathSlug } from '@/lib/alpenglow-services'
 import { alpenglowData } from '@/lib/site-data'
 import { correctAalPublicText } from '@/lib/aal-public-copy'
@@ -44,14 +45,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const service = await getServiceByPathSlug(slug)
   if (!service) return { title: 'Service Not Found' }
 
+  const canonical = canonicalUrlForService(service)
   return {
     title: `${service.name} in Aspen, CO | Aspen Alpenglow Limousine`,
     description: correctAalPublicText(service.description),
-    alternates: { canonical: `https://aspenalpenglowlimousine.com/services/${slug}` },
+    alternates: { canonical },
     openGraph: {
       title: `${service.name} in Aspen, CO | Aspen Alpenglow Limousine`,
       description: correctAalPublicText(service.description),
-      url: `https://aspenalpenglowlimousine.com/services/${slug}`,
+      url: canonical,
       type: 'website',
       images: [AAL_OG_IMAGE],
     },
