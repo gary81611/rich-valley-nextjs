@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import AalGuidePage from '@/components/alpenglow/AalGuidePage'
 import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
+import { AAL_ASE_TO_EGE_FAQ } from '@/lib/gsc-page2-copy'
 
 const path = '/airport-transfers/eagle-ege-to-aspen'
 const title = 'Eagle Airport (EGE) to Aspen Private Car'
@@ -52,6 +53,7 @@ export default function EagleAirportTransferPage() {
         },
       ]}
       faqs={[
+        AAL_ASE_TO_EGE_FAQ,
         {
           question: 'How much is a private car from Eagle Airport to Aspen?',
           answer: 'Eagle (EGE) in Gypsum to Aspen is $720 each way in a private SUV, and $720 from Aspen back to Eagle. The 13-passenger Ford Transit is $1,200 each way. Holiday pricing may change seasonally.',

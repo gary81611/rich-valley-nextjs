@@ -19,9 +19,12 @@ export type LocationDetailRow = {
 type Props = {
   loc: LocationDetailRow
   backLink: { href: string; label: string }
+  /** Overrides the visible H1. The location name stays in the data. */
+  heading?: string
+  note?: { text: string; href: string; label: string }
 }
 
-export default function LocationDetailView({ loc, backLink }: Props) {
+export default function LocationDetailView({ loc, backLink, heading, note }: Props) {
   const faqs: { q: string; a: string }[] = (loc.faqs || [])
     .filter((f) => !isUnconfirmedWinterClaim(`${f.q} ${f.a}`))
     .filter((f) => !/chauffeur guided/i.test(`${f.q} ${f.a}`))
@@ -43,7 +46,7 @@ export default function LocationDetailView({ loc, backLink }: Props) {
           <Link href={backLink.href} className="text-rva-copper-700 text-sm hover:underline mb-4 inline-block">
             {backLink.label}
           </Link>
-          <h1 className="font-playfair text-4xl md:text-5xl text-white font-light mb-2">{loc.name}</h1>
+          <h1 className="font-playfair text-4xl md:text-5xl text-white font-light mb-2">{heading || loc.name}</h1>
           <p className="text-white/60 text-lg">{tagline}</p>
           {driveTime && driveTime !== 'Home base' && (
             <p className="text-white/40 text-sm mt-2">{driveTime} from Aspen</p>
@@ -53,6 +56,15 @@ export default function LocationDetailView({ loc, backLink }: Props) {
 
       <div className="max-w-4xl mx-auto px-6 py-16">
         <p className="text-lg text-rva-forest/80 leading-relaxed mb-10">{description}</p>
+        {note ? (
+          <p className="text-lg text-rva-forest/80 leading-relaxed mb-10">
+            {note.text}{' '}
+            <Link href={note.href} className="text-rva-copper-700 font-semibold hover:underline">
+              {note.label}
+            </Link>
+            .
+          </p>
+        ) : null}
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           <div className="bg-white p-6 rounded-xl">

@@ -7,6 +7,7 @@ import { RVA_GLOBAL_PILLAR_BLOG_LINKS } from '@/lib/rva-blog-pillars'
 import AdventureCard from '@/components/rva/AdventureCard'
 import RvaButton, { RVA_BOOKING_LABEL, RVA_PHONE_LABEL, RVA_PHONE_HREF } from '@/components/rva/Button'
 import { RVA_PRICE_LINES } from '@/lib/rva-confirmed'
+import { RVA_ADVENTURES } from '@/lib/gsc-page2-copy'
 
 type Season = 'all' | 'summer' | 'winter' | 'year-round'
 
@@ -47,7 +48,7 @@ export default function AdventuresListing({ adventures }: { adventures: PublicAd
             What We Offer
           </p>
           <h1 className="font-playfair text-4xl md:text-6xl text-white font-bold mb-6">
-            Our Adventures
+            {RVA_ADVENTURES.h1}
           </h1>
           <p className="text-white/75 text-xl max-w-2xl mx-auto">
             Guided days on the water and in the mountains.

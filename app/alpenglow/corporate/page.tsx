@@ -1,18 +1,17 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
+import { AAL_CORPORATE } from '@/lib/gsc-page2-copy'
 
 const pageUrl = 'https://aspenalpenglowlimousine.com/corporate'
 
 export const metadata: Metadata = {
-  title: 'Corporate Transportation & Executive Transfers | Aspen Alpenglow Limousine',
-  description:
-    'Executive transportation in Aspen, CO for airport arrivals, meetings, and retreats. Private Suburban SUV and Transit Van service with experienced chauffeurs.',
+  title: AAL_CORPORATE.title,
+  description: AAL_CORPORATE.description,
   alternates: { canonical: pageUrl },
   openGraph: {
-    title: 'Corporate Transportation in Aspen | Aspen Alpenglow Limousine',
-    description:
-      'Professional executive transfers for business travelers, corporate retreats, and event logistics in Aspen and the Roaring Fork Valley.',
+    title: AAL_CORPORATE.title,
+    description: AAL_CORPORATE.description,
     type: 'website',
     url: pageUrl,
     images: [AAL_OG_IMAGE],
@@ -54,7 +53,7 @@ export default function CorporatePage() {
       <section className="aal-hero-photo bg-alp-navy-deep text-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-left w-full pb-12">
           <h1 className="font-playfair font-bold mb-6">
-            Corporate &amp; Executive Transportation
+            {AAL_CORPORATE.h1}
           </h1>
           <p className="text-lg text-alp-pearl/80 max-w-3xl leading-relaxed">
             Reliable private transportation for business travelers, leadership teams, and corporate events in Aspen,
@@ -77,8 +76,9 @@ export default function CorporatePage() {
           </p>
           <p>
             We support airport transfers from ASE, EGE, and DEN for individual executives and visiting teams.
-            Suburban SUVs provide private comfort for leadership travelers and small groups, while the Ford Transit
-            Van handles larger team movements between hotels, conference venues, and off-site dinners.
+            Suburban SUVs provide private comfort for leadership travelers and small groups, while the 13-passenger
+            Ford Transit van is the group van for corporate teams moving between hotels, conference venues, and
+            off-site dinners.
           </p>
           <p>
             For retreats and multi-day events, we help create a transportation plan before guests arrive: pickup

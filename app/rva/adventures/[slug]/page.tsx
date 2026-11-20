@@ -22,6 +22,7 @@ import {
   isScenicTourSlug,
   rvaPublicAdventureTitle,
 } from '@/lib/rva-confirmed'
+import { RVA_SCENIC_NATURALIST_NOTE, RVA_WILDLIFE_SANCTUARY_FAQ } from '@/lib/gsc-page2-copy'
 
 export const dynamic = 'force-dynamic'
 
@@ -181,7 +182,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
     hero_subtitle: scenic ? '' : publicDescription,
     // Keep #15 scenic intro (publicDescription) after rebase onto main.
     intro: scenic
-      ? publicDescription
+      ? `${publicDescription} ${RVA_SCENIC_NATURALIST_NOTE}`
       : /horse|snowmobile|atv|scenic|raft/i.test(`${adventureSlug} ${displayName}`)
         ? `${publicDescription}\n\n${RVA_TRIP_OWNERSHIP}`
         : longDescription,
@@ -212,6 +213,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
             question: 'How much is a half-day scenic and wildlife tour?',
             answer: 'Half-day scenic and wildlife tour: $750.',
           },
+          RVA_WILDLIFE_SANCTUARY_FAQ,
         ]
       : undefined,
     cta_text: 'Check availability',

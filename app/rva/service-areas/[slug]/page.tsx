@@ -5,6 +5,7 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { serviceAreaMatchesPathSlug } from '@/lib/alpenglow-service-areas'
 import LocationDetailView from '@/components/rva/LocationDetailView'
 import RvaButton from '@/components/rva/Button'
+import { RVA_CARBONDALE, RVA_CARBONDALE_NOTE } from '@/lib/gsc-page2-copy'
 
 export const dynamic = 'force-dynamic'
 
@@ -58,8 +59,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       .trim()
       .slice(0, 160)
     return {
-      title: `${area.name} | Guided Adventures | Rich Valley Adventures`,
-      description: desc || `Guided outdoor adventures in ${area.name}, Colorado — Rich Valley Adventures.`,
+      title: slug === 'carbondale' ? RVA_CARBONDALE.title : `${area.name} | Guided Adventures | Rich Valley Adventures`,
+      description:
+        slug === 'carbondale'
+          ? RVA_CARBONDALE.description
+          : desc || `Guided outdoor adventures in ${area.name}, Colorado — Rich Valley Adventures.`,
       alternates: { canonical: `${BASE}/service-areas/${slug}` },
       robots: { index: true, follow: true },
     }
@@ -68,8 +72,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const loc = await getLocationForServiceAreaSlug(slug)
   if (loc) {
     return {
-      title: `${loc.name} Adventures | Rich Valley Adventures — Guided Outdoor Experiences`,
-      description: (loc.description || '').slice(0, 160),
+      title:
+        slug === 'carbondale'
+          ? RVA_CARBONDALE.title
+          : `${loc.name} Adventures | Rich Valley Adventures — Guided Outdoor Experiences`,
+      description: slug === 'carbondale' ? RVA_CARBONDALE.description : (loc.description || '').slice(0, 160),
       alternates: { canonical: `${BASE}/service-areas/${slug}` },
       robots: { index: true, follow: true },
     }
@@ -97,7 +104,9 @@ export default async function RvaServiceAreaDetailPage({ params }: { params: Pro
             <Link href="/service-areas" className="text-rva-copper-light text-sm hover:underline mb-4 inline-block">
               ← Service areas
             </Link>
-            <h1 className="font-playfair text-4xl md:text-5xl text-white font-light mb-3">{area.name}</h1>
+            <h1 className="font-playfair text-4xl md:text-5xl text-white font-light mb-3">
+              {slug === 'carbondale' ? RVA_CARBONDALE.h1 : area.name}
+            </h1>
             {area.description && <p className="text-white/70 text-lg max-w-2xl">{area.description}</p>}
           </div>
         </div>
@@ -107,6 +116,16 @@ export default async function RvaServiceAreaDetailPage({ params }: { params: Pro
             <div className="prose prose-lg text-rva-forest/90 mb-10 whitespace-pre-wrap leading-relaxed">
               {longDesc}
             </div>
+          )}
+
+          {slug === 'carbondale' && (
+            <p className="text-lg text-rva-forest/90 mb-10 leading-relaxed">
+              {RVA_CARBONDALE_NOTE}{' '}
+              <Link href="/private-ranch-fishing" className="text-rva-copper-700 font-semibold hover:underline">
+                Private water fly fishing at Spring Creek Ranch
+              </Link>
+              .
+            </p>
           )}
 
           {keyDestinations.length > 0 && (
@@ -138,6 +157,16 @@ export default async function RvaServiceAreaDetailPage({ params }: { params: Pro
       <LocationDetailView
         loc={loc}
         backLink={{ href: '/service-areas', label: '← Service areas' }}
+        heading={slug === 'carbondale' ? RVA_CARBONDALE.h1 : undefined}
+        note={
+          slug === 'carbondale'
+            ? {
+                text: RVA_CARBONDALE_NOTE,
+                href: '/private-ranch-fishing',
+                label: 'Private water fly fishing at Spring Creek Ranch',
+              }
+            : undefined
+        }
       />
     )
   }

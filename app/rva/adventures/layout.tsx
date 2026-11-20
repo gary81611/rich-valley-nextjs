@@ -1,16 +1,15 @@
 import type { Metadata } from 'next'
+import { RVA_ADVENTURES } from '@/lib/gsc-page2-copy'
 
 const canonical = 'https://www.richvalleyadventures.com/adventures'
 
 export const metadata: Metadata = {
-  title: 'Outdoor Adventures in Aspen & Roaring Fork Valley | Rich Valley Adventures',
-  description:
-    'Fly fishing, scenic river rafting, guided hikes, and elevated camping in the Colorado Rockies. Paddleboarding is a rental from $100, not a guided trip.',
+  title: RVA_ADVENTURES.title,
+  description: RVA_ADVENTURES.description,
   alternates: { canonical },
   openGraph: {
-    title: 'Outdoor Adventures in Aspen & Roaring Fork Valley | Rich Valley Adventures',
-    description:
-      'Guided outdoor experiences in Aspen and the Roaring Fork Valley — fly fishing, hiking, and elevated camping. Paddleboard rentals from $100.',
+    title: RVA_ADVENTURES.title,
+    description: RVA_ADVENTURES.description,
     url: canonical,
     siteName: 'Rich Valley Adventures',
     type: 'website',

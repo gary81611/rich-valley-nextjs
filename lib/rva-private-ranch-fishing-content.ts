@@ -1,8 +1,9 @@
 import type { ServiceContent } from '@/lib/pages'
 import { KIDS_FAMILY_FISHING } from '@/lib/rva-fly-fishing-content'
+import { RVA_PRIVATE_RANCH } from '@/lib/gsc-page2-copy'
 
 export const privateRanchFishingPath = '/private-ranch-fishing'
-export const privateRanchFishingPageTitle = 'Private Ranch Fly Fishing at Spring Creek Ranch'
+export const privateRanchFishingPageTitle = RVA_PRIVATE_RANCH.h1
 
 const WADERS =
   'Waders are provided for kids 3 and up, and adult waders and boots go up to men\'s size 15.'

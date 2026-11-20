@@ -8,6 +8,12 @@ import { serviceAreaMatchesPathSlug } from '@/lib/alpenglow-service-areas'
 import { alpenglowData } from '@/lib/site-data'
 import { correctAalPublicText } from '@/lib/aal-public-copy'
 import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
+import {
+  AAL_DENVER_RATES_NOTE,
+  AAL_DENVER_SERVICE_AREA,
+  AAL_KAPA_SECTION,
+  AAL_SNOWMASS_KAPA_NOTE,
+} from '@/lib/gsc-page2-copy'
 
 export const dynamic = 'force-dynamic'
 
@@ -74,11 +80,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!area) return { title: 'Area Not Found' }
 
   const title =
-    area.meta_title?.trim() ||
-    `${area.name} Private Car Service | Aspen Alpenglow Limousine`
+    slug === 'denver'
+      ? AAL_DENVER_SERVICE_AREA.title
+      : area.meta_title?.trim() ||
+        `${area.name} Private Car Service | Aspen Alpenglow Limousine`
   const description =
-    area.meta_description?.trim() ||
-    `${area.description} Luxury SUV and van transportation in ${area.name}, Colorado. All-inclusive rates, 24/7. Call 970-315-6111.`
+    slug === 'denver'
+      ? AAL_DENVER_SERVICE_AREA.description
+      : area.meta_description?.trim() ||
+        `${area.description} Luxury SUV and van transportation in ${area.name}, Colorado. All-inclusive rates, 24/7. Call 970-315-6111.`
   const canonical = canonicalUrlForServiceArea(area)
 
   return {
@@ -139,8 +149,9 @@ export default async function ServiceAreaDetailPage({ params }: { params: Promis
     '@type': 'WebPage',
     '@id': `${pageUrl}#webpage`,
     url: pageUrl,
-    name: area.meta_title?.trim() || `${area.name} | Aspen Alpenglow Limousine`,
-    description: area.meta_description?.trim() || area.description,
+    name: slug === 'denver' ? AAL_DENVER_SERVICE_AREA.title : area.meta_title?.trim() || `${area.name} | Aspen Alpenglow Limousine`,
+    description:
+      slug === 'denver' ? AAL_DENVER_SERVICE_AREA.description : area.meta_description?.trim() || area.description,
     isPartOf: { '@type': 'WebSite', name: 'Aspen Alpenglow Limousine', url: AAL_BASE },
     about: { '@type': 'Place', name: `${area.name}, Colorado`, addressRegion: 'CO', addressCountry: 'US' },
     inLanguage: 'en-US',
@@ -197,7 +208,7 @@ export default async function ServiceAreaDetailPage({ params }: { params: Promis
             <span className="text-alp-gold">{area.name}</span>
           </nav>
           <h1 className="font-playfair font-bold mb-4">
-            {area.name}
+            {slug === 'denver' ? AAL_DENVER_SERVICE_AREA.h1 : area.name}
           </h1>
           <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl">{area.description}</p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
@@ -216,6 +227,29 @@ export default async function ServiceAreaDetailPage({ params }: { params: Promis
                 Luxury Transportation in {area.name}
               </h2>
               <p className="text-alp-slate leading-relaxed text-lg mb-8 whitespace-pre-line">{bodyCopy}</p>
+              {slug === 'denver' && (
+                <div className="mb-8 space-y-4 text-alp-slate leading-relaxed text-lg">
+                  <p>{AAL_DENVER_RATES_NOTE}</p>
+                  <h2 id={AAL_KAPA_SECTION.id} className="font-playfair text-2xl font-bold text-alp-navy">
+                    {AAL_KAPA_SECTION.title}
+                  </h2>
+                  <p>{AAL_KAPA_SECTION.content}</p>
+                  <p>
+                    <Link href={AAL_KAPA_SECTION.link.href} className="text-alp-gold font-semibold hover:text-alp-navy">
+                      {AAL_KAPA_SECTION.link.label}
+                    </Link>
+                  </p>
+                </div>
+              )}
+              {slug === 'snowmass-village' && (
+                <p className="text-alp-slate leading-relaxed text-lg mb-8">
+                  {AAL_SNOWMASS_KAPA_NOTE}{' '}
+                  <Link href="/service-areas/denver#centennial-kapa" className="text-alp-gold font-semibold hover:text-alp-navy">
+                    See Denver and Centennial (KAPA) transfers
+                  </Link>
+                  .
+                </p>
+              )}
               {faqs.length > 0 && (
                 <div className="mb-10">
                   <h3 className="font-playfair text-2xl font-bold text-alp-navy mb-4">Common questions</h3>

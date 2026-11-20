@@ -6,6 +6,7 @@ import {
 } from '@/lib/rva-fly-fishing-content'
 import { rvaServicePageRelatedBlogLinks } from '@/lib/rva-blog-pillars'
 import { RVA_FLOAT_PHOTO, RVA_FLY_FISHING_HERO_PHOTO } from '@/lib/rva-kit-photos'
+import { RVA_FLY_FISHING } from '@/lib/gsc-page2-copy'
 
 /** The prerendered HTML was stuck on the Vercel edge as STALE after the copy change. Render each request from this file. */
 export const dynamic = 'force-dynamic'
@@ -13,14 +14,12 @@ export const dynamic = 'force-dynamic'
 const pageUrl = 'https://www.richvalleyadventures.com/fly-fishing'
 
 export const metadata: Metadata = {
-  title: 'Aspen Fly Fishing Guides | Roaring Fork, Fryingpan & Private Water | Rich Valley Adventures',
-  description:
-    'Expert-guided fly fishing on the Roaring Fork, Frying Pan, Colorado, and Gunnison Rivers, plus private water near Aspen, CO. All skill levels. Equipment provided.',
+  title: RVA_FLY_FISHING.title,
+  description: RVA_FLY_FISHING.description,
   alternates: { canonical: pageUrl },
   openGraph: {
-    title: 'Aspen Fly Fishing Guides | Roaring Fork, Fryingpan & Private Water | Rich Valley Adventures',
-    description:
-      'Gold Medal waters, Gunnison River floats, and private water — guided by local experts since 2012.',
+    title: RVA_FLY_FISHING.title,
+    description: RVA_FLY_FISHING.description,
     type: 'website',
     url: pageUrl,
     images: [
