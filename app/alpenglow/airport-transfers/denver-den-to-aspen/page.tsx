@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import AalGuidePage from '@/components/alpenglow/AalGuidePage'
 import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
+import { AAL_KAPA_SECTION } from '@/lib/gsc-page2-copy'
 
 const path = '/airport-transfers/denver-den-to-aspen'
 const title = 'Denver Airport (DEN) to Aspen Private Car | $1,375'
@@ -34,7 +35,7 @@ export default function DenverAirportTransferPage() {
         {
           heading: 'Other Front Range airports',
           paragraphs: [
-            'Centennial Airport (KAPA) is listed on the pricing page at $1,475. Private FBO airport service also includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison.',
+            `${AAL_KAPA_SECTION.content} Private FBO airport service also includes Eagle, Rifle, Grand Junction, Buena Vista, Montrose, and Gunnison.`,
           ],
         },
         {

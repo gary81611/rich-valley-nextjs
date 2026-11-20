@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import AalGuidePage from '@/components/alpenglow/AalGuidePage'
 import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
+import { AAL_ASE_TO_EGE_FAQ, AAL_ASPEN_TO_EGE } from '@/lib/gsc-page2-copy'
 
 const path = '/airport-transfers/aspen-to-eagle-ege'
-const h1 = 'Aspen to Eagle County Airport (EGE)'
-const title = 'Aspen to Eagle County Airport (EGE) Private Car | $720'
-const description =
-  'Aspen or Snowmass to EGE in Gypsum in a private Suburban, $720 one way. The 13-passenger Ford Transit is $1,200. About 1.5–2 hrs.'
+const h1 = AAL_ASPEN_TO_EGE.h1
+const title = AAL_ASPEN_TO_EGE.title
+const description = AAL_ASPEN_TO_EGE.description
 
 export const metadata: Metadata = {
   title,
@@ -51,6 +51,7 @@ export default function AspenToEagleAirportPage() {
         },
       ]}
       faqs={[
+        AAL_ASE_TO_EGE_FAQ,
         {
           question: 'How much is a private car from Aspen to Eagle Airport?',
           answer:

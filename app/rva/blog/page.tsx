@@ -80,7 +80,7 @@ export default async function RVABlogPage() {
           <p className="mb-3">
             <span className="font-semibold text-rva-forest">Book &amp; plan: </span>
             <Link href="/adventures" className="text-rva-copper-700 hover:underline font-medium">
-              Guided adventures
+              Aspen outdoor adventures
             </Link>
             {' · '}
             <Link href="/contact" className="text-rva-copper-700 hover:underline font-medium">

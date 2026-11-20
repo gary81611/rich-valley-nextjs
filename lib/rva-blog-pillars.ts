@@ -56,7 +56,7 @@ export function rvaServicePageRelatedBlogLinks(serviceSlug: string): { href: str
     return [
       {
         href: '/blog/fly-fishing-aspen-roaring-fork-valley',
-        label: 'Ultimate guide: fly fishing in Aspen & the Roaring Fork Valley',
+        label: 'Fly fishing in Aspen: a Roaring Fork Valley guide',
       },
     ]
   }
@@ -65,6 +65,10 @@ export function rvaServicePageRelatedBlogLinks(serviceSlug: string): { href: str
       {
         href: '/blog/guided-hiking-tours-aspen-maroon-bells',
         label: 'Guided hiking near Aspen: Maroon Bells to Independence Pass',
+      },
+      {
+        href: '/blog/permitted-aspen-open-space-hiking-tours-rich-valley-adventures',
+        label: 'Permitted Aspen open-space hiking tours',
       },
     ]
   }
@@ -95,7 +99,7 @@ export function mergeRvaBlogSidebarLinks(
 export const RVA_GLOBAL_PILLAR_BLOG_LINKS: { href: string; label: string }[] = [
   {
     href: '/blog/fly-fishing-aspen-roaring-fork-valley',
-    label: 'Fly fishing in Aspen & the Roaring Fork Valley — full guide',
+    label: 'Fly fishing in Aspen: a Roaring Fork Valley guide',
   },
   {
     href: '/blog/guided-hiking-tours-aspen-maroon-bells',

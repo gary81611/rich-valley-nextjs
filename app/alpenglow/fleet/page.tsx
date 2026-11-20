@@ -75,7 +75,7 @@ export default function FleetPage() {
             Our Fleet
           </h1>
           <p className="text-lg sm:text-xl text-alp-pearl/80 max-w-3xl">
-            Two Chevrolet Suburbans (7 passengers) and one Ford Transit Passenger Van (13). Starlink, ski racks, and roof cargo. CO PUC permit LL-04725.
+            Two Chevrolet Suburbans (7 passengers) and one Ford Transit Passenger Van (13). The Transit is the 13-passenger group van for corporate transportation. Starlink, ski racks, and roof cargo. CO PUC permit LL-04725.
           </p>
         </div>
       </section>

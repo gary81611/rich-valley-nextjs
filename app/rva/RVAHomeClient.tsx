@@ -238,6 +238,11 @@ export default function RVAHomeClient({
             <p className="rva-speak-services-intro text-rva-forest/80 text-xl max-w-2xl mx-auto">
               Guided trips and rentals across the Roaring Fork Valley, fully equipped.
             </p>
+            <p className="mt-4">
+              <Link href="/adventures" className="text-rva-copper-700 font-semibold hover:underline">
+                Aspen outdoor adventures
+              </Link>
+            </p>
             <div className="mt-8 flex max-w-full flex-wrap justify-center gap-2">
               {[
                 { label: 'All', value: null },

@@ -1,6 +1,8 @@
 import type { ServiceContent } from '@/lib/pages'
 
-export const flyFishingPageTitle = 'Aspen Fly Fishing'
+import { RVA_FLY_FISHING } from '@/lib/gsc-page2-copy'
+
+export const flyFishingPageTitle = RVA_FLY_FISHING.h1
 
 export const KIDS_FAMILY_FISHING =
   'Kids ages 3 and up can fish. Waders are provided for kids 3 and up, and adult waders and boots go up to men\'s size 15. Guests and grandparents with limited mobility can be hosted at the ranch ponds.'

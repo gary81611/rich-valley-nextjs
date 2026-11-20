@@ -10,6 +10,7 @@ import {
   publicWinterSnowmobileDescription,
   publicWinterSnowmobileTitle,
 } from '@/lib/rva-unconfirmed-winter'
+import { RVA_WINTER_NATURALIST_NOTE } from '@/lib/gsc-page2-copy'
 
 export const dynamic = 'force-dynamic'
 
@@ -78,7 +79,7 @@ export default async function WinterPage() {
     hero_title: 'Winter Offerings',
     hero_subtitle: 'November through April',
     intro:
-      `The Roaring Fork Valley is just as magical under snow. Explore our guided winter adventures — all gear included, small groups, expert local guides. ${RVA_SNOWSHOE_PRICE}. ${RVA_TRIP_OWNERSHIP}`,
+      `The Roaring Fork Valley is just as magical under snow. Explore our guided winter adventures — all gear included, small groups, expert local guides. ${RVA_WINTER_NATURALIST_NOTE} ${RVA_SNOWSHOE_PRICE}. ${RVA_TRIP_OWNERSHIP}`,
     lead: {
       heading: 'How winter trips work',
       paragraphs: [

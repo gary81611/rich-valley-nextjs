@@ -10,6 +10,7 @@ import { rvaBlogSlugShouldRedirectToBlogIndex } from '@/lib/rva-blog-seo-redirec
 import { seoAlt } from '@/lib/seo/alt-text'
 import type { BlogPost } from '@/lib/types'
 import { withPrivateRanchFishingLink, withYearRoundFishingNote } from '@/lib/rva-fly-fishing-content'
+import { applyRvaPage2Blog } from '@/lib/gsc-page2-copy'
 import { scrubUnconfirmedFirstAidText, stripEscaladeCopy } from '@/lib/rva-confirmed'
 import { blogImageSrcForNext, isBlogPostPubliclyVisible } from '@/lib/blog-visibility'
 import RvaButton from '@/components/rva/Button'
@@ -41,7 +42,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (await rvaBlogSlugShouldRedirectToBlogIndex(slug)) {
     permanentRedirect('/blog')
   }
-  const post = await getPost(slug)
+  const loaded = await getPost(slug)
+  const post = loaded ? applyRvaPage2Blog(loaded) : null
   if (!post) return { title: 'Post Not Found | Rich Valley Adventures' }
 
   const ogImage = absolutePublicImageUrl('rva', blogImageSrcForNext(post.featured_image_url))
@@ -156,8 +158,9 @@ export default async function RVABlogPostPage({ params }: { params: Promise<{ sl
   if (await rvaBlogSlugShouldRedirectToBlogIndex(slug)) {
     permanentRedirect('/blog')
   }
-  const post = await getPost(slug)
-  if (!post) notFound()
+  const loaded = await getPost(slug)
+  if (!loaded) notFound()
+  const post = applyRvaPage2Blog(loaded)
 
   const sidebarLinks = mergeRvaBlogSidebarLinks(
     post.slug,

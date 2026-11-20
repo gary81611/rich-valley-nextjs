@@ -7,6 +7,7 @@ import { absolutePublicImageUrl } from '@/lib/seo/canonical'
 import { seoAlt } from '@/lib/seo/alt-text'
 import type { BlogPost } from '@/lib/types'
 import { applyAalBlogPost, isAalHiddenBlogSlug } from '@/lib/aal-public-copy'
+import { applyAalPage2Blog } from '@/lib/gsc-page2-copy'
 import { blogImageSrcForNext, isBlogPostPubliclyVisible } from '@/lib/blog-visibility'
 import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
@@ -35,7 +36,7 @@ async function getPost(slug: string): Promise<BlogPost | null> {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
   const loaded = await getPost(slug)
-  const post = loaded ? applyAalBlogPost(loaded) : null
+  const post = loaded ? applyAalPage2Blog(applyAalBlogPost(loaded)) : null
   if (!post) return { title: 'Post Not Found | Aspen Alpenglow Limousine' }
 
   const canonical = `https://aspenalpenglowlimousine.com/blog/${post.slug}`
@@ -200,7 +201,7 @@ export default async function AlpenglowBlogPostPage({ params }: { params: Promis
   const { slug } = await params
   const loaded = await getPost(slug)
   if (!loaded) notFound()
-  const post = applyAalBlogPost(loaded)
+  const post = applyAalPage2Blog(applyAalBlogPost(loaded))
 
   const articleBody = post.content || ''
   const articleFaqs = post.faqs ?? []

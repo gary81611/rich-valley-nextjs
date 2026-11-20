@@ -6,6 +6,7 @@ import {
   privateRanchFishingServiceContent,
 } from '@/lib/rva-private-ranch-fishing-content'
 import { seoAlt } from '@/lib/seo/alt-text'
+import { RVA_PRIVATE_RANCH } from '@/lib/gsc-page2-copy'
 
 /** Render each request from this file so the landing is not stuck on a stale prerender. */
 export const dynamic = 'force-dynamic'
@@ -15,15 +16,14 @@ const heroImage = '/images/adventures/fishing-catch-1440.webp'
 const ogImage = '/images/adventures/fishing-catch.jpeg'
 const ogImageAbsolute = `https://www.richvalleyadventures.com${ogImage}`
 
-const metaDescription =
-  'Private ranch trout fishing and family fishing at a historic ranch: Spring Creek Ranch in Carbondale, near Aspen. Ponds, creeks, and a private Roaring Fork section. From $800 per adult and $250 per child (ages 3+).'
+const metaDescription = RVA_PRIVATE_RANCH.description
 
 export const metadata: Metadata = {
-  title: 'Private Ranch Fly Fishing near Aspen & Carbondale | Rich Valley Adventures',
+  title: RVA_PRIVATE_RANCH.title,
   description: metaDescription,
   alternates: { canonical: pageUrl },
   openGraph: {
-    title: 'Private Ranch Fly Fishing near Aspen & Carbondale | Rich Valley Adventures',
+    title: RVA_PRIVATE_RANCH.title,
     description: metaDescription,
     type: 'website',
     url: pageUrl,

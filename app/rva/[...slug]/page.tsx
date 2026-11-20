@@ -19,11 +19,12 @@ import {
   PADDLE_PHOTO_ALT,
   PADDLE_PHOTO_POSITION,
 } from '@/lib/rva-adventure-public'
+import { RVA_HIKING, RVA_HIKING_NATURALIST_NOTE, RVA_PADDLE, RVA_SNOWSHOEING } from '@/lib/gsc-page2-copy'
 
 const PADDLE_RENTAL = 'Paddleboarding is a rental from $100, not a guided trip.'
-const PADDLE_PAGE_TITLE = 'Paddleboard Rentals in Aspen, Colorado'
-const PADDLE_META_TITLE = 'Paddleboard Rentals in Aspen, CO | From $100 | Rich Valley Adventures'
-const PADDLE_META_DESCRIPTION = `${PADDLE_RENTAL} Rich Valley Adventures, Aspen, Colorado.`
+const PADDLE_PAGE_TITLE = RVA_PADDLE.h1
+const PADDLE_META_TITLE = RVA_PADDLE.title
+const PADDLE_META_DESCRIPTION = RVA_PADDLE.description
 const PADDLE_DELIVERY = 'Boards can be delivered to you.'
 /** Live intro sentences that stay. Lesson, endurance, and logistics sentences are not included. */
 const PADDLE_INTRO = [
@@ -187,11 +188,21 @@ function applyRvaConfirmedFacts(page: CmsPage | null): CmsPage | null {
 
   if (page.slug === 'hiking' && page.template_type === 'service') {
     const content = { ...(page.content as ServiceContent) }
+    content.hero_title = RVA_HIKING.h1
     content.lead = rvaHikingAnswerLead
+    if (content.intro && !/naturalist-led/i.test(content.intro)) {
+      content.intro = `${content.intro}\n\n${RVA_HIKING_NATURALIST_NOTE}`
+    }
     const have = new Set((content.faqs || []).map((faq) => faq.question))
     const extra = rvaHikingAnswerFaqs.filter((faq) => !have.has(faq.question))
     content.faqs = [...extra, ...(content.faqs || [])]
-    return applyFishingSeasonAndKids({ ...page, content })
+    return applyFishingSeasonAndKids({
+      ...page,
+      title: RVA_HIKING.h1,
+      meta_title: RVA_HIKING.title,
+      meta_description: RVA_HIKING.description,
+      content,
+    })
   }
 
   if (page.slug === 'snowshoeing' && page.template_type === 'service') {
@@ -205,7 +216,13 @@ function applyRvaConfirmedFacts(page: CmsPage | null): CmsPage | null {
     if (content.intro && !content.intro.includes('$500')) {
       content.intro = `${price}\n\n${content.intro}`
     }
-    return applyFishingSeasonAndKids({ ...page, content })
+    return applyFishingSeasonAndKids({
+      ...page,
+      title: RVA_SNOWSHOEING.h1,
+      meta_title: RVA_SNOWSHOEING.title,
+      meta_description: RVA_SNOWSHOEING.description,
+      content: { ...content, hero_title: RVA_SNOWSHOEING.h1 },
+    })
   }
 
   return applyFishingSeasonAndKids(page)
