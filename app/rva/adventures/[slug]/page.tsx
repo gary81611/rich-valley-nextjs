@@ -9,13 +9,11 @@ import {
   PADDLE_PHOTO_ALT,
   PADDLE_RENTAL_ID,
   FLY_FISHING_PUBLIC_DESCRIPTION,
-  MOUNTAIN_BIKING_HERO_POSITION,
   TRAIL_HIKING_PUBLIC_DESCRIPTION,
   adventurePublicDescription,
   adventurePublicFromText,
   adventurePublicHref,
   adventurePublicImage,
-  formatAdventureSeasonLabel,
   isPaddleTourListing,
   isPublicAdventureCard,
 } from '@/lib/rva-adventure-public'
@@ -157,23 +155,12 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
   const scenic = isScenicTourSlug(slug) || isScenicTourSlug(adventureSlug)
   const priceNote = adventurePublicFromText(adventure)
   const seasonValue = adventure.season
-    ? formatAdventureSeasonLabel(adventure.season)
+    ? adventure.season === 'year-round'
+      ? 'Year-round'
+      : adventure.season
     : scenic
       ? 'Year-round'
       : null
-  const heroSubtitle = scenic ? '' : publicDescription
-  let intro = scenic
-    ? `${publicDescription} ${RVA_SCENIC_NATURALIST_NOTE}`
-    : /horse|snowmobile|atv|scenic|raft/i.test(`${adventureSlug} ${displayName}`)
-      ? `${publicDescription}\n\n${RVA_TRIP_OWNERSHIP}`
-      : longDescription
-  // Mountain biking has no separate long_description, so the body was the hero subtitle again.
-  if (
-    adventureSlug === 'mountain-biking' &&
-    intro.replace(/\s+/g, ' ').trim() === heroSubtitle.replace(/\s+/g, ' ').trim()
-  ) {
-    intro = ''
-  }
   const facts = [
     scenic
       ? { label: 'Duration', value: 'Half Day / Full Day' }
@@ -192,9 +179,13 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
 
   const content: ServiceContent = {
     hero_title: displayName,
-    hero_subtitle: heroSubtitle,
+    hero_subtitle: scenic ? '' : publicDescription,
     // Keep #15 scenic intro (publicDescription) after rebase onto main.
-    intro,
+    intro: scenic
+      ? `${publicDescription} ${RVA_SCENIC_NATURALIST_NOTE}`
+      : /horse|snowmobile|atv|scenic|raft/i.test(`${adventureSlug} ${displayName}`)
+        ? `${publicDescription}\n\n${RVA_TRIP_OWNERSHIP}`
+        : longDescription,
     lead: facts.length > 0
       ? {
           paragraphs: [],
@@ -238,13 +229,7 @@ export default async function AdventureDetailPage({ params }: { params: Promise<
         content={content}
         heroImage={heroSrc || undefined}
         heroImageAlt={visual.alt || `${displayName} with Rich Valley Adventures in Aspen, Colorado`}
-        heroObjectPosition={
-          scenic
-            ? visual.objectPosition || 'center 18%'
-            : adventureSlug === 'mountain-biking'
-              ? MOUNTAIN_BIKING_HERO_POSITION
-              : visual.objectPosition
-        }
+        heroObjectPosition={scenic ? visual.objectPosition || 'center 18%' : visual.objectPosition}
         heroHeightClass={scenic ? 'h-[55vh] max-h-[55vh]' : undefined}
         bookingHref="/contact"
       />

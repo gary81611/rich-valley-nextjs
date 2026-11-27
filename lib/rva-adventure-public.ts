@@ -54,36 +54,17 @@ const FISH_FALLBACK_IMAGES = new Set([
   '/images/rva/flyfishing.png',
 ])
 
-/**
- * Known portrait files. Heroes letterbox these instead of cropping them into a wide banner.
- * mountain-biking.jpg is portrait too, but its detail hero uses object-cover (see
- * MOUNTAIN_BIKING_HERO_POSITION) so the photo fills the banner the way the other
- * /adventures/* cover heroes do.
- */
+/** Known portrait files. Heroes letterbox these instead of cropping them into a wide banner. */
 const PORTRAIT_ADVENTURE_IMAGES = [
   '/images/adventures/fly-fishing.png',
   '/images/adventures/hiking.png',
   '/images/adventures/horseback-riding.png',
+  '/images/adventures/mountain-biking.jpg',
   '/images/adventures/fishing-catch.jpeg',
   '/images/adventures/paddle-boarding.jpg',
   '/images/adventures/fishing-catch-1440.webp',
   '/images/rva/horseback.png',
 ]
-
-/** Keep the rider in frame when the 501×724 photo covers a wide hero. */
-export const MOUNTAIN_BIKING_HERO_POSITION = 'center 45%'
-
-/**
- * Display label for adventures.season. Stored values stay lowercase so season filters keep working.
- * year-round stays "Year-round", matching the scenic tour fact.
- */
-export function formatAdventureSeasonLabel(season: string | null | undefined): string {
-  const raw = (season || '').trim()
-  if (!raw) return ''
-  const key = raw.toLowerCase()
-  if (key === 'year-round' || key === 'year round') return 'Year-round'
-  return raw.replace(/(^|\s)([a-z])/g, (_match, sep: string, ch: string) => sep + ch.toUpperCase())
-}
 
 export function isPortraitAdventureImage(src: string | null | undefined): boolean {
   const path = (src || '').split('?')[0]
