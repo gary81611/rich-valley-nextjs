@@ -234,7 +234,8 @@ export default function ServicePageTemplate({
         </section>
       )}
 
-      {/* Intro */}
+      {/* Intro. Skip when the page has no body copy of its own (duplicate of the hero subtitle). */}
+      {(content.intro || '').trim() ? (
       <section className={`py-14 px-6 ${rva ? 'bg-rva-cream' : 'bg-alp-pearl'}`}>
         <div className="max-w-3xl mx-auto">
           {content.intro.split('\n\n').map((para, i) => (
@@ -242,6 +243,7 @@ export default function ServicePageTemplate({
           ))}
         </div>
       </section>
+      ) : null}
 
       {/* Popular hikes — optional structured list */}
       {content.popular_hikes && content.popular_hikes.length > 0 && (

@@ -8,16 +8,59 @@ import { loadFishingReportFeed } from '@/lib/fishing-report-feed'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
+/**
+ * First sentence only. A period between digits is a decimal, not the end of the sentence,
+ * so a flow or clock time is never sliced mid-number.
+ */
+function firstCompleteSentence(text: string): string | null {
+  const normalized = text.replace(/\s+/g, ' ').trim()
+  if (!normalized) return null
+  for (let i = 0; i < normalized.length; i++) {
+    const ch = normalized[i]
+    if (ch !== '.' && ch !== '!' && ch !== '?') continue
+    if (ch === '.') {
+      const prev = normalized[i - 1] || ''
+      const next = normalized[i + 1] || ''
+      if (/\d/.test(prev) && /\d/.test(next)) continue
+    }
+    const after = normalized[i + 1]
+    if (after === undefined || /\s/.test(after)) {
+      const sentence = normalized.slice(0, i + 1).trim()
+      return sentence || null
+    }
+  }
+  return null
+}
+
+function stripDateLabel(iso: string | null | undefined): string {
+  if (!iso) return ''
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return ''
+  return new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Denver',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(date)
+}
+
+/** One complete sentence, or the report date when the body has no sentence end. */
+function conditionsStripCopy(body: string, date?: string | null): string {
+  const sentence = firstCompleteSentence(body)
+  if (sentence) return sentence
+  const label = stripDateLabel(date)
+  return label ? `Updated ${label}.` : ''
+}
+
 function buildTeaser(row: {
+  report_date?: string | null
   hatch_report?: string | null
   fly_recommendations?: string | null
   water_clarity?: string | null
   general_notes?: string | null
 }): string {
   const parts = [row.hatch_report, row.fly_recommendations, row.water_clarity, row.general_notes].filter(Boolean) as string[]
-  const raw = parts.join(' ').trim()
-  if (!raw) return ''
-  return raw.length > 220 ? `${raw.slice(0, 220)}…` : raw
+  return conditionsStripCopy(parts.join(' '), row.report_date)
 }
 
 /** Latest published conditions for the homepage strip; falls back to the merged fishing-report feed. */
@@ -48,10 +91,10 @@ export async function GET() {
 
     const [item] = await loadFishingReportFeed(1)
     if (item) {
-      const teaser = item.body.length > 220 ? `${item.body.slice(0, 220)}…` : item.body
+      const teaser = conditionsStripCopy(item.body, item.date) || item.title
       return NextResponse.json({
         report: {
-          teaser: teaser || item.title,
+          teaser,
           ...(item.reporter_display ? { author: item.reporter_display } : {}),
           date: item.date,
           ...(item.imageUrl ? { imageUrl: item.imageUrl } : {}),

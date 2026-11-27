@@ -69,7 +69,7 @@ export default function BookingPlaceholder({ accentColor, accentHover, phone, ph
       <div className="grid md:grid-cols-2 gap-4">
         <div>
           <label htmlFor="rva-quote-service" className="block text-sm font-medium text-gray-700 mb-1">Service</label>
-          <select id="rva-quote-service" name="service" value={form.service} onChange={(e) => setForm(f => ({ ...f, service: e.target.value }))} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-opacity-50 focus:outline-none" aria-label="Service">
+          <select id="rva-quote-service" name="service" value={form.service} onChange={(e) => setForm(f => ({ ...f, service: e.target.value }))} className="w-full bg-white px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-opacity-50 focus:outline-none" aria-label="Service">
             <option value="">Select a service</option>
             {serviceOptions.map((s) => (<option key={s} value={s}>{s}</option>))}
           </select>
