@@ -1,0 +1,296 @@
+{
+  "@context": "https://schema.org",
+  "@type": [
+    "TravelAgency",
+    "LocalBusiness"
+  ],
+  "additionalType": "https://schema.org/SportsActivityLocation",
+  "@id": "https://www.richvalleyadventures.com/#organization",
+  "name": "Rich Valley Adventures",
+  "description": "Expert-guided fly fishing, hiking, mountain biking, paddleboard rentals, scenic and wildlife tours, and elevated camping in Aspen, Colorado and the Roaring Fork Valley. Since 2012.",
+  "url": "https://www.richvalleyadventures.com/",
+  "telephone": "+1-970-456-3666",
+  "email": "kit@richvalleyadventures.com",
+  "priceRange": "$$$$",
+  "currenciesAccepted": "USD",
+  "image": "https://www.richvalleyadventures.com/images/logos/rva-logo.png",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https://www.richvalleyadventures.com/images/logos/rva-logo.png",
+    "width": 441,
+    "height": 212
+  },
+  "foundingDate": "2012",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Aspen",
+    "addressRegion": "CO",
+    "postalCode": "81611",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 39.1911,
+    "longitude": -106.8175
+  },
+  "hasMap": "https://www.google.com/maps?place_id=ChIJkcn5KdQ7QIcR50T745YsSmg",
+  "openingHours": "Mo-Su 07:00-20:00",
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "07:00",
+      "closes": "20:00"
+    }
+  ],
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Aspen",
+      "sameAs": "https://en.wikipedia.org/wiki/Aspen,_Colorado",
+      "url": "https://www.richvalleyadventures.com/service-areas/aspen"
+    },
+    {
+      "@type": "City",
+      "name": "Snowmass Village",
+      "url": "https://www.richvalleyadventures.com/service-areas/snowmass-village"
+    },
+    {
+      "@type": "City",
+      "name": "Basalt",
+      "url": "https://www.richvalleyadventures.com/service-areas/basalt"
+    },
+    {
+      "@type": "City",
+      "name": "Carbondale",
+      "url": "https://www.richvalleyadventures.com/service-areas/carbondale"
+    },
+    {
+      "@type": "Place",
+      "name": "Roaring Fork Valley"
+    }
+  ],
+  "sameAs": [
+    "https://www.facebook.com/richvalleyadventures",
+    "https://www.instagram.com/richvalleyadventures",
+    "https://www.google.com/maps?place_id=ChIJkcn5KdQ7QIcR50T745YsSmg",
+    "https://g.page/r/CedE--OWLEpoEAE/review"
+  ],
+  "identifier": [
+    {
+      "@type": "PropertyValue",
+      "name": "Google Place ID",
+      "value": "ChIJkcn5KdQ7QIcR50T745YsSmg"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "CO Licensed Outfitter",
+      "value": "OUT.0003060"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "CO River License",
+      "value": "620"
+    }
+  ],
+  "brand": {
+    "@type": "Brand",
+    "name": "Rich Valley Adventures"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+1-970-456-3666",
+    "email": "kit@richvalleyadventures.com",
+    "contactType": "Reservations",
+    "areaServed": "US",
+    "availableLanguage": "English",
+    "hoursAvailable": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "07:00",
+      "closes": "20:00"
+    }
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Guided adventures and rentals in Aspen and the Roaring Fork Valley",
+    "url": "https://www.richvalleyadventures.com/adventures",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.richvalleyadventures.com/fly-fishing",
+        "itemOffered": {
+          "@type": "TouristTrip",
+          "name": "Full-day float trip — Roaring Fork or Colorado River",
+          "url": "https://www.richvalleyadventures.com/fly-fishing",
+          "description": "From $1,400 for 2 people (1 boat, 1 captain). Additional adults $375 each, kids $175. Lunch, gear, and door-to-door transportation included. Wade trips: call for pricing.",
+          "provider": {
+            "@id": "https://www.richvalleyadventures.com/#organization"
+          }
+        },
+        "price": "1400"
+      },
+      {
+        "@type": "Offer",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.richvalleyadventures.com/private-ranch-fishing",
+        "itemOffered": {
+          "@type": "TouristTrip",
+          "name": "Private ranch fishing and picnic at Spring Creek Ranch, Carbondale",
+          "url": "https://www.richvalleyadventures.com/private-ranch-fishing",
+          "description": "From $800 per adult and $250 per child (ages 3+). Ponds, creeks, and a private section of the Roaring Fork River.",
+          "provider": {
+            "@id": "https://www.richvalleyadventures.com/#organization"
+          }
+        },
+        "price": "800"
+      },
+      {
+        "@type": "Offer",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.richvalleyadventures.com/hiking",
+        "itemOffered": {
+          "@type": "TouristTrip",
+          "name": "Half-day guided hike",
+          "url": "https://www.richvalleyadventures.com/hiking",
+          "description": "A half-day hike is $600. The hiking page also describes easier walks and strenuous alpine days.",
+          "provider": {
+            "@id": "https://www.richvalleyadventures.com/#organization"
+          }
+        },
+        "price": "600"
+      },
+      {
+        "@type": "Offer",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.richvalleyadventures.com/paddle-boarding",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Paddleboard rental",
+          "url": "https://www.richvalleyadventures.com/paddle-boarding",
+          "description": "Paddleboarding is a rental from $100, not a guided trip. Boards can be delivered.",
+          "provider": {
+            "@id": "https://www.richvalleyadventures.com/#organization"
+          }
+        },
+        "price": "100"
+      },
+      {
+        "@type": "Offer",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.richvalleyadventures.com/rafting",
+        "itemOffered": {
+          "@type": "TouristTrip",
+          "name": "Scenic river rafting with picnic",
+          "url": "https://www.richvalleyadventures.com/rafting",
+          "description": "Scenic river rafting with a picnic is $1,200.",
+          "provider": {
+            "@id": "https://www.richvalleyadventures.com/#organization"
+          }
+        },
+        "price": "1200"
+      },
+      {
+        "@type": "Offer",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.richvalleyadventures.com/elevated-camping",
+        "itemOffered": {
+          "@type": "TouristTrip",
+          "name": "Elevated camping — overnight",
+          "url": "https://www.richvalleyadventures.com/elevated-camping",
+          "description": "Overnight camping is $1,500. Single overnight or multi-day experiences; guests 2–8.",
+          "provider": {
+            "@id": "https://www.richvalleyadventures.com/#organization"
+          }
+        },
+        "price": "1500"
+      },
+      {
+        "@type": "Offer",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.richvalleyadventures.com/snowshoeing",
+        "itemOffered": {
+          "@type": "TouristTrip",
+          "name": "Half-day snowshoe",
+          "url": "https://www.richvalleyadventures.com/snowshoeing",
+          "description": "Half-day snowshoe is $500. About 3–4 hours door-to-door; snacks, drinks, and gear included.",
+          "provider": {
+            "@id": "https://www.richvalleyadventures.com/#organization"
+          }
+        },
+        "price": "500"
+      },
+      {
+        "@type": "Offer",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.richvalleyadventures.com/adventures/scenic-wildlife-tours",
+        "itemOffered": {
+          "@type": "TouristTrip",
+          "name": "Half-day scenic and wildlife tour",
+          "url": "https://www.richvalleyadventures.com/adventures/scenic-wildlife-tours",
+          "description": "Half-day scenic and wildlife tour is $750. Year-round.",
+          "provider": {
+            "@id": "https://www.richvalleyadventures.com/#organization"
+          }
+        },
+        "price": "750"
+      },
+      {
+        "@type": "Offer",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.richvalleyadventures.com/adventures/horseback-riding",
+        "itemOffered": {
+          "@type": "TouristTrip",
+          "name": "Horseback riding",
+          "url": "https://www.richvalleyadventures.com/adventures/horseback-riding",
+          "description": "Published price $600. Duration 2–4 hours, summer season. Rides go through a local partner outfitter.",
+          "provider": {
+            "@id": "https://www.richvalleyadventures.com/#organization"
+          }
+        },
+        "price": "600"
+      },
+      {
+        "@type": "Offer",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": "https://www.richvalleyadventures.com/adventures/mountain-biking",
+        "itemOffered": {
+          "@type": "TouristTrip",
+          "name": "Guided mountain biking — Roaring Fork Valley",
+          "url": "https://www.richvalleyadventures.com/adventures/mountain-biking",
+          "description": "Guided mountain biking on trails in the Roaring Fork Valley. Bikes and helmets included. No dollar price is published on the mountain-biking page.",
+          "provider": {
+            "@id": "https://www.richvalleyadventures.com/#organization"
+          }
+        }
+      }
+    ]
+  }
+}

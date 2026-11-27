@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import ALPNav from '@/components/alpenglow/ALPNav'
 import ALPFooter from '@/components/alpenglow/ALPFooter'
 import { alpenglowData } from '@/lib/site-data'
-import { AAL_OPENING_HOURS, AAL_OPENING_HOURS_SPEC, AAL_PUC_PERMIT } from '@/lib/aal-public-copy'
+import { aalHomeJsonLdBlocks } from '@/lib/schema/home-jsonld'
 import './aal-type.css'
 
 const ALP_URL = 'https://aspenalpenglowlimousine.com'
@@ -53,155 +53,13 @@ export const metadata: Metadata = {
   },
 }
 
-const websiteSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  '@id': `${ALP_URL}/#website`,
-  url: ALP_URL,
-  name: 'Aspen Alpenglow Limousine',
-  inLanguage: 'en-US',
-  description:
-    'Distinguished private car and limousine service in Aspen, Colorado — airport transfers, weddings, corporate travel, ski resort shuttles.',
-  publisher: { '@id': `${ALP_URL}/#business` },
-}
-
-const localBusinessSchema = {
-  '@context': 'https://schema.org',
-  '@type': ['LocalBusiness', 'LimousineService'],
-  '@id': `${ALP_URL}/#business`,
-  name: 'Aspen Alpenglow Limousine',
-  description:
-    'Distinguished private car and limousine service in Aspen, Colorado. Airport transfers, wedding transportation, corporate travel, and ski resort shuttles. Available 24/7 since 2012.',
-  url: ALP_URL,
-  telephone: '+19703156111',
-  priceRange: '$$$$',
-  image: ALP_LOGO,
-  logo: {
-    '@type': 'ImageObject',
-    url: ALP_LOGO,
-    width: ALP_LOGO_WIDTH,
-    height: ALP_LOGO_HEIGHT,
-  },
-  foundingDate: '2012',
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Aspen',
-    addressRegion: 'CO',
-    postalCode: '81611',
-    addressCountry: 'US',
-  },
-  identifier: { '@type': 'PropertyValue', name: 'Colorado PUC Permit', value: AAL_PUC_PERMIT },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: 39.1911,
-    longitude: -106.8175,
-  },
-  openingHours: AAL_OPENING_HOURS,
-  openingHoursSpecification: [AAL_OPENING_HOURS_SPEC],
-  areaServed: [
-    { '@type': 'City', name: 'Aspen', sameAs: 'https://en.wikipedia.org/wiki/Aspen,_Colorado' },
-    { '@type': 'City', name: 'Snowmass Village' },
-    { '@type': 'City', name: 'Basalt' },
-    { '@type': 'City', name: 'Carbondale' },
-    { '@type': 'City', name: 'Glenwood Springs' },
-    { '@type': 'City', name: 'Gypsum' },
-    { '@type': 'City', name: 'Vail' },
-    { '@type': 'City', name: 'Denver' },
-    {
-      '@type': 'Airport',
-      name: 'Aspen/Pitkin County Airport',
-      iataCode: 'ASE',
-    },
-    {
-      '@type': 'Airport',
-      name: 'Eagle County Regional Airport',
-      iataCode: 'EGE',
-      address: { '@type': 'PostalAddress', addressLocality: 'Gypsum', addressRegion: 'CO', addressCountry: 'US' },
-    },
-    {
-      '@type': 'Airport',
-      name: 'Denver International Airport',
-      iataCode: 'DEN',
-    },
-    { '@type': 'Place', name: 'Rifle' },
-    { '@type': 'Place', name: 'Grand Junction' },
-    { '@type': 'Place', name: 'Buena Vista' },
-    { '@type': 'Place', name: 'Montrose' },
-    { '@type': 'Place', name: 'Gunnison' },
-  ],
-  sameAs: [
-    'https://www.facebook.com/aspenalpenglow',
-    'https://www.instagram.com/aspenalpenglowlimo',
-    alpenglowData.googleReviewUrl,
-  ],
-  contactPoint: {
-    '@type': 'ContactPoint',
-    telephone: '+1-970-315-6111',
-    contactType: 'Reservations',
-    areaServed: 'US',
-    availableLanguage: 'English',
-    hoursAvailable: AAL_OPENING_HOURS_SPEC,
-  },
-}
-
-const vehicleSchemas = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: 'Chevrolet Suburban — 7 Passenger Luxury SUV',
-    description:
-      'Late-model Chevrolet Suburban with WiFi (Starlink), XM Radio, Yakima roof rack, and Myers ski rack. The fleet includes two Suburbans, each seating 7. Child car seats and boosters are free. No shared rides are offered. Used for airport transfers, private charters, and executive travel in Aspen, Colorado.',
-    serviceType: 'Luxury Limousine & Private Car Service',
-    provider: {
-      '@type': 'LocalBusiness',
-      name: 'Aspen Alpenglow Limousine',
-      telephone: '+19703156111',
-      url: ALP_URL,
-    },
-    areaServed: [
-      { '@type': 'City', name: 'Aspen', containedIn: 'Colorado, USA' },
-      { '@type': 'City', name: 'Snowmass Village', containedIn: 'Colorado, USA' },
-      { '@type': 'City', name: 'Glenwood Springs', containedIn: 'Colorado, USA' },
-    ],
-    additionalProperty: { '@type': 'PropertyValue', name: 'Passenger Capacity', value: 7 },
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: 'Ford Transit Passenger Van — 13 Passenger Group Transportation',
-    description:
-      'Late-model Ford Transit Passenger Van with WiFi (Starlink), XM Radio, and Myers ski rack. Seats up to 13 passengers. Child car seats and boosters are free. No shared rides are offered. Ideal for group airport transfers, wedding parties, and corporate events in Aspen and the Roaring Fork Valley.',
-    serviceType: 'Luxury Group Transportation & Van Service',
-    provider: {
-      '@type': 'LocalBusiness',
-      name: 'Aspen Alpenglow Limousine',
-      telephone: '+19703156111',
-      url: ALP_URL,
-    },
-    areaServed: [
-      { '@type': 'City', name: 'Aspen', containedIn: 'Colorado, USA' },
-      { '@type': 'City', name: 'Snowmass Village', containedIn: 'Colorado, USA' },
-      { '@type': 'City', name: 'Glenwood Springs', containedIn: 'Colorado, USA' },
-    ],
-    additionalProperty: { '@type': 'PropertyValue', name: 'Passenger Capacity', value: 13 },
-  },
-]
-
 export default function AlpenglowLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="aal-root">
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       <link rel="preconnect" href="https://lirp.cdn-website.com" crossOrigin="anonymous" />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
-      />
-      {vehicleSchemas.map((schema, i) => (
+      {aalHomeJsonLdBlocks.map((schema, i) => (
         <script
           key={i}
           type="application/ld+json"

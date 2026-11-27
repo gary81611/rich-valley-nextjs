@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import RVANav from '@/components/rva/RVANav'
 import RVAFooter from '@/components/rva/RVAFooter'
-import { rvaData } from '@/lib/site-data'
+import { rvaHomeJsonLdBlocks } from '@/lib/schema/home-jsonld'
 import './rva-type.css'
 
 const RVA_URL = 'https://www.richvalleyadventures.com'
@@ -57,159 +57,6 @@ export const metadata: Metadata = {
   },
 }
 
-const websiteSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  '@id': `${RVA_URL}/#website`,
-  url: RVA_URL,
-  name: 'Rich Valley Adventures',
-  inLanguage: 'en-US',
-  description:
-    'Expert-guided fly fishing, hiking, mountain biking, and elevated camping in Aspen, Colorado and the Roaring Fork Valley. Paddleboarding is a rental from $100.',
-  publisher: { '@id': `${RVA_URL}/#business` },
-}
-
-const localBusinessSchema = {
-  '@context': 'https://schema.org',
-  '@type': ['LocalBusiness', 'TouristInformationCenter'],
-  '@id': `${RVA_URL}/#business`,
-  name: 'Rich Valley Adventures',
-  description:
-    'Expert-guided fly fishing, hiking, mountain biking, paddleboard rentals, and elevated camping in Aspen, Colorado and the Roaring Fork Valley since 2012.',
-  url: RVA_URL,
-  telephone: '+19704563666',
-  email: 'kit@richvalleyadventures.com',
-  priceRange: '$$$$',
-  image: RVA_LOGO,
-  logo: {
-    '@type': 'ImageObject',
-    url: RVA_LOGO,
-    width: RVA_LOGO_WIDTH,
-    height: RVA_LOGO_HEIGHT,
-  },
-  foundingDate: '2012',
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Aspen',
-    addressRegion: 'CO',
-    postalCode: '81611',
-    addressCountry: 'US',
-  },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: 39.1911,
-    longitude: -106.8175,
-  },
-  openingHoursSpecification: [
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      opens: '00:00',
-      closes: '23:59',
-    },
-  ],
-  areaServed: [
-    { '@type': 'City', name: 'Aspen', sameAs: 'https://en.wikipedia.org/wiki/Aspen,_Colorado' },
-    { '@type': 'City', name: 'Snowmass Village' },
-    { '@type': 'Place', name: 'Roaring Fork Valley' },
-    { '@type': 'City', name: 'Basalt' },
-    { '@type': 'City', name: 'Carbondale' },
-  ],
-  sameAs: [
-    'https://www.facebook.com/richvalleyadventures',
-    'https://www.instagram.com/richvalleyadventures',
-    rvaData.googleMapsPlaceUrl,
-    rvaData.googleReviewUrl,
-  ],
-  hasMap: rvaData.googleMapsPlaceUrl,
-  identifier: [
-    { '@type': 'PropertyValue', name: 'Google Place ID', value: rvaData.googlePlaceId },
-    { '@type': 'PropertyValue', name: 'CO Licensed Outfitter', value: 'OUT.0003060' },
-    { '@type': 'PropertyValue', name: 'CO River License', value: '620' },
-  ],
-  brand: {
-    '@type': 'Brand',
-    name: 'Rich Valley Adventures',
-  },
-  contactPoint: {
-    '@type': 'ContactPoint',
-    telephone: '+1-970-456-3666',
-    contactType: 'Reservations',
-    email: 'kit@richvalleyadventures.com',
-    areaServed: 'US',
-    availableLanguage: 'English',
-    hoursAvailable: {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      opens: '07:00',
-      closes: '20:00',
-    },
-  },
-  hasOfferCatalog: {
-    '@type': 'OfferCatalog',
-    name: 'Guided Adventure Experiences in Aspen, Colorado',
-    itemListElement: [
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'SportsActivityLocation',
-          name: 'Guided Fly Fishing — Roaring Fork River, Aspen CO',
-          description:
-            'Expert-guided fly fishing trips on the Roaring Fork River and its tributaries near Aspen, Colorado. All gear provided. All skill levels welcome.',
-        },
-      },
-      {
-        '@type': 'Offer',
-        price: '800',
-        priceCurrency: 'USD',
-        url: 'https://www.richvalleyadventures.com/private-ranch-fishing',
-        itemOffered: {
-          '@type': 'TouristTrip',
-          name: 'Private Ranch Fishing at Spring Creek Ranch, Carbondale',
-          url: 'https://www.richvalleyadventures.com/private-ranch-fishing',
-          description:
-            'Private ranch and picnic package at Spring Creek Ranch, Carbondale, CO: from $800 per adult and $250 per child (ages 3+). Ponds, creeks, and a private section of the Roaring Fork River.',
-        },
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'SportsActivityLocation',
-          name: 'Paddleboard Rental — Aspen, CO',
-          description: 'Paddleboarding is a rental from $100, not a guided trip.',
-        },
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'SportsActivityLocation',
-          name: 'Guided Mountain Biking — Roaring Fork Valley, CO',
-          description:
-            'Expert-guided mountain biking on singletrack trails throughout the Roaring Fork Valley near Aspen, Colorado. Bikes and helmets included.',
-        },
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'SportsActivityLocation',
-          name: 'Guided Trail Hiking — Aspen & Elk Mountains, CO',
-          description:
-            'Guided hiking in the Elk Mountains and Roaring Fork Valley near Aspen, Colorado. A half-day hike is $600. The hiking page also lists easier walks and strenuous alpine days.',
-        },
-      },
-      {
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'SportsActivityLocation',
-          name: 'Elevated Camping — Roaring Fork Valley, CO',
-          description:
-            'Premium guided camping experiences with curated gear and gourmet food in the Colorado wilderness near Aspen.',
-        },
-      },
-    ],
-  },
-}
-
 export default function RVALayout({ children }: { children: React.ReactNode }) {
   return (
     <>
@@ -217,14 +64,13 @@ export default function RVALayout({ children }: { children: React.ReactNode }) {
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       <link rel="preconnect" href="https://lirp.cdn-website.com" crossOrigin="anonymous" />
       <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
-      />
+      {rvaHomeJsonLdBlocks.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
       <RVANav />
       <div className="rva-site">
         {children}

@@ -60,8 +60,10 @@ describe('page-2 title and meta length', () => {
 describe('AAL page-2 copy', () => {
   it('uses Since 2012 on corporate only because layout JSON-LD already has foundingDate 2012', () => {
     const layout = read('../app/alpenglow/layout.tsx')
-    assert.match(layout, /foundingDate: '2012'/)
+    const schema = read('../lib/schema/aal-organization.json')
+    assert.match(layout, /aalHomeJsonLdBlocks/)
     assert.match(layout, /application\/ld\+json/)
+    assert.match(schema, /"foundingDate": "2012"/)
     assert.equal(
       AAL_CORPORATE.description,
       'Executive car service in Aspen for airports, meetings, and retreats. Private Suburbans and a 13-passenger Transit van, since 2012. Call 970-315-6111.',
