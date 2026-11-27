@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { alpenglowData, AAL_GOOGLE_REVIEW_URL } from '@/lib/site-data'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
-import { AAL_OPENING_HOURS, AAL_OPENING_HOURS_SPEC, AAL_SERVICE_AREAS, correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
+import { correctAalPublicText, normalizeAalStat } from '@/lib/aal-public-copy'
+import { aalAboutJsonLd } from '@/lib/schema/home-jsonld'
 import { AAL_OG_IMAGE } from '@/lib/aal-vehicles'
 
 export const dynamic = 'force-dynamic'
@@ -62,43 +63,9 @@ export default async function AboutPage() {
     // Use defaults on error
   }
 
-  const aboutJsonLd = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'AboutPage',
-        '@id': 'https://aspenalpenglowlimousine.com/about#aboutpage',
-        url: 'https://aspenalpenglowlimousine.com/about',
-        name: 'About Aspen Alpenglow Limousine',
-        description:
-          'Luxury private transportation in Aspen and the Roaring Fork Valley since 2012 — airport transfers, events, ski shuttles, and corporate travel.',
-        isPartOf: { '@type': 'WebSite', url: 'https://aspenalpenglowlimousine.com', name: 'Aspen Alpenglow Limousine' },
-      },
-      {
-        '@type': 'LocalBusiness',
-        '@id': 'https://aspenalpenglowlimousine.com/#business',
-        name: 'Aspen Alpenglow Limousine',
-        url: 'https://aspenalpenglowlimousine.com',
-        telephone: '+19703156111',
-        openingHours: AAL_OPENING_HOURS,
-        openingHoursSpecification: [AAL_OPENING_HOURS_SPEC],
-        priceRange: '$$$',
-        address: {
-          '@type': 'PostalAddress',
-          addressLocality: 'Aspen',
-          addressRegion: 'CO',
-          postalCode: '81611',
-          addressCountry: 'US',
-        },
-        areaServed: [...AAL_SERVICE_AREAS],
-        foundingDate: '2012',
-      },
-    ],
-  }
-
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aalAboutJsonLd) }} />
     <div className="min-h-screen bg-alp-pearl font-inter">
       {/* Breadcrumb */}
       <div className="bg-alp-navy-deep">

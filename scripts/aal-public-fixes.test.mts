@@ -87,8 +87,14 @@ describe('AAL opening hours', () => {
 
   it('does not leave 07:00–20:00 on the AAL layout schema', () => {
     const layout = readFileSync(new URL('../app/alpenglow/layout.tsx', import.meta.url), 'utf8')
-    assert.match(layout, /openingHours: AAL_OPENING_HOURS/)
-    assert.match(layout, /hoursAvailable: AAL_OPENING_HOURS_SPEC/)
+    const schema = readFileSync(new URL('../lib/schema/aal-organization.json', import.meta.url), 'utf8')
+    assert.match(layout, /aalHomeJsonLdBlocks/)
+    assert.match(layout, /application\/ld\+json/)
+    assert.match(schema, new RegExp(`"openingHours": "${AAL_OPENING_HOURS}"`))
+    assert.match(schema, /"opens": "00:00"/)
+    assert.match(schema, /"closes": "23:59"/)
+    assert.doesNotMatch(schema, /07:00/)
+    assert.doesNotMatch(schema, /20:00/)
     assert.doesNotMatch(layout, /07:00/)
     assert.doesNotMatch(layout, /20:00/)
   })
